@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers — Runix</title>
+<meta name="description" content="Join Runix: a remote-first engineering team building reliable AI infrastructure — LLM gateway, data pipelines, and ready-to-deploy solutions.">
+<meta property="og:title" content="Careers — Runix">
+<meta property="og:description" content="Join Runix: a remote-first engineering team building reliable AI infrastructure — LLM gateway, data pipelines, and ready-to-deploy solutions.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="index.html#products">Products</a>
+      <a href="index.html#why">Why Runix</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="blog/">Blog</a>
+      <a href="about.html">Company</a>
+      <a class="nav-cta" href="about.html#contact">Contact us</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Careers</span>
+    <h1>Build infrastructure people can rely on</h1>
+    <p>We are a remote-first engineering team working on the unglamorous, essential problems behind production AI.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>How we work</h2>
+      <p>Runix is remote-first and built to work across time zones, so almost everything important happens in writing: design docs, decision logs, and postmortems rather than meetings. We are building a small, senior team where everyone owns a real slice of production and carries the consequences of their design choices. We optimize for infrastructure craft over feature churn: fewer things, kept up, measured honestly. If you like calm, deep work on systems that other teams depend on, you will probably like it here.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Ownership</h3>
+        <p>You run what you build. Roadmap, code, deploys, dashboards, and the pager for your area belong to you — with the authority to fix root causes instead of filing tickets about them.</p>
+      </div>
+      <div class="card">
+        <h3>Craft</h3>
+        <p>We care about tail latency, failure modes, and boring, well-tested code. Slower and correct beats fast and flaky, because our customers build on top of us.</p>
+      </div>
+      <div class="card">
+        <h3>Calm and focused</h3>
+        <p>Few meetings, no performative urgency. Long stretches of uninterrupted work, async by default, and an on-call philosophy that treats a noisy pager as a bug to fix.</p>
+      </div>
+      <div class="card">
+        <h3>Transparent</h3>
+        <p>Metrics, incidents, and reasoning are open inside the team. We say what broke and why, internally and to customers, and we write down decisions so they can be revisited.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-head">
+      <h2>Open roles</h2>
+      <p>All roles are remote. We hire globally and default to async collaboration with a few hours of overlap.</p>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="job">
+          <div>
+            <h3>Founding Infrastructure Engineer</h3>
+            <div class="tags">
+              <span class="tag">Remote — Global</span>
+              <span class="tag">Full-time</span>
+              <span class="tag">Gateway team</span>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: 16px;">You own the data plane of our LLM gateway: routing, provider failover, rate limiting, and the observability that makes all of it debuggable at 3 a.m. This is core-path work — every request from every customer flows through the systems you design. You will make the latency, consistency, and capacity trade-offs and live with them in production.</p>
+        <p style="margin-top: 14px;"><strong>You might be a fit if</strong></p>
+        <ul>
+          <li>You have a strong systems background in Go, Rust, or a similar language, and you enjoy reading profiler output.</li>
+          <li>You have run high-QPS services in production and have the incident scars to show for it.</li>
+          <li>You care about tail latency — p99 and p999, not just averages.</li>
+        </ul>
+        <p style="margin-top: 16px;">To apply, email <a href="mailto:contact@runix.io?subject=Founding%20Infrastructure%20Engineer">contact@runix.io</a> with the role name in the subject and a link to something you have built.</p>
+      </div>
+
+      <div class="card">
+        <div class="job">
+          <div>
+            <h3>Data Engineer, AI Pipelines</h3>
+            <div class="tags">
+              <span class="tag">Remote — Global</span>
+              <span class="tag">Full-time</span>
+              <span class="tag">Pipelines team</span>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: 16px;">You own the stages of our managed data pipelines: extraction, deduplication, PII masking, and quality scoring. The job is turning messy real-world data into something a model can safely use — reproducibly, at scale, with measurable quality. You will decide where classic batch processing ends and where an LLM in the loop actually earns its cost.</p>
+        <p style="margin-top: 14px;"><strong>You might be a fit if</strong></p>
+        <ul>
+          <li>You have shipped both batch and streaming pipelines and know when each is the wrong tool.</li>
+          <li>You are pragmatic about LLM-in-the-loop processing — you benchmark it against cheaper heuristics before reaching for it.</li>
+          <li>You treat data quality as an engineering problem, with tests, metrics, and regression checks.</li>
+        </ul>
+        <p style="margin-top: 16px;">To apply, email <a href="mailto:contact@runix.io?subject=Data%20Engineer%2C%20AI%20Pipelines">contact@runix.io</a> with the role name in the subject and a link to something you have built.</p>
+      </div>
+
+      <div class="card">
+        <div class="job">
+          <div>
+            <h3>Developer Advocate</h3>
+            <div class="tags">
+              <span class="tag">Remote — Global</span>
+              <span class="tag">Full-time / Part-time considered</span>
+              <span class="tag">Developer Relations</span>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: 16px;">You write the docs, examples, and engineering posts that help developers get real work done with our gateway and pipelines, and you talk to developers where they already are. This is a writing-heavy engineering role, not a marketing role — the output is working code and honest technical content.</p>
+        <p style="margin-top: 14px;"><strong>You might be a fit if</strong></p>
+        <ul>
+          <li>You are an engineer who writes clearly, and you have public writing or docs to prove it.</li>
+          <li>You would rather publish a runnable example than a slide deck.</li>
+          <li>You enjoy answering hard questions from developers and feeding what you learn back into the product.</li>
+        </ul>
+        <p style="margin-top: 16px;">To apply, email <a href="mailto:contact@runix.io?subject=Developer%20Advocate">contact@runix.io</a> with the role name in the subject and a link to something you have built.</p>
+      </div>
+
+    </div>
+    <p style="margin-top: 32px; color: var(--ink-2); font-size: 15.5px;">Don't see your role? If you care about reliable infrastructure, write to us anyway — <a href="mailto:contact@runix.io" style="color: var(--indigo); font-weight: 500;">contact@runix.io</a>.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
+        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <a href="index.html#products">LLM Gateway</a>
+        <a href="index.html#products">Data Pipelines</a>
+        <a href="index.html#products">Solutions</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog/">Blog</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="about.html#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Runix. All rights reserved.</span>
+      <span>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

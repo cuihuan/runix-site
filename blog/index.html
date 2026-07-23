@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Runix</title>
+<meta name="description" content="Engineering notes and announcements from the Runix team: LLM gateways, failover, data pipelines, and cost control in production.">
+<meta property="og:title" content="Blog — Runix">
+<meta property="og:description" content="Engineering notes and announcements from the Runix team: LLM gateways, failover, data pipelines, and cost control in production.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../index.html#why">Why Runix</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about.html">Company</a>
+      <a class="nav-cta" href="../about.html#contact">Contact us</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Blog</span>
+    <h1>Engineering notes &amp; announcements</h1>
+    <p>What we learn running AI infrastructure, written for engineers who run it too.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 22, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="llm-cost-control.html">LLM Cost Control: Tokens, Caching, and Budgets Explained</a></h3>
+        <p class="excerpt">Input/output pricing asymmetry, cache-friendly prompt structure, cheap-model cascades, and hard budget enforcement — a practical walkthrough of where LLM spend actually goes and the controls that keep it bounded.</p>
+        <a class="read-more" href="llm-cost-control.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 19, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="ai-data-pipelines.html">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></h3>
+        <p class="excerpt">A stage-by-stage walkthrough of production AI data pipelines: ingestion and parsing tradeoffs, three tiers of deduplication, LLM-powered extraction with schema validation, and PII masking that fails closed.</p>
+        <a class="read-more" href="ai-data-pipelines.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 15, 2026</span><span>·</span><span>9 min read</span></div>
+        <h3><a href="model-failover.html">Designing for Model Failover: Lessons from Production LLM Traffic</a></h3>
+        <p class="excerpt">Hard errors are the easy part — the failures that hurt are silent degradation and retry storms. A field guide to retry budgets, per-model circuit breakers, and degradation tiers that beat an error page.</p>
+        <a class="read-more" href="model-failover.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 12, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="llm-gateway-guide.html">Choosing an LLM Gateway: Seven Things That Actually Matter</a></h3>
+        <p class="excerpt">A no-fluff evaluation guide for picking an LLM gateway: streaming and tool-call fidelity, mid-stream failover behavior, per-key limits, token-level cost attribution, and the managed-vs-self-hosted trade.</p>
+        <a class="read-more" href="llm-gateway-guide.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Announcement</span><span>July 8, 2026</span><span>·</span><span>4 min read</span></div>
+        <h3><a href="introducing-runix.html">Introducing Runix</a></h3>
+        <p class="excerpt">The hard part of AI is everything after the demo: reliability, cost visibility, and data quality. We are launching Runix to build that layer — an OpenAI-compatible gateway, managed data pipelines, and ready-to-deploy solutions.</p>
+        <a class="read-more" href="introducing-runix.html">Read post →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <a href="../index.html#products">LLM Gateway</a>
+        <a href="../index.html#products">Data Pipelines</a>
+        <a href="../index.html#products">Solutions</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../careers.html">Careers</a>
+        <a href="./">Blog</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../about.html#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Runix. All rights reserved.</span>
+      <span>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

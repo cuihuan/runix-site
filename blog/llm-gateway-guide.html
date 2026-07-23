@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choosing an LLM Gateway: Seven Things That Actually Matter — Runix Blog</title>
+<meta name="description" content="A practical evaluation guide for teams picking an LLM gateway: API compatibility, failover behavior, rate limits, cost tracking, observability, security, and operational burden.">
+<meta property="og:title" content="Choosing an LLM Gateway: Seven Things That Actually Matter — Runix Blog">
+<meta property="og:description" content="A practical evaluation guide for teams picking an LLM gateway: API compatibility, failover behavior, rate limits, cost tracking, observability, security, and operational burden.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../index.html#why">Why Runix</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about.html">Company</a>
+      <a class="nav-cta" href="../about.html#contact">Contact us</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 12, 2026</span><span>·</span><span>8 min read</span></div>
+    <h1 style="margin-top: 14px;">Choosing an LLM Gateway: Seven Things That Actually Matter</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>Most teams adopt an LLM gateway for one of two reasons: they got paged when a single provider went down, or finance asked why the API bill doubled and nobody could answer. A gateway sits between your application and the model providers, so it inherits every reliability and correctness requirement your application has. That makes the selection decision more consequential than it looks.</p>
+
+<p>Feature matrices for gateways all look the same. Here are the seven things we have found actually separate a gateway you can run in production from one you will rip out in six months.</p>
+
+<h2>1. API compatibility</h2>
+<p>The gateway's API surface determines your migration cost. If it speaks the OpenAI chat completions format, you point your existing SDK at a new base URL, swap the key, and you are done — zero client code changes:</p>
+
+<pre><code>curl https://gateway.example.com/v1/chat/completions \
+  -H "Authorization: Bearer $GATEWAY_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4",
+    "stream": true,
+    "messages": [{"role": "user", "content": "Summarize this ticket."}]
+  }'</code></pre>
+
+<p>The word "compatible" hides a lot, though. Test the edges, not the happy path. Streaming is where compatibility claims break first: verify that SSE chunk framing, <code>finish_reason</code> values, and the final usage block match what your client library expects. Tool calling is the second failure point — check that parallel tool calls, streamed tool-call argument deltas, and <code>tool_choice</code> options survive translation across providers. A gateway that silently drops a tool-call delta will corrupt your agent loop in ways that are miserable to debug.</p>
+
+<h2>2. Routing and failover</h2>
+<p>Failover is the headline feature, so ask exactly how it works. Static retry-on-error is table stakes. What you want is health-based routing: the gateway should track per-provider error rates and latency, stop sending traffic to a degraded upstream before your users notice, and recover automatically when the upstream does.</p>
+
+<p>Two questions expose weak implementations. First: what happens when a provider fails <strong>mid-stream</strong>? Retrying a request that already emitted tokens to the client is not straightforward — a good gateway either restarts the request on a secondary provider before any tokens are flushed, or clearly documents that mid-stream failures surface as errors. Vague answers here mean untested code. Second: can you define fallback chains per model, so that an outage on your primary provider degrades to an equivalent model rather than a hard failure?</p>
+
+<h2>3. Rate limiting and quotas</h2>
+<p>Once multiple services share one gateway, one runaway batch job can starve your production traffic. You need per-key limits on both requests per minute (RPM) and tokens per minute (TPM) — token limits matter more, since a single request can carry a 100k-token context.</p>
+
+<p>Look for fair queuing rather than plain rejection. When aggregate demand exceeds upstream capacity, the gateway should queue and interleave requests across keys instead of letting whichever client retries most aggressively win. Also check that limit changes take effect without a deploy; you will be adjusting these weekly at first.</p>
+
+<h2>4. Cost tracking</h2>
+<p>LLM spend is unusual: it is highly variable, driven by prompt engineering decisions made far from the billing owner, and often split across providers with different pricing. The gateway is the only component that sees every request, so it is the natural place to answer "who spent what."</p>
+
+<p>The minimum bar is token-level attribution: every request logged with input tokens, output tokens, cached tokens (if the provider discounts them), the model used, and the key or team that made the call. On top of that you want budgets — hard or soft caps per key or per project — and alerts that fire at thresholds like 80% of budget, not after the money is gone. If the gateway can only tell you total spend per day, you will be exporting logs to a spreadsheet within a month.</p>
+
+<h2>5. Observability</h2>
+<p>When a user reports "the AI feature is slow," you need to answer three questions fast: which provider, which model, and is it us or them. That requires request-level logs with timing breakdowns (queue time, upstream time to first token, total duration), latency percentiles per model and provider — p50 tells you nothing about tail pain, so insist on p95 and p99 — and a real error taxonomy.</p>
+
+<p>Error taxonomy deserves emphasis. "HTTP 500" is not a diagnosis. A useful gateway distinguishes upstream rate limits, upstream timeouts, content filter refusals, malformed requests, and its own internal errors, because each has a different fix. Bonus points for exportable traces so you can join gateway data with your existing APM.</p>
+
+<h2>6. Security</h2>
+<p>A gateway holds your provider API keys and sees every prompt, which may include customer data. Evaluate it like any other component in your data path. Provider keys should be stored encrypted, never returned by any API, and rotatable without downtime. Traffic must be TLS in transit and any logged payloads encrypted at rest.</p>
+
+<p>Then read the data retention policy, not the marketing page. How long are request and response bodies kept? Can you turn body logging off entirely while keeping metadata for billing? Is there a written commitment that neither the gateway vendor nor its subprocessors train models on your traffic? If you handle regulated data, ask for the compliance documentation before the pilot, not after.</p>
+
+<h2>7. Operational burden</h2>
+<p>Finally, be honest about who runs this thing. Self-hosting an open-source gateway gives you full control and keeps traffic inside your VPC, but you now own upgrades, provider API changes (they change often), scaling the gateway itself, and its uptime — the gateway is a single point of failure by design, so it must be more reliable than any provider behind it.</p>
+
+<p>A managed gateway inverts the trade: you give up some control and add a network hop, and in exchange the vendor carries on-call, upstream API churn, and capacity. For most teams under, say, ten engineers, the managed option is cheaper once you price in the on-call load honestly. Whichever you choose, demand a published uptime target with history behind it — 99.9% or better — and a status page you can subscribe to.</p>
+
+<h2>The checklist</h2>
+<p>Condensed into a table you can take into vendor calls:</p>
+
+<table>
+  <tr><th>Criterion</th><th>What to verify</th></tr>
+  <tr><td>API compatibility</td><td>OpenAI-format drop-in; streaming chunks and tool calls tested end to end</td></tr>
+  <tr><td>Routing &amp; failover</td><td>Health-based routing, per-model fallback chains, defined mid-stream behavior</td></tr>
+  <tr><td>Rate limits</td><td>Per-key RPM and TPM, fair queuing, live limit updates</td></tr>
+  <tr><td>Cost tracking</td><td>Token-level attribution by key/model, budgets, threshold alerts</td></tr>
+  <tr><td>Observability</td><td>Request logs, p95/p99 per provider, meaningful error taxonomy</td></tr>
+  <tr><td>Security</td><td>Encrypted key custody, configurable retention, no training on your data</td></tr>
+  <tr><td>Operations</td><td>Honest managed vs self-hosted cost, 99.9%+ uptime target, status page</td></tr>
+</table>
+
+<p>Nothing on this list is unusual — it is the same bar you would set for any load balancer or API proxy in your critical path. The teams that get burned are the ones that evaluated the gateway as an AI product instead of as infrastructure. We build the Runix gateway against this exact list; if you want to compare notes on your evaluation, <a href="../about.html#contact">get in touch</a>.</p>
+
+  <div class="notice">
+    <p><strong>Want to go deeper?</strong> Runix builds AI infrastructure for production teams — a unified LLM gateway, managed data pipelines, and ready-to-deploy solutions. <a href="../about.html#contact">Talk to us</a> about your use case.</p>
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <a href="../index.html#products">LLM Gateway</a>
+        <a href="../index.html#products">Data Pipelines</a>
+        <a href="../index.html#products">Solutions</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../careers.html">Careers</a>
+        <a href="./">Blog</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../about.html#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Runix. All rights reserved.</span>
+      <span>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing for Model Failover: Lessons from Production LLM Traffic — Runix Blog</title>
+<meta name="description" content="A practical guide to keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs, and graceful degradation tiers.">
+<meta property="og:title" content="Designing for Model Failover: Lessons from Production LLM Traffic — Runix Blog">
+<meta property="og:description" content="A practical guide to keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs, and graceful degradation tiers.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../index.html#why">Why Runix</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about.html">Company</a>
+      <a class="nav-cta" href="../about.html#contact">Contact us</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 15, 2026</span><span>·</span><span>9 min read</span></div>
+    <h1 style="margin-top: 14px;">Designing for Model Failover: Lessons from Production LLM Traffic</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>Every team that ships an LLM-backed product eventually learns the same lesson: model providers fail, and they fail in ways that traditional infrastructure playbooks don't fully cover. The team behind Runix has spent years running high-volume LLM traffic through gateways in production, and most of what we know about failover we learned by watching real traffic misbehave. This post is a condensed version of those lessons.</p>
+
+<h2>The real failure taxonomy</h2>
+<p>It helps to be precise about what "the provider is down" actually means, because each failure class needs a different response.</p>
+<p><strong>Hard errors.</strong> These are the easy ones: <code>429</code> rate limits, <code>500</code>/<code>502</code>/<code>503</code> from the provider, connection resets. They are unambiguous, cheap to detect, and safe to act on immediately. A <code>429</code> means back off or route elsewhere; a <code>5xx</code> means the request never produced value and can usually be retried somewhere else.</p>
+<p><strong>Timeouts.</strong> Harder than they look. LLM inference latency is highly variable by design — a long completion legitimately takes longer than a short one. A fixed 30-second timeout will misclassify healthy long generations as failures, and a generous 5-minute timeout will hold user connections open while a provider quietly falls over. In practice you want two separate timeouts: time-to-first-token, which is fairly stable per provider and a strong health signal, and a token-rate floor for streaming (if throughput drops below some tokens-per-second threshold mid-stream, something upstream is degrading even though bytes are still trickling in).</p>
+<p><strong>Silent degradation.</strong> This is the nastiest class, and the one that gets no attention until it bites you. The provider returns <code>200 OK</code>, latency looks normal, and the output is wrong: completions truncated at a suspicious power-of-two token count, a model quietly serving degraded quality under load, malformed JSON from a model that reliably produced valid JSON yesterday, or empty tool-call arguments. None of your standard dashboards catch this. Your error rate is 0% while your product is broken.</p>
+<p>Detecting silent degradation requires looking at the response body, not just the status code. Useful cheap checks: <code>finish_reason</code> distribution (a spike in <code>length</code> finishes when your traffic mix hasn't changed is a red flag), output-token histograms per model (truncation shows up as a wall in the distribution), JSON-parse success rate for structured-output routes, and refusal-phrase rates. These are aggregate signals — no single response proves anything, but a shifted distribution over ten minutes does.</p>
+
+<h2>Why naive retry makes outages worse</h2>
+<p>The default instinct — wrap the call in a retry loop — is exactly how you turn a provider brownout into a full outage. When a provider starts shedding load with <code>429</code>s, every client retrying immediately multiplies the offered load right when capacity is lowest. The provider sheds harder, more clients retry, and you get a retry storm. You also burn your own capacity: threads, connections, and user patience are all held hostage by requests that were never going to succeed.</p>
+<p>Three rules keep retries safe:</p>
+<ul>
+<li><strong>Exponential backoff with full jitter.</strong> Without jitter, all clients that failed together retry together, producing synchronized load spikes. Randomize the entire backoff window, not just a small offset.</li>
+<li><strong>A hard cap on attempts.</strong> Two or three, total, across all targets. If three attempts across two providers failed, a fourth attempt is far more likely to add load than to succeed.</li>
+<li><strong>A retry budget.</strong> Cap retries as a fraction of overall traffic — for example, retries may not exceed 10% of request volume in any window. When the budget is exhausted, fail fast instead. This is the mechanism that prevents a partial outage from amplifying into a total one, and it is the single highest-leverage change most teams haven't made.</li>
+</ul>
+<p>Also decide up front which requests are retryable at all. Idempotent completions are; anything with side effects (a tool call that already executed) is not, and replaying it is a correctness bug, not resilience.</p>
+
+<h2>Knowing when a provider is unhealthy</h2>
+<p>There are two sources of health signal, and you need both.</p>
+<p><strong>Passive signals</strong> come from live traffic: error rates, time-to-first-token percentiles, token throughput, and the silent-degradation aggregates above. They are free, they reflect your real workload (your prompts, your regions, your API features), and they are the fastest detector when you have volume. Their weakness is low-traffic routes — a model that gets ten requests an hour gives you statistics too thin to act on.</p>
+<p><strong>Active probes</strong> fill that gap: a small synthetic request per provider+model every 30–60 seconds, with a known-good expected output so you can verify content, not just status. Probes catch failures on cold routes before a user does, and they are the only way to confirm recovery without gambling user traffic. Their weakness is that a tiny canned prompt does not exercise long contexts, streaming, or tool use — so probes can pass while your real workload fails. Treat probes as a floor, passive signals as the truth.</p>
+
+<h2>Circuit breakers, per provider and per model</h2>
+<p>Once you can detect unhealth, you need a mechanism that acts on it faster than a human can. The classic circuit breaker works well here with one crucial adjustment: the breaker key must be <strong>provider + model</strong>, not just provider. Providers rarely fail uniformly — one model family degrades while others on the same API are fine. A provider-level breaker turns a partial failure into a self-inflicted total one.</p>
+<pre><code># Per (provider, model) breaker — illustrative config
+breaker:
+  key: "{provider}:{model}"
+  window: 60s
+  trip_when:
+    error_rate: "> 25%"          # hard errors + timeouts
+    min_samples: 20              # don't trip on thin data
+    or_probe_failures: 3         # consecutive active-probe failures
+  open_for: 30s                  # then move to half-open
+  half_open:
+    trial_requests: 5            # real traffic, capped
+    close_when: "5/5 succeed"
+
+retry:
+  max_attempts: 3                # total, across all targets
+  backoff: exponential_full_jitter(base=250ms, cap=8s)
+  budget: "10% of window traffic"
+
+failover_order:
+  - primary:   provider_a/model-large
+  - secondary: provider_b/model-large-equivalent
+  - degraded:  provider_a/model-small
+  - fallback:  cached_or_honest_error
+</code></pre>
+<p>Two details matter in production. First, <code>min_samples</code>: tripping a breaker on three requests of thin data causes flapping, which is its own outage. Second, the half-open phase must use a small capped trickle of real traffic — recovery detected only by synthetic probes will happily close the breaker into a provider that still can't handle your actual workload.</p>
+
+<h2>Failover is not free</h2>
+<p>Routing around a failure sounds like a pure win. It isn't; three costs show up immediately.</p>
+<p><strong>Semantic drift.</strong> Models are not interchangeable. A prompt tuned on one model produces different tone, different formatting, and different tool-calling behavior on another. If your product parses model output, failover can break parsing even though every request "succeeded." The fix is to qualify fallback pairs in advance: run your evaluation suite against the fallback model with your production prompts, and only put pre-qualified pairs in the failover chain.</p>
+<p><strong>Prompt-cache warmth.</strong> If you rely on provider-side prompt caching for long shared prefixes, a failover means every request pays full input price and full prefill latency on the new target until its cache warms. Model this in your cost projections: a one-hour failover on a cache-heavy workload can cost several times its normal hourly spend. It is also a reason to fail over decisively rather than flapping — every flap re-pays the warm-up twice.</p>
+<p><strong>Cost asymmetry.</strong> Your fallback may cost 3–5x your primary per token. That is usually the right trade during an incident, but it should be a decision someone made ahead of time, with a spend alert attached, not a surprise on the invoice.</p>
+
+<h2>Graceful degradation tiers</h2>
+<p>Failover to an equivalent model is only the first rung. A complete design defines what happens when that fails too, in order of decreasing capability:</p>
+<ol>
+<li><strong>Equivalent model, different provider.</strong> Full capability, costs the trade-offs above.</li>
+<li><strong>Smaller model, same family.</strong> Most workloads tolerate a capability drop far better than an error page. Summarization, classification, and short-answer routes often degrade imperceptibly.</li>
+<li><strong>Cached or precomputed answer.</strong> For high-repetition queries, serving a slightly stale cached response labeled as such beats serving nothing.</li>
+<li><strong>An honest error.</strong> "The AI service is temporarily degraded, please retry shortly" — returned fast, with a working retry path. A fast honest failure preserves more user trust than a 90-second hang followed by a timeout.</li>
+</ol>
+<p>The key property: each tier is a deliberate product decision made calmly in advance, not an improvisation at 3 a.m.</p>
+
+<h2>Test it with game days</h2>
+<p>A failover path that has never run is a failover path that does not work. The failure modes hide in the details: the fallback API key that expired, the secondary provider that rejects a request parameter the primary accepted, the breaker that trips correctly but whose alert routes to a channel nobody reads.</p>
+<p>Run game days quarterly. Inject faults at the gateway layer — force <code>429</code>s from the primary, add artificial time-to-first-token latency, truncate responses to simulate silent degradation — and verify the whole chain: breaker trips within the expected window, traffic shifts to the qualified fallback, output quality on the fallback passes your evals, cost alerts fire, and recovery closes the breaker without flapping. Measure time-to-detect and time-to-mitigate, and track them like the reliability metrics they are. The first game day is always humbling; that is the point of running it before your provider does it for you.</p>
+
+<h2>The takeaway</h2>
+<p>Treat model providers the way you treat any external dependency with a 99.9% ceiling: assume failure, detect it from both live traffic and probes, contain it with per-model breakers and retry budgets, and degrade through pre-qualified tiers instead of falling off a cliff. None of these mechanisms is exotic — the work is in the details, and the details only get validated by real traffic and deliberate practice.</p>
+
+  <div class="notice">
+    <p><strong>Want to go deeper?</strong> Runix builds AI infrastructure for production teams — a unified LLM gateway, managed data pipelines, and ready-to-deploy solutions. <a href="../about.html#contact">Talk to us</a> about your use case.</p>
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <a href="../index.html#products">LLM Gateway</a>
+        <a href="../index.html#products">Data Pipelines</a>
+        <a href="../index.html#products">Solutions</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../careers.html">Careers</a>
+        <a href="./">Blog</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../about.html#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Runix. All rights reserved.</span>
+      <span>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

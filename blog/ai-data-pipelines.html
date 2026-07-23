@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Raw to Model-Ready: A Practical Guide to AI Data Pipelines — Runix Blog</title>
+<meta name="description" content="A stage-by-stage engineering guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking, quality scoring, and batch vs incremental architectures.">
+<meta property="og:title" content="From Raw to Model-Ready: A Practical Guide to AI Data Pipelines — Runix Blog">
+<meta property="og:description" content="A stage-by-stage engineering guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking, quality scoring, and batch vs incremental architectures.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../index.html#why">Why Runix</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about.html">Company</a>
+      <a class="nav-cta" href="../about.html#contact">Contact us</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 19, 2026</span><span>·</span><span>8 min read</span></div>
+    <h1 style="margin-top: 14px;">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>Most AI projects do not fail at the model. They fail at the data. The gap between "we have a folder of PDFs and a database dump" and "we have a clean, deduplicated, schema-validated dataset a model can actually use" is where the real engineering happens. This post walks through the stages we consider non-negotiable in a production data pipeline, and the tradeoffs at each one.</p>
+
+<h2>Ingestion: get everything into one boring format</h2>
+<p>The goal of ingestion is not fidelity, it is uniformity. Every downstream stage gets simpler if the output of ingestion is a single normalized record format — typically JSONL with a body field, a source identifier, a content hash, and fetch metadata.</p>
+<p>Encodings are the first trap. Never trust declared charsets; detect them (chardet-style libraries are fine) and transcode everything to UTF-8 at the boundary. A single mojibake document that slips through will surface as a confusing bug three stages later.</p>
+<p>For parsing, the 80/20 rule dominates. For PDFs, a plain text-layer extractor handles the large majority of digitally-born documents; reserve OCR and layout-aware models for the scanned or multi-column minority, because they are one to two orders of magnitude more expensive per page. For HTML, a readability-style main-content extractor gets you most of the way; write custom selectors only for the handful of high-value sites that resist generic extraction. Do not build the perfect universal parser first. Build the cheap one, measure what it fails on, then pay for the hard cases selectively.</p>
+
+<h2>Cleaning and normalization</h2>
+<p>Raw extracted text is full of noise that models will happily learn or hallucinate around. The standard cleaning passes are:</p>
+<ul>
+<li><strong>Boilerplate stripping.</strong> Navigation menus, cookie banners, footers, and repeated headers. Frequency-based detection works well: a line that appears verbatim across many documents from the same source is boilerplate.</li>
+<li><strong>Encoding repair.</strong> Fix double-encoded UTF-8, stray control characters, and Unicode confusables. Tools in the ftfy family repair most of this mechanically.</li>
+<li><strong>Unit and format normalization.</strong> Dates to ISO 8601, currencies to a code plus decimal amount, whitespace collapsed, quotation marks standardized. Decide the canonical form once and enforce it at this stage, not in every consumer.</li>
+</ul>
+<p>Cleaning should be deterministic and idempotent: running the pipeline twice on the same input must produce byte-identical output. That property makes debugging and reprocessing tractable.</p>
+
+<h2>Deduplication: three tiers, three price points</h2>
+<p>Duplicates skew training distributions, inflate storage, and cause retrieval systems to return the same answer five times. There are three tiers, and each is worth deploying at a different scale.</p>
+<p><strong>Exact hashing</strong> (SHA-256 over normalized text) is nearly free and should always be on. It catches re-crawls, mirrored files, and repeated uploads.</p>
+<p><strong>Near-duplicate detection</strong> with MinHash plus locality-sensitive hashing catches documents that differ by a timestamp, a byline, or a template variation. It runs comfortably on millions of documents on a single machine and is worth it as soon as your corpus has more than one source, because cross-source duplication is invisible to exact hashing.</p>
+<p><strong>Semantic deduplication</strong> using embedding similarity catches paraphrases and rewrites. It requires an embedding pass over the corpus plus an approximate nearest-neighbor index, so it costs real money. Deploy it when duplicated meaning, not duplicated text, is the problem — RAG corpora and fine-tuning sets, mainly. For general bulk collection it is usually not worth the spend.</p>
+
+<h2>Structured extraction with LLMs</h2>
+<p>Turning free text into typed fields used to mean brittle regex stacks. LLM-powered extraction has largely replaced them, but it only works in production with guardrails:</p>
+<ol>
+<li>Define a strict JSON Schema for the target record, including enums and required fields.</li>
+<li>Prompt the model with the schema and the source text; use constrained or JSON-mode output where the provider supports it.</li>
+<li>Validate every response against the schema. Treat validation failure as a normal, expected event.</li>
+<li>On invalid JSON, retry with the validator's error message appended to the prompt. One or two retries recover the large majority of failures; after that, route the record to a dead-letter queue for inspection rather than looping forever.</li>
+</ol>
+<p>Log the model, prompt version, and token cost per record. Extraction is usually the most expensive stage per document, and routing it through a gateway that handles retries, fallback models, and cost attribution keeps it operable. This is precisely the workload our <a href="../index.html#products">LLM gateway</a> was built for: the same extraction prompt can run against 20+ models through one OpenAI-compatible API, so you can benchmark a cheap model against a strong one on your own data before committing.</p>
+
+<h2>PII detection and masking</h2>
+<p>PII handling must happen inside the pipeline, before data reaches any external system — including the LLM used for extraction, if that model is third-party. Once a name or card number has left your boundary, no downstream deletion fixes it.</p>
+<p>The workable pattern is layered: deterministic detectors (regexes and checksums for emails, phone numbers, card numbers, national IDs) as a first pass, then an NER model for names and addresses that patterns miss. Replace detected spans with typed placeholders such as <code>[EMAIL_1]</code> rather than deleting them, so references stay consistent within a document and masking is reversible in a controlled vault if the business requires it. Fail closed: if the PII stage errors on a record, the record does not proceed.</p>
+
+<h2>Quality scoring: reject, don't ingest</h2>
+<p>Every record should exit the pipeline with a score covering at least completeness (required fields present, body above a minimum length), consistency (dates parse, numerics in range, language matches expectation), and duplication rate within its batch.</p>
+<p>The operating principle is <strong>reject, don't ingest</strong>. A record below threshold goes to quarantine with a reason code — it does not enter the dataset "for now" with a plan to clean it later. Datasets accumulate; cleanup plans do not. Quarantine with reason codes also gives you a free feedback loop: a spike in one rejection reason points directly at an upstream regression.</p>
+
+<h2>Batch vs incremental architectures</h2>
+<p>Batch pipelines reprocess a full snapshot on a schedule. They are simpler, trivially reproducible, and self-healing — a bug fix plus a rerun repairs everything. Incremental pipelines process only new or changed records, keyed by content hash. They deliver fresh data in minutes and cost far less per run, but you must version every stage, because records processed under different pipeline versions will coexist in the same dataset.</p>
+<p>The pragmatic answer for most teams is both: incremental for freshness, plus a periodic full batch rebuild to flush out drift and apply accumulated fixes. Start batch-only; add the incremental path when latency requirements force it, not before.</p>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Stage</th><th>Goal</th><th>Common tooling approach</th></tr>
+<tr><td>Ingestion</td><td>Uniform UTF-8 records from any source</td><td>Format-specific parsers, charset detection, JSONL output</td></tr>
+<tr><td>Cleaning</td><td>Deterministic, normalized text</td><td>Boilerplate strippers, ftfy-style repair, canonical formats</td></tr>
+<tr><td>Deduplication</td><td>One copy of each idea</td><td>SHA-256, MinHash/LSH, embedding ANN (by scale)</td></tr>
+<tr><td>Extraction</td><td>Typed fields from free text</td><td>LLM + JSON Schema validation + bounded retries</td></tr>
+<tr><td>PII masking</td><td>Nothing sensitive leaves the boundary</td><td>Regex/checksum detectors + NER, typed placeholders</td></tr>
+<tr><td>Quality scoring</td><td>Only good records enter the dataset</td><td>Threshold scores, quarantine with reason codes</td></tr>
+<tr><td>Orchestration</td><td>Fresh and reproducible data</td><td>Incremental runs + periodic full batch rebuilds</td></tr>
+</table>
+<p>There is no magic in any of these stages. What separates working pipelines from science projects is treating each one as a real component — versioned, monitored, and allowed to say no to bad data. If you would rather not build all seven yourself, our managed data pipelines cover this stack end to end; <a href="../about.html#contact">get in touch</a>.</p>
+
+  <div class="notice">
+    <p><strong>Want to go deeper?</strong> Runix builds AI infrastructure for production teams — a unified LLM gateway, managed data pipelines, and ready-to-deploy solutions. <a href="../about.html#contact">Talk to us</a> about your use case.</p>
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <a href="../index.html#products">LLM Gateway</a>
+        <a href="../index.html#products">Data Pipelines</a>
+        <a href="../index.html#products">Solutions</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../careers.html">Careers</a>
+        <a href="./">Blog</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../about.html#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Runix. All rights reserved.</span>
+      <span>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

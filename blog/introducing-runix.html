@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introducing Runix — Runix Blog</title>
+<meta name="description" content="Runix is a US-based AI infrastructure company building an OpenAI-compatible LLM gateway, managed data pipelines, and ready-to-deploy solutions. Here is why we started, and what comes next.">
+<meta property="og:title" content="Introducing Runix — Runix Blog">
+<meta property="og:description" content="Runix is a US-based AI infrastructure company building an OpenAI-compatible LLM gateway, managed data pipelines, and ready-to-deploy solutions. Here is why we started, and what comes next.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../index.html#why">Why Runix</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about.html">Company</a>
+      <a class="nav-cta" href="../about.html#contact">Contact us</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Announcement</span><span>July 8, 2026</span><span>·</span><span>4 min read</span></div>
+    <h1 style="margin-top: 14px;">Introducing Runix</h1>
+  </div>
+</div>
+
+<article class="article">
+  <p>Today we are launching Runix, a US-based AI infrastructure company incorporated in Wyoming. We build the plumbing that sits between your application and the model providers: an OpenAI-compatible LLM gateway, managed data pipelines, and ready-to-deploy solutions for common AI workloads. This post covers why we exist, what we are building, and how we intend to run the company.</p>
+
+  <h2>Why we started Runix</h2>
+  <p>Getting an LLM demo working takes an afternoon. Getting that same feature to production quality takes months, and almost none of that time is spent on prompts. It is spent on everything after the demo.</p>
+  <p>The failure modes are familiar to anyone who has shipped one of these systems. A provider has a partial outage and your feature goes down with it, because there is no fallback path. Finance asks what the AI feature costs per customer, and nobody can answer, because token spend is scattered across three provider dashboards and none of them map to your tenants. A model upgrade silently changes output behavior and the first person to notice is a user. The retrieval corpus drifts out of date because the ingestion job was a script someone wrote once and nobody owns.</p>
+  <p>None of these are model problems. They are infrastructure problems: reliability, cost visibility, and data quality. Every team we have worked with ends up rebuilding the same layer to handle them — retries, failover, routing, usage metering, request logging, evaluation harnesses, ingestion pipelines. That layer is undifferentiated for the product teams building it, but it has to be done well. That is the layer Runix builds.</p>
+
+  <h2>What we are building</h2>
+
+  <h3>LLM Gateway</h3>
+  <p>A single OpenAI-compatible API in front of 20+ models across providers. You point your existing SDK at a new base URL, and you get automatic retries, provider failover, model routing, rate-limit handling, and per-key usage and cost tracking. When a provider degrades, the gateway routes around it. When you want to trial a new model, you change one string, not your integration. We run the gateway against a 99.9% uptime target, and a public status page is on the roadmap.</p>
+
+  <h3>Managed Data Pipelines</h3>
+  <p>Most production AI quality problems trace back to the data feeding the system, not the model. Our managed pipelines handle ingestion, cleaning, chunking, embedding, and refresh scheduling for the corpora behind retrieval and fine-tuning workloads. The pipeline is monitored and versioned, so when quality shifts you can see what changed in the data, not just guess.</p>
+
+  <h3>Ready-to-deploy solutions</h3>
+  <p>For common patterns — document Q&amp;A, support assistants, structured extraction — we ship reference deployments built on the gateway and pipelines. These are starting points with the operational pieces already wired in: logging, evaluation hooks, cost controls. You own and modify the result rather than adopting a black box.</p>
+
+  <h2>The principles we run on</h2>
+  <ul>
+    <li><strong>Reliability is a feature.</strong> Uptime, failover behavior, and latency are product surface, not ops details. We design for provider failure as the normal case, and we would rather be boring and available than clever and flaky.</li>
+    <li><strong>Transparent costs.</strong> You should be able to answer "what did this request cost, and which key spent it" without exporting CSVs from three dashboards. Metering is built into the gateway, and our own pricing has no surprise dimensions.</li>
+    <li><strong>Your data is yours.</strong> Request and response payloads passing through Runix are never used to train models — ours or anyone else's. Logging is under your control, retention is configurable, and the default is minimal.</li>
+  </ul>
+
+  <h2>What is next</h2>
+  <p>The gateway is entering early access now, and we are onboarding teams in small batches so we can watch real traffic closely before opening it up. If you are running LLM workloads in production, or about to, we would like to hear what breaks for you — write to <a href="../about.html#contact">us through the contact page</a> or email contact@runix.io.</p>
+  <p>This blog is where we will publish what we learn operating this infrastructure: failover design, cost accounting for token-based workloads, evaluation in CI, and post-incident write-ups when we earn them. No launch-week hype, just engineering notes. More soon.</p>
+
+  <div class="notice">
+    <p><strong>Want to go deeper?</strong> Runix builds AI infrastructure for production teams — a unified LLM gateway, managed data pipelines, and ready-to-deploy solutions. <a href="../about.html#contact">Talk to us</a> about your use case.</p>
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <a href="../index.html#products">LLM Gateway</a>
+        <a href="../index.html#products">Data Pipelines</a>
+        <a href="../index.html#products">Solutions</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../careers.html">Careers</a>
+        <a href="./">Blog</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../about.html#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Runix. All rights reserved.</span>
+      <span>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -344,6 +344,26 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .stepc h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; }
 .stepc p { color: var(--ink-2); font-size: 14px; }
 
+.pillars.two { grid-template-columns: repeat(2, 1fr); }
+.pillar .lead-line { color: var(--ink-2); font-size: 15px; margin-top: 4px; }
+
+/* provider chips */
+.prov-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+.prov-row span {
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  background: var(--bg-alt); border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px;
+}
+.prov-row .best { color: var(--indigo); border-color: rgba(79,70,229,0.25); background: rgba(79,70,229,0.06); }
+
+/* compliance callout / contracts */
+.callout {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: rgba(79,70,229,0.05); border: 1px solid rgba(79,70,229,0.16);
+  border-radius: var(--radius); padding: 18px 22px; margin-top: 22px; color: var(--ink-2); font-size: 14.5px;
+}
+.callout svg { width: 22px; height: 22px; stroke: var(--indigo); flex: none; margin-top: 1px; }
+
 @media (max-width: 920px) {
-  .pillars, .paths, .steps { grid-template-columns: 1fr; }
+  .pillars, .pillars.two, .paths, .steps { grid-template-columns: 1fr; }
 }

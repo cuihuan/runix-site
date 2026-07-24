@@ -344,6 +344,20 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .stepc h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; }
 .stepc p { color: var(--ink-2); font-size: 14px; }
 
+/* accessibility: skip link + visible focus */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 200;
+  background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 0 0 10px 0; font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+a:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 2px solid var(--indigo); outline-offset: 2px; border-radius: 6px;
+}
+.footer-grid-4 { grid-template-columns: 2fr 1fr 1fr 1.2fr; }
+.card-meta { margin-top: 14px; color: var(--ink-3); font-size: 12.5px; }
+.card .read-more { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--indigo); }
+.card .read-more:hover { text-decoration: underline; }
+
 .pillars.two { grid-template-columns: repeat(2, 1fr); }
 .pillar .lead-line { color: var(--ink-2); font-size: 15px; margin-top: 4px; }
 
@@ -366,4 +380,8 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 
 @media (max-width: 920px) {
   .pillars, .pillars.two, .paths, .steps { grid-template-columns: 1fr; }
+  .footer-grid-4 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .footer-grid-4 { grid-template-columns: 1fr; }
 }

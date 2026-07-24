@@ -4,26 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pricing — Runix</title>
-<meta name="description" content="Runix pricing: simple usage-based billing, subscriptions for production teams, and custom enterprise agreements. No hidden fees.">
+<meta name="description" content="How Runix pricing works: free evaluation credits, usage-based billing, optional subscriptions, prepaid balance, and enterprise agreements. Talk to us for current rates.">
+<link rel="canonical" href="https://runixcloud.io/pricing.html">
 <meta property="og:title" content="Pricing — Runix">
-<meta property="og:description" content="Runix pricing: simple usage-based billing, subscriptions for production teams, and custom enterprise agreements. No hidden fees.">
+<meta property="og:description" content="Free evaluation credits, usage-based billing, subscriptions, prepaid balance, and enterprise agreements.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/pricing.html">
 <meta property="og:site_name" content="Runix">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<script src="assets/site-config.js" defer></script>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
-  <nav class="nav">
-    <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-        <div class="nav-links">
-      <a href="index.html#gateway">Gateway</a>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
+    <div class="nav-links">
+      <a href="index.html#products">Products</a>
       <a href="pricing.html" class="active">Pricing</a>
+      <a href="security.html">Security</a>
       <a href="about.html">Company</a>
       <a href="blog/">Blog</a>
       <a class="nav-cta" href="about.html#contact">Get started</a>
@@ -34,119 +39,153 @@
 <div class="page-hero">
   <div class="container">
     <span class="badge">Pricing</span>
-    <h1>Simple, honest pricing</h1>
-    <p>Pay for what you use — or for outcomes. Every charge is itemized, committed performance is written into your SLA, and unused prepaid credits are refundable.</p>
+    <h1>Straightforward, usage-based pricing</h1>
+    <p>Start with free evaluation credits, then pay for what you use. Subscriptions, prepaid balance, and enterprise agreements are available. Every charge is itemized.</p>
   </div>
 </div>
 
+<main id="main">
 <section class="section">
   <div class="container">
     <div class="plans">
       <div class="plan">
-        <h3>Starter</h3>
-        <div class="price">$0 <small>to begin</small></div>
-        <div class="for">For evaluation and small projects</div>
+        <h3>Evaluation</h3>
+        <div class="price">Free credits</div>
+        <div class="for">Try the gateway before you pay</div>
         <ul>
+          <li>Free evaluation credits on request</li>
           <li>Full gateway functionality</li>
-          <li>Usage-based billing, no minimums</li>
-          <li>Free evaluation credits</li>
+          <li>No card required to start evaluating</li>
           <li>Community &amp; email support</li>
         </ul>
-        <a class="btn btn-ghost" href="about.html#contact">Get started</a>
+        <a class="btn btn-ghost btn-block" href="about.html#contact">Get started</a>
       </div>
       <div class="plan featured">
-        <span class="flag">Most popular</span>
-        <h3>Pro</h3>
-        <div class="price">Usage-based <small>+ optional subscription</small></div>
+        <span class="flag">Most common</span>
+        <h3>Pay as you go</h3>
+        <div class="price">Usage-based</div>
         <div class="for">For products running in production</div>
         <ul>
-          <li>Everything in Starter</li>
-          <li>Committed RPM / QPS &amp; cache-rate SLA</li>
-          <li>Priority routing and higher rate limits</li>
-          <li>Usage analytics, budgets, and alerts</li>
-          <li>Outcome-based billing available</li>
-          <li>99.9% uptime target · priority support</li>
+          <li>Pay only for what you use</li>
+          <li>Optional prepaid balance</li>
+          <li>Per-key limits and usage tracking</li>
+          <li>Itemized statements</li>
+          <li>Priority support available</li>
         </ul>
-        <a class="btn btn-grad" href="about.html#contact">Get a quote</a>
+        <a class="btn btn-grad btn-block" href="about.html#contact">Get started</a>
       </div>
       <div class="plan">
         <h3>Enterprise</h3>
-        <div class="price">Custom <small>annual agreement</small></div>
-        <div class="for">For teams with compliance needs</div>
+        <div class="price">Custom</div>
+        <div class="for">For teams with procurement needs</div>
         <ul>
-          <li>Private or dedicated deployment</li>
+          <li>Volume &amp; committed-use agreements</li>
           <li>Custom data pipelines and solutions</li>
-          <li>Contractual SLA and support</li>
-          <li>Invoiced billing, wire transfer accepted</li>
+          <li>Formal invoicing &amp; procurement support</li>
+          <li>Enterprise agreements and DPAs on request</li>
         </ul>
-        <a class="btn btn-ghost" href="about.html#contact">Contact sales</a>
+        <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Enterprise%20pricing">Talk to sales</a>
       </div>
     </div>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">Current per-model rates depend on the models and volume you use. <a href="mailto:sales@runixcloud.io?subject=Pricing" style="color:var(--indigo);font-weight:600;">Ask us for a quote</a> — we'll recommend the most cost-effective setup for your workload.</p>
+  </div>
+</section>
 
-    <div class="section" style="padding-bottom: 0;">
-      <div class="section-head">
-        <h2>Billing, plainly</h2>
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>How billing works</h2>
+      <p>The details that matter — spelled out, not buried.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Billing models</h3>
+        <p><strong>Usage-based:</strong> billed on measured usage (e.g. tokens/requests) for the models you call. <strong>Subscription:</strong> optional fixed monthly plans. <strong>Prepaid balance:</strong> add credits up front and draw down as you use. <strong>Enterprise/custom:</strong> by agreement.</p>
       </div>
-      <div class="grid cols-3">
-        <div class="card">
-          <h3>Payment methods</h3>
-          <p>We accept major credit and debit cards and, for enterprise agreements, bank wire transfers. Charges appear immediately in your usage dashboard.</p>
-        </div>
-        <div class="card">
-          <h3>Invoices &amp; receipts</h3>
-          <p>Every payment comes with an itemized receipt. Enterprise customers receive formal invoices on their own billing cycle.</p>
-        </div>
-        <div class="card">
-          <h3>Refunds</h3>
-          <p>Unused prepaid credits are refundable to the original payment method within the service period. See our <a href="terms.html">Terms of Service</a> for details.</p>
-        </div>
+      <div class="card">
+        <h3>Currency &amp; tax</h3>
+        <p>Billing is in <span data-cfg="defaultCurrency">USD</span>. Applicable taxes (e.g. sales tax/VAT) are calculated at checkout or on your invoice where required. There are no hidden fees beyond what your statement shows.</p>
+      </div>
+      <div class="card">
+        <h3>Prepaid credits</h3>
+        <p>Prepaid balance is drawn down as you use the Services during your <strong>service period</strong> (the term covered by your plan or agreement). Unused balance is refundable per the <a href="refund.html">Refund Policy</a>; consumed usage is not.</p>
+      </div>
+      <div class="card">
+        <h3>Renewal &amp; auto-recharge</h3>
+        <p>Subscriptions renew each period unless cancelled. Optional auto-recharge (topping up a prepaid balance) is off unless you turn it on, and can be turned off at any time.</p>
+      </div>
+      <div class="card">
+        <h3>Overage</h3>
+        <p>If you exceed a plan limit, additional usage is billed at your usage-based rate, or paused, depending on your configuration. We'll make the behavior clear before you rely on it.</p>
+      </div>
+      <div class="card">
+        <h3>Cancel &amp; refunds</h3>
+        <p>Cancel anytime — access continues to the end of the paid period. See the <a href="cancellation.html">Cancellation Policy</a> and <a href="refund.html">Refund Policy</a> for exactly what happens to access, renewals, and balance.</p>
+      </div>
+      <div class="card">
+        <h3>Invoices &amp; receipts</h3>
+        <p>Every payment comes with an itemized receipt. Enterprise customers can receive formal invoices on their billing cycle, suitable for procurement and accounting.</p>
+      </div>
+      <div class="card">
+        <h3>Payment options</h3>
+        <p>We're onboarding payment processing now. When self-serve checkout is live it will use a hosted, PCI-compliant checkout; today, enterprise billing (card or bank transfer) is arranged with our team. <a href="mailto:sales@runixcloud.io?subject=Billing%20setup">Contact us</a> to set up billing.</p>
+      </div>
+      <div class="card">
+        <h3>Questions</h3>
+        <p>Not sure which model fits? Tell us your expected volume and use case and we'll recommend the cheapest way to run it. <a href="mailto:sales@runixcloud.io?subject=Pricing">Get a quote</a>.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" style="padding-top: 0;">
+<section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>Not sure which plan fits?</h2>
-      <p>Tell us your expected volume and use case — we will recommend the cheapest way to run it.</p>
-      <a class="btn btn-grad" href="about.html#contact">Talk to us</a>
+      <h2>Get a quote for your workload</h2>
+      <p>Share your expected volume and the models you want — we'll come back with a clear plan and pricing.</p>
+      <a class="btn btn-grad" href="about.html#contact">Get started</a>
     </div>
   </div>
 </section>
+</main>
 
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
-        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: a unified gateway, managed data pipelines, and ready-to-deploy solutions.</p>
       </div>
       <div>
-        <h4>Products</h4>
-        <a href="index.html#products">LLM Gateway</a>
-        <a href="index.html#products">Data Pipelines</a>
-        <a href="index.html#products">Solutions</a>
+        <h4>Product</h4>
+        <a href="index.html#gateway">AI Gateway</a>
+        <a href="index.html#data-pipelines">Data Pipelines</a>
+        <a href="index.html#solutions">AI Solutions</a>
+        <a href="pricing.html">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
         <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="security.html">Security</a>
         <a href="careers.html">Careers</a>
         <a href="blog/">Blog</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="about.html#contact">Contact</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="cancellation.html">Cancellation Policy</a>
+        <a href="acceptable-use.html">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Runix AI Inc. All rights reserved.</span>
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
       </span>
     </div>
   </div>

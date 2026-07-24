@@ -3,27 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Runix — The Compliant, Official-Grade AI Gateway</title>
-<meta name="description" content="Runix is an enterprise AI Gateway built on two principles: full compliance (DPA and enterprise contracts, zero data retention) and official-grade quality (only first-party provider APIs — never resold or gray-market keys).">
-<meta property="og:title" content="Runix — The Compliant, Official-Grade AI Gateway">
-<meta property="og:description" content="Fully compliant and contract-ready, connecting only to official first-party model providers. One API for every model.">
+<title>Runix — AI Infrastructure for Teams Building with LLMs</title>
+<meta name="description" content="Runix is AI infrastructure for engineering teams: a unified, OpenAI-compatible gateway across many models, managed data pipelines, and ready-to-deploy AI solutions. Usage-based pricing, enterprise agreements on request.">
+<link rel="canonical" href="https://runixcloud.io/">
+<meta property="og:title" content="Runix — AI Infrastructure for Teams Building with LLMs">
+<meta property="og:description" content="A unified API across many models, managed data pipelines, and ready-to-deploy AI solutions. Build on infrastructure you don't have to babysit.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/">
 <meta property="og:site_name" content="Runix">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<script src="assets/site-config.js" defer></script>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
-  <nav class="nav">
-    <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
     <div class="nav-links">
-      <a href="index.html#gateway">Gateway</a>
+      <a href="index.html#products">Products</a>
       <a href="pricing.html">Pricing</a>
+      <a href="security.html">Security</a>
       <a href="about.html">Company</a>
       <a href="blog/">Blog</a>
       <a class="nav-cta" href="about.html#contact">Get started</a>
@@ -31,193 +36,151 @@
   </nav>
 </header>
 
+<main id="main">
 <section class="hero">
   <div class="container">
-    <span class="badge">Enterprise AI Gateway</span>
-    <h1>The AI gateway<br>enterprises can <span class="grad-text">sign off on</span>.</h1>
-    <p class="sub">Runix routes to every major model through one API — connecting only to official, first-party providers, and built to pass security, procurement, and legal review. DPA and enterprise contracts included.</p>
+    <span class="badge">AI Infrastructure</span>
+    <h1>The infrastructure layer for<br>building with <span class="grad-text">large language models</span>.</h1>
+    <p class="sub">Runix gives engineering teams one API across many models, managed data pipelines, and ready-to-deploy solutions — so you can ship AI products on infrastructure you don't have to babysit.</p>
     <div class="actions">
       <a class="btn btn-primary" href="about.html#contact">Get started</a>
-      <a class="btn btn-ghost" href="mailto:contact@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
+      <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
     </div>
 
     <div class="code-card">
       <div class="bar">
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span>one API, official providers only</span>
+        <span>one API, many models</span>
       </div>
       <pre><span class="c"># Point your existing OpenAI-compatible client at Runix</span>
 curl https://api.runixcloud.io/v1/chat/completions \
   -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
   -d <span class="s">'{
-    "model": "claude-fable-5",   <span class="c"># official first-party routing</span>
+    "model": "auto",   <span class="c"># or pin a specific model id (example)</span>
     "messages": [{"role": "user", "content": "Hello"}]
   }'</span></pre>
     </div>
   </div>
 </section>
 
-<div class="strip">
+<div class="strip" aria-label="At a glance">
   <div class="row">
-    <div class="cell"><b>Official</b><span>first-party providers only</span></div>
-    <div class="cell"><b>Zero</b><span>data retention</span></div>
-    <div class="cell"><b>DPA</b><span>&amp; enterprise contracts</span></div>
-    <div class="cell"><b>20+</b><span>models, one API</span></div>
+    <div class="cell"><b>One API</b><span>across many models</span></div>
+    <div class="cell"><b>OpenAI</b><span>-compatible endpoint</span></div>
+    <div class="cell"><b>Usage-based</b><span>pay for what you use</span></div>
+    <div class="cell"><b>US company</b><span>Runix AI Inc, Wyoming</span></div>
   </div>
 </div>
 
-<section class="section" id="gateway">
+<section class="section" id="products">
   <div class="container">
     <div class="section-head center">
-      <span class="badge">Runix AI Gateway</span>
-      <h2>Built compliant. Sourced official.</h2>
-      <p>Our AI Gateway is the reliable layer between your application and every model. We refuse to compromise on the two things enterprises actually get blocked on — compliance and quality.</p>
+      <h2>One platform, three ways to build</h2>
+      <p>Runix is an AI infrastructure platform — not a grab-bag of tools. Start with the gateway, add pipelines and solutions as you grow.</p>
     </div>
-    <div class="pillars two">
-      <div class="pillar">
-        <div class="k">01 · Compliance</div>
-        <h3>The most compliant way to use AI</h3>
-        <p class="lead-line">Complete, fully compliant, and ready for a real contract — not a hobby project.</p>
+    <div class="grid cols-3">
+      <div class="card" id="gateway">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M12 4l8 8-8 8"/></svg></div>
+        <h3>AI Gateway</h3>
+        <p><strong>For engineering teams</strong> that call LLMs in production and want one integration instead of many.</p>
         <ul>
-          <li><b>Sign proper contracts</b> — DPA, MSA, and enterprise SLAs, not just click-through terms</li>
-          <li><b>Zero data retention</b> — prompts and outputs are never stored</li>
-          <li><b>Never used for training</b> — your data serves your requests, nothing else</li>
-          <li><b>Encrypted in transit</b>, PII masking on demand, access controls and audit logs</li>
-          <li><b>Registered US entity</b> (Runix AI Inc) with formal invoicing and procurement support</li>
+          <li>One OpenAI-compatible API across models</li>
+          <li>Routing, retries, and failover between providers</li>
+          <li>Per-key limits and token-level usage tracking</li>
         </ul>
+        <p class="card-meta"><span>Delivery: hosted API</span> · <span>Pricing: usage-based</span></p>
+        <a class="read-more" href="about.html#contact">Get started →</a>
       </div>
-      <div class="pillar">
-        <div class="k">02 · Quality</div>
-        <h3>Official-grade quality, end to end</h3>
-        <p class="lead-line">We connect only to official, first-party provider APIs — never resold or gray-market keys.</p>
+      <div class="card" id="data-pipelines">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+        <h3>Data Pipelines</h3>
+        <p><strong>For teams preparing data</strong> for AI — turning raw, messy inputs into clean, model-ready assets.</p>
         <ul>
-          <li><b>Official sources only</b> — direct first-party endpoints, no reseller middlemen</li>
-          <li><b>Full model fidelity</b> — official rate limits, no throttling or silent downgrades</li>
-          <li><b>Provider guarantees pass through</b> — the upstream's data &amp; compliance terms reach you intact</li>
-          <li><b>Low latency &amp; 99.9% uptime</b> with automatic failover across official endpoints</li>
-          <li><b>Consistent, auditable results</b> you can trust in production</li>
+          <li>Ingestion, cleaning, and deduplication</li>
+          <li>LLM-assisted structured extraction</li>
+          <li>Quality reports on every delivery</li>
         </ul>
-        <div class="prov-row">
-          <span class="best">OpenAI</span>
-          <span class="best">Anthropic</span>
-          <span class="best">Google Vertex AI</span>
-          <span class="best">AWS Bedrock</span>
-          <span class="best">Azure OpenAI</span>
-        </div>
+        <p class="card-meta"><span>Delivery: managed service</span> · <span>Pricing: per project / volume</span></p>
+        <a class="read-more" href="mailto:sales@runixcloud.io?subject=Data%20Pipelines">Talk to sales →</a>
+      </div>
+      <div class="card" id="solutions">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></div>
+        <h3>AI Solutions</h3>
+        <p><strong>For teams that want outcomes</strong>, not just APIs — application templates and custom work, delivered.</p>
+        <ul>
+          <li>Proven application templates</li>
+          <li>Custom development to your spec</li>
+          <li>Private deployment or source delivery</li>
+        </ul>
+        <p class="card-meta"><span>Delivery: project</span> · <span>Pricing: contract / SOW</span></p>
+        <a class="read-more" href="mailto:sales@runixcloud.io?subject=AI%20Solutions">Talk to sales →</a>
       </div>
     </div>
-    <div class="callout">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-      <span><b>Why official-only matters:</b> resold and gray-market API keys can be rate-limited, revoked, logged by third parties, or silently swapped to weaker models. Official sourcing is what makes both our compliance guarantees and our quality guarantees possible.</span>
-    </div>
+    <p class="model-note" style="text-align:center;margin-top:26px;color:var(--ink-3);font-size:14px;">More building blocks — developer tooling, agent infrastructure, observability, and evaluations — are on our roadmap. <a href="mailto:sales@runixcloud.io?subject=Roadmap" style="color:var(--indigo);font-weight:600;">Tell us what you need next.</a></p>
   </div>
 </section>
 
 <section class="section alt">
-  <div class="container">
-    <div class="section-head center">
-      <h2>Contracts you can actually sign</h2>
-      <p>Everything your security, legal, and procurement teams ask for — ready before you go to production.</p>
-    </div>
-    <div class="grid cols-3">
-      <div class="card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
-        <h3>DPA &amp; MSA</h3>
-        <p>Sign a Data Processing Agreement and Master Service Agreement covering data handling, sub-processors, and responsibilities.</p>
-      </div>
-      <div class="card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 3 4-1-1 4 3 3-3 3 1 4-4-1-3 3-3-3-4 1 1-4-3-3 3-3-1-4 4 1 3-3z"/></svg></div>
-        <h3>Enterprise SLA</h3>
-        <p>Contractual uptime and support commitments, with named contacts and defined response times for production issues.</p>
-      </div>
-      <div class="card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5"/></svg></div>
-        <h3>Invoicing &amp; procurement</h3>
-        <p>Formal invoices, wire transfer, and a registered US entity — so finance and vendor onboarding go through cleanly.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
   <div class="container">
     <div class="section-head center">
       <h2>Live in minutes, not weeks</h2>
       <p>Runix speaks the OpenAI API. If your code already calls an LLM, switching is a base-URL change.</p>
     </div>
     <div class="steps">
-      <div class="stepc"><div class="n">1</div><h3>Point your client</h3><p>Change the base URL to <code>api.runixcloud.io</code> and drop in your Runix key. The SDKs you already use keep working.</p></div>
-      <div class="stepc"><div class="n">2</div><h3>Pick a model — or auto</h3><p>Call any of 20+ officially-sourced models by name, or let routing choose by latency and availability.</p></div>
-      <div class="stepc"><div class="n">3</div><h3>Ship with guardrails</h3><p>Failover, rate limits, budgets, and request-level logs are on from your very first call.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">1</div><h3>Point your client</h3><p>Change the base URL to <code>api.runixcloud.io</code> and drop in your Runix key. The SDKs you already use keep working.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">2</div><h3>Choose a model</h3><p>Call a model by id, or let routing pick based on availability and your configuration.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">3</div><h3>Ship with guardrails</h3><p>Retries, failover, per-key limits, and usage tracking are part of the gateway from your first call.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section alt">
+<section class="section" id="data">
   <div class="container">
     <div class="section-head center">
-      <h2>Beyond the Gateway</h2>
-      <p>The Gateway is our first product. Runix is building a full stack of AI infrastructure — with more on the way.</p>
+      <h2>How we handle your data</h2>
+      <p>Straight answers, no marketing. For formal terms, see our <a href="privacy.html">Privacy Policy</a> and <a href="security.html">Security</a> page, or ask us for details.</p>
     </div>
     <div class="grid cols-3">
       <div class="card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
-        <h3>Data Pipelines</h3>
-        <p>Turn raw, messy data into AI-ready assets — cleaning, deduplication, structured extraction, and PII masking as a managed pipeline.</p>
-        <ul>
-          <li>Batch and incremental processing</li>
-          <li>LLM-powered structured extraction</li>
-          <li>Quality reports on every delivery</li>
-        </ul>
+        <h3>You own your content</h3>
+        <p>Prompts and outputs you send through the gateway are yours. We process them to serve your request — <strong>we do not use your content to train models</strong>, and we don't sell it.</p>
       </div>
       <div class="card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></div>
-        <h3>Solutions &amp; Custom Work</h3>
-        <p>Proven application templates — monitoring, support automation, report generation — deployed for your stack, or built to order.</p>
-        <ul>
-          <li>Production-ready templates</li>
-          <li>Private deployment available</li>
-          <li>Source code delivery on request</li>
-        </ul>
+        <h3>Content vs. metadata</h3>
+        <p>We keep operational metadata — usage counts, latency, and error codes — to run billing, reliability, and support. That's distinct from prompt/response content; see the Privacy Policy for what's kept and for how long.</p>
       </div>
       <div class="card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/></svg></div>
-        <h3>More on the way</h3>
-        <p>Observability, evaluations, and agent infrastructure are in active development. Building something specific?</p>
-        <ul>
-          <li>Tell us what you need next</li>
-          <li>Early access for design partners</li>
-          <li>Shaped by real production use</li>
-        </ul>
+        <h3>Enterprise &amp; compliance</h3>
+        <p>Need a DPA, a security review, or specific data-handling terms? <a href="mailto:sales@runixcloud.io?subject=Compliance">Talk to sales</a> — we'll walk through what we can support for your use case.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="start">
+<section class="section alt" id="start">
   <div class="container">
     <div class="section-head center">
       <h2>Start with Runix</h2>
-      <p>However you like to begin — self-serve, a conversation, or hands-on help. A real person replies within one business day.</p>
+      <p>However you like to begin — a conversation, a sales chat, or support. A real person replies within one business day.</p>
     </div>
     <div class="paths">
       <div class="path">
-        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
         <h3>Get started</h3>
-        <p>Create an account, add credits, and make your first call. Free evaluation credits to try it.</p>
+        <p>Tell us what you're building and we'll get you set up with access and keys.</p>
         <a class="btn btn-primary" href="about.html#contact">Get started</a>
       </div>
       <div class="path">
-        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <h3>Talk to sales</h3>
-        <p>Volume pricing, committed SLAs, DPAs, and custom terms for teams and enterprises.</p>
-        <a class="btn btn-ghost" href="mailto:contact@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
+        <p>Volume pricing, enterprise agreements, DPAs, and custom terms for teams.</p>
+        <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
       </div>
       <div class="path">
-        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         <h3>Support</h3>
-        <p>Questions, integration help, or an issue? Reach our team and we'll get you unblocked fast.</p>
-        <a class="btn btn-ghost" href="mailto:contact@runixcloud.io?subject=Runix%20support">Contact support</a>
+        <p>Questions, integration help, or an issue? Reach our team and we'll get you unblocked.</p>
+        <a class="btn btn-ghost" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a>
       </div>
     </div>
   </div>
@@ -226,44 +189,51 @@ curl https://api.runixcloud.io/v1/chat/completions \
 <section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>AI infrastructure your legal team will approve</h2>
-      <p>Tell us your use case and expected volume — we'll come back with contracts, official sourcing, and a plan to run it.</p>
+      <h2>Build on infrastructure you don't have to babysit</h2>
+      <p>Tell us your use case and expected volume — we'll come back with a concrete plan and pricing.</p>
       <a class="btn btn-grad" href="about.html#contact">Get started</a>
     </div>
   </div>
 </section>
+</main>
 
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
-        <p class="desc">The compliant, official-grade AI Gateway: one API for every model, first-party sources only, contract-ready for enterprise.</p>
+        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: a unified gateway, managed data pipelines, and ready-to-deploy solutions.</p>
       </div>
       <div>
         <h4>Product</h4>
         <a href="index.html#gateway">AI Gateway</a>
-        <a href="index.html#gateway">Beyond the Gateway</a>
+        <a href="index.html#data-pipelines">Data Pipelines</a>
+        <a href="index.html#solutions">AI Solutions</a>
         <a href="pricing.html">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
         <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="security.html">Security</a>
         <a href="careers.html">Careers</a>
         <a href="blog/">Blog</a>
-        <a href="about.html#contact">Contact</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="cancellation.html">Cancellation Policy</a>
+        <a href="acceptable-use.html">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Runix AI Inc. All rights reserved.</span>
+      <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
       </span>
     </div>
   </div>

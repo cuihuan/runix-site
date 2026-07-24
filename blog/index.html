@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
 </head>
 <body>
 
@@ -23,11 +24,11 @@
     <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
     <div class="nav-links">
       <a href="../index.html#products">Products</a>
-      <a href="../index.html#why">Why Runix</a>
       <a href="../pricing.html">Pricing</a>
-      <a href="./" class="active">Blog</a>
+      <a href="../security.html">Security</a>
       <a href="../about.html">Company</a>
-      <a class="nav-cta" href="../about.html#contact">Contact us</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Get started</a>
     </div>
   </nav>
 </header>
@@ -79,36 +80,41 @@
 
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
-        <p class="desc">AI infrastructure for modern teams: unified LLM gateway, data pipelines, and ready-to-deploy solutions.</p>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: a unified gateway, managed data pipelines, and ready-to-deploy solutions.</p>
       </div>
       <div>
-        <h4>Products</h4>
-        <a href="../index.html#products">LLM Gateway</a>
-        <a href="../index.html#products">Data Pipelines</a>
-        <a href="../index.html#products">Solutions</a>
+        <h4>Product</h4>
+        <a href="../index.html#gateway">AI Gateway</a>
+        <a href="../index.html#data-pipelines">Data Pipelines</a>
+        <a href="../index.html#solutions">AI Solutions</a>
+        <a href="../pricing.html">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
         <a href="../about.html">About</a>
-        <a href="../careers.html">Careers</a>
-        <a href="./">Blog</a>
-        <a href="../pricing.html">Pricing</a>
         <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../privacy.html">Privacy Policy</a>
         <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Runix AI Inc. All rights reserved.</span>
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../privacy.html">Privacy</a>
         <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
       </span>
     </div>
   </div>

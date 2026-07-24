@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security — Runix</title>
+<meta name="description" content="How Runix approaches security and data handling: encryption in transit, access control, secret management, hosted payment processing, and responsible disclosure.">
+<link rel="canonical" href="https://runixcloud.io/security.html">
+<meta property="og:title" content="Security — Runix">
+<meta property="og:description" content="How Runix approaches security and data handling, in plain language.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/security.html">
+<meta property="og:site_name" content="Runix">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site-config.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
+    <div class="nav-links">
+      <a href="index.html#products">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="security.html" class="active">Security</a>
+      <a href="about.html">Company</a>
+      <a href="blog/">Blog</a>
+      <a class="nav-cta" href="about.html#contact">Get started</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Security</span>
+    <h1>Security &amp; data handling</h1>
+    <p>In plain language: how we protect data, what we do and don't store, and how to reach us about security.</p>
+  </div>
+</div>
+
+<main id="main">
+<article class="article">
+  <p class="updated">Last updated: July 24, 2026</p>
+
+  <div class="notice">
+    <p>We describe here how we approach security today. We only state what we actually do — where we haven't completed a formal certification or capability yet, we say so rather than imply otherwise. For specifics about your use case, <a data-cfg-mail="salesEmail" href="mailto:sales@runixcloud.io?subject=Security%20review">contact us</a>.</p>
+  </div>
+
+  <h2>Data handling</h2>
+  <ul>
+    <li><strong>Your content is yours.</strong> Prompts and outputs you send through the gateway are processed to serve your request. <strong>We do not use your content to train models</strong>, and we do not sell it.</li>
+    <li><strong>Content vs. operational metadata.</strong> Separate from prompt/response content, we keep operational metadata — request counts, token usage, latency, and error codes — to run billing, reliability, and support. What we retain and for how long is described in the <a href="privacy.html">Privacy Policy</a>.</li>
+    <li><strong>Encryption in transit.</strong> Traffic to our website and API is served over HTTPS/TLS.</li>
+    <li><strong>Access control.</strong> Access to systems and data is limited to authorized personnel on a need-to-know basis; API keys are yours to rotate and revoke.</li>
+  </ul>
+
+  <h2>Payments &amp; PCI</h2>
+  <p>When paid checkout is available, card payments will be handled by established third-party payment processors using hosted checkout. Runix does <strong>not</strong> store full card numbers on its servers, which keeps card data out of our environment and reduces PCI scope.</p>
+
+  <h2>Application &amp; secrets</h2>
+  <ul>
+    <li>Secrets and provider credentials are kept in server-side configuration, never exposed to the browser or embedded in client code;</li>
+    <li>We follow least-privilege principles for internal access to keys and infrastructure.</li>
+  </ul>
+
+  <h2>Compliance status</h2>
+  <p>We want to be precise here rather than impressive: Runix has <strong>not</strong> yet completed formal third-party certifications such as SOC 2 or ISO 27001, and we do not claim them. If your procurement process requires specific attestations, DPAs, or a security questionnaire, <a data-cfg-mail="salesEmail" href="mailto:sales@runixcloud.io?subject=Security%20questionnaire">talk to us</a> and we'll tell you honestly what we can support today and what's on the roadmap.</p>
+
+  <h2>Responsible disclosure</h2>
+  <p>If you believe you've found a security vulnerability, please email <a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io?subject=Security%20disclosure">support@runixcloud.io</a> with the details and steps to reproduce. Please give us reasonable time to investigate and remediate before any public disclosure. We appreciate good-faith research and will not pursue action against researchers who act responsibly.</p>
+
+  <h2>Contact</h2>
+  <p>Security questions: <a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io?subject=Security">support@runixcloud.io</a></p>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: a unified gateway, managed data pipelines, and ready-to-deploy solutions.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="index.html#gateway">AI Gateway</a>
+        <a href="index.html#data-pipelines">Data Pipelines</a>
+        <a href="index.html#solutions">AI Solutions</a>
+        <a href="pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="security.html">Security</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="cancellation.html">Cancellation Policy</a>
+        <a href="acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

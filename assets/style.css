@@ -305,3 +305,45 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
   .hero { padding: 72px 0 60px; }
   .hero h1 { font-size: 31px; }
 }
+
+/* ---------- Gateway pillars ---------- */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.pillar {
+  position: relative; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 34px 30px; transition: all 0.2s;
+}
+.pillar::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad); }
+.pillar:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #d8dde5; }
+.pillar .k { font-size: 12px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--indigo); }
+.pillar h3 { font-size: 21px; font-weight: 800; margin: 10px 0 8px; }
+.pillar > p { color: var(--ink-2); font-size: 14.5px; }
+.pillar ul { list-style: none; margin-top: 18px; }
+.pillar ul li { position: relative; padding: 10px 0 10px 26px; color: var(--ink); font-size: 14px; border-top: 1px solid var(--bg-alt); }
+.pillar ul li:first-child { border-top: none; }
+.pillar ul li::before { content: "✓"; position: absolute; left: 0; top: 10px; color: var(--cyan); font-weight: 700; }
+.pillar ul li b { font-weight: 600; }
+
+/* ---------- Conversion paths ---------- */
+.paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.path {
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 30px 28px; text-align: center; transition: all 0.2s;
+}
+.path:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.path .pico { width: 46px; height: 46px; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(79,70,229,0.1), rgba(6,182,212,0.1)); }
+.path .pico svg { width: 23px; height: 23px; stroke: var(--indigo); }
+.path h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.path p { color: var(--ink-2); font-size: 14px; margin-bottom: 18px; }
+.path .btn { width: 100%; }
+
+/* ---------- Integration steps ---------- */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: st; }
+.stepc { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 26px; }
+.stepc .n { width: 34px; height: 34px; border-radius: 10px; background: var(--grad); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.stepc h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; }
+.stepc p { color: var(--ink-2); font-size: 14px; }
+
+@media (max-width: 920px) {
+  .pillars, .paths, .steps { grid-template-columns: 1fr; }
+}

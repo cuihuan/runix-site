@@ -31,44 +31,50 @@
       <a href="security.html">Security</a>
       <a href="about.html">Company</a>
       <a href="blog/">Blog</a>
-      <a class="nav-cta" href="about.html#contact">Get started</a>
+      <a class="nav-cta" href="about.html#contact">Request access</a>
     </div>
   </nav>
 </header>
 
 <main id="main">
 <section class="hero">
-  <div class="container">
-    <span class="badge">AI Infrastructure</span>
-    <h1>The infrastructure layer for<br>building with <span class="grad-text">large language models</span>.</h1>
-    <p class="sub">Runix gives engineering teams one API across many models, managed data pipelines, and ready-to-deploy solutions — so you can ship AI products on infrastructure you don't have to babysit.</p>
-    <div class="actions">
-      <a class="btn btn-primary" href="about.html#contact">Get started</a>
-      <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
-    </div>
-
-    <div class="code-card">
-      <div class="bar">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span>one API, many models</span>
+  <div class="container hero-split">
+    <div>
+      <span class="badge">Early access · US entity</span>
+      <h1>One endpoint.<br><span class="grad-text">Every model.</span><br>No babysitting.</h1>
+      <p class="sub">Runix is the gateway layer between your product and the model providers — routing, failover, key custody, quotas and per-request cost, behind one OpenAI-compatible API.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="about.html#contact">Request access</a>
+        <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
       </div>
-      <pre><span class="c"># Point your existing OpenAI-compatible client at Runix</span>
+      <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix is in early access: we issue keys and onboard teams individually rather than through self-serve signup. Tell us what you are building and we will come back within one business day.</p>
+    </div>
+    <div>
+      <div class="code-card">
+        <div class="bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span>example request — illustrative</span>
+        </div>
+        <pre><span class="c"># Point your existing OpenAI-compatible client at Runix</span>
 curl https://api.runixcloud.io/v1/chat/completions \
   -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
   -d <span class="s">'{
-    "model": "auto",   <span class="c"># or pin a specific model id (example)</span>
+    "model": "auto",   <span class="c"># or pin a specific model id</span>
     "messages": [{"role": "user", "content": "Hello"}]
   }'</span></pre>
+      </div>
+      <div class="hero-metrics">
+        <div><b>1</b><span>API surface</span></div>
+        <div><b>Many</b><span>Providers</span></div>
+        <div><b>Auto</b><span>Failover</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="strip" aria-label="At a glance">
-  <div class="row">
-    <div class="cell"><b>One API</b><span>across many models</span></div>
-    <div class="cell"><b>OpenAI</b><span>-compatible endpoint</span></div>
-    <div class="cell"><b>Usage-based</b><span>pay for what you use</span></div>
-    <div class="cell"><b>US company</b><span>Runix AI Inc, Wyoming</span></div>
+<div class="strip" aria-label="Compatibility">
+  <div class="compat">
+    <b>Works with</b><span>OpenAI SDK</span><span>LangChain</span><span>LlamaIndex</span><span>Vercel AI SDK</span><span>curl</span><span>anything that speaks the OpenAI API</span>
   </div>
 </div>
 
@@ -89,7 +95,7 @@ curl https://api.runixcloud.io/v1/chat/completions \
           <li>Per-key limits and token-level usage tracking</li>
         </ul>
         <p class="card-meta"><span>Delivery: hosted API</span> · <span>Pricing: usage-based</span></p>
-        <a class="read-more" href="about.html#contact">Get started →</a>
+        <a class="read-more" href="about.html#contact">Request access →</a>
       </div>
       <div class="card" id="data-pipelines">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
@@ -157,7 +163,34 @@ curl https://api.runixcloud.io/v1/chat/completions \
   </div>
 </section>
 
-<section class="section alt" id="start">
+<section class="section alt" id="company">
+  <div class="container">
+    <div class="feature">
+      <div>
+        <span class="badge">Who you are buying from</span>
+        <h3>The paperwork, ready before you ask</h3>
+        <p>Two things stall AI rollouts: the provider that fails at 3am, and the procurement review that never ends. The gateway handles the first. This handles the second.</p>
+        <ul>
+          <li>A registered US entity to contract with and invoice through</li>
+          <li>Data handling written down, not implied — see <a href="privacy.html" style="color:var(--indigo);font-weight:600;">Privacy</a> and <a href="security.html" style="color:var(--indigo);font-weight:600;">Security</a></li>
+          <li>Refund, cancellation and acceptable-use policies published in full</li>
+          <li>Security posture stated plainly — we do not claim certifications we have not earned</li>
+        </ul>
+      </div>
+      <div class="facts">
+        <div class="facts-head">Company facts</div>
+        <div class="frow"><span class="k">Legal entity</span><span class="v"><span data-cfg="legalCompanyName">Runix AI Inc</span><small><span data-cfg="registrationJurisdiction">Wyoming, United States</span></small></span></div>
+        <div class="frow"><span class="k">Contracting</span><span class="v">MSA &amp; DPA on request<small>Reviewed per engagement</small></span></div>
+        <div class="frow"><span class="k">Billing</span><span class="v">USD · usage-based<small>Itemised statements, invoicing available</small></span></div>
+        <div class="frow"><span class="k">Data handling</span><span class="v">Documented in writing<small>Content is not used to train models</small></span></div>
+        <div class="frow"><span class="k">Access</span><span class="v">Early access, by request<small>Keys issued after a short intake</small></span></div>
+        <div class="frow"><span class="k">Response time</span><span class="v">1 business day<small><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io" style="color:var(--indigo);">contact@runixcloud.io</a></small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="start">
   <div class="container">
     <div class="section-head center">
       <h2>Start with Runix</h2>
@@ -166,9 +199,9 @@ curl https://api.runixcloud.io/v1/chat/completions \
     <div class="paths">
       <div class="path">
         <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
-        <h3>Get started</h3>
+        <h3>Request access</h3>
         <p>Tell us what you're building and we'll get you set up with access and keys.</p>
-        <a class="btn btn-primary" href="about.html#contact">Get started</a>
+        <a class="btn btn-primary" href="about.html#contact">Request access</a>
       </div>
       <div class="path">
         <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
@@ -191,7 +224,7 @@ curl https://api.runixcloud.io/v1/chat/completions \
     <div class="cta-band">
       <h2>Build on infrastructure you don't have to babysit</h2>
       <p>Tell us your use case and expected volume — we'll come back with a concrete plan and pricing.</p>
-      <a class="btn btn-grad" href="about.html#contact">Get started</a>
+      <a class="btn btn-grad" href="about.html#contact">Request access</a>
     </div>
   </div>
 </section>

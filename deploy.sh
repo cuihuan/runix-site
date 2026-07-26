@@ -42,15 +42,42 @@ for path in / /pricing /about /security /blog/ /terms /privacy /refund /cancella
   [ "$code" = "200" ] || fail=1
 done
 
-# a 200 only proves something is served — compare what is served with what we built
-local_css=$(wc -c < "$SRC/assets/style.css" | tr -d ' ')
-live_css=$(curl -sL -o /dev/null -w '%{size_download}' --max-time 15 "$DOMAIN/assets/style.css")
-printf '    %-20s local=%s live=%s\n' "assets/style.css" "$local_css" "$live_css"
-[ "$local_css" = "$live_css" ] || { echo "    stylesheet mismatch — the custom domain is serving an older build"; fail=1; }
+# A 200 only proves something is served. Compare what is served with what was
+# built — and retry, because the edge takes up to a minute to catch up and a
+# check run immediately after upload reports the previous build.
+check_content() {
+  local label="$1" expected="$2" actual_cmd="$3" actual
+  for attempt in 1 2 3 4 5 6; do
+    actual=$(eval "$actual_cmd")
+    if [ "$actual" = "$expected" ]; then
+      printf '    %-22s match\n' "$label"
+      return 0
+    fi
+    sleep 10
+  done
+  printf '    %-22s MISMATCH after 60s\n      expected: %s\n      live:     %s\n' \
+    "$label" "$expected" "$actual"
+  return 1
+}
 
-local_h1=$(grep -o '<h1>.*</h1>' "$SRC/index.html" | head -1)
-live_h1=$(curl -sL --max-time 15 "$DOMAIN/" | grep -o '<h1>.*</h1>' | head -1)
-[ "$local_h1" = "$live_h1" ] || { echo "    homepage headline mismatch — the custom domain is serving an older build"; fail=1; }
+check_content "index <title>" \
+  "$(grep -o '<title>[^<]*</title>' "$SRC/index.html" | head -1)" \
+  "curl -sL --max-time 15 '$DOMAIN/' | grep -o '<title>[^<]*</title>' | head -1" || fail=1
+
+check_content "index <h1>" \
+  "$(grep -o '<h1>.*</h1>' "$SRC/index.html" | head -1)" \
+  "curl -sL --max-time 15 '$DOMAIN/' | grep -o '<h1>.*</h1>' | head -1" || fail=1
+
+check_content "assets/style.css size" \
+  "$(wc -c < "$SRC/assets/style.css" | tr -d ' ')" \
+  "curl -sL -o /dev/null -w '%{size_download}' --max-time 15 '$DOMAIN/assets/style.css'" || fail=1
+
+# whatever the pages point at socially has to actually exist
+og=$(grep -o 'og:image" content="[^"]*"' "$SRC/index.html" | head -1 | sed 's/.*content="//;s/"$//')
+if [ -n "$og" ]; then
+  check_content "og:image reachable" "200" \
+    "curl -sL -o /dev/null -w '%{http_code}' --max-time 15 '$og'" || fail=1
+fi
 # the reserved commerce layer must not be reachable
 for path in /payments/money.js /package.json; do
   code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 15 "$DOMAIN$path")

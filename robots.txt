@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://runixcloud.io/sitemap.xml
+
+# Site summary for LLM crawlers
+# https://runixcloud.io/llms.txt

@@ -3,12 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Designing for Model Failover: Lessons from Production LLM Traffic — Runix Blog</title>
-<meta name="description" content="A practical guide to keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs, and graceful degradation tiers.">
-<meta property="og:title" content="Designing for Model Failover: Lessons from Production LLM Traffic — Runix Blog">
-<meta property="og:description" content="A practical guide to keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs, and graceful degradation tiers.">
+<title>Model Failover for Production LLM Traffic | Runix</title>
+<meta name="description" content="Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.">
+<meta property="og:title" content="Model Failover for Production LLM Traffic | Runix">
+<meta property="og:description" content="Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png">
 <meta property="og:url" content="https://runixcloud.io/blog/model-failover">
 <link rel="canonical" href="https://runixcloud.io/blog/model-failover">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
@@ -17,6 +22,60 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Model Failover for Production LLM Traffic",
+  "description": "Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/model-failover"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg"
+    }
+  },
+  "datePublished": "2026-07-15",
+  "dateModified": "2026-07-15"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Model Failover for Production LLM Traffic",
+      "item": "https://runixcloud.io/blog/model-failover"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 

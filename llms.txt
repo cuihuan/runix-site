@@ -1,0 +1,58 @@
+# Runix
+
+> Runix is an LLM gateway: one OpenAI-compatible API in front of many model
+> providers, with routing, automatic failover, central key custody, per-key
+> quotas and per-request cost attribution. Operated by Runix AI Inc, a company
+> incorporated in Wyoming, United States. The service is in early access —
+> keys are issued on request rather than through self-serve signup.
+
+## What Runix does
+
+- **AI Gateway** — one OpenAI-compatible endpoint across many providers. Routing by
+  cost, availability and configuration; retries and failover between providers;
+  per-key limits; token-level usage tracking. Delivered as a hosted API, billed on usage.
+- **Data Pipelines** — managed ingestion, cleaning, deduplication and LLM-assisted
+  structured extraction, with a quality report on every delivery. Billed per project or volume.
+- **AI Solutions** — application templates and custom development, delivered as a
+  project under a contract or statement of work.
+
+## Facts a buyer usually asks for
+
+- Legal entity: Runix AI Inc, Wyoming, United States.
+- Contracting: MSA and DPA on request, reviewed per engagement; an order form takes
+  precedence over the standard Terms.
+- Billing: USD, usage-based (per token or per request, by model), itemised statements,
+  prepaid draw-down or invoiced. There is no published rate card; quotes are per workload.
+- Data handling: customer prompt and response content is not used to train models and is
+  not sold. Operational metadata (usage counts, latency, error codes) is kept to run
+  billing, reliability and support. Details in the Privacy Policy and Security page.
+- Certifications: none are claimed. Runix does not assert SOC 2, ISO 27001 or PCI status.
+- Support: replies within one business day, contact@runixcloud.io.
+
+## Pages
+
+- [Home](https://runixcloud.io/): what the gateway does, how it is integrated, company facts.
+- [Pricing](https://runixcloud.io/pricing): billing models and exactly what every quote states.
+- [Security](https://runixcloud.io/security): data handling, key custody, access control, retention.
+- [About](https://runixcloud.io/about): the company, and how to contact it.
+- [Careers](https://runixcloud.io/careers): open roles.
+- [Blog](https://runixcloud.io/blog/): engineering notes on running LLMs in production.
+
+## Selected writing
+
+- [Model Failover for Production LLM Traffic](https://runixcloud.io/blog/model-failover):
+  failure taxonomy, retry budgets, circuit breakers, degradation tiers.
+- [LLM Cost Control: Tokens, Caching and Budgets](https://runixcloud.io/blog/llm-cost-control):
+  token pricing asymmetry, prompt caching, routing, budget enforcement.
+- [Choosing an LLM Gateway: 7 Things That Matter](https://runixcloud.io/blog/llm-gateway-guide):
+  how to evaluate gateways on compatibility, failover, cost attribution and operational burden.
+- [Building AI Data Pipelines: Raw to Model-Ready](https://runixcloud.io/blog/ai-data-pipelines):
+  ingestion, deduplication tiers, LLM extraction with schema validation, PII masking.
+
+## Legal
+
+- [Terms of Service](https://runixcloud.io/terms)
+- [Privacy Policy](https://runixcloud.io/privacy)
+- [Refund Policy](https://runixcloud.io/refund)
+- [Cancellation Policy](https://runixcloud.io/cancellation)
+- [Acceptable Use Policy](https://runixcloud.io/acceptable-use)

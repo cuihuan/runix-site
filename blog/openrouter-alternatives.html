@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenRouter Alternatives: A Buyer's Checklist | Runix</title>
+<meta name="description" content="Evaluating LLM gateways beyond routing: the contract, data, failover and cost-attribution questions that decide whether a gateway survives procurement.">
+<link rel="canonical" href="https://runixcloud.io/blog/openrouter-alternatives">
+<meta property="og:title" content="OpenRouter Alternatives: A Buyer's Checklist | Runix">
+<meta property="og:description" content="Evaluating LLM gateways beyond routing: the contract, data, failover and cost-attribution questions that decide whether a gateway survives procurement.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/openrouter-alternatives">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "OpenRouter Alternatives: A Buyer's Checklist",
+  "description": "Evaluating LLM gateways beyond routing: the contract, data, failover and cost-attribution questions that decide whether a gateway survives procurement.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/openrouter-alternatives"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "OpenRouter Alternatives: A Buyer's Checklist",
+      "item": "https://runixcloud.io/blog/openrouter-alternatives"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Buyer's guide</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+    <h1 style="margin-top: 14px;">OpenRouter Alternatives: A Buyer's Checklist</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Search traffic for "OpenRouter alternative" is mostly people who have outgrown one specific thing: aggregation is easy to adopt and hard to defend in a procurement review. If you are shopping, the useful exercise is not comparing feature grids — vendors write those — but writing down the questions whose answers you would have to show someone else.</p>
+<p>What follows is that checklist. It is deliberately vendor-neutral: run it against every candidate, including <a href="../gateway.html">Runix Gateway</a>, and including "keep building it ourselves".</p>
+
+<h2>1. Who is the counterparty?</h2>
+<p>Ask which legal entity you are contracting with, where it is incorporated, and whether it can issue an invoice your finance team can pay. This sounds bureaucratic until a security review stalls for six weeks because nobody can produce a signable MSA.</p>
+<p>Follow-ups worth asking: is there a DPA available, and does the vendor sub-process your data through anyone you have not been told about?</p>
+
+<h2>2. What happens to prompt content?</h2>
+<p>Get this in writing, and get the distinction right, because most vague answers hide it: <strong>content</strong> (prompts, completions, files) is not the same as <strong>operational metadata</strong> (token counts, latency, error codes, model ids). Almost every gateway keeps the second — you cannot bill or debug without it. The questions that matter are whether the first is stored at all, for how long, who can read it, and whether it is ever used to train anything.</p>
+<p>"We do not store your data" is not an answer. "Content is not persisted beyond the request; metadata is retained for N days for billing and support; nothing is used for training" is.</p>
+
+<h2>3. Where do the credentials live?</h2>
+<p>There are two models, and they have different blast radii. Either you hand the gateway your provider keys, or the gateway holds its own provider relationships and issues you keys. Both are defensible. What matters is that gateway keys can be scoped and revoked per team or per service without redeploying anything, and that revocation actually takes effect immediately.</p>
+
+<h2>4. What does failover really do?</h2>
+<p>Every vendor says "automatic failover". Push on the specifics:</p>
+<ul>
+<li>Does a mid-stream failure fail over, or only a failure before the first token? Failing over after tokens have been emitted requires deciding what the client sees — silently restarting a stream produces duplicated text.</li>
+<li>Is there a retry budget, or does every failure retry? Unbudgeted retries turn a provider brownout into an outage. We wrote about the mechanics in <a href="model-failover.html">designing for model failover</a>.</li>
+<li>Are tool calls and structured outputs preserved across a failover to a different provider, whose schema handling may differ?</li>
+</ul>
+
+<h2>5. Can you attribute cost without a spreadsheet?</h2>
+<p>Ask to see what a statement looks like. Specifically: can you break spend down by key, by team and by model, and does the vendor's number reconcile with your own request logs? A gateway that cannot answer "which feature spent this" is a billing pass-through, not a cost control.</p>
+
+<h2>6. What is the pricing model, exactly?</h2>
+<p>Three shapes are common: a margin on provider rates, a flat platform fee, or a per-request charge. All three are fine. What is not fine is not being told which one you are on. Ask what happens when the underlying provider changes its prices, and whether your rate is fixed for a term.</p>
+
+<h2>7. What is the added latency, measured how?</h2>
+<p>A gateway on the hot path adds overhead. Ask how it is measured — added time-to-first-token is the number that matters for streaming UX, and it is the number vendors are least likely to publish. Be suspicious of a single global figure with no percentiles and no region.</p>
+
+<h2>8. What happens when the gateway itself is down?</h2>
+<p>You have added a dependency in front of every AI feature. Ask about the failure mode: is there a documented way to bypass it, do keys keep working if the control plane is unavailable, and what is the actual availability record — not the target.</p>
+
+<h2>9. Can you leave?</h2>
+<p>Exit cost is the cheapest thing to check and the most expensive to discover late. If the gateway speaks a standard API, leaving is a base-URL change. If it requires a proprietary SDK, a custom prompt format, or holds the only copy of your usage history, you are buying a migration project you have not scheduled.</p>
+
+<h2>10. Is the honest answer "build it"?</h2>
+<p>Sometimes. One provider, one team, modest volume — a hundred lines of retry logic is genuinely cheaper than a vendor relationship. The calculus changes at the second provider, the second team, or the first compliance questionnaire, because that is when the work stops being a library and starts being an operated service.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Running this checklist against us is fair game. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streaming LLM Responses Without Breaking Failover | Runix</title>
+<meta name="description" content="Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.">
+<link rel="canonical" href="https://runixcloud.io/blog/streaming-llm-failover">
+<meta property="og:title" content="Streaming LLM Responses Without Breaking Failover | Runix">
+<meta property="og:description" content="Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/streaming-llm-failover">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Streaming LLM Responses Without Breaking Failover",
+  "description": "Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/streaming-llm-failover"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Streaming LLM Responses Without Breaking Failover",
+      "item": "https://runixcloud.io/blog/streaming-llm-failover"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+    <h1 style="margin-top: 14px;">Streaming LLM Responses Without Breaking Failover</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Failover before the first token is easy: nothing has been observed, so you can quietly try somewhere else. Failover <em>after</em> the first token is a product decision disguised as an infrastructure one, because the user has already seen output that you are now considering contradicting.</p>
+
+<h2>How streams fail</h2>
+<p>Four distinct modes, each needing a different response:</p>
+<ul>
+<li><strong>Connection drop mid-stream.</strong> Bytes stop. Often indistinguishable at first from a model that is thinking.</li>
+<li><strong>Stall.</strong> The connection is alive, tokens have stopped arriving. Without a token-rate floor, this can hang until an outer timeout fires minutes later.</li>
+<li><strong>Truncation.</strong> The stream ends cleanly but early — <code>finish_reason</code> says <code>length</code>, or the content simply stops mid-sentence. The transport succeeded; the response is unusable.</li>
+<li><strong>Malformed frames.</strong> Rare, and brutal: a partial JSON chunk, a tool-call fragment that never completes. Strict parsers throw at exactly the wrong moment.</li>
+</ul>
+<p>The detection primitive that covers most of these is a <strong>token-rate floor</strong>: if the stream produces fewer than N tokens in M seconds after having started, treat it as failed. It catches stalls and slow degradation that a single overall timeout misses entirely.</p>
+
+<h2>The restart problem</h2>
+<p>Suppose you detect a failure after 200 tokens have reached the user. Three options exist, and only three:</p>
+<ol>
+<li><strong>Fail the request.</strong> Honest, simple, and the user loses the partial answer.</li>
+<li><strong>Restart silently on another provider.</strong> The user sees the answer restart from scratch — or worse, sees the first attempt's text followed by a second attempt's, which reads as gibberish. Never do this without clearing what was already emitted, which most clients cannot do.</li>
+<li><strong>Restart with continuation.</strong> Feed the partial output back as context and ask the new provider to continue. Plausible for prose, fragile for structured output, and it changes the token accounting because you now pay for the partial twice.</li>
+</ol>
+<p>The right default for interactive traffic is to fail over invisibly <em>only</em> before the first token, and after that to surface the failure to the client and let the application decide. Which means the practical goal is to make the pre-first-token window as informative as possible: time-to-first-token is your best early health signal, and treating a slow TTFT as a routing failure lets you switch providers while it is still free.</p>
+
+<h2>What a proxy in the path must preserve</h2>
+<p>A gateway that terminates and re-emits streams can break things that clients depend on. The checklist:</p>
+<ul>
+<li><strong>No buffering.</strong> Collecting the full response and forwarding it at the end technically works and destroys the reason for streaming. Any buffer that is not flushed per chunk is a bug.</li>
+<li><strong>Frame fidelity.</strong> Tool-call deltas arrive in fragments that only make sense reassembled in order. A proxy that reorders, coalesces or drops empty deltas will break structured-output clients.</li>
+<li><strong>Terminators.</strong> The final usage frame and the end-of-stream sentinel must survive. Dropping the usage frame is the most common way cost data ends up with a hole exactly where the expensive requests are.</li>
+<li><strong>Cancellation propagation.</strong> When the client disconnects, the upstream request must be cancelled too — otherwise you keep paying for tokens nobody will read.</li>
+<li><strong>Errors after 200.</strong> HTTP status is committed as soon as streaming starts, so a mid-stream failure cannot be a 500. It has to be an in-band error frame, and clients have to be written to expect one.</li>
+</ul>
+
+<h2>Degradation beats failure</h2>
+<p>When failover is not available, the interesting question is what the user gets instead of a spinner. Options that work in practice: switch to a smaller, faster model on the same provider; drop optional context to shorten the prompt and get under a stressed provider's limits; or return the partial answer with an explicit marker that it is incomplete. All three are better than a blank screen, and all three require the application to have been designed with a degraded mode — which is a decision nobody makes during an incident.</p>
+<p>The infrastructure layer can only enable those choices, not make them. What it should guarantee is that a stream never silently becomes wrong: partial output is labelled partial, cancellations stop the meter, and a failure that happens after the first token is reported rather than papered over. That last property is the one to ask a vendor about, and it is the one we hold ourselves to in <a href="../gateway.html">Runix Gateway</a>.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Mid-stream behaviour is worth asking any gateway about. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 Data Questions to Ask an AI Vendor | Runix</title>
+<meta name="description" content="The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.">
+<link rel="canonical" href="https://runixcloud.io/blog/ai-vendor-data-questions">
+<meta property="og:title" content="12 Data Questions to Ask an AI Vendor | Runix">
+<meta property="og:description" content="The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/ai-vendor-data-questions">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "12 Data Questions to Ask an AI Vendor",
+  "description": "The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/ai-vendor-data-questions"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "12 Data Questions to Ask an AI Vendor",
+      "item": "https://runixcloud.io/blog/ai-vendor-data-questions"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Compliance</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+    <h1 style="margin-top: 14px;">12 Data Questions to Ask an AI Vendor</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Most AI procurement reviews stall on the same handful of unanswered questions. Here they are, with what a defensible answer sounds like — useful whether you are the buyer asking or the vendor preparing.</p>
+
+<h2>Content and retention</h2>
+<p><strong>1. Is prompt and completion content stored, and for how long?</strong> A good answer distinguishes content from metadata and gives a number. "We do not store your data" without that distinction is almost always inaccurate, because nobody bills or debugs without keeping something.</p>
+<p><strong>2. What operational metadata is kept?</strong> Expect: timestamps, token counts, model ids, latency, error codes, key identifiers. That set is normal and necessary. What matters is that it is enumerated rather than described as "some technical logs".</p>
+<p><strong>3. Is anything used to train models?</strong> The answer should be unambiguous and cover sub-processors. "We do not train on your data, and our upstream providers are configured not to either" is the shape you want, with the second half in writing.</p>
+<p><strong>4. Who internally can read content, and is that access logged?</strong> "Nobody" is rarely true — support engineers usually can, under a break-glass procedure. A vendor who admits that and describes the control is more credible than one who claims perfect isolation.</p>
+
+<h2>Sub-processors and geography</h2>
+<p><strong>5. Who else touches the data?</strong> Model providers, cloud hosts, observability vendors, payment processors. Ask for the list, and ask how you will be told when it changes.</p>
+<p><strong>6. Where is data processed?</strong> Region matters for regulated workloads, and the honest answer is often "wherever the provider serves the model", which may not be the same region as the vendor's own infrastructure.</p>
+<p><strong>7. What happens on termination?</strong> Deletion timelines for content, metadata, and backups — backups are the part usually forgotten, and the part with the longest tail.</p>
+
+<h2>Security posture</h2>
+<p><strong>8. What certifications are actually held?</strong> Note the word <em>held</em>. "SOC 2 in progress" and "SOC 2 certified" are different statements, and a vendor blurring them is telling you how they handle other claims. A young company with none, stated plainly, is more trustworthy than one implying otherwise.</p>
+<p><strong>9. How are credentials stored and access controlled?</strong> Especially relevant for anything holding your provider keys — see <a href="llm-api-key-management.html">key management</a> for what to probe.</p>
+<p><strong>10. Is there a disclosure channel and a track record?</strong> A published security contact and a stated response window. Nothing exotic; its absence is the signal.</p>
+
+<h2>Contracts and continuity</h2>
+<p><strong>11. What can be signed?</strong> MSA, DPA, and whether an order form can override standard terms. Also: which legal entity, in which jurisdiction, and can it invoice in your currency.</p>
+<p><strong>12. What is the exit path?</strong> Export of usage history, notice period, and whether the integration is standard enough that leaving is a configuration change. A gateway speaking a standard API is a base-URL change to replace; a proprietary SDK is a migration project.</p>
+
+<h2>Two answers that should stop the process</h2>
+<p>The first is <strong>a specific claim that cannot be evidenced</strong> — a certification without a report, an uptime figure without a status page, a "zero retention" claim that dissolves when you ask about metadata. If a checkable claim turns out to be decorative, treat the uncheckable ones accordingly.</p>
+<p>The second is <strong>a refusal to put an answer in writing</strong>. Everything above should survive being pasted into a contract schedule. A vendor comfortable saying something on a call but not in a document has told you which version they intend to be bound by.</p>
+<p>For our own answers, the <a href="../security.html">security page</a> and <a href="../privacy.html">privacy policy</a> are written to be quotable, and where we hold nothing we say so.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Sending us this questionnaire is welcome. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

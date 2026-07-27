@@ -217,6 +217,8 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .article h2 { font-size: 22px; font-weight: 700; margin: 38px 0 12px; }
 .article h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
 .article p, .article li { color: var(--ink-2); font-size: 15.5px; }
+.article p { margin-bottom: 15px; }
+.article h2 + p, .article h3 + p { margin-top: 0; }
 .article ul, .article ol { margin: 10px 0 10px 22px; }
 .article li { margin-bottom: 7px; }
 .article table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14.5px; }

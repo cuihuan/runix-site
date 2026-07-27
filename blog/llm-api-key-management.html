@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Provider Keys: Scope, Rotation and Blast Radius | Runix</title>
+<meta name="description" content="Provider keys spread through repos, CI and notebooks. How to scope and rotate them, and why a compromised LLM key is a billing incident as well as a data one.">
+<link rel="canonical" href="https://runixcloud.io/blog/llm-api-key-management">
+<meta property="og:title" content="LLM Provider Keys: Scope, Rotation and Blast Radius | Runix">
+<meta property="og:description" content="Provider keys spread through repos, CI and notebooks. How to scope and rotate them, and why a compromised LLM key is a billing incident as well as a data one.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/llm-api-key-management">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "LLM Provider Keys: Scope, Rotation and Blast Radius",
+  "description": "Provider keys spread through repos, CI and notebooks. How to scope and rotate them, and why a compromised LLM key is a billing incident as well as a data one.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/llm-api-key-management"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "LLM Provider Keys: Scope, Rotation and Blast Radius",
+      "item": "https://runixcloud.io/blog/llm-api-key-management"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Security</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+    <h1 style="margin-top: 14px;">LLM Provider Keys: Scope, Rotation and Blast Radius</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>An LLM provider key is unusual among credentials: it is trivially easy to use, it costs money on every call, and it typically carries no scoping of its own. That combination makes it worth treating with more care than its convenience suggests.</p>
+
+<h2>The blast radius is larger than it looks</h2>
+<p>A leaked database password gets you data. A leaked provider key gets an attacker three things: your data in transit through the requests they make, your money at whatever rate they can sustain, and your reputation if they use it for content that traces back to your account. The third is the one teams forget — abuse under your key is abuse attributed to your organisation.</p>
+<p>Because the key is a single string with no per-call authorisation, the only real controls are where it lives, what it can reach, and how fast you can revoke it.</p>
+
+<h2>Where keys actually leak</h2>
+<p>Rarely through a breach of the vault. In practice:</p>
+<ul>
+<li><strong>Client-side code.</strong> A key shipped to a browser or mobile app is public, whatever the obfuscation. If your app calls a model provider directly, it is a matter of when.</li>
+<li><strong>Notebooks and prototypes.</strong> A key pasted into a notebook, committed to a research repo, and forgotten.</li>
+<li><strong>Logs and traces.</strong> An error handler that dumps the outgoing request headers, then ships them to an observability vendor.</li>
+<li><strong>CI configuration.</strong> Especially in forks and pull-request builds, where secrets policies are easy to get subtly wrong.</li>
+<li><strong>Screenshots.</strong> Not a joke — terminal screenshots in issue threads are a real source.</li>
+</ul>
+
+<h2>Two keys, not one</h2>
+<p>The structural fix is indirection: the provider key exists in exactly one place, and everything else uses an internal key issued to it. Then the properties you want become achievable.</p>
+<ul>
+<li><strong>Scope.</strong> An internal key can be limited to specific models, a spend ceiling, a rate, an environment. Provider keys generally cannot.</li>
+<li><strong>Revocation without redeploy.</strong> Killing one team's key should not require rotating a secret every other service also reads.</li>
+<li><strong>Attribution.</strong> One key per service is what makes <a href="llm-cost-attribution.html">cost attribution</a> possible at all.</li>
+<li><strong>Containment.</strong> A leaked internal key exposes one scope with one budget, not the whole account.</li>
+</ul>
+<p>This is the security half of what an <a href="what-is-an-llm-gateway.html">LLM gateway</a> is for, and it is available whether you buy one or build it.</p>
+
+<h2>Rotation that is actually performed</h2>
+<p>Rotation policies fail when rotation is disruptive, so make it boring:</p>
+<ul>
+<li>Support two live keys per provider at once, so you can cut over and then retire the old one instead of doing both at the same instant.</li>
+<li>Rotate on a schedule and on every departure of someone who had access — the second one is the trigger people skip.</li>
+<li>Record when each key was last rotated somewhere a human will see it. Unmeasured policies are aspirations.</li>
+</ul>
+
+<h2>Detection, since prevention is imperfect</h2>
+<p>Assume a key will eventually leak and instrument for it. The strongest signals are cheap: spend rate per key against its recent baseline, calls from unexpected regions or user agents, sudden use of models that key has never called, and a spike in unique source addresses. Any one of these firing on a key is worth an alert. Automatic suspension on a hard spend ceiling is a blunt instrument, but a blunt instrument that stops a $20,000 weekend is a good trade.</p>
+
+<h2>The uncomfortable question for vendors</h2>
+<p>If you hand provider keys to a third-party gateway or framework, you have extended your blast radius to their infrastructure and their staff. That may be entirely reasonable — but ask where the keys are stored, who can decrypt them, whether access is logged, and what happens to them if you terminate. A vendor who cannot answer crisply is telling you something. Ours are answered on the <a href="../security.html">security page</a>.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Key custody is the first thing procurement asks about. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

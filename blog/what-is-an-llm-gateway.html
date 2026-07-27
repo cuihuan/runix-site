@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is an LLM Gateway? A Plain Definition | Runix</title>
+<meta name="description" content="An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.">
+<link rel="canonical" href="https://runixcloud.io/blog/what-is-an-llm-gateway">
+<meta property="og:title" content="What Is an LLM Gateway? A Plain Definition | Runix">
+<meta property="og:description" content="An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/what-is-an-llm-gateway">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What Is an LLM Gateway? A Plain Definition",
+  "description": "An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/what-is-an-llm-gateway"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What Is an LLM Gateway? A Plain Definition",
+      "item": "https://runixcloud.io/blog/what-is-an-llm-gateway"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Concepts</span><span>July 27, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">What Is an LLM Gateway? A Plain Definition</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>An <strong>LLM gateway</strong> is a service that sits between your application and the model providers you call, so that requests, credentials, limits and cost accounting are handled in one place instead of in every service that happens to talk to a model.</p>
+<p>That is the whole definition. The rest of this post is about what follows from it — because the interesting part is not what a gateway <em>is</em>, it is which problems disappear once you have one and which ones stubbornly do not.</p>
+
+<h2>What a gateway actually does</h2>
+<p>Four responsibilities show up in every serious implementation:</p>
+<ul>
+<li><strong>One interface across providers.</strong> Your code speaks a single API — in practice usually the OpenAI schema, because that is what most SDKs and frameworks already emit — and the gateway translates to whatever the target provider expects. Switching a model becomes a configuration change rather than a code change.</li>
+<li><strong>Credential custody.</strong> Provider keys live in the gateway. Application teams get gateway keys instead, which can be scoped, rate-limited and revoked individually. This is the difference between rotating one secret and hunting for it across nine repositories, four CI systems and someone's laptop.</li>
+<li><strong>Traffic control.</strong> Retries, timeouts, failover between providers, per-key rate limits and concurrency caps. This is the part that decides whether a provider's bad hour becomes your incident.</li>
+<li><strong>Accounting.</strong> Token counts and cost attached to every request, attributable to a key, a team, or a feature. Without this, an LLM bill is a single number nobody can explain.</li>
+</ul>
+
+<h2>What a gateway is not</h2>
+<p>Three things get confused with gateways often enough to be worth separating.</p>
+<p><strong>It is not a model.</strong> A gateway does not make answers better. If a model is wrong for your task, routing it through anything will not fix that.</p>
+<p><strong>It is not an agent framework.</strong> Orchestration, tool loops, memory and planning live in your application or in a framework you choose. A gateway that starts making those decisions for you becomes a dependency you cannot debug.</p>
+<p><strong>It is not a cache by default.</strong> Caching LLM responses is legitimate for some workloads and dangerous for others — see <a href="llm-cost-control.html">our post on cost control</a> for where the line sits. Gateways can offer caching; conflating the two leads to surprising correctness bugs.</p>
+
+<h2>Proxy, gateway, router: the words people use</h2>
+<p>The vocabulary in this category is loose, and vendors use it inconsistently. A rough map:</p>
+<ul>
+<li>A <strong>proxy</strong> forwards requests, usually with minimal transformation. Useful for logging and key hiding, not much else.</li>
+<li>A <strong>router</strong> chooses between targets — often by price or availability. Routing is a feature, not a category.</li>
+<li>A <strong>gateway</strong> is the control plane: it includes routing, but the point is governance — who may call what, at what rate, with which credentials, at what cost, with what record.</li>
+</ul>
+<p>The distinction matters when buying. If your problem is "we want the cheapest token", a router is enough. If your problem is "we cannot tell which team spent $40,000 last month and our provider keys are in six places", you want a gateway.</p>
+
+<h2>When a team actually needs one</h2>
+<p>Not immediately. A single service calling a single provider with one key does not need a control plane, and adding one early buys latency and an extra dependency for no benefit.</p>
+<p>The signals that it is time are consistent:</p>
+<ul>
+<li><strong>The second provider.</strong> The moment you support two, you are writing translation, retry and failover logic — and you will write it again in the next service.</li>
+<li><strong>The second team.</strong> Once more than one team calls models, "whose spend is this" and "who can use which model" become real questions with no answer in the provider dashboard.</li>
+<li><strong>The first incident.</strong> Provider degradation that takes your product down usually converts the argument on its own.</li>
+<li><strong>The first procurement review.</strong> Somebody asks where keys are stored, what is logged, and how long it is retained. Answering per-service is painful; answering once is not.</li>
+</ul>
+
+<h2>Self-host or managed</h2>
+<p>Both are reasonable. Self-hosting keeps traffic inside your perimeter and gives you the source; it also means you own a component on the hot path of every AI feature you ship, including its upgrades, its failover behaviour and its 3am pages. A managed gateway trades that for a dependency you do not control.</p>
+<p>The honest way to decide is to ask who will own the on-call rotation for it in six months. If the answer is "nobody has volunteered", self-hosting is a decision to accumulate risk rather than to save money.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Weighing whether you need a gateway at all? <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

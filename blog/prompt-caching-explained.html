@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Caching: When It Pays and When It Bites | Runix</title>
+<meta name="description" content="How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.">
+<link rel="canonical" href="https://runixcloud.io/blog/prompt-caching-explained">
+<meta property="og:title" content="Prompt Caching: When It Pays and When It Bites | Runix">
+<meta property="og:description" content="How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/prompt-caching-explained">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Prompt Caching: When It Pays and When It Bites",
+  "description": "How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/prompt-caching-explained"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Prompt Caching: When It Pays and When It Bites",
+      "item": "https://runixcloud.io/blog/prompt-caching-explained"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+    <h1 style="margin-top: 14px;">Prompt Caching: When It Pays and When It Bites</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Prompt caching is the rare optimisation that reduces both latency and cost without touching output quality — when it hits. The gap between teams who benefit and teams who see nothing is almost entirely about prompt structure, not volume.</p>
+
+<h2>The prefix rule</h2>
+<p>Provider-side caching works on a <strong>prefix</strong>: the model reuses computation for a leading span of tokens that is byte-identical to a previous request. Everything up to the first difference can be reused; everything after it cannot.</p>
+<p>That single rule explains most caching outcomes. If your prompt begins with a long, stable system message and a fixed tool schema, and the user's variable content comes last, you get hits. If you interpolate a timestamp, a request id, a shuffled list of retrieved documents, or the user's name into the top of the prompt, you have changed byte one and there is nothing to reuse.</p>
+<p>The practical instruction is therefore simple, and it is a prompt-engineering decision rather than an infrastructure one: <strong>stable content first, variable content last</strong>. Teams that reorganise their prompts around this typically see a large share of their input tokens become cached; teams that do not see essentially zero.</p>
+
+<h2>What caching does not do</h2>
+<p>Three misunderstandings are worth separating out.</p>
+<p><strong>It does not cache the answer.</strong> Provider prompt caching reuses the encoded prefix, not the completion. The model still generates fresh output, and output tokens are still billed at the full rate. Caching helps most on prompt-heavy, completion-light workloads: long documents, big tool schemas, extensive few-shot examples.</p>
+<p><strong>It is not free.</strong> Cache writes are often billed at a premium over ordinary input tokens, and entries expire — typically in minutes unless refreshed. A workload with low request frequency against a given prefix can pay to populate a cache it never reads. Caching a huge prefix that is used twice an hour can cost more than not caching at all.</p>
+<p><strong>It is not the same as your own response cache.</strong> Storing "this exact question got this exact answer" in your own layer is a different mechanism with different risks — chiefly that answers become stale, and that two users with the same question but different permissions can receive each other's cached content. If you build one, key it by everything that affects the answer, including the identity of the caller.</p>
+
+<h2>Ways caching quietly changes behaviour</h2>
+<p>Two failure modes are worth naming, because they are hard to debug after the fact.</p>
+<p>First, <strong>metrics drift</strong>. Cached input tokens are usually reported in a separate field from ordinary input tokens. If your accounting sums only the ordinary field, cache adoption looks like a mysterious drop in usage; if it sums both at the same price, your cost model overstates spend. Track them separately — see the note on token fields in <a href="llm-cost-attribution.html">cost attribution</a>.</p>
+<p>Second, <strong>prompt churn</strong>. Once caching is load-bearing, an innocuous edit to the system prompt invalidates every cached prefix at once. Latency and cost jump, and nobody connects it to the one-word copy change deployed that morning. Treat the stable prefix as a versioned artefact: change it deliberately, and expect a warm-up period after you do.</p>
+
+<h2>Deciding whether it is worth it</h2>
+<p>A quick screen, in order:</p>
+<ul>
+<li>Is your input-to-output token ratio high? If completions dominate, caching will not move your bill much.</li>
+<li>Do many requests share a long, identical prefix? If every request is bespoke, there is nothing to reuse.</li>
+<li>Is the request rate against that prefix high enough that entries stay warm?</li>
+</ul>
+<p>Three yeses means restructure prompts and measure. Any no means spend the effort on <a href="llm-cost-control.html">the other levers</a> — model selection and output length usually pay more.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Caching behaviour differs per provider. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

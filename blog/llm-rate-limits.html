@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surviving LLM Rate Limits: 429s, Budgets and Queues | Runix</title>
+<meta name="description" content="Why provider rate limits bite in bursts, how RPM, TPM and concurrency interact, and the queueing and backoff patterns that keep throughput stable under 429s.">
+<link rel="canonical" href="https://runixcloud.io/blog/llm-rate-limits">
+<meta property="og:title" content="Surviving LLM Rate Limits: 429s, Budgets and Queues | Runix">
+<meta property="og:description" content="Why provider rate limits bite in bursts, how RPM, TPM and concurrency interact, and the queueing and backoff patterns that keep throughput stable under 429s.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/llm-rate-limits">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Surviving LLM Rate Limits: 429s, Budgets and Queues",
+  "description": "Why provider rate limits bite in bursts, how RPM, TPM and concurrency interact, and the queueing and backoff patterns that keep throughput stable under 429s.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/llm-rate-limits"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Surviving LLM Rate Limits: 429s, Budgets and Queues",
+      "item": "https://runixcloud.io/blog/llm-rate-limits"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+    <h1 style="margin-top: 14px;">Surviving LLM Rate Limits: 429s, Budgets and Queues</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Rate limits are the most predictable failure in LLM infrastructure and still the one that takes most products down first. The reason is that they do not behave like the rate limits engineers are used to.</p>
+
+<h2>You are usually limited on three axes at once</h2>
+<p>Most providers enforce some combination of:</p>
+<ul>
+<li><strong>Requests per minute (RPM)</strong> — the familiar one.</li>
+<li><strong>Tokens per minute (TPM)</strong> — where it gets interesting, because your token consumption depends on user input length, which you do not control.</li>
+<li><strong>Concurrency</strong> — how many requests may be in flight simultaneously, which interacts badly with long generations.</li>
+</ul>
+<p>A workload can sit comfortably under its RPM ceiling and still get throttled all day because a handful of long-context requests exhausted TPM. Teams that monitor only request counts see 429s that appear to come from nowhere.</p>
+<p>Worse, TPM accounting usually includes the tokens you are <em>about to</em> generate, estimated from <code>max_tokens</code>. Setting <code>max_tokens</code> to a comfortable 4096 "just in case" on every request can reserve far more budget than you use, and throttle you well below your real consumption. Sizing <code>max_tokens</code> to the actual task is one of the cheapest throughput wins available.</p>
+
+<h2>Bursts, not averages, cause 429s</h2>
+<p>Limits are typically enforced over short windows against a token bucket. An average of 60% utilisation over a minute tells you nothing if your traffic arrives in three-second spikes — a cron job, a batch import, a retry storm from your own client. The bucket empties, and everything queued behind it fails.</p>
+<p>The fix is a shaper on your side: a queue with a controlled drain rate so bursts are absorbed rather than forwarded. It costs a little latency at peak and removes a whole class of errors. Note that the queue only helps if it has a bound and a policy for what happens when it is full — an unbounded queue converts a rate-limit problem into a memory and latency problem.</p>
+
+<h2>Read the headers before you guess</h2>
+<p>Most providers return remaining-quota and reset headers alongside 429s, and many return them on successful responses too. That is a live signal of how close you are to the ceiling, available before anything breaks. Two things worth doing with it:</p>
+<ul>
+<li>Emit remaining quota as a metric, per key and per model. Sudden drops predict incidents.</li>
+<li>Honour <code>Retry-After</code> when present. Backing off for the interval the provider asked for is strictly better than a backoff you invented.</li>
+</ul>
+
+<h2>Backoff rules that hold up</h2>
+<p>Exponential backoff with <strong>full jitter</strong> — randomising the entire wait window, not adding a small random offset — is the pattern to use. Without jitter, all the clients that failed at the same moment retry at the same moment, and the synchronised spike re-triggers the limit.</p>
+<p>Pair it with a <strong>retry budget</strong>: retries may consume no more than some fraction of your request volume in a window, say 10%. When the budget is exhausted, fail fast. Nothing else prevents a partial rate-limit event from amplifying into a full outage, and almost nobody implements it until after their first one.</p>
+
+<h2>Not all requests deserve the same treatment</h2>
+<p>A user waiting on a chat response and a nightly batch summarisation should not compete for the same quota on equal terms. Once you have a queue, class-based scheduling is nearly free: interactive traffic gets priority and a short timeout, batch traffic gets the leftovers and a long one. Under pressure, the batch job slows down and the product stays responsive — which is the outcome you would have chosen manually anyway.</p>
+
+<h2>Spreading load across providers</h2>
+<p>Rate limits are per provider, per account. Two accounts with the same provider double your ceiling; a second provider does the same and adds independence from the first one's outages. This is where a gateway earns its place: the routing, the per-key budgets and the shaping all belong in one component rather than in every service that calls a model. It is also where teams discover that failover and rate limiting are the same problem viewed from two angles — both are about deciding where a request should go when the obvious target is not available.</p>
+<p>If you are building this yourself, put the queue, the budget and the header telemetry in one place from the start. Retrofitting them into six services after an incident is the expensive path — it is the path most teams take.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Rate limiting, shaping and failover belong in one place. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

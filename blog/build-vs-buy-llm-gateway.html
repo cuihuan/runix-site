@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build or Buy an LLM Gateway: An Honest Comparison | Runix</title>
+<meta name="description" content="The first version of a gateway is a weekend. The parts that take a year are retry budgets, streaming failover, cost accounting and being on call for all of it.">
+<link rel="canonical" href="https://runixcloud.io/blog/build-vs-buy-llm-gateway">
+<meta property="og:title" content="Build or Buy an LLM Gateway: An Honest Comparison | Runix">
+<meta property="og:description" content="The first version of a gateway is a weekend. The parts that take a year are retry budgets, streaming failover, cost accounting and being on call for all of it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/build-vs-buy-llm-gateway">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Build or Buy an LLM Gateway: An Honest Comparison",
+  "description": "The first version of a gateway is a weekend. The parts that take a year are retry budgets, streaming failover, cost accounting and being on call for all of it.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/build-vs-buy-llm-gateway"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Build or Buy an LLM Gateway: An Honest Comparison",
+      "item": "https://runixcloud.io/blog/build-vs-buy-llm-gateway"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Buyer's guide</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+    <h1 style="margin-top: 14px;">Build or Buy an LLM Gateway: An Honest Comparison</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Building a basic LLM gateway takes about a weekend: a request forwarder, a key store, a couple of provider adapters, some logging. That version works, and it is genuinely the right answer for a lot of teams. The disagreement is never about the weekend — it is about the eighteen months after it.</p>
+
+<h2>What the weekend version does not include</h2>
+<p>In rough order of when teams discover them:</p>
+<ul>
+<li><strong>Retry budgets.</strong> Not retries — anyone writes retries. The budget that stops retries amplifying a provider brownout into your outage, which almost nobody adds before their first one.</li>
+<li><strong>Streaming failover semantics.</strong> Deciding what happens when a stream dies at token 200, and implementing it without emitting duplicate text. Covered in <a href="streaming-llm-failover.html">streaming and failover</a>.</li>
+<li><strong>Silent degradation detection.</strong> Providers return 200 with truncated or malformed output. Catching this needs response-body distributions, not status codes.</li>
+<li><strong>Token accounting that reconciles.</strong> Including cached-input fields, the usage frame at the end of a stream, and rate-at-time-of-call so history does not rewrite itself.</li>
+<li><strong>Rate-limit shaping.</strong> Queues, class-based priority, header telemetry — see <a href="llm-rate-limits.html">rate limits</a>.</li>
+<li><strong>Provider drift.</strong> New models, changed parameters, deprecated endpoints, subtly different tool-call semantics. This is not a project; it is a subscription paid in engineering time.</li>
+</ul>
+<p>None of these are hard problems individually. Collectively they are a product, and the honest question is whether it is <em>your</em> product.</p>
+
+<h2>The cost that is easy to miss</h2>
+<p>Build-versus-buy spreadsheets usually compare vendor fees against a few weeks of engineering. The item that dominates in practice is neither: it is that a self-built gateway sits on the hot path of every AI feature you ship, so it acquires an on-call rotation, an upgrade cadence, and a bus factor. The question that predicts the outcome is not "can we build it" — you can — but "who owns it in six months when the person who wrote it is on another team". A component with no owner and a place in every request path is a slow-motion incident.</p>
+
+<h2>When building is clearly right</h2>
+<ul>
+<li><strong>Regulatory or contractual isolation.</strong> If traffic cannot leave your perimeter, the decision is made for you. Some managed vendors offer in-perimeter deployment; if not, build.</li>
+<li><strong>You are the product.</strong> If routing quality is your differentiation, do not outsource your differentiation.</li>
+<li><strong>Scale where margin matters.</strong> At sufficient volume a percentage fee exceeds a team's cost. That crossover is much further out than most teams estimate, but it is real.</li>
+<li><strong>One provider, one team, modest volume.</strong> Then you do not need a gateway at all — you need a library, and that is a genuinely smaller thing.</li>
+</ul>
+
+<h2>When buying is clearly right</h2>
+<ul>
+<li><strong>You have a procurement review pending.</strong> The paperwork — entity, DPA, retention statements, security posture — is a real deliverable, and building it takes longer than building the proxy.</li>
+<li><strong>Multiple teams share providers.</strong> The governance problem is the actual problem, and it is not fun to build.</li>
+<li><strong>Your differentiation is upstack.</strong> If the product is the application, infrastructure that is table stakes should be bought.</li>
+</ul>
+
+<h2>The hybrid nobody mentions</h2>
+<p>Buy first, keep the option to leave. If the gateway speaks a standard API, migrating away later is a base-URL change — which means "buy now, build later if the economics turn" is a real path rather than a rationalisation, provided you avoid proprietary SDKs and keep your own copy of usage history. That constraint is worth writing into the contract while you still have leverage.</p>
+<p>We would rather you ran this comparison honestly and concluded "build" than adopted <a href="../gateway.html">Runix Gateway</a> and resented it in a year.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>If the honest answer is build, we will say so. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

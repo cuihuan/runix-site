@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What to Log for LLM Traffic, and What Not To | Runix</title>
+<meta name="description" content="Status codes and latency miss the failures that matter for LLM traffic. The signals worth recording, the fields to redact, and the alerts worth waking up for.">
+<link rel="canonical" href="https://runixcloud.io/blog/llm-observability">
+<meta property="og:title" content="What to Log for LLM Traffic, and What Not To | Runix">
+<meta property="og:description" content="Status codes and latency miss the failures that matter for LLM traffic. The signals worth recording, the fields to redact, and the alerts worth waking up for.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/llm-observability">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
+<link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What to Log for LLM Traffic, and What Not To",
+  "description": "Status codes and latency miss the failures that matter for LLM traffic. The signals worth recording, the fields to redact, and the alerts worth waking up for.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/llm-observability"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=2",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=2"
+    }
+  },
+  "datePublished": "2026-07-27",
+  "dateModified": "2026-07-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What to Log for LLM Traffic, and What Not To",
+      "item": "https://runixcloud.io/blog/llm-observability"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="../security.html">Security</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/" class="active">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+    <h1 style="margin-top: 14px;">What to Log for LLM Traffic, and What Not To</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Standard HTTP observability assumes that a 200 means success. For LLM traffic that assumption is wrong often enough to be dangerous: the most expensive failures return 200, take normal time, and produce output that is subtly unusable.</p>
+
+<h2>The signals that earn their storage</h2>
+<p>Per request, cheap to record and repeatedly useful:</p>
+<ul>
+<li><strong>Time to first token.</strong> The single best health signal for a provider. It is stable enough per model that a shift is meaningful, and it is what users actually experience.</li>
+<li><strong>Inter-token latency.</strong> Total duration conflates a long answer with a slow one; token rate separates them.</li>
+<li><strong>Token counts, split.</strong> Input, output and cached input as separate fields — they are priced differently and they move independently.</li>
+<li><strong><code>finish_reason</code> distribution.</strong> A rising share of <code>length</code> finishes means truncation, which no status code will tell you.</li>
+<li><strong>Attempt count and final provider.</strong> Without these, retry storms are invisible and per-provider quality comparisons are wrong.</li>
+<li><strong>Structured-output parse rate.</strong> For routes expecting JSON, the fraction that parses is a direct quality metric that degrades before anything else does.</li>
+</ul>
+<p>Notice that none of these require storing prompt content.</p>
+
+<h2>What not to log</h2>
+<p>Prompts and completions are the highest-risk data your system handles, and they end up in the widest-access system you own if you are careless. Defaults worth adopting:</p>
+<ul>
+<li><strong>Off by default.</strong> Content logging should be opt-in per route, time-boxed, and separately access-controlled — not a flag someone left on after a debugging session.</li>
+<li><strong>Never in the general log stream.</strong> Application logs are shipped to vendors, read by everyone on call, and retained for months.</li>
+<li><strong>Redact credentials.</strong> An error handler that dumps outgoing headers will eventually leak a provider key into your observability vendor.</li>
+<li><strong>Beware inadvertent capture.</strong> Exception messages, request-body dumps and trace attributes often contain prompt fragments nobody intended to keep.</li>
+</ul>
+<p>If content capture is genuinely needed — eval sets, abuse investigation — treat that store as a separate system with its own retention and access rules, and tell users it exists. That is the distinction our <a href="../privacy.html">privacy policy</a> draws between content and operational metadata, and it is the one auditors ask about.</p>
+
+<h2>Aggregates that catch silent degradation</h2>
+<p>Single requests prove nothing; distributions do. Three worth computing continuously, per model and per provider:</p>
+<ul>
+<li><strong>Output-token histogram.</strong> Truncation appears as a wall in the distribution, often at a suspicious power of two.</li>
+<li><strong>Refusal rate.</strong> A rising share of refusal-shaped responses usually means an upstream policy or model change, not a change in your users.</li>
+<li><strong>Empty and near-empty completions.</strong> Cheap to count, and one of the earliest indicators that something upstream changed.</li>
+</ul>
+
+<h2>Alerts worth being woken by</h2>
+<p>Most LLM alerting is either absent or noise. A defensible starting set: error rate by provider over a short window; time-to-first-token at p95 against a rolling baseline rather than a fixed threshold; spend rate per key against its own recent norm; and parse-failure rate on structured routes. Four alerts, each mapping to an action.</p>
+<p>Deliberately excluded: total latency (dominated by legitimate long generations) and total spend (arrives too late to act on — rate is the actionable form).</p>
+
+<h2>Where it belongs</h2>
+<p>All of this is per-request instrumentation on the path every model call already takes. Implemented per service, you get four partial versions and no shared view of provider health; implemented once at the gateway, you get one dataset that answers both "is the provider healthy" and "who spent this". That is the same argument as <a href="llm-cost-attribution.html">cost attribution</a>, and it lands in the same place.</p>
+
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>One request path, one dataset. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../forge.html">Runix Forge</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

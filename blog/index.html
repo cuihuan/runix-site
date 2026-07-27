@@ -52,33 +52,93 @@
   <div class="container">
     <div class="blog-list">
       <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="llm-observability.html">What to Log for LLM Traffic, and What Not To</a></h3>
+        <p class="excerpt">Status codes and latency miss the failures that matter for LLM traffic. The signals worth recording, the fields to redact, and the alerts worth waking up for.</p>
+        <a class="read-more" href="llm-observability.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Concepts</span><span>July 27, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="what-is-an-llm-gateway.html">What Is an LLM Gateway? A Plain Definition</a></h3>
+        <p class="excerpt">An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.</p>
+        <a class="read-more" href="what-is-an-llm-gateway.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="llm-rate-limits.html">Surviving LLM Rate Limits: 429s, Budgets and Queues</a></h3>
+        <p class="excerpt">Why provider rate limits bite in bursts, how RPM, TPM and concurrency interact, and the queueing and backoff patterns that keep throughput stable under 429s.</p>
+        <a class="read-more" href="llm-rate-limits.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="streaming-llm-failover.html">Streaming LLM Responses Without Breaking Failover</a></h3>
+        <p class="excerpt">Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.</p>
+        <a class="read-more" href="streaming-llm-failover.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="prompt-caching-explained.html">Prompt Caching: When It Pays and When It Bites</a></h3>
+        <p class="excerpt">How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.</p>
+        <a class="read-more" href="prompt-caching-explained.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="llm-cost-attribution.html">Per-Team LLM Cost Attribution That Survives Audit</a></h3>
+        <p class="excerpt">Provider invoices arrive as one number. How to attach cost to a team, feature and request at call time, and why reconstructing it later never works.</p>
+        <a class="read-more" href="llm-cost-attribution.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Buyer's guide</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="openrouter-alternatives.html">OpenRouter Alternatives: A Buyer's Checklist</a></h3>
+        <p class="excerpt">Evaluating LLM gateways beyond routing: the contract, data, failover and cost-attribution questions that decide whether a gateway survives procurement.</p>
+        <a class="read-more" href="openrouter-alternatives.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Security</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="llm-api-key-management.html">LLM Provider Keys: Scope, Rotation and Blast Radius</a></h3>
+        <p class="excerpt">Provider keys spread through repos, CI and notebooks. How to scope and rotate them, and why a compromised LLM key is a billing incident as well as a data one.</p>
+        <a class="read-more" href="llm-api-key-management.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Buyer's guide</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
+        <h3><a href="build-vs-buy-llm-gateway.html">Build or Buy an LLM Gateway: An Honest Comparison</a></h3>
+        <p class="excerpt">The first version of a gateway is a weekend. The parts that take a year are retry budgets, streaming failover, cost accounting and being on call for all of it.</p>
+        <a class="read-more" href="build-vs-buy-llm-gateway.html">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Compliance</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="ai-vendor-data-questions.html">12 Data Questions to Ask an AI Vendor</a></h3>
+        <p class="excerpt">The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.</p>
+        <a class="read-more" href="ai-vendor-data-questions.html">Read post →</a>
+      </div>
+      <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 22, 2026</span><span>·</span><span>7 min read</span></div>
         <h3><a href="llm-cost-control.html">LLM Cost Control: Tokens, Caching, and Budgets Explained</a></h3>
-        <p class="excerpt">Input/output pricing asymmetry, cache-friendly prompt structure, cheap-model cascades, and hard budget enforcement — a practical walkthrough of where LLM spend actually goes and the controls that keep it bounded.</p>
+        <p class="excerpt">Token pricing asymmetry, prompt caching, model routing, budgets and kill switches — and the waste patterns that quietly inflate an LLM bill.</p>
         <a class="read-more" href="llm-cost-control.html">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 19, 2026</span><span>·</span><span>8 min read</span></div>
         <h3><a href="ai-data-pipelines.html">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></h3>
-        <p class="excerpt">A stage-by-stage walkthrough of production AI data pipelines: ingestion and parsing tradeoffs, three tiers of deduplication, LLM-powered extraction with schema validation, and PII masking that fails closed.</p>
+        <p class="excerpt">A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.</p>
         <a class="read-more" href="ai-data-pipelines.html">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 15, 2026</span><span>·</span><span>9 min read</span></div>
         <h3><a href="model-failover.html">Designing for Model Failover: Lessons from Production LLM Traffic</a></h3>
-        <p class="excerpt">Hard errors are the easy part — the failures that hurt are silent degradation and retry storms. A field guide to retry budgets, per-model circuit breakers, and degradation tiers that beat an error page.</p>
+        <p class="excerpt">Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.</p>
         <a class="read-more" href="model-failover.html">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 12, 2026</span><span>·</span><span>8 min read</span></div>
         <h3><a href="llm-gateway-guide.html">Choosing an LLM Gateway: Seven Things That Actually Matter</a></h3>
-        <p class="excerpt">A no-fluff evaluation guide for picking an LLM gateway: streaming and tool-call fidelity, mid-stream failover behavior, per-key limits, token-level cost attribution, and the managed-vs-self-hosted trade.</p>
+        <p class="excerpt">How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.</p>
         <a class="read-more" href="llm-gateway-guide.html">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Announcement</span><span>July 8, 2026</span><span>·</span><span>4 min read</span></div>
         <h3><a href="introducing-runix.html">Introducing Runix</a></h3>
-        <p class="excerpt">The hard part of AI is everything after the demo: reliability, cost visibility, and data quality. We are launching Runix to build that layer — an OpenAI-compatible gateway, managed data pipelines, and ready-to-deploy solutions.</p>
+        <p class="excerpt">Why we are building an OpenAI-compatible LLM gateway, managed data pipelines and ready-to-deploy solutions — and what comes next.</p>
         <a class="read-more" href="introducing-runix.html">Read post →</a>
       </div>
     </div>

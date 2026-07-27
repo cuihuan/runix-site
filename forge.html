@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runix Forge — Dedicated Model Deployment and Fine-Tuning</title>
+<meta name="description" content="Dedicated, single-tenant model deployment and fine-tuning for teams that cannot use shared inference, reachable through the same gateway API. Planned.">
+<link rel="canonical" href="https://runixcloud.io/forge">
+<meta property="og:title" content="Runix Forge — Dedicated Model Deployment and Fine-Tuning">
+<meta property="og:description" content="Dedicated, single-tenant model deployment and fine-tuning for teams that cannot use shared inference, reachable through the same gateway API. Planned.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/forge">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Forge",
+  "serviceType": "Model deployment and fine-tuning",
+  "description": "Dedicated single-tenant model deployment, fine-tuning on customer data, and pre-rollout evaluation, reachable through the Runix Gateway API.",
+  "url": "https://runixcloud.io/forge",
+  "provider": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "areaServed": "Worldwide"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Products",
+      "item": "https://runixcloud.io/#products"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Runix Forge",
+      "item": "https://runixcloud.io/forge"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
+    <div class="nav-links">
+      <a href="index.html#products" class="active">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="security.html">Security</a>
+      <a href="about.html">Company</a>
+      <a href="blog/">Blog</a>
+      <a class="nav-cta" href="about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Runix Forge · Planned</span>
+    <h1>Your model, on<br>hardware you can point at</h1>
+    <p>Dedicated deployment and fine-tuning for teams that cannot send everything to a shared API — because of a regulator, a contract, a latency budget, or a model they have invested in themselves.</p>
+    <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Forge">Scope an engagement</a>
+      <a class="btn btn-ghost" href="gateway.html">Start with the gateway</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<section class="section">
+  <div class="container">
+    <div class="callout" style="margin-top:0;">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span><b>Status: planned.</b> Runix Forge is not generally available and nothing here is a product you can buy today. We are scoping engagements now, and we would rather say that plainly than dress a roadmap up as a launch.</span>
+    </div>
+    <div class="section-head center" style="margin-top:56px;">
+      <h2>What it is meant to cover</h2>
+      <p>The work that starts when a shared endpoint stops being an option.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Dedicated deployment</h3>
+        <p>Single-tenant inference on dedicated hardware, sized to a real traffic shape rather than a benchmark — including the boring parts: capacity planning, warm pools, upgrade paths, and what happens when a node dies.</p>
+      </div>
+      <div class="card">
+        <h3>Fine-tuning</h3>
+        <p>Adapting an open model on your own data, with the dataset work treated as a first-class step rather than an afterthought — which is where <a href="pipeline.html">Runix Pipeline</a> plugs in.</p>
+      </div>
+      <div class="card">
+        <h3>Evaluation before rollout</h3>
+        <p>A tuned model is only better if you can show it. Task-specific evaluation sets, before-and-after comparison, and a decision you can defend to whoever signs off.</p>
+      </div>
+      <div class="card">
+        <h3>One interface either way</h3>
+        <p>Whatever runs where, it stays reachable through <a href="gateway.html">Runix Gateway</a> — so your application does not learn the difference between a hosted provider and your own hardware.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="feature">
+      <div>
+        <span class="badge">Who this is for</span>
+        <h3>Three reasons teams end up here</h3>
+        <p>Not everyone needs dedicated hardware, and we will say so if you do not. The cases where it earns its cost are consistent:</p>
+        <ul>
+          <li><b>Data cannot leave</b> — a regulator, a customer contract, or an internal policy rules out shared inference</li>
+          <li><b>The workload is steady and large</b> — at constant volume, dedicated capacity stops being the expensive option</li>
+          <li><b>The model is the moat</b> — you have tuned something on proprietary data and it should not run on someone else's terms</li>
+        </ul>
+      </div>
+      <div class="facts">
+        <div class="facts-head">Honest status</div>
+        <div class="frow"><span class="k">Availability</span><span class="v">Not generally available<small>Scoping engagements now</small></span></div>
+        <div class="frow"><span class="k">Today</span><span class="v">Design conversations<small>Requirements, constraints, feasibility</small></span></div>
+        <div class="frow"><span class="k">Pricing</span><span class="v">Per engagement<small>Quoted after scoping, never before</small></span></div>
+        <div class="frow"><span class="k">If it does not fit</span><span class="v">We say so<small>The gateway may be all you need</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Tell us the constraint you cannot design around</h2>
+      <p>Residency, latency, cost at volume, or a model of your own — describe it and we will tell you honestly whether this is the answer.</p>
+      <a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20Forge">Scope an engagement</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="gateway.html">Runix Gateway</a>
+        <a href="pipeline.html">Runix Pipeline</a>
+        <a href="forge.html">Runix Forge</a>
+        <a href="pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="security.html">Security</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="cancellation.html">Cancellation Policy</a>
+        <a href="acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

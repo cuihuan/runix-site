@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runix Pipeline — AI Data Preparation and Cleaning</title>
+<meta name="description" content="Managed AI data pipelines: ingestion, cleaning, deduplication, schema-validated LLM extraction and PII masking, delivered with a quality report. In development.">
+<link rel="canonical" href="https://runixcloud.io/pipeline">
+<meta property="og:title" content="Runix Pipeline — AI Data Preparation and Cleaning">
+<meta property="og:description" content="Managed AI data pipelines: ingestion, cleaning, deduplication, schema-validated LLM extraction and PII masking, delivered with a quality report. In development.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/pipeline">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Pipeline",
+  "serviceType": "AI data preparation",
+  "description": "A managed data preparation service for AI: ingestion, cleaning, deduplication, LLM-assisted structured extraction, PII masking and per-delivery quality reporting.",
+  "url": "https://runixcloud.io/pipeline",
+  "provider": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "areaServed": "Worldwide"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Products",
+      "item": "https://runixcloud.io/#products"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Runix Pipeline",
+      "item": "https://runixcloud.io/pipeline"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
+    <div class="nav-links">
+      <a href="index.html#products" class="active">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="security.html">Security</a>
+      <a href="about.html">Company</a>
+      <a href="blog/">Blog</a>
+      <a class="nav-cta" href="about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Runix Pipeline · In development</span>
+    <h1>Data a model can<br>actually use</h1>
+    <p>The unglamorous half of every AI project: getting raw, duplicated, half-structured source material into something a model reads without choking. Built as a managed pipeline, delivered with a quality report.</p>
+    <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Pipeline%20design%20partner">Become a design partner</a>
+      <a class="btn btn-ghost" href="blog/ai-data-pipelines.html">Read how we think about it</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<section class="section">
+  <div class="container">
+    <div class="callout" style="margin-top:0;">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span><b>Status: in development.</b> Runix Pipeline is being built alongside a small number of design partners, and is scoped per engagement rather than sold as a self-serve product. If the stages below match a problem you have now, that is exactly the conversation we want.</span>
+    </div>
+    <div class="section-head center" style="margin-top:56px;">
+      <h2>Five stages, each one auditable</h2>
+      <p>Every stage produces something you can inspect, so a bad answer downstream can be traced to the record that caused it.</p>
+    </div>
+    <div class="steps">
+      <div class="stepc"><div class="n" aria-hidden="true">1</div><h3>Ingest</h3><p>Documents, exports, databases and APIs, with the parsing trade-offs written down rather than hidden in a script.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">2</div><h3>Clean &amp; dedupe</h3><p>Format normalisation, noise removal, and deduplication at exact, near and semantic levels — with counts you can check.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">3</div><h3>Structure</h3><p>LLM-assisted extraction into a schema you define, validated on the way out so malformed records fail loudly.</p></div>
+    </div>
+    <div class="steps" style="margin-top:20px;">
+      <div class="stepc"><div class="n" aria-hidden="true">4</div><h3>Mask</h3><p>Personal data identified and masked before it reaches a model or a training set, failing closed when detection is uncertain.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">5</div><h3>Report</h3><p>A quality report per delivery: coverage, duplication rates, extraction confidence, and what was dropped and why.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">6</div><h3>Deliver</h3><p>Files, a database, or an endpoint — batch or continuous, whichever your downstream actually consumes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="feature">
+      <div>
+        <span class="badge">Why it is a service, not a SaaS</span>
+        <h3>Nobody's data is generic</h3>
+        <p>Cleaning pipelines fail on the specifics: the one export with a broken encoding, the near-duplicates that are not duplicates, the field that means two different things in two systems. We scope those with you rather than pretending a wizard handles them.</p>
+        <p style="margin-top:14px;">That is also why it is priced per project or volume rather than per seat — you are buying the judgement calls, not a dashboard.</p>
+      </div>
+      <div class="facts">
+        <div class="facts-head">What an engagement looks like</div>
+        <div class="frow"><span class="k">Starts with</span><span class="v">A sample of your real data<small>Not a questionnaire</small></span></div>
+        <div class="frow"><span class="k">You get back</span><span class="v">A scoped plan<small>Stages, trade-offs, and what we will not attempt</small></span></div>
+        <div class="frow"><span class="k">Delivery</span><span class="v">Batch or continuous<small>Files, database, or endpoint</small></span></div>
+        <div class="frow"><span class="k">Every delivery</span><span class="v">Ships with a quality report<small>Including what was dropped and why</small></span></div>
+        <div class="frow"><span class="k">Pricing</span><span class="v">Per project or volume<small>Quoted before work starts</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Have a pile of data and a deadline?</h2>
+      <p>Send a sample and what you need out of it. You get a scoped plan back, including the parts we think are not worth doing.</p>
+      <a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20Pipeline%20design%20partner">Become a design partner</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="gateway.html">Runix Gateway</a>
+        <a href="pipeline.html">Runix Pipeline</a>
+        <a href="forge.html">Runix Forge</a>
+        <a href="pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="security.html">Security</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="cancellation.html">Cancellation Policy</a>
+        <a href="acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

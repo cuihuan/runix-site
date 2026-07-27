@@ -4,14 +4,14 @@
   Permissions-Policy: geolocation=(), camera=(), microphone=()
   X-Frame-Options: SAMEORIGIN
 
-# Images and the logo change rarely and are safe to hold on to.
-# The stylesheet deliberately is not here: its filename carries no hash, so a
-# long browser cache would strand visitors on an old design after a deploy.
+# A day, not a week. These filenames carry no content hash, and this account's
+# deploy token cannot purge cache — so a week-long TTL means a week of stale
+# branding after any asset change. Bump the ?v= query when one changes.
 /assets/og-cover.png
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=86400
 
 /assets/favicon.svg
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=86400
 
 /assets/logo.svg
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=86400

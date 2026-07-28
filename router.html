@@ -12,13 +12,13 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Runix Gateway — Secure, Compliant LLM Gateway with Failover</title>
-<meta name="description" content="One OpenAI-compatible endpoint across model providers: central key custody, written data terms, contracts you can sign, and failover that fires mid-request.">
-<link rel="canonical" href="https://runixcloud.io/gateway">
-<meta property="og:title" content="Runix Gateway — Secure, Compliant LLM Gateway with Failover">
-<meta property="og:description" content="One OpenAI-compatible endpoint across model providers: central key custody, written data terms, contracts you can sign, and failover that fires mid-request.">
+<title>Runix Router — LLM Routing, Failover &amp; Cost Control</title>
+<meta name="description" content="One OpenAI-compatible endpoint that routes across model providers: mid-request failover, central key custody, per-key quotas and cost tracking.">
+<link rel="canonical" href="https://runixcloud.io/router">
+<meta property="og:title" content="Runix Router — LLM Routing, Failover &amp; Cost Control">
+<meta property="og:description" content="One OpenAI-compatible endpoint that routes across model providers: mid-request failover, central key custody, per-key quotas and cost tracking.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://runixcloud.io/gateway">
+<meta property="og:url" content="https://runixcloud.io/router">
 <meta property="og:site_name" content="Runix">
 <meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=2">
 <meta property="og:image:width" content="1200">
@@ -35,10 +35,10 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Runix Gateway",
-  "serviceType": "LLM gateway",
+  "name": "Runix Router",
+  "serviceType": "LLM router",
   "description": "An OpenAI-compatible LLM gateway with central key custody, routing, automatic failover between providers, per-key quotas and per-request cost attribution.",
-  "url": "https://runixcloud.io/gateway",
+  "url": "https://runixcloud.io/router",
   "provider": {
     "@type": "Organization",
     "name": "Runix AI Inc",
@@ -57,7 +57,7 @@
       "name": "How much of my code has to change?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Runix Gateway speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls."
+        "text": "Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls."
       }
     },
     {
@@ -89,7 +89,7 @@
       "name": "How do I get access?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Runix Gateway is in early access. Keys are issued after a short intake rather than through self-serve signup; tell us what you are building and we reply within one business day."
+        "text": "Runix Router is in early access. Keys are issued after a short intake rather than through self-serve signup; tell us what you are building and we reply within one business day."
       }
     }
   ]
@@ -115,8 +115,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Runix Gateway",
-      "item": "https://runixcloud.io/gateway"
+      "name": "Runix Router",
+      "item": "https://runixcloud.io/router"
     }
   ]
 }
@@ -140,7 +140,7 @@
 </header>
 <div class="page-hero">
   <div class="container">
-    <span class="badge">Runix Gateway · Early access</span>
+    <span class="badge">Runix Router · Early access</span>
     <h1>One compliant endpoint<br>for every model</h1>
     <p>The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request — behind one OpenAI-compatible API.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
@@ -195,7 +195,7 @@
     </div>
     <div class="callout">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-      <span>Runix Gateway is in early access, so treat capability claims as what the product does for onboarded teams today — not as a published SLA. Ask us for specifics on your workload and we will answer concretely, in writing.</span>
+      <span>Runix Router is in early access, so treat capability claims as what the product does for onboarded teams today — not as a published SLA. Ask us for specifics on your workload and we will answer concretely, in writing.</span>
     </div>
   </div>
 </section>
@@ -237,7 +237,7 @@ curl https://api.runixcloud.io/v1/chat/completions \
       <h2>Common questions</h2>
     </div>
     <div class="grid cols-2">
-      <div class="card"><h3>How much of my code has to change?</h3><p>Runix Gateway speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
+      <div class="card"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
       <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage.</p></div>
       <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="privacy.html">Privacy</a>.</p></div>
       <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="terms.html">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
@@ -262,13 +262,12 @@ curl https://api.runixcloud.io/v1/chat/completions \
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
-        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="gateway.html">Runix Gateway</a>
+        <a href="router.html">Runix Router</a>
         <a href="pipeline.html">Runix Pipeline</a>
-        <a href="forge.html">Runix Forge</a>
         <a href="pricing.html">Pricing</a>
       </div>
       <div>

@@ -146,12 +146,12 @@
 <p>Decide that behaviour deliberately. Silently downgrading a model changes output quality without telling anyone, which is a support ticket wearing a cost control's clothing. Rejecting is honest but breaks the feature. Throttling is usually the least bad default for interactive traffic, and hard rejection is right for batch jobs.</p>
 
 <h2>Where this lands architecturally</h2>
-<p>All of the above is per-request bookkeeping on the hot path, which means it belongs in the component every request already passes through. Doing it in each service means implementing it four times and getting three different answers. That is the practical argument for a gateway — see <a href="../gateway.html">how we handle usage and quotas</a>, or the wider write-up on <a href="llm-cost-control.html">controlling LLM cost</a>.</p>
+<p>All of the above is per-request bookkeeping on the hot path, which means it belongs in the component every request already passes through. Doing it in each service means implementing it four times and getting three different answers. That is the practical argument for a gateway — see <a href="../router.html">how we handle usage and quotas</a>, or the wider write-up on <a href="llm-cost-control.html">controlling LLM cost</a>.</p>
 
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-  <span>Cost per key, per team, per feature — from the first call. <a href="../gateway.html">Runix Gateway</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
+  <span>Cost per key, per team, per feature — from the first call. <a href="../router.html">Runix Router</a> is in early access — <a href="../about.html#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
 
 </article>
@@ -161,13 +161,12 @@
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
-        <p class="desc">AI infrastructure for teams building with LLMs: Runix Gateway, Runix Pipeline and Runix Forge.</p>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../gateway.html">Runix Gateway</a>
+        <a href="../router.html">Runix Router</a>
         <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../forge.html">Runix Forge</a>
         <a href="../pricing.html">Pricing</a>
       </div>
       <div>

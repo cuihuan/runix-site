@@ -1,28 +1,26 @@
 # Runix
 
-> Runix is an LLM gateway: one OpenAI-compatible API in front of many model
-> providers, with routing, automatic failover, central key custody, per-key
-> quotas and per-request cost attribution. Operated by Runix AI Inc, a company
-> incorporated in Wyoming, United States. The service is in early access —
-> keys are issued on request rather than through self-serve signup.
+> Runix builds tools that make AI effortless to use. Its flagship, Runix Router,
+> is an LLM router: one OpenAI-compatible API in front of many model providers,
+> with routing, automatic failover, central key custody, per-key quotas and
+> per-request cost attribution. Operated by Runix AI Inc, a company incorporated
+> in Wyoming, United States. The service is in early access — keys are issued on
+> request rather than through self-serve signup.
 
 ## Products
 
-Three products, at three different stages. The statuses below are literal.
+Products at different stages. The statuses below are literal.
 
-- **Runix Gateway** — *status: early access, running traffic today.* One OpenAI-compatible
+- **Runix Router** — *status: early access, running traffic today.* One OpenAI-compatible
   endpoint across many providers, positioned on security, compliance and performance:
   central key custody, per-key limits and quotas, request-level audit trail, contracts and
   written data terms, automatic failover between providers with streaming preserved, and
   routing by cost, health and configuration. Hosted API, billed on usage.
-  https://runixcloud.io/gateway
+  https://runixcloud.io/router
 - **Runix Pipeline** — *status: in development with design partners.* Managed data
   preparation for AI: ingestion, cleaning, three tiers of deduplication, schema-validated
   LLM extraction, PII masking that fails closed, and a quality report with every delivery.
   Scoped and priced per project or volume. https://runixcloud.io/pipeline
-- **Runix Forge** — *status: planned, scoping engagements.* Dedicated single-tenant model
-  deployment and fine-tuning for workloads that cannot use a shared endpoint, reachable
-  through the same gateway API. Not generally available. https://runixcloud.io/forge
 
 ## Facts a buyer usually asks for
 
@@ -39,10 +37,9 @@ Three products, at three different stages. The statuses below are literal.
 
 ## Pages
 
-- [Home](https://runixcloud.io/): the product line, how the gateway is integrated, company facts.
-- [Runix Gateway](https://runixcloud.io/gateway): security, compliance and performance detail, plus FAQ.
+- [Home](https://runixcloud.io/): the product line, how the router is integrated, company facts.
+- [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the five pipeline stages and what an engagement looks like.
-- [Runix Forge](https://runixcloud.io/forge): dedicated deployment and fine-tuning, and who it is for.
 - [Pricing](https://runixcloud.io/pricing): billing models and exactly what every quote states.
 - [Security](https://runixcloud.io/security): data handling, key custody, access control, retention.
 - [About](https://runixcloud.io/about): the company, and how to contact it.

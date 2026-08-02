@@ -31,6 +31,14 @@ Products at different stages. The statuses below are literal.
   (export, multi-platform distribution, promotional assets). Not generally available.
   https://runixcloud.io/comic
 
+## Documentation
+
+- [Docs hub](https://runixcloud.io/docs/): guides for every product, honest about status.
+- [Router quickstart](https://runixcloud.io/docs/router): base URL and key, model selection, streaming, failover semantics, limits.
+- [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the five stages, delivery and the quality report.
+- [Code rollout guide](https://runixcloud.io/docs/code): cohorts, seats and policies, the review-gated workflow.
+- [Comic workflow guide](https://runixcloud.io/docs/comic): the three production stages and how cohorts run.
+
 ## Facts a buyer usually asks for
 
 - Legal entity: Runix AI Inc, Wyoming, United States.

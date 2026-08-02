@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runix Docs — Guides for Router, Pipeline, Code &amp; Comic</title>
+<meta name="description" content="Documentation for the Runix product line: Router integration quickstart, and engagement guides for Pipeline, Code and Comic as they come online.">
+<link rel="canonical" href="https://runixcloud.io/docs/">
+<meta property="og:title" content="Runix Docs — Guides for Router, Pipeline, Code &amp; Comic">
+<meta property="og:description" content="Documentation for the Runix product line: Router integration quickstart, and engagement guides for Pipeline, Code and Comic as they come online.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/docs/">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Docs",
+      "item": "https://runixcloud.io/docs/"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Docs</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Documentation</span>
+    <h1>Runix Docs</h1>
+    <p>How to integrate and work with each product. Honest about status: Router is serving traffic and has integration docs; the other three are in development, and their guides describe how an engagement works today.</p>
+  </div>
+</div>
+
+<main id="main">
+
+<section class="section">
+  <div class="container">
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Runix Router</h3>
+        <p><strong>Integration quickstart</strong> — base URL and key, model selection with <code>"auto"</code>, streaming, failover semantics, limits and data handling. If your code speaks the OpenAI API, you are one config change away.</p>
+        <p class="card-meta"><span>Status: early access</span> · <span>Integration guide</span></p>
+        <a class="read-more" href="router.html">Read the Router docs →</a>
+      </div>
+      <div class="card">
+        <h3>Runix Pipeline</h3>
+        <p><strong>Engagement guide</strong> — how a data preparation project runs: scoping, the five pipeline stages, what you receive at delivery, and the quality report that comes with it.</p>
+        <p class="card-meta"><span>Status: design partners</span> · <span>Engagement guide</span></p>
+        <a class="read-more" href="pipeline.html">Read the Pipeline docs →</a>
+      </div>
+      <div class="card">
+        <h3>Runix Code</h3>
+        <p><strong>Rollout guide</strong> — how a team adopts Runix Code: what the waitlist cohorts get, how seats and policies are configured, and what the review-gated workflow looks like day to day.</p>
+        <p class="card-meta"><span>Status: in development</span> · <span>Rollout guide</span></p>
+        <a class="read-more" href="code.html">Read the Code docs →</a>
+      </div>
+      <div class="card">
+        <h3>Runix Comic</h3>
+        <p><strong>Workflow guide</strong> — the three production stages, what you bring versus what the studio generates, and how waitlist cohorts work with us while the product is being built.</p>
+        <p class="card-meta"><span>Status: in development</span> · <span>Workflow guide</span></p>
+        <a class="read-more" href="comic.html">Read the Comic docs →</a>
+      </div>
+    </div>
+    <p class="model-note" style="text-align:center;margin-top:26px;color:var(--ink-3);font-size:14px;">A complete API reference ships with general availability. Until then, onboarded teams get documentation and support directly from the engineers — <a href="../about.html#contact" style="color:var(--indigo);font-weight:600;">ask us anything</a>.</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Background reading</h2>
+      <p>The engineering blog covers the mechanics behind the products.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Failover</h3>
+        <p><a href="../blog/model-failover.html">Model failover for production traffic</a> and <a href="../blog/streaming-llm-failover.html">how mid-stream failover works</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Cost</h3>
+        <p><a href="../blog/llm-cost-control.html">Cost control levers</a>, <a href="../blog/prompt-caching-explained.html">prompt caching</a>, and <a href="../blog/llm-cost-attribution.html">attribution per team</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Choosing infrastructure</h3>
+        <p><a href="../blog/llm-router-vs-llm-gateway.html">Router vs gateway</a>, <a href="../blog/llm-gateway-guide.html">what to evaluate</a>, and <a href="../blog/build-vs-buy-llm-gateway.html">build vs buy</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../router.html">Runix Router</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../code.html">Runix Code</a>
+        <a href="../comic.html">Runix Comic</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

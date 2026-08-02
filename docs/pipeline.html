@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runix Pipeline Docs — How an Engagement Works</title>
+<meta name="description" content="How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.">
+<link rel="canonical" href="https://runixcloud.io/docs/pipeline">
+<meta property="og:title" content="Runix Pipeline Docs — How an Engagement Works">
+<meta property="og:description" content="How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/docs/pipeline">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/site-config.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Runix Pipeline Docs — How an Engagement Works",
+  "description": "How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/docs/pipeline"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=3",
+  "author": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "url": "https://runixcloud.io/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Runix AI Inc",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://runixcloud.io/assets/logo.svg?v=3"
+    }
+  },
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Docs",
+      "item": "https://runixcloud.io/docs/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Runix Pipeline",
+      "item": "https://runixcloud.io/docs/pipeline"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="../index.html#products">Products</a>
+      <a href="../pricing.html">Pricing</a>
+      <a href="./" class="active">Docs</a>
+      <a href="../about.html">Company</a>
+      <a href="../blog/">Blog</a>
+      <a class="nav-cta" href="../about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Docs</span><span>Runix Pipeline</span><span>·</span><span>Updated August 2, 2026</span></div>
+    <h1 style="margin-top: 14px;">Pipeline: how an engagement works</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p><a href="../pipeline.html">Runix Pipeline</a> is managed data preparation: we turn raw, duplicated, half-structured source material into something a model can read. It is delivered as an engagement, not self-serve software — this page explains what an engagement looks like so you know what to expect before you write to us. Pipeline is being built with design partners, so early projects get direct engineering attention.</p>
+
+<h2>1. Scoping</h2>
+<p>Every engagement starts with your data and your goal. You describe the sources (documents, exports, crawls, databases), roughly how much there is, and what the output feeds — analytics, retrieval, or model training. We come back with a written scope: stages to run, delivery format, timeline and price. Scope is agreed before work starts and changes are agreed in writing.</p>
+
+<h2>2. The five stages</h2>
+<ul>
+<li><strong>Ingestion</strong> — pulling from your sources into a working store, with provenance kept per record.</li>
+<li><strong>Cleaning</strong> — format normalisation, error and noise reduction.</li>
+<li><strong>Deduplication</strong> — exact, near-duplicate and semantic tiers, applied to the depth the use case needs.</li>
+<li><strong>Structured extraction</strong> — schema-validated extraction from unstructured text, so downstream code gets fields, not prose.</li>
+<li><strong>PII masking</strong> — personal information identified and masked before data travels; the masking step fails closed.</li>
+</ul>
+<p>Not every project needs every stage — the scope names which ones run and why. The background reasoning is in <a href="../blog/ai-data-pipelines.html">Building AI data pipelines</a>.</p>
+
+<h2>3. Delivery</h2>
+<p>You receive the processed dataset in the agreed format — dataset files, database tables or an API handoff — together with a <strong>quality report</strong>: what was ingested, what was dropped and why, duplication rates, extraction validation results and masking coverage. The report is part of the deliverable, not an extra.</p>
+
+<h2>4. Starting a project</h2>
+<p><a href="../about.html#contact">Tell us about your data</a> — sources, volume, and what it needs to feed. We reply within one business day; if the fit is right, the next step is a written scope.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Questions this page does not answer? <a href="../about.html#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
+</div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="../router.html">Runix Router</a>
+        <a href="../pipeline.html">Runix Pipeline</a>
+        <a href="../code.html">Runix Code</a>
+        <a href="../comic.html">Runix Comic</a>
+        <a href="../pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="../about.html">About</a>
+        <a href="../about.html#contact">Contact</a>
+        <a href="../security.html">Security</a>
+        <a href="../careers.html">Careers</a>
+        <a href="../blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../refund.html">Refund Policy</a>
+        <a href="../cancellation.html">Cancellation Policy</a>
+        <a href="../acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="../terms.html">Terms</a>
+        <a href="../privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

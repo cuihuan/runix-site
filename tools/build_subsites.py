@@ -28,8 +28,11 @@ def absolutize(html):
     html = html.replace('href="index.html#products"', f'href="{MAIN}/#products"')
     html = html.replace('href="index.html"', f'href="{MAIN}/"')
     html = html.replace('href="blog/"', f'href="{MAIN}/blog/"')
+    html = html.replace('href="docs/"', f'href="{MAIN}/docs/"')
     html = re.sub(r'href="blog/([A-Za-z0-9_-]+)\.html"',
                   rf'href="{MAIN}/blog/\1"', html)
+    html = re.sub(r'href="docs/([A-Za-z0-9_-]+)\.html"',
+                  rf'href="{MAIN}/docs/\1"', html)
     for p in PAGES:
         html = re.sub(rf'href="{re.escape(p)}\.html(#[A-Za-z0-9_-]+)?"',
                       lambda m, p=p: f'href="{MAIN}/{p}{m.group(1) or ""}"', html)

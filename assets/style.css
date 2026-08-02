@@ -399,7 +399,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .hero-split .sub { font-size: 18px; }
 .hero-split .code-card { margin-top: 0; max-width: none; border-radius: var(--radius) var(--radius) 0 0; }
 .hero-metrics {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
   background: var(--line); border: 1px solid var(--line-2); border-top: none;
   border-radius: 0 0 var(--radius) var(--radius); overflow: hidden;
 }

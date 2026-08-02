@@ -92,14 +92,14 @@
 <section class="hero">
   <div class="container hero-split">
     <div>
-      <span class="badge">Router · Pipeline · Comic</span>
+      <span class="badge">Router · Pipeline · Code · Comic</span>
       <h1>AI,<br><span class="grad-text">made effortless.</span></h1>
-      <p class="sub">Runix builds the tools that take the friction out of AI — Router gives your product one endpoint for every model, Pipeline turns raw material into data models can read, and Comic turns scripts into published episodes.</p>
+      <p class="sub">Runix builds the tools that take the friction out of AI — Router gives your product one endpoint for every model, Pipeline turns raw material into data models can read, Code puts a reviewable AI agent in your repository, and Comic turns scripts into published episodes.</p>
       <div class="actions">
         <a class="btn btn-primary" href="#products">See the products</a>
         <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
       </div>
-      <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. Pipeline is built with design partners, and Comic has a waitlist open.</p>
+      <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. Pipeline is built with design partners; Code and Comic are in development with waitlists open.</p>
     </div>
     <div>
       <div class="code-card">
@@ -118,6 +118,7 @@ curl https://api.runixcloud.io/v1/chat/completions \
       <div class="hero-metrics">
         <div><b>Access</b><span>Runix Router</span></div>
         <div><b>Prepare</b><span>Runix Pipeline</span></div>
+        <div><b>Build</b><span>Runix Code</span></div>
         <div><b>Create</b><span>Runix Comic</span></div>
       </div>
     </div>
@@ -133,10 +134,10 @@ curl https://api.runixcloud.io/v1/chat/completions \
 <section class="section" id="products">
   <div class="container">
     <div class="section-head center">
-      <h2>Three products, three kinds of easy</h2>
-      <p>Runix is built in the order the work actually happens: get model access under control, make the data usable, then create and ship with it.</p>
+      <h2>Four products, four kinds of easy</h2>
+      <p>Runix is built in the order the work actually happens: get model access under control, make the data usable, then build and create with it.</p>
     </div>
-    <div class="grid cols-3">
+    <div class="grid cols-2">
       <div class="card" id="router">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M12 4l8 8-8 8"/></svg></div>
         <h3>Runix Router</h3>
@@ -161,6 +162,18 @@ curl https://api.runixcloud.io/v1/chat/completions \
         <p class="card-meta"><span>Status: in development</span> · <span>Managed engagement</span> · <span>Per project</span></p>
         <a class="read-more" href="pipeline.html">Explore Runix Pipeline →</a>
       </div>
+      <div class="card" id="code">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3>Runix Code</h3>
+        <p><strong>An AI pair that has read your code</strong> — codebase-aware assistance and agentic tasks, under review gates and team controls.</p>
+        <ul>
+          <li>Grounded in your repository and conventions</li>
+          <li>Multi-file tasks landing as reviewable diffs</li>
+          <li>Seats, attribution and model routing policies</li>
+        </ul>
+        <p class="card-meta"><span>Status: in development</span> · <span>Waitlist open</span></p>
+        <a class="read-more" href="code.html">Explore Runix Code →</a>
+      </div>
       <div class="card" id="comic">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
         <h3>Runix Comic</h3>
@@ -174,7 +187,7 @@ curl https://api.runixcloud.io/v1/chat/completions \
         <a class="read-more" href="comic.html">Explore Runix Comic →</a>
       </div>
     </div>
-    <p class="model-note" style="text-align:center;margin-top:26px;color:var(--ink-3);font-size:14px;">Statuses above are literal: only the Router is running traffic today, Pipeline is being built with design partners, and Comic is in development with a waitlist open. <a href="mailto:sales@runixcloud.io?subject=Roadmap" style="color:var(--indigo);font-weight:600;">Tell us which one you need first.</a></p>
+    <p class="model-note" style="text-align:center;margin-top:26px;color:var(--ink-3);font-size:14px;">Statuses above are literal: only the Router is running traffic today; Pipeline is being built with design partners, and Code and Comic are in development with waitlists open. <a href="mailto:sales@runixcloud.io?subject=Roadmap" style="color:var(--indigo);font-weight:600;">Tell us which one you need first.</a></p>
   </div>
 </section>
 
@@ -287,12 +300,13 @@ curl https://api.runixcloud.io/v1/chat/completions \
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
-        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline and Runix Comic.</p>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
         <a href="router.html">Runix Router</a>
         <a href="pipeline.html">Runix Pipeline</a>
+        <a href="code.html">Runix Code</a>
         <a href="comic.html">Runix Comic</a>
         <a href="pricing.html">Pricing</a>
       </div>

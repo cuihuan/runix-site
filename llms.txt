@@ -21,6 +21,10 @@ Products at different stages. The statuses below are literal.
   preparation for AI: ingestion, cleaning, three tiers of deduplication, schema-validated
   LLM extraction, PII masking that fails closed, and a quality report with every delivery.
   Scoped and priced per project or volume. https://runixcloud.io/pipeline
+- **Runix Code** — *status: in development, waitlist open.* An AI coding agent being built
+  for teams: codebase-aware completion and chat, agentic multi-file tasks that land as
+  reviewable diffs, and team controls (seats, usage attribution, model routing policies,
+  written data terms). Not generally available. https://runixcloud.io/code
 - **Runix Comic** — *status: in development, waitlist open.* An end-to-end AI studio for
   comic dramas being built to cover pre-production (scripts, consistent characters,
   storyboards), production (styled panels, motion, voice-over, subtitles) and publishing
@@ -45,6 +49,7 @@ Products at different stages. The statuses below are literal.
 - [Home](https://runixcloud.io/): the product line, how the router is integrated, company facts.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the five pipeline stages and what an engagement looks like.
+- [Runix Code](https://runixcloud.io/code): codebase-aware assistance, agentic workflows, team controls, and the waitlist.
 - [Runix Comic](https://runixcloud.io/comic): the three production stages being built, who it is for, and the waitlist.
 - [Pricing](https://runixcloud.io/pricing): billing models and exactly what every quote states.
 - [Security](https://runixcloud.io/security): data handling, key custody, access control, retention.

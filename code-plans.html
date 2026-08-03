@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- NOTE (internal): tier prices + credit allowances below are the framework
+     numbers from CODING-PLAN-PRICING.md. Confirm against real supply cost
+     before this goes to paying customers. Product is early-access, so CTAs are
+     waitlist/sales, not live checkout. -->
+<title>Runix Code Plans — Seat-Based AI Coding for Teams</title>
+<meta name="description" content="Team coding plans priced in credits: buy seats, each gets a monthly credit allowance across every model, with 5-hour, weekly and monthly caps that keep spend predictable.">
+<link rel="canonical" href="https://runixcloud.io/code-plans">
+<meta property="og:title" content="Runix Code Plans — Seat-Based AI Coding for Teams">
+<meta property="og:description" content="Team coding plans priced in credits: buy seats, each gets a monthly credit allowance across every model, with 5-hour, weekly and monthly caps that keep spend predictable.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/code-plans">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site-config.js" defer></script>
+<style>
+  .plans.plans-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 980px) { .plans.plans-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .plans.plans-4 { grid-template-columns: 1fr; } }
+  .plan .credits { margin: 12px 0 4px; font-size: 15px; color: var(--ink); font-weight: 600; }
+  .plan .credits b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .windows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .window { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; background: var(--bg-alt); }
+  .window .w-k { font: 700 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); }
+  .window h3 { font-size: 20px; margin: 10px 0 8px; }
+  .window p { color: var(--ink-2); font-size: 14.5px; }
+  @media (max-width: 780px) { .windows { grid-template-columns: 1fr; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Code Plans",
+  "serviceType": "AI coding assistant plans",
+  "description": "Seat-based AI coding plans priced in credits, with 5-hour, weekly and monthly usage caps per seat, invoiced billing and pooled team credits.",
+  "url": "https://runixcloud.io/code-plans",
+  "provider": { "@type": "Organization", "name": "Runix AI Inc", "url": "https://runixcloud.io/" },
+  "areaServed": "Worldwide"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is a credit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "One credit is a fixed unit of usage that covers any model or tool at a single published rate. You never reason about tokens or per-model dollar prices — every model, and search/fetch/data tool calls, are metered in the same credit." } },
+    { "@type": "Question", "name": "What happens when a seat hits its limit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Usage pauses until the window resets — a runaway agent cannot drain the whole team's month in an afternoon, and you never get a surprise bill. Each seat has a rolling 5-hour cap, a weekly cap and a monthly allowance." } },
+    { "@type": "Question", "name": "Can we get invoices and pay by bank transfer?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Card and online payment are instant; for teams we issue proper invoices with your company name and tax ID, support net terms and bank transfer, and can top up your team's credit balance against a redemption code after an offline payment." } },
+    { "@type": "Question", "name": "How many seats can we buy?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Plans are built for teams from a handful of seats up to 30–50 and beyond. Credits pool across the team, and an admin can set per-seat caps, restrict models and see per-seat usage." } }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
+    <div class="nav-links">
+      <a href="index.html#products">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs/">Docs</a>
+      <a href="security.html">Security</a>
+      <a href="about.html">Company</a>
+      <a href="blog/">Blog</a>
+      <a class="nav-cta" href="about.html#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Runix Code · Early access</span>
+    <h1>Coding plans for<br>your whole team</h1>
+    <p>Buy seats. Each seat gets a monthly credit allowance that covers every model and tool at one rate — with 5-hour, weekly and monthly caps that keep spend predictable and stop a runaway agent from burning the month in an afternoon.</p>
+    <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20team%20plan">Join the waitlist</a>
+      <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20plans">Talk to sales</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- The model -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>One credit, every model</h2>
+      <p>No tokens to reason about, no per-model price lists. Everything your team runs — frontier models, lighter models, and search / fetch / data tools — is metered in a single credit. You buy seats; seats carry credits; credits do the rest.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>Seats, not surprises</h3>
+        <p>Priced per seat per month, each with an included credit allowance. Add or remove seats as the team changes.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Predictable by design</h3>
+        <p>Rolling 5-hour, weekly and monthly caps per seat. Usage paces itself across the month — no bill shock, no one seat eating the pool.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18M9 21V9M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg></div>
+        <h3>Built for finance</h3>
+        <p>Proper invoices with your company name and tax ID, net terms, bank transfer and redemption codes for offline payment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Plans -->
+<section class="section alt" id="plans">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Team plans</h2>
+      <p>Indicative early-access tiers. Credits pool across your team; the CTA gets you onboarded and a quote for your seat count.</p>
+    </div>
+    <div class="plans plans-4">
+      <div class="plan">
+        <h3>Starter</h3>
+        <div class="price">$15<small> /seat/mo</small></div>
+        <div class="for">Occasional, light coding</div>
+        <p class="credits"><b>1,500 credits</b> / seat / mo</p>
+        <ul>
+          <li>Light + frontier models (metered)</li>
+          <li>5-hour, weekly &amp; monthly caps</li>
+          <li>Pooled team credits</li>
+          <li>Email support</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20Starter">Join waitlist</a>
+      </div>
+      <div class="plan featured">
+        <span class="flag">Most teams</span>
+        <h3>Team</h3>
+        <div class="price">$45<small> /seat/mo</small></div>
+        <div class="for">Daily driver for a working team</div>
+        <p class="credits"><b>5,000 credits</b> / seat / mo</p>
+        <ul>
+          <li>Frontier models, prompt caching</li>
+          <li>Higher 5h / weekly / monthly caps</li>
+          <li>Pooled credits + per-seat visibility</li>
+          <li>Admin controls, model policy</li>
+          <li>Priority support</li>
+        </ul>
+        <a class="btn btn-grad btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20Team">Join waitlist</a>
+      </div>
+      <div class="plan">
+        <h3>Business</h3>
+        <div class="price">$120<small> /seat/mo</small></div>
+        <div class="for">Heavy, agent-driven teams</div>
+        <p class="credits"><b>15,000 credits</b> / seat / mo</p>
+        <ul>
+          <li>All models incl. top tier</li>
+          <li>Highest caps, custom windows</li>
+          <li>Invoices, net terms, tax ID</li>
+          <li>SSO / OIDC sign-in</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Business">Talk to sales</a>
+      </div>
+      <div class="plan">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <div class="for">Committed volume &amp; deployment</div>
+        <p class="credits"><b>Committed</b> credit pool</p>
+        <ul>
+          <li>Pooled org credits, cost centers</li>
+          <li>Bank transfer &amp; PO / net terms</li>
+          <li>Private deployment options</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Enterprise">Talk to sales</a>
+      </div>
+    </div>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">Prices shown are indicative for early access and are quoted per team on onboarding. <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote for your seat count.</a></p>
+  </div>
+</section>
+
+<!-- Usage windows -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>How usage stays predictable</h2>
+      <p>Every seat runs against three rolling limits at once. It is the difference between "we lost a month's budget to one bad agent loop" and a plan that lasts exactly as long as it should.</p>
+    </div>
+    <div class="windows">
+      <div class="window">
+        <span class="w-k">Rolling 5 hours</span>
+        <h3>Burst control</h3>
+        <p>Caps a short spike — an agent stuck in a loop hits the 5-hour ceiling and pauses, instead of draining the pool in one sitting. Resets continuously.</p>
+      </div>
+      <div class="window">
+        <span class="w-k">Per week</span>
+        <h3>Pacing</h3>
+        <p>Keeps a single heavy week from consuming the whole month, so usage spreads evenly and every seat gets a fair share of the team's credits.</p>
+      </div>
+      <div class="window">
+        <span class="w-k">Per month</span>
+        <h3>The allowance</h3>
+        <p>The seat's total for the billing period. Reaching it pauses that seat until renewal; top up the team pool any time if you need more headroom.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- For teams -->
+<section class="section alt">
+  <div class="container">
+    <div class="feature">
+      <div>
+        <span class="badge">For small teams buying 30–50 seats</span>
+        <h3>Bought in bulk, controlled centrally</h3>
+        <p>Recharge one team credit pool, hand out seats, and set the rules once. Everything a small business needs to put an AI coding agent in front of a whole team without losing control of the bill.</p>
+        <ul>
+          <li>Pooled credits shared across all seats</li>
+          <li>Per-seat caps and model restrictions set by an admin</li>
+          <li>Per-seat usage visible — who spent what, on which model</li>
+          <li>Low-balance alerts before the pool runs out</li>
+          <li>Pay online, by invoice, or by bank transfer + redemption code</li>
+        </ul>
+      </div>
+      <div class="facts">
+        <div class="facts-head">How billing works</div>
+        <div class="frow"><span class="k">Unit</span><span class="v">Runix Credit<small>One rate across every model &amp; tool</small></span></div>
+        <div class="frow"><span class="k">Overage</span><span class="v">Paused, not billed<small>Caps hold; top up when you choose</small></span></div>
+        <div class="frow"><span class="k">Invoices</span><span class="v">Company name &amp; tax ID<small>Net terms, VAT handled</small></span></div>
+        <div class="frow"><span class="k">Offline pay</span><span class="v">Transfer + code<small>Redemption code tops up the pool</small></span></div>
+        <div class="frow"><span class="k">Renewal</span><span class="v">Monthly<small>Reminders before it runs out</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center"><h2>Common questions</h2></div>
+    <div class="grid cols-2">
+      <div class="card"><h3>What is a credit?</h3><p>A fixed unit of usage that covers any model or tool at one published rate. You never reason about tokens or per-model dollar prices — frontier models, lighter models, and search / fetch / data tools all meter in the same credit.</p></div>
+      <div class="card"><h3>What happens at the limit?</h3><p>Usage pauses until the window resets. Each seat runs against a rolling 5-hour cap, a weekly cap and a monthly allowance — so no runaway agent, no surprise bill. Need more? Top up the pool.</p></div>
+      <div class="card"><h3>Invoices &amp; bank transfer?</h3><p>Yes. Card and online payment are instant; for teams we issue invoices with your company name and tax ID, support net terms, and can credit your pool against a redemption code after an offline transfer.</p></div>
+      <div class="card"><h3>How many seats?</h3><p>From a handful up to 30–50 and beyond. Credits pool across the team; an admin sets per-seat caps, restricts models, and sees per-seat usage. <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20seats">Tell us your team size.</a></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Put a coding agent in front of your team</h2>
+      <p>Runix Code is in early access. Tell us your team size and stack — we come back with an onboarding plan and a quote within one business day.</p>
+      <a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20team%20plan">Join the waitlist</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="router.html">Runix Router</a>
+        <a href="pipeline.html">Runix Pipeline</a>
+        <a href="code.html">Runix Code</a>
+        <a href="comic.html">Runix Comic</a>
+        <a href="pricing.html">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="security.html">Security</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+        <a href="cancellation.html">Cancellation Policy</a>
+        <a href="acceptable-use.html">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

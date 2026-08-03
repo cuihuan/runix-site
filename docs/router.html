@@ -115,9 +115,9 @@
 <p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="../router.html">early access</a> — keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
 
 <h2>1. Quickstart</h2>
-<p>Set your client's base URL to <code>https://api.gateway.runixcloud.io/v1</code> and use the key issued during onboarding. Everything else about your existing integration stays the same.</p>
+<p>Set your client's base URL to <code>https://api.router.runixcloud.io/v1</code> and use the key issued during onboarding. Everything else about your existing integration stays the same.</p>
 <pre><code># cURL
-curl https://api.gateway.runixcloud.io/v1/chat/completions \
+curl https://api.router.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
   -d '{
     "model": "auto",
@@ -126,7 +126,7 @@ curl https://api.gateway.runixcloud.io/v1/chat/completions \
 <pre><code># OpenAI SDK (Python)
 from openai import OpenAI
 client = OpenAI(
-    base_url="https://api.gateway.runixcloud.io/v1",
+    base_url="https://api.router.runixcloud.io/v1",
     api_key=RUNIX_API_KEY,
 )
 resp = client.chat.completions.create(

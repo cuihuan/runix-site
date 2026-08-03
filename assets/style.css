@@ -433,3 +433,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 @media (max-width: 560px) {
   .footer-grid-4 { grid-template-columns: 1fr; }
 }
+
+/* Product cards are links, not just the "Explore" line — a visitor clicking
+   anywhere on the card lands on that product's page. */
+.card-clickable { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+.card-clickable .read-more { color: var(--indigo); font-weight: 600; display: inline-block; margin-top: 4px; }
+.card-clickable:hover .read-more { text-decoration: underline; }

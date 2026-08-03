@@ -36,11 +36,19 @@
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/site-config.js" defer></script>
 <style>
-  .plans.plans-4 { grid-template-columns: repeat(4, 1fr); }
+  /* 4 equal-height cards with the CTA pinned to the bottom, so nothing spills
+     past the border and every button lines up across tiers. */
+  .plans.plans-4 { grid-template-columns: repeat(4, 1fr); align-items: stretch; }
   @media (max-width: 980px) { .plans.plans-4 { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) { .plans.plans-4 { grid-template-columns: 1fr; } }
+  .plans-4 .plan { display: flex; flex-direction: column; }
+  .plans-4 .plan ul { flex: 1 0 auto; }
+  .plans-4 .plan .btn-block { margin-top: 20px; }
   .plan .credits { margin: 12px 0 4px; font-size: 15px; color: var(--ink); font-weight: 600; }
   .plan .credits b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .plan .save { display: inline-block; margin-left: 7px; font: 700 11px/1 var(--mono); letter-spacing: .04em;
+    color: #05080f; background: linear-gradient(100deg,#5b8cff,#22d3ee); padding: 3px 9px; border-radius: 999px; vertical-align: middle; }
+  .plan .rate { color: var(--ink-3); font-size: 12.5px; margin: 2px 0 0; }
   .windows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .window { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; background: var(--bg-alt); }
   .window .w-k { font: 700 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); }
@@ -101,7 +109,7 @@
     <h1>Coding plans for<br>your whole team</h1>
     <p>Buy seats. Each seat gets a monthly credit allowance that covers every model and tool at one rate — with 5-hour, weekly and monthly caps that keep spend predictable and stop a runaway agent from burning the month in an afternoon.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
-      <a class="btn btn-primary" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20team%20plan">Join the waitlist</a>
+      <a class="btn btn-primary" href="#plans">See plans &amp; get started</a>
       <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20plans">Talk to sales</a>
     </div>
   </div>
@@ -145,24 +153,26 @@
     </div>
     <div class="plans plans-4">
       <div class="plan">
-        <h3>Starter</h3>
-        <div class="price">$15<small> /seat/mo</small></div>
-        <div class="for">Occasional, light coding</div>
-        <p class="credits"><b>1,500 credits</b> / seat / mo</p>
+        <h3>Pro</h3>
+        <div class="price">$20<small> /seat/mo</small></div>
+        <div class="for">The standard seat</div>
+        <p class="credits"><b>2,000 credits</b> / seat / mo</p>
+        <p class="rate">Base rate · $0.010 / credit</p>
         <ul>
-          <li>Light + frontier models (metered)</li>
+          <li>Frontier + lighter models</li>
           <li>5-hour, weekly &amp; monthly caps</li>
           <li>Pooled team credits</li>
           <li>Email support</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20Starter">Join waitlist</a>
+        <a class="btn btn-ghost btn-block" href="https://console.router.runixcloud.io">Get started</a>
       </div>
       <div class="plan featured">
         <span class="flag">Most teams</span>
-        <h3>Team</h3>
-        <div class="price">$45<small> /seat/mo</small></div>
-        <div class="for">Daily driver for a working team</div>
-        <p class="credits"><b>5,000 credits</b> / seat / mo</p>
+        <h3>Max</h3>
+        <div class="price">$60<small> /seat/mo</small></div>
+        <div class="for">Heavy daily use</div>
+        <p class="credits"><b>8,000 credits</b> / seat / mo <span class="save">Save 25%</span></p>
+        <p class="rate">4× the credits of Pro · $0.0075 / credit</p>
         <ul>
           <li>Frontier models, prompt caching</li>
           <li>Higher 5h / weekly / monthly caps</li>
@@ -170,26 +180,28 @@
           <li>Admin controls, model policy</li>
           <li>Priority support</li>
         </ul>
-        <a class="btn btn-grad btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20Team">Join waitlist</a>
+        <a class="btn btn-grad btn-block" href="https://console.router.runixcloud.io">Get started</a>
       </div>
       <div class="plan">
-        <h3>Business</h3>
-        <div class="price">$120<small> /seat/mo</small></div>
-        <div class="for">Heavy, agent-driven teams</div>
-        <p class="credits"><b>15,000 credits</b> / seat / mo</p>
+        <h3>Ultra</h3>
+        <div class="price">$150<small> /seat/mo</small></div>
+        <div class="for">Power users, best rate</div>
+        <p class="credits"><b>25,000 credits</b> / seat / mo <span class="save">Save 40%</span></p>
+        <p class="rate">12.5× the credits of Pro · $0.006 / credit</p>
         <ul>
           <li>All models incl. top tier</li>
           <li>Highest caps, custom windows</li>
           <li>Invoices, net terms, tax ID</li>
           <li>SSO / OIDC sign-in</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Business">Talk to sales</a>
+        <a class="btn btn-ghost btn-block" href="https://console.router.runixcloud.io">Get started</a>
       </div>
       <div class="plan">
         <h3>Enterprise</h3>
         <div class="price">Custom</div>
-        <div class="for">Committed volume &amp; deployment</div>
+        <div class="for">Committed volume, lowest rate</div>
         <p class="credits"><b>Committed</b> credit pool</p>
+        <p class="rate">Volume rate on annual commit</p>
         <ul>
           <li>Pooled org credits, cost centers</li>
           <li>Bank transfer &amp; PO / net terms</li>
@@ -199,7 +211,7 @@
         <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Enterprise">Talk to sales</a>
       </div>
     </div>
-    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">Prices shown are indicative for early access and are quoted per team on onboarding. <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote for your seat count.</a></p>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">The more credits a seat carries, the cheaper each one gets — Pro to Ultra is a 40% better rate. Prices are indicative for early access. <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote for your seat count.</a></p>
   </div>
 </section>
 
@@ -275,8 +287,8 @@
   <div class="container">
     <div class="cta-band">
       <h2>Put a coding agent in front of your team</h2>
-      <p>Runix Code is in early access. Tell us your team size and stack — we come back with an onboarding plan and a quote within one business day.</p>
-      <a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20team%20plan">Join the waitlist</a>
+      <p>Pick a plan, add your seats, and your team is coding on Runix in minutes. Need a custom seat count or invoice terms? Talk to sales.</p>
+      <a class="btn btn-grad" href="#plans">Choose a plan</a>
     </div>
   </div>
 </section>

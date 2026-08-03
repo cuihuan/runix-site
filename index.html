@@ -78,6 +78,7 @@
     <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))">☰</button>
     <div class="nav-links">
+      <a href="index.html#platform">Platform</a>
       <a href="index.html#products">Products</a>
       <a href="pricing.html">Pricing</a>
       <a href="docs/">Docs</a>
@@ -97,7 +98,7 @@
       <h1>AI,<br><span class="grad-text">made effortless.</span></h1>
       <p class="sub">Runix builds the tools that take the friction out of AI — Router gives your product one endpoint for every model, Pipeline turns raw material into data models can read, Code puts a reviewable AI agent in your repository, and Comic turns scripts into published episodes.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="#products">See the products</a>
+        <a class="btn btn-primary" href="#platform">See the platform</a>
         <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a>
       </div>
       <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. Pipeline is built with design partners; Code and Comic are in development with waitlists open.</p>
@@ -132,7 +133,63 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   </div>
 </div>
 
-<section class="section" id="products">
+<section class="section" id="platform">
+  <div class="container">
+    <div class="section-head center">
+      <h2>One platform, three layers</h2>
+      <p>Runix is built as a stack. The <strong>Router</strong> sits in the middle — the control plane every request passes through. Below it, the models and compute it routes to. Above it, the tools your team actually builds and ships with.</p>
+    </div>
+    <div class="stack">
+      <div class="layer layer-top">
+        <div class="layer-tag">Upstream · Build &amp; create</div>
+        <div class="layer-body">
+          <h3>Applications &amp; tools</h3>
+          <p>Where people get work done — coding, content, and the reusable skills and tools that ride on top of the models.</p>
+          <div class="chips">
+            <a href="code.html">Runix Code</a>
+            <a href="comic.html">Runix Comic</a>
+            <span>Skill library</span>
+            <span>Agent tools</span>
+            <span>Office &amp; workflow</span>
+          </div>
+        </div>
+      </div>
+      <div class="layer-flow" aria-hidden="true"><span>▲ requests</span><span>results ▼</span></div>
+      <div class="layer layer-mid">
+        <div class="layer-tag">The control plane</div>
+        <div class="layer-body">
+          <h3>Runix Router</h3>
+          <p>One OpenAI-compatible endpoint in front of every provider: routing, mid-request failover, key custody, quotas, per-request cost — and the place search, fetch and data tools are called from.</p>
+          <div class="chips">
+            <a href="router.html">Routing &amp; failover</a>
+            <a href="router.html">Key custody &amp; quotas</a>
+            <a href="router.html">Cost &amp; usage</a>
+            <span>Tool calls (search / fetch / data)</span>
+            <a href="docs/router.html">Docs</a>
+          </div>
+        </div>
+      </div>
+      <div class="layer-flow" aria-hidden="true"><span>▲ prompts</span><span>tokens ▼</span></div>
+      <div class="layer layer-base">
+        <div class="layer-tag">Downstream · Models &amp; compute</div>
+        <div class="layer-body">
+          <h3>Models, tuning &amp; GPU</h3>
+          <p>What the Router points at — from hosted frontier models to your own tuned models on dedicated hardware, fed by clean data.</p>
+          <div class="chips">
+            <span>Frontier &amp; open models</span>
+            <span>Fine-tuning</span>
+            <span>Dedicated deployment</span>
+            <span>GPU &amp; inference</span>
+            <a href="pipeline.html">Runix Pipeline (data)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">Adopt the whole stack, or start with the layer you need most. <a href="about.html#contact" style="color:var(--indigo);font-weight:600;">Tell us where you are.</a></p>
+  </div>
+</section>
+
+<section class="section alt" id="products">
   <div class="container">
     <div class="section-head center">
       <h2>Four products, four kinds of easy</h2>

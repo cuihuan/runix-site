@@ -467,3 +467,6 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   .layer { padding: 22px; }
   .layer-flow { gap: 20px; }
 }
+
+/* nav "Sign in" reads like a text link next to the primary CTA (OpenAI/Google pattern) */
+.nav-links a.nav-signin { font-weight: 600; }

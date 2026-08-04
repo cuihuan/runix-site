@@ -68,7 +68,7 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
   border-radius: 10px; font-weight: 600;
 }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(107, 149, 255, 0.25); }
-.nav-toggle { display: none; margin-left: auto; background: none; border: none; font-size: 24px; color: var(--ink); cursor: pointer; }
+.nav-toggle { display: none; margin-left: auto; background: none; border: none; color: var(--ink); cursor: pointer; padding: 6px; align-items: center; }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; padding: 110px 0 90px; overflow: hidden; }
@@ -312,7 +312,7 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
     padding: 20px 24px; gap: 16px; border-bottom: 1px solid var(--line);
   }
   .nav-links.open { display: flex; }
-  .nav-toggle { display: block; }
+  .nav-toggle { display: flex; }
 }
 @media (max-width: 560px) {
   .hero { padding: 72px 0 60px; }

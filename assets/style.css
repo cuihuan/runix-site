@@ -1,20 +1,20 @@
-/* Runix — international SaaS stylesheet */
+/* Runix — international SaaS stylesheet (light, flagship) */
 :root {
-  --bg: #080b12;
-  --bg-alt: #0d121c;
-  --ink: #e9edf6;
-  --ink-2: #a3aec6;
-  --ink-3: #78849e;
-  --line: rgba(255, 255, 255, 0.10);
-  --line-2: rgba(255, 255, 255, 0.16);
-  --on-accent: #05080f;
-  --indigo: #6b95ff;
-  --cyan: #22d3ee;
+  --bg: #ffffff;
+  --bg-alt: #f6f7f9;
+  --ink: #0d1117;
+  --ink-2: #48505e;
+  --ink-3: #6b7480;
+  --line: rgba(13, 17, 23, 0.09);
+  --line-2: rgba(13, 17, 23, 0.14);
+  --on-accent: #ffffff;
+  --indigo: #4a5bd6;
+  --cyan: #0b96b8;
   --grad: linear-gradient(100deg, #5b8cff, #22d3ee);
   --radius: 16px;
   --maxw: 1120px;
   --mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --shadow: 0 14px 44px rgba(15, 23, 42, 0.10);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -46,8 +46,8 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(8, 11, 18, 0.82);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: saturate(1.4) blur(14px);
   border-bottom: 1px solid var(--line);
 }
 .nav {
@@ -87,11 +87,11 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
   font-size: 15.5px; font-weight: 600; transition: all 0.18s; border: 1px solid transparent;
 }
 .btn-primary { background: var(--ink); color: var(--on-accent); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); }
-.btn-grad { background: var(--grad); color: var(--on-accent); }
-.btn-grad:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(79, 70, 229, 0.35); }
-.btn-ghost { border-color: var(--line-2); color: var(--ink); background: rgba(255, 255, 255, 0.03); }
-.btn-ghost:hover { border-color: var(--ink-3); background: rgba(255, 255, 255, 0.06); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22); }
+.btn-grad { background: var(--grad); color: #05080f; }
+.btn-grad:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(79, 108, 255, 0.30); }
+.btn-ghost { border-color: var(--line-2); color: var(--ink); background: #fff; }
+.btn-ghost:hover { border-color: var(--ink-3); background: rgba(13, 17, 23, 0.03); }
 
 /* ---------- Code card ---------- */
 .code-card {
@@ -201,8 +201,8 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .cta-band::before {
   content: ""; position: absolute; inset: 0;
   background:
-    radial-gradient(500px 260px at 25% 100%, rgba(79, 70, 229, 0.35), transparent 65%),
-    radial-gradient(500px 260px at 75% 0%, rgba(6, 182, 212, 0.25), transparent 65%);
+    radial-gradient(560px 280px at 22% 100%, rgba(79, 108, 255, 0.12), transparent 66%),
+    radial-gradient(560px 280px at 78% 0%, rgba(34, 211, 238, 0.10), transparent 66%);
 }
 .cta-band h2 { position: relative; font-size: 36px; font-weight: 800; }
 .cta-band p { position: relative; color: var(--ink-2); margin-top: 12px; }
@@ -404,8 +404,8 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   border-radius: 0 0 var(--radius) var(--radius); overflow: hidden;
 }
 .hero-metrics div { background: #05080f; padding: 13px 16px; }
-.hero-metrics b { display: block; font-family: var(--mono); font-size: 16px; color: var(--ink); }
-.hero-metrics span { font-size: 11.5px; color: var(--ink-3); letter-spacing: 0.05em; text-transform: uppercase; }
+.hero-metrics b { display: block; font-family: var(--mono); font-size: 16px; color: #e9edf6; }
+.hero-metrics span { font-size: 11.5px; color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
 
 /* works-with row */
 .compat { display: flex; gap: 14px 26px; flex-wrap: wrap; align-items: center;
@@ -451,7 +451,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .layer .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
 .layer .chips a, .layer .chips span {
   font-size: 13.5px; padding: 7px 14px; border-radius: 999px;
-  border: 1px solid var(--line-2); background: rgba(255,255,255,0.03); color: var(--ink-2); }
+  border: 1px solid var(--line-2); background: #fff; color: var(--ink-2); }
 .layer .chips a { color: var(--indigo); font-weight: 600; }
 .layer .chips a:hover { border-color: var(--indigo); background: rgba(107,149,255,0.10); }
 /* the middle layer is the hero of the diagram */

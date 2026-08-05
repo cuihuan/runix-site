@@ -143,7 +143,10 @@ h2, h3, .section-head h2 { text-wrap: balance; }
 .code-card .dot { width: 11px; height: 11px; border-radius: 50%; background: #2a3441; }
 .code-card .bar span { margin-left: 10px; color: #8b95a1; font-size: 12.5px; font-family: "SF Mono", Menlo, monospace; }
 .code-card pre {
-  padding: 22px 24px; overflow-x: auto;
+  /* 18px matches .bar above, so the first character of the code lines up
+     with the filename. They were 24 and 18 -- which read as a slip, and
+     also left the sample 5px too narrow for the real endpoint URL. */
+  padding: 22px 18px; overflow-x: auto;
   font-family: "SF Mono", Menlo, Consolas, monospace;
   font-size: 12.5px; line-height: 1.9; color: #c9d1d9;
 }
@@ -276,6 +279,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
    instead of floating wherever that card's feature list happens to end. */
 .plan { display: flex; flex-direction: column; }
 .plan ul { flex: 1 0 auto; }
+/* The last row's rule separated the last feature from empty space. Every other
+   ruled list on the site (.contact-card .row, .facts .frow) already drops it;
+   the plan cards were the one that did not. */
+.plan ul li:last-child { border-bottom: none; }
 .plan .btn { width: 100%; text-align: center; margin-top: auto; }
 
 /* ---------- CTA band ---------- */

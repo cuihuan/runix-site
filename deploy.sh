@@ -34,6 +34,9 @@ python3 tools/point_og.py || { echo "    pointing pages at cards failed"; exit 1
 echo "==> Refresh sitemap lastmod for pages whose content changed"
 python3 "$SRC/tools/update_lastmod.py" --write
 
+echo "==> Code samples fit their container"
+python3 tools/code_overflow.py || { echo "    a code sample is cut off"; exit 1; }
+
 echo "==> Pre-deploy checks"
 # Source-level checks are cheap, so everything gets them.
 python3 "$SRC/tools/qa.py" || { echo "qa.py failed — not deploying." >&2; exit 1; }

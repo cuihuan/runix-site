@@ -370,6 +370,29 @@ for page in PAGES:
         if label in GENERIC and len(by_text) > 1:
             notes.append(f"{page}: non-descriptive link text “{label}”")
 
+# --- a ruled list does not rule off its last row ---------------------------
+# A border-bottom on every row of a repeated element leaves a hairline under
+# the final one, separating content from nothing. The site already drops it on
+# .contact-card .row and .facts .frow; the pricing plans were the one list that
+# did not, and it read as an unfinished card. This makes the convention a rule
+# rather than something three selectors happen to agree on.
+_css = open(os.path.join("assets", "style.css")).read()
+_css_flat = re.sub(r"/\*.*?\*/", " ", _css, flags=re.S)
+for _sel, _body in re.findall(r"([^{}]+)\{([^}]*)\}", _css_flat):
+    _sel = " ".join(_sel.split())
+    if "border-bottom" not in _body or ":last-child" in _sel or ":not(" in _sel:
+        continue
+    if re.search(r"border-bottom:\s*(none|0)", _body):
+        continue
+    # Only repeated children can have a "last" one worth exempting.
+    if not re.search(r"\b(li|dt|dd|tr|\.row|\.frow|\.item)\s*$", _sel):
+        continue
+    if not re.search(re.escape(_sel) + r":last-child\s*\{[^}]*border-bottom:\s*(none|0)",
+                     _css_flat):
+        fail("assets/style.css",
+             f"“{_sel}” rules every row including the last, leaving a hairline "
+             f"under nothing -- add a :last-child reset")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

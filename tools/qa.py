@@ -191,6 +191,24 @@ for page in PAGES:
             fail(page, f"asset referenced without a ?v= while /assets/* is "
                        f"immutable for a year: {ref}")
 
+# --- code examples must survive being copied ------------------------------
+# Every code block now has a Copy button, so a snippet that only works after a
+# human edits it is worse than no snippet. The homepage shipped a JSON body
+# with a "#" comment inside it -- valid-looking, and a parse error the moment
+# anyone pasted it.
+import html as _html2
+import json as _json2
+for page in PAGES:
+    for _blk in re.findall(r"<pre[^>]*>(?:<code[^>]*>)?(.*?)(?:</code>)?</pre>",
+                           open(page).read(), re.S):
+        _code = _html2.unescape(re.sub(r"<[^>]+>", "", _blk))
+        for _body in re.findall(r"-d\s+'(\{.*?\})'", _code, re.S):
+            try:
+                _json2.loads(_body)
+            except _json2.JSONDecodeError as _exc:
+                fail(page, f"a curl example's JSON body does not parse as written, "
+                           f"so copying it fails: {_exc}")
+
 # --- the mobile nav has a no-script fallback ------------------------------
 # Under 920px the nav links are display:none and only .open reveals them, and
 # .open is added by script. Without this block a visitor with scripting off has

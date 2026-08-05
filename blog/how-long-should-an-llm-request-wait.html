@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeouts for LLM requests — Runix</title>
+<meta name="description" content="Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.">
+<meta property="og:title" content="Timeouts for LLM requests — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta property="og:description" content="Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=12">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=12">
+<meta property="og:url" content="https://runixcloud.io/blog/how-long-should-an-llm-request-wait">
+<link rel="canonical" href="https://runixcloud.io/blog/how-long-should-an-llm-request-wait">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=16">
+<script src="../assets/site-config.js?v=10" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How long should an LLM request be allowed to take?",
+  "description": "Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/how-long-should-an-llm-request-wait"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=12",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-06",
+  "dateModified": "2026-08-06",
+  "url": "https://runixcloud.io/blog/how-long-should-an-llm-request-wait"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How long should an LLM request be allowed to take?",
+      "item": "https://runixcloud.io/blog/how-long-should-an-llm-request-wait"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Timeouts for LLM requests — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta name="twitter:description" content="Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>August 6, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">How long should an LLM request be allowed to take?</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>Every HTTP client ships with a default timeout, and every piece of advice about it
+assumes a request that either answers in under a second or has failed. Model traffic breaks
+that assumption: a legitimate response can take a minute, a failed one can hang for the same
+minute, and the two are indistinguishable until one of them ends.</p>
+
+<p>Getting this wrong produces the most confusing class of incident there is — the one where
+your dashboard says the provider is fine, the provider's status page says the provider is
+fine, and your users are staring at spinners.</p>
+
+<h2>Four timeouts, not one</h2>
+
+<p>"The timeout" is almost always four separate things, and conflating them is the root of
+most of the trouble.</p>
+
+<ul>
+<li><strong>Connect timeout</strong> — how long to wait for a TCP and TLS handshake. This
+    should be short, a couple of seconds at most. A slow handshake means a network or DNS
+    problem, and waiting longer never fixes it.</li>
+<li><strong>Time to first byte</strong> — how long to wait for the response to <em>start</em>.
+    On a streaming request this is the one that matters, and it is the only one that
+    distinguishes "the model is thinking" from "nothing is coming".</li>
+<li><strong>Inter-token (or read) timeout</strong> — once a stream has started, how long a gap
+    between chunks is acceptable before you give up. Almost nobody sets this, and it is what
+    catches a stream that dies mid-flight without closing.</li>
+<li><strong>Total request timeout</strong> — the ceiling on the whole thing. This is the one
+    everybody sets and the one that should usually be the loosest.</li>
+</ul>
+
+<p>Most client libraries expose a single number and apply it as the total. That single number
+is then set low enough to catch hangs, which means it also kills legitimate long generations,
+which shows up as sporadic failures on exactly your most valuable requests — the long,
+complex ones.</p>
+
+<h2>Streaming changes which number matters</h2>
+
+<p>On a non-streamed request you cannot distinguish slow from stuck, so the total timeout is
+all you have and it has to accommodate your longest legitimate response.</p>
+
+<p>On a streamed request you can. First byte tells you the request was accepted and generation
+started; the inter-token gap tells you it is still alive. That means you can set a tight
+first-byte timeout — a few seconds — and a tight inter-token gap, while allowing the total to
+run long. A response that takes ninety seconds but produces tokens steadily is healthy. A
+response that produces nothing for ten seconds is not, and you no longer have to wait ninety
+seconds to find out.</p>
+
+<p>This is the strongest practical argument for streaming even when the interface does not
+show tokens as they arrive: you get a failure signal you cannot otherwise have.</p>
+
+<h2>Stacked timeouts are where outages come from</h2>
+
+<p>A request typically crosses several hops, each with its own timeout: browser, your API,
+your gateway, the provider. The rule that keeps this sane is that <strong>timeouts must
+decrease as you move outward from the user</strong> — the outermost timeout is the longest,
+each inner one shorter.</p>
+
+<p>When they are ordered the other way, the outer layer gives up while the inner one is still
+working. The inner request completes, having consumed the tokens and the money, and delivers
+its response to a caller that stopped listening. You pay for output nobody received, your
+error rate reports failures the provider never saw, and retries pile a second request on top
+of a first that is still running.</p>
+
+<p>Two rules follow:</p>
+
+<ol>
+<li><strong>Write the numbers down as a chain</strong>, not as four independent settings. If
+    the browser waits 60s, your API should wait less, and whatever it calls should wait less
+    again. If you cannot state the chain, you do not have one.</li>
+<li><strong>Budget the retries inside the ceiling.</strong> A 30-second timeout with two
+    retries is a 90-second worst case at the layer above, which needs to know that. This is
+    the same reasoning as a <a href="/blog/model-failover">retry budget</a>, applied to time
+    rather than to volume.</li>
+</ol>
+
+<h2>What a timeout should do</h2>
+
+<p>Not "retry immediately with identical parameters". A timeout means something is slow, and
+the most common reason is load — so an immediate identical retry adds load to a system that is
+already struggling. That is how a slow provider becomes a down one.</p>
+
+<p>Better, in order of preference:</p>
+
+<ul>
+<li><strong>Retry elsewhere.</strong> If another provider serves the same model or an
+    acceptable alternative, that is a different failure domain and worth trying first.</li>
+<li><strong>Retry smaller.</strong> Shorter context, lower max tokens, a faster model. A
+    degraded answer beats a spinner.</li>
+<li><strong>Fail honestly and fast.</strong> "This is taking longer than usual — try again"
+    returned in five seconds preserves more trust than a ninety-second hang that ends in a
+    generic error.</li>
+</ul>
+
+<p>What is worth avoiding in all three cases is silently paying twice. If the first request is
+still running upstream when you start the second, you will be billed for both. Cancelling the
+original — actually closing the connection, not just abandoning the promise — is the part
+people skip.</p>
+
+<h2>Numbers to start from</h2>
+
+<p>These are starting points to be replaced by your own measurements, not recommendations
+dressed as facts. Measure your own <a href="/blog/llm-observability">time to first token
+distribution</a> per model and set from that.</p>
+
+<ul>
+<li><strong>Connect:</strong> a couple of seconds. Longer never helps.</li>
+<li><strong>First byte:</strong> a small multiple of your p99 TTFT for that model. If p99 is
+    two seconds, waiting thirty is waiting for nothing.</li>
+<li><strong>Inter-token gap:</strong> generous relative to normal token spacing but far below
+    your total — a stream that pauses for many seconds mid-generation is rarely recovering.</li>
+<li><strong>Total:</strong> above your longest legitimate generation, with headroom, and
+    strictly below whatever the layer above you allows.</li>
+</ul>
+
+<p>The one rule with no measurement behind it: the numbers must decrease outward-to-inward,
+and you should be able to write the chain on one line. Most timeout incidents are not a badly
+chosen number — they are four numbers nobody ever wrote down together.</p>
+
+<p>Where this lands operationally: the timeout chain, the retry budget and the failover policy
+are the same decision viewed three ways, which is the argument for them living in one place
+rather than in four services' configuration files. That is what a gateway is for, and
+<a href="/router">Runix Router</a> is ours — but the chain is yours to define either way, and
+nobody else can tell you what your longest legitimate response looks like.</p>
+
+<aside class="related">
+  <h2>Related reading</h2>
+  <ul>
+  <li><a href="/blog/model-failover">Designing for Model Failover: Lessons from Production LLM Traffic</a></li>
+  <li><a href="/blog/streaming-llm-failover">Streaming LLM Responses Without Breaking Failover</a></li>
+  <li><a href="/blog/llm-observability">What to Log for LLM Traffic, and What Not To</a></li>
+    <li><a href="/reliability">What happens when a provider fails</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -42,6 +42,8 @@ RELATED = {
     "llm-cost-control": (["prompt-caching-explained", "llm-cost-attribution", "llm-rate-limits"], "/pricing"),
     "llm-cost-attribution": (["llm-cost-control", "llm-observability", "llm-api-key-management"], "/pricing"),
     "prompt-caching-explained": (["llm-cost-control", "llm-cost-attribution", "llm-gateway-guide"], "/pricing"),
+    # operations
+    "how-long-should-an-llm-request-wait": (["model-failover", "streaming-llm-failover", "llm-observability"], "/reliability"),
     # operating a model change
     "did-the-model-change-make-it-worse": (["model-deprecation-without-a-redeploy", "llm-observability", "migrating-to-an-llm-gateway-without-downtime"], "/router"),
     # adoption

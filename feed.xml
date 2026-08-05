@@ -8,6 +8,13 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Aug 2026 00:00:00 +0000</lastBuildDate>
     <item>
+      <title>How long should an LLM request be allowed to take?</title>
+      <link>https://runixcloud.io/blog/how-long-should-an-llm-request-wait</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/how-long-should-an-llm-request-wait</guid>
+      <description>Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.</description>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>Your model id has an expiry date</title>
       <link>https://runixcloud.io/blog/model-deprecation-without-a-redeploy</link>
       <guid isPermaLink="true">https://runixcloud.io/blog/model-deprecation-without-a-redeploy</guid>

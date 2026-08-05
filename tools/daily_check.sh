@@ -54,6 +54,29 @@ else
   echo "  FAIL gateway returned $API_CODE for an unauthenticated /v1/models (expected 401)"
 fi
 
+# The sub-sites embed a copy of _headers taken when they were built, so a
+# change to the CSP or the cache policy on the main site does not reach them
+# until tools/deploy_subsites.sh runs. That drift has been live twice; detecting
+# it beats remembering. Read through a cache-busting query so a stale edge copy
+# is not mistaken for stale configuration.
+main_csp=$(curl -sI --max-time 15 "https://runixcloud.io/?b=$$" | grep -ic content-security)
+main_cache=$(curl -sI --max-time 15 "https://runixcloud.io/assets/style.css?b=$$" \
+  | grep -i '^cache-control' | tr -d '\r' | cut -d: -f2- | tr -d ' ')
+for h in gateway comic code data; do
+  sub_csp=$(curl -sI --max-time 15 "https://$h.runixcloud.io/?b=$$" | grep -ic content-security)
+  sub_cache=$(curl -sI --max-time 15 "https://$h.runixcloud.io/assets/style.css?b=$$" \
+    | grep -i '^cache-control' | tr -d '\r' | cut -d: -f2- | tr -d ' ')
+  if [ "$sub_csp" = "$main_csp" ] && [ "$sub_cache" = "$main_cache" ]; then
+    echo "  OK   $h subdomain headers match the main site"
+  else
+    FAIL=1
+    echo "  FAIL $h subdomain headers drifted from the main site"
+    echo "         main: csp=$main_csp cache=$main_cache"
+    echo "         sub:  csp=$sub_csp cache=$sub_cache"
+    echo "         fix:  CLOUDFLARE_API_TOKEN=... tools/deploy_subsites.sh"
+  fi
+done
+
 # Certificate expiry, because a cert that lapses takes everything with it and
 # gives about a month of warning that nobody is watching for.
 for host in runixcloud.io api.router.runixcloud.io console.router.runixcloud.io; do

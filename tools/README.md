@@ -43,11 +43,12 @@ standalone sites. They are **not** covered by `deploy.sh` — refreshing them is
 a separate step that is easy to forget, and they were three days stale while
 the main site changed all night.
 
-    python3 tools/build_subsites.py /tmp/subsites
-    for s in gateway comic code data; do
-      npx wrangler@4 pages deploy /tmp/subsites/subsite-$s \
-        --project-name=runix-$s --branch=main --commit-dirty=true
-    done
+    CLOUDFLARE_API_TOKEN=... tools/deploy_subsites.sh
+
+That builds all four, deploys them, and verifies the five domains afterwards.
+`daily_check.sh` compares each subdomain's CSP and cache headers against the
+main site's and tells you when they have drifted, so this is not something you
+have to remember.
 
 | Project | Domains |
 |---|---|

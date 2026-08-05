@@ -91,7 +91,7 @@
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
       <a href="../index.html#products">Products</a>
       <a href="../pricing.html">Pricing</a>
@@ -99,6 +99,7 @@
       <a href="../security.html">Security</a>
       <a href="../about.html">Company</a>
       <a href="../blog/" class="active">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
       <a class="nav-cta" href="../about.html#contact">Request access</a>
     </div>
   </nav>
@@ -122,7 +123,7 @@
   <h2>What we are building</h2>
 
   <h3>LLM Gateway</h3>
-  <p>A single OpenAI-compatible API in front of 20+ models across providers. You point your existing SDK at a new base URL, and you get automatic retries, provider failover, model routing, rate-limit handling, and per-key usage and cost tracking. When a provider degrades, the gateway routes around it. When you want to trial a new model, you change one string, not your integration. We run the gateway against a 99.9% uptime target, and a public status page is on the roadmap.</p>
+  <p>A single OpenAI-compatible API in front of many models across providers. You point your existing SDK at a new base URL, and you get automatic retries, provider failover, model routing, rate-limit handling, and per-key usage and cost tracking. When a provider degrades, the gateway routes around it. When you want to trial a new model, you change one string, not your integration. We run the gateway to a high-availability target, and a public status page is on the roadmap.</p>
 
   <h3>Managed Data Pipelines</h3>
   <p>Most production AI quality problems trace back to the data feeding the system, not the model. Our managed pipelines handle ingestion, cleaning, chunking, embedding, and refresh scheduling for the corpora behind retrieval and fine-tuning workloads. The pipeline is monitored and versioned, so when quality shifts you can see what changed in the data, not just guess.</p>

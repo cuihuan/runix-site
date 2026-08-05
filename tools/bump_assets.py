@@ -82,5 +82,37 @@ for asset in wanted:
 print(f"updated {len(changed_pages)} file(s)")
 
 if if_changed:
-    json.dump(digests, open(MANIFEST, "w"), indent=1, sort_keys=True)
-    print(f"  manifest updated ({len(digests)} asset(s))")
+    # Bumping one asset can change another. A font bump rewrites its URL inside
+    # style.css, so the stylesheet's own bytes change — and if its ?v= does not
+    # move in the same run, the edge keeps serving the previous stylesheet for a
+    # year under the old immutable URL, and the new font is never fetched. So
+    # re-hash and keep going until nothing more changes.
+    for _round in range(5):
+        after = {a: hashlib.sha256(open(os.path.join("assets", a), "rb").read()).hexdigest()[:16]
+                 for a in TRACKED if os.path.exists(os.path.join("assets", a))}
+        cascaded = [a for a in TRACKED if after.get(a) and digests.get(a) != after[a]]
+        if not cascaded:
+            break
+        print(f"  cascade: {', '.join(cascaded)} changed as a result — bumping too")
+        for asset in cascaded:
+            seen = set()
+            for page in pages:
+                for m in re.finditer(re.escape(asset) + r"(?:\?v=(\d+))?", open(page).read()):
+                    seen.add(int(m.group(1)) if m.group(1) else 0)
+            new_v = (max(seen) if seen else 0) + 1
+            pattern = re.compile(r"(?<![\w.-])" + re.escape(asset) + r"(\?v=\d+)?")
+            for page in pages:
+                src = open(page).read()
+                out = pattern.sub(f"{asset}?v={new_v}", src)
+                if out != src:
+                    open(page, "w").write(out)
+                    changed_pages.add(page)
+            print(f"    {asset}: -> v{new_v}")
+        digests = after
+    else:
+        sys.exit("  bump did not settle after 5 rounds — stopping rather than looping")
+
+    final = {a: hashlib.sha256(open(os.path.join("assets", a), "rb").read()).hexdigest()[:16]
+             for a in TRACKED if os.path.exists(os.path.join("assets", a))}
+    json.dump(final, open(MANIFEST, "w"), indent=1, sort_keys=True)
+    print(f"  manifest updated ({len(final)} asset(s))")

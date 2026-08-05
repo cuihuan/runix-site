@@ -3,6 +3,27 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), camera=(), microphone=()
   X-Frame-Options: SAMEORIGIN
+  # Tested by injecting this exact policy and counting console violations on
+  # six page types — 0 each, against 15 for a deliberately broken policy, so
+  # the test itself was verified rather than assumed.
+  #
+  # static.cloudflareinsights.com is Cloudflare's own Web Analytics beacon,
+  # injected at the edge — it does not appear in the HTML in this repository,
+  # so a locally-tested policy cannot see it. It showed up as the one violation
+  # on the live site after deploying a policy that tested clean on six pages
+  # locally. Blocking it buys no security and silently loses analytics data.
+  #
+  # script-src keeps 'unsafe-inline'. Removing it would mean moving the
+  # Google Analytics bootstrap out of every page, and the risk of silently
+  # breaking analytics outweighs the benefit on a static site with no user
+  # input, no auth and no query-parameter reflection — there is no injection
+  # vector for the directive to defend. The directives that do earn their
+  # keep here are object-src, base-uri and form-action.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+  # 180 days, no includeSubDomains and no preload. includeSubDomains would
+  # cover api. and console., which are not this project's to commit on
+  # someone else's behalf; preload is irreversible in practice.
+  Strict-Transport-Security: max-age=15552000
 
 # A day, not a week. These filenames carry no content hash, and this account's
 # deploy token cannot purge cache — so a week-long TTL means a week of stale

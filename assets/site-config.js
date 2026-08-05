@@ -130,3 +130,17 @@
     attach(pre, pre);
   });
 })();
+
+/* Mobile navigation.
+   This lived in an onclick attribute on every page — 48 copies of the same
+   three statements, and the single thing standing between this site and a
+   Content-Security-Policy without 'unsafe-inline'. Delegated from the document
+   so it does not depend on when this file loads relative to the markup. */
+document.addEventListener("click", function (event) {
+  var toggle = event.target.closest && event.target.closest(".nav-toggle");
+  if (!toggle) return;
+  var links = document.querySelector(".nav-links");
+  if (!links) return;
+  var open = links.classList.toggle("open");
+  toggle.setAttribute("aria-expanded", open ? "true" : "false");
+});

@@ -24,6 +24,7 @@ rsync -a \
   --exclude '.git' --exclude '.wrangler' --exclude 'node_modules' \
   --exclude 'payments' --exclude 'package.json' --exclude 'package-lock.json' \
   --exclude 'README.md' --exclude 'deploy.sh' --exclude '.DS_Store' --exclude '.gitignore' \
+  --exclude 'scheduled' --exclude 'tools' \
   "$SRC/" "$STAGE/"
 echo "    $(find "$STAGE" -type f | wc -l | tr -d ' ') files"
 

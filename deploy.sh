@@ -24,6 +24,13 @@ echo "==> Bump ?v= on assets whose bytes changed"
 # the one-year cache on /assets/* safe: forgetting to bump is no longer possible.
 python3 "$SRC/tools/bump_assets.py" --if-changed
 
+echo "==> Render per-page social cards"
+# Every page used to declare the same og:image, so a link shared anywhere
+# previewed as the same untitled cover. Cards are content-hashed, so a retitled
+# page gets a new URL under the year-long immutable cache.
+python3 tools/make_og.py || { echo "    social cards failed"; exit 1; }
+python3 tools/point_og.py || { echo "    pointing pages at cards failed"; exit 1; }
+
 echo "==> Refresh sitemap lastmod for pages whose content changed"
 python3 "$SRC/tools/update_lastmod.py" --write
 

@@ -191,24 +191,51 @@ for page in PAGES:
             fail(page, f"asset referenced without a ?v= while /assets/* is "
                        f"immutable for a year: {ref}")
 
-# --- the share image is the size the pages claim --------------------------
+# --- every page's share card exists, is the size it claims, and is its own --
 # og:image:width/height are hints social platforms lay out against before the
 # image loads. If they stop matching the file, previews crop wrong -- and that
 # only ever shows up when somebody shares a link, which is the worst time.
+#
+# This used to measure assets/og-cover.png for every page. Once each page got
+# its own card that was the wrong file, and the check passed only because the
+# cards happen to share the cover's dimensions -- coverage in appearance only.
+# It now resolves each page's own declared og:image.
+#
+# The duplicate check is the defect that motivated the cards: fifty pages
+# declaring one untitled image, so every shared link previewed identically.
 import struct as _struct
-_og = os.path.join("assets", "og-cover.png")
-if os.path.isfile(_og):
-    _data = open(_og, "rb").read(24)
-    if _data[:8] == b"\x89PNG\r\n\x1a\n":
-        _w, _h = _struct.unpack(">II", _data[16:24])
-        for page in PAGES:
-            _doc = open(page).read()
-            _dw = re.search(r'og:image:width" content="(\d+)"', _doc)
-            _dh = re.search(r'og:image:height" content="(\d+)"', _doc)
-            if _dw and int(_dw.group(1)) != _w:
-                fail(page, f"og:image:width says {_dw.group(1)} but the file is {_w}")
-            if _dh and int(_dh.group(1)) != _h:
-                fail(page, f"og:image:height says {_dh.group(1)} but the file is {_h}")
+_seen_og = {}
+for page in PAGES:
+    _doc = open(page).read()
+    _m = re.search(r'property="og:image" content="([^"]+)"', _doc)
+    if not _m:
+        continue
+    _ref = _m.group(1)
+    _local = os.path.normpath(re.sub(r"\?.*$", "", _ref).replace("https://runixcloud.io/", ""))
+    if not os.path.isfile(_local):
+        fail(page, f"og:image points at {_ref}, which is not a file in this repo")
+        continue
+    _seen_og.setdefault(_local, []).append(page)
+    _data = open(_local, "rb").read(24)
+    if _data[:8] != b"\x89PNG\r\n\x1a\n":
+        fail(page, f"og:image {_local} is not a PNG")
+        continue
+    _w, _h = _struct.unpack(">II", _data[16:24])
+    _dw = re.search(r'og:image:width" content="(\d+)"', _doc)
+    _dh = re.search(r'og:image:height" content="(\d+)"', _doc)
+    if _dw and int(_dw.group(1)) != _w:
+        fail(page, f"og:image:width says {_dw.group(1)} but {_local} is {_w}")
+    if _dh and int(_dh.group(1)) != _h:
+        fail(page, f"og:image:height says {_dh.group(1)} but {_local} is {_h}")
+    _tw = re.search(r'name="twitter:image" content="([^"]+)"', _doc)
+    if _tw and _tw.group(1) != _ref:
+        fail(page, "twitter:image and og:image disagree, so previews differ by platform")
+
+for _local, _pages in sorted(_seen_og.items()):
+    # index.html deliberately keeps the brand cover.
+    if len(_pages) > 1:
+        fail(_pages[1], f"{len(_pages)} pages share the share card {_local} "
+                        f"({', '.join(_pages[:3])}...) -- every preview looks the same")
 
 import html as _html2
 

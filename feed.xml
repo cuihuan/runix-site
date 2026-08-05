@@ -8,6 +8,13 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Aug 2026 00:00:00 +0000</lastBuildDate>
     <item>
+      <title>Where your prompts actually go</title>
+      <link>https://runixcloud.io/blog/where-your-prompts-actually-go</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/where-your-prompts-actually-go</guid>
+      <description>Every security review opens with this and most teams cannot answer it. How to trace the path text takes through an LLM integration, hop by hop.</description>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>How long should an LLM request be allowed to take?</title>
       <link>https://runixcloud.io/blog/how-long-should-an-llm-request-wait</link>
       <guid isPermaLink="true">https://runixcloud.io/blog/how-long-should-an-llm-request-wait</guid>

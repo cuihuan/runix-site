@@ -25,6 +25,7 @@ PRODUCT = {
     "/pricing": "How Runix pricing works",
     "/pipeline": "Runix Pipeline: managed data preparation",
     "/comic": "Runix Comic: script to screen",
+    "/security": "How Runix handles data, in plain language",
 }
 
 RELATED = {
@@ -42,6 +43,8 @@ RELATED = {
     "llm-cost-control": (["prompt-caching-explained", "llm-cost-attribution", "llm-rate-limits"], "/pricing"),
     "llm-cost-attribution": (["llm-cost-control", "llm-observability", "llm-api-key-management"], "/pricing"),
     "prompt-caching-explained": (["llm-cost-control", "llm-cost-attribution", "llm-gateway-guide"], "/pricing"),
+    # compliance
+    "where-your-prompts-actually-go": (["ai-vendor-data-questions", "llm-observability", "llm-api-key-management"], "/security"),
     # launch
     "llm-feature-pre-launch-checklist": (["how-long-should-an-llm-request-wait", "llm-cost-attribution", "did-the-model-change-make-it-worse"], "/router"),
     # operations

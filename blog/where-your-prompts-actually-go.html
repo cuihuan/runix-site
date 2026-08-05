@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracing where your prompts go — Runix</title>
+<meta name="description" content="Every security review opens with this and most teams cannot answer it. How to trace the path text takes through an LLM integration, hop by hop.">
+<meta property="og:title" content="Tracing where your prompts go — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta property="og:description" content="Every security review opens with this and most teams cannot answer it. How to trace the path text takes through an LLM integration, hop by hop.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=12">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=12">
+<meta property="og:url" content="https://runixcloud.io/blog/where-your-prompts-actually-go">
+<link rel="canonical" href="https://runixcloud.io/blog/where-your-prompts-actually-go">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=17">
+<script src="../assets/site-config.js?v=10" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Where your prompts actually go",
+  "description": "Every security review opens with this and most teams cannot answer it. How to trace the path text takes through an LLM integration, hop by hop.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/where-your-prompts-actually-go"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=12",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-06",
+  "dateModified": "2026-08-06",
+  "url": "https://runixcloud.io/blog/where-your-prompts-actually-go"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Where your prompts actually go",
+      "item": "https://runixcloud.io/blog/where-your-prompts-actually-go"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Tracing where your prompts go — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta name="twitter:description" content="Every security review opens with this and most teams cannot answer it. How to trace the path text takes through an LLM integration, hop by hop.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Compliance</span><span>August 6, 2026</span><span>·</span><span>4 min read</span></div>
+    <h1 style="margin-top: 14px;">Where your prompts actually go</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>The first question in an enterprise security review is some version of "where does
+our text go". It sounds simple. Most teams answer it with the name of one provider, and most
+of those answers are incomplete — not because anyone is hiding anything, but because nobody
+traced the path.</p>
+
+<p>This is how to trace it, and what each hop obliges you to be able to say.</p>
+
+<h2>The hops, in order</h2>
+
+<p>For a typical integration the text crosses more boundaries than the architecture diagram
+suggests:</p>
+
+<ol>
+<li><strong>Your application.</strong> Where the prompt is assembled — and where it may be
+    logged before anything else sees it.</li>
+<li><strong>Your logs and error tracking.</strong> The hop teams forget. An exception handler
+    that serialises the request body has just copied a prompt into whatever SaaS receives your
+    stack traces.</li>
+<li><strong>Your gateway or proxy, if any.</strong> Its own logs, its own retention, its own
+    region.</li>
+<li><strong>The model provider.</strong> Named in the answer everyone gives.</li>
+<li><strong>The provider's own sub-processors.</strong> The hop nobody asks about, and the one
+    an auditor will.</li>
+<li><strong>Anything reading the response on the way back.</strong> Evaluation harnesses,
+    moderation services, analytics that capture output text.</li>
+</ol>
+
+<p>A complete answer names every hop, says what is retained at each, and says for how long.
+If you cannot fill that table today, that is the finding — not the review.</p>
+
+<h2>Trace it, do not diagram it</h2>
+
+<p>Architecture diagrams describe intent. Find the actual path:</p>
+
+<p><strong>Grep for what logs the request.</strong> Any line that logs a request body, an
+exception with context, or a "debug" dump of an outgoing call. Include your framework's
+defaults — several log request bodies on error without being asked.</p>
+
+<p><strong>Read the SDK's own logging settings.</strong> Provider SDKs frequently have a debug
+mode that prints full request and response. If it can be turned on by an environment variable,
+assume it has been on somewhere at some point.</p>
+
+<p><strong>Check what your observability vendor captures.</strong> Traces with attributes,
+error payloads, session replay. Session replay is the sharpest edge: if a user typed the
+prompt into a text field, replay may have recorded the keystrokes, and that store is usually
+governed by nobody's data policy in particular.</p>
+
+<p><strong>Ask the provider for its sub-processor list.</strong> It is a published document at
+every serious vendor. If asking feels like an unusual request, that is itself information.</p>
+
+<h2>Three answers worth getting in writing</h2>
+
+<p><strong>1. Is content used for training?</strong> Ask specifically about the tier you are
+on — the answer often differs between consumer, standard API and enterprise agreements at the
+same vendor. Get the sentence, not the marketing page.</p>
+
+<p><strong>2. How long is content retained, and where?</strong> Most providers retain inputs
+and outputs for some abuse-monitoring window even when they do not train on them. That window
+is the number your auditor wants, and it is rarely on the front page.</p>
+
+<p><strong>3. What is kept when you delete?</strong> Deletion usually means the primary store.
+Backups, audit logs and abuse-monitoring copies have their own clocks. "Deleted" and "gone"
+are different words.</p>
+
+<h2>The distinction that makes this tractable</h2>
+
+<p>Separate <strong>content</strong> from <strong>operational metadata</strong> and the
+conversation gets much easier.</p>
+
+<p>Content is the prompt and the completion — the highest-risk data in the system, needed only
+to serve the request. Operational metadata is token counts, latency, model, error code,
+request id — needed to bill, to debug, and to notice a provider degrading, and carrying almost
+none of the risk.</p>
+
+<p>A system that keeps metadata indefinitely and content not at all is easy to explain and
+easy to defend. One that keeps "logs" without distinguishing the two is neither, and that is
+the shape most integrations start in. It is also the argument for
+<a href="/blog/llm-observability">deciding what to log deliberately</a> rather than logging
+whatever the framework does by default.</p>
+
+<h2>What a good answer looks like</h2>
+
+<p>Not "a major provider, and they hold SOC&nbsp;2". Something closer to:</p>
+
+<blockquote><p>Prompts go from our service to one gateway, which forwards to one of three
+named providers depending on the model requested. We log token counts, latency, model and a
+request id; we do not log prompt or completion content. The gateway retains those metadata
+records for N days. Each provider's retention and training terms are in their DPA, which we
+hold. Error tracking is configured to strip request bodies, and we verify that quarterly.</p></blockquote>
+
+<p>Every clause there is checkable, which is the point. The verifiability is what makes it a
+good answer, not the content of any individual claim.</p>
+
+<h2>Where to start if you have none of this</h2>
+
+<ol>
+<li>Write down the hops. Just the list — most teams discover one they had forgotten while
+    writing it.</li>
+<li>Grep for content in logs. Fix what you find before documenting anything.</li>
+<li>Collect the DPAs and sub-processor lists you already have the right to.</li>
+<li>Write the paragraph above for your own system, with the blanks filled.</li>
+</ol>
+
+<p>That paragraph is the deliverable. It answers the security review, it tells your own team
+what the rules are, and writing it usually surfaces one thing worth fixing — which is the real
+reason to do it before someone asks.</p>
+
+<p>The questions a buyer will put to <em>you</em> are covered in
+<a href="/blog/ai-vendor-data-questions">twelve data questions to ask an AI vendor</a>; ours
+are answered on <a href="/security">the security page</a>, in the same shape.</p>
+
+<aside class="related">
+  <h2>Related reading</h2>
+  <ul>
+  <li><a href="/blog/ai-vendor-data-questions">12 Data Questions to Ask an AI Vendor</a></li>
+  <li><a href="/blog/llm-observability">What to Log for LLM Traffic, and What Not To</a></li>
+  <li><a href="/blog/llm-api-key-management">LLM Provider Keys: Scope, Rotation and Blast Radius</a></li>
+    <li><a href="/security">How Runix handles data, in plain language</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

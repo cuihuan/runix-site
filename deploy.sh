@@ -19,6 +19,9 @@ if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   exit 1
 fi
 
+echo "==> Refresh sitemap lastmod for pages whose content changed"
+python3 "$SRC/tools/update_lastmod.py" --write
+
 echo "==> Pre-deploy checks"
 # Source-level checks are cheap, so everything gets them.
 python3 "$SRC/tools/qa.py" || { echo "qa.py failed — not deploying." >&2; exit 1; }

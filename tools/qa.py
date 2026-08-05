@@ -135,6 +135,38 @@ for page in PAGES:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- claims the site is not allowed to make ------------------------------
+# The standing rule is that Runix never publishes a customer count, an uptime
+# percentage, a latency figure or a certification it does not hold. Copy is
+# where that rule gets broken, usually by someone reaching for a number to make
+# a sentence land. These patterns fail the build rather than warn, because a
+# fabricated proof point is not a style problem — it is the one thing a buyer would
+# be entitled to be angry about.
+# Scoped to the sentence, and — except for "trusted by", which is inherently a
+# first-person marketing line — only when the sentence is about us. The blog
+# teaches buyers to tell "SOC 2 in progress" from "SOC 2 certified"; that is the
+# best use of those words on this site and must not trip the gate.
+SELF = re.compile(r"\b(runix|we|our|us)\b", re.I)
+FORBIDDEN = [
+    (r"\d+(\.\d+)?\s*%\s*(uptime|availability|sla)", "an uptime or availability percentage", True),
+    (r"\btrusted by\b", "a 'trusted by' claim", False),
+    (r"\b\d+\+?\s*(customers|companies|enterprises)\b", "a customer count", True),
+    (r"\b(SOC\s*2|ISO\s*27001|PCI[- ]DSS)\b[^.]{0,40}\b(certified|compliant|attested)\b",
+     "a certification the company does not hold", True),
+    (r"\b\d+(\.\d+)?\s*(ms|milliseconds)\b", "a latency figure", True),
+]
+for page in PAGES:
+    text = re.sub(r"<[^>]+>", " ", open(page).read())
+    text = re.sub(r"\s+", " ", text)
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        for pattern, what, needs_self in FORBIDDEN:
+            match = re.search(pattern, sentence, re.I)
+            if not match:
+                continue
+            if needs_self and not SELF.search(sentence):
+                continue          # discussing the concept, not claiming it
+            fail(page, f"{what}: “{sentence.strip()[:110]}”")
+
 # --- the nav is the same everywhere -------------------------------------
 # It is the most-seen component on the site; an item missing on one page makes
 # the whole bar shift when a visitor navigates.

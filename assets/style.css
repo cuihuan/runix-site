@@ -183,7 +183,40 @@ h2, h3, .section-head h2 { text-wrap: balance; }
 }
 .card .icon svg { width: 22px; height: 22px; stroke: var(--indigo); }
 .card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
-.card p a, .section-head p a, .feature p a, .plan p a { color: var(--indigo); font-weight: 600; }
+/* Links in body copy.
+   Third attempt at this selector, and the first that is not a list of places a
+   link might live. Enumerating containers missed <li>, then .facts, then three
+   inline style= overrides, then <span> — each time the fix looked complete.
+   So: every link in the main content is a body link by default, and the
+   exceptions are named. The exception set is small and stable; the container
+   set is neither. */
+main a:not(.btn) { color: var(--indigo); font-weight: 600; }
+
+/* Colour alone does not mark a link (WCAG 1.4.1): --indigo on --ink-2 body copy
+   measures 1.45:1, against the 3:1 the criterion wants when colour is the only
+   cue — and no usable indigo reaches 3:1 without wrecking the brand colour.
+   Underline is the non-colour cue it actually asks for. */
+main a:not(.btn) {
+  text-decoration: underline; text-decoration-thickness: 1px;
+  text-underline-offset: 2px; text-decoration-color: rgba(74, 91, 214, 0.4);
+}
+main a:not(.btn):hover { text-decoration-color: currentColor; }
+
+/* Exceptions: surfaces where the whole element is the affordance, so an
+   underline would be noise rather than a cue. */
+main a.card, main a[class*="card-clickable"],
+main nav a, main .chips a, main .doc-toc a, main .doc-next a,
+main .layer a, main .compat a, main .facts-head a {
+  text-decoration: none;
+}
+main a.card, main a[class*="card-clickable"] { color: inherit; font-weight: inherit; }
+main .doc-toc a { color: var(--muted); font-weight: 400; }
+main .doc-next a { color: var(--indigo); font-weight: 500; }
+
+.card a:not(.btn):hover, .section-head p a:hover, .feature a:not(.btn):hover,
+.pillar a:not(.btn):hover, .plan a:not(.btn):hover,
+.card a:not(.btn):focus-visible, .feature a:not(.btn):focus-visible,
+.pillar a:not(.btn):focus-visible { text-decoration: underline; }
 .card p a:hover, .section-head p a:hover, .feature p a:hover { text-decoration: underline; }
 .card p { color: var(--ink-2); font-size: 14.5px; }
 .card ul { list-style: none; margin-top: 16px; }
@@ -687,3 +720,9 @@ main > .section:first-child { padding-top: 64px; }
 }
 .article .table-scroll table { margin: 0; min-width: 560px; border: none; }
 .article .table-scroll:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+/* A tick means "included". Two of the four products on /about are not
+   available yet, so a tick beside them would be a claim, not a bullet. */
+.feature ul.status-list li { padding-left: 0; }
+.feature ul.status-list li::before { content: none; }
+.feature ul.status-list li em { color: var(--ink-3); font-style: normal; }

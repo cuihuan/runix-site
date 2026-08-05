@@ -161,6 +161,37 @@ PROBE = r"""
     }
   }
 
+  // WCAG 1.4.1: if colour is the only thing marking a link, the link must
+  // contrast with the surrounding text by at least 3:1. Links inside .feature
+  // lists were rendering LIGHTER than the body text — technically a different
+  // colour, in practice a de-emphasis. Underlined links are exempt.
+  out.dimlinks = [];
+  var content = document.querySelectorAll('main a[href^="/"], main a[href^="http"]');
+  for (var q = 0; q < content.length; q++) {
+    var a = content[q];
+    if (a.closest('nav') || a.closest('footer') || a.classList.contains('btn')) continue;
+    var ar = a.getBoundingClientRect();
+    if (ar.width === 0 || ar.height === 0) continue;
+    var as = getComputedStyle(a);
+    if (as.textDecorationLine.indexOf('underline') >= 0) continue;   // has a non-colour cue
+    var parent = a.parentElement;
+    if (!parent) continue;
+    var ps = getComputedStyle(parent);
+    var lc = rgba(as.color), pc = rgba(ps.color);
+    if (!lc || !pc) continue;
+    var la = lum(lc.c), pa = lum(pc.c);
+    var ratio2 = (Math.max(la, pa) + 0.05) / (Math.min(la, pa) + 0.05);
+    // Same colour as the surrounding text is fine only if the whole block is a
+    // link (a card, a nav row); a link inside a sentence needs to stand out.
+    if (parent.textContent.trim() === a.textContent.trim()) continue;
+    // A link wrapping a heading is a card or block link — the whole surface is
+    // the affordance, so it does not need to stand out from a sentence.
+    if (a.querySelector('h1,h2,h3,h4')) continue;
+    if (ratio2 < 3 && out.dimlinks.length < 5)
+      out.dimlinks.push(label(a) + ' vs its text ' + ratio2.toFixed(2) + ':1 "' +
+                        a.textContent.trim().slice(0, 24) + '"');
+  }
+
   // Anything linkable must clear the sticky header once scrolled to.
   var hdr = document.querySelector('.site-header');
   if (hdr) {
@@ -248,6 +279,8 @@ try:
                 problems.append(f"{page} @{name}: text under 12px — {t}")
             for s in r["small_targets"]:
                 problems.append(f"{page} @{name}: target under 24x24 — {s}")
+            for d in r.get("dimlinks", []):
+                problems.append(f"{page} @{name}: link not distinguishable — {d}")
             for c in r.get("contrast", []):
                 problems.append(f"{page} @{name}: contrast — {c}")
             for c in r["covered"]:

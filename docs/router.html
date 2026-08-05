@@ -159,7 +159,7 @@ resp = client.chat.completions.create(
 </ul>
 
 <h2 id="streaming">3. Streaming</h2>
-<p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed — including tool-call deltas — so time-to-first-token stays close to the provider's own.</p>
+<p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed — including tool-call deltas — so the first token is forwarded as soon as the provider emits it rather than after the response completes. That is a statement about the mechanism, not a performance claim: measure time to first token against the provider directly and you will see what the router costs you.</p>
 
 <h2 id="failover-semantics">4. Failover semantics</h2>
 <p>What happens when an upstream provider degrades is the part worth reading twice:</p>
@@ -178,7 +178,7 @@ resp = client.chat.completions.create(
 </ul>
 
 <h2 id="errors-and-request-ids">6. Errors and request ids</h2>
-<p>Errors come back as JSON in the shape your OpenAI-compatible client already parses: an <code>error</code> object carrying <code>message</code>, <code>type</code> and <code>code</code>. The message embeds a request id — quote it when you contact us and we can trace that exact call.</p>
+<p>Errors come back as JSON in the shape your OpenAI-compatible client already parses: an <code>error</code> object carrying <code>message</code>, <code>type</code> and <code>code</code>.</p>
 <pre><code>// missing or invalid key -> HTTP 401
 {
   "error": {

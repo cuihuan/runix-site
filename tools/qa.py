@@ -482,6 +482,32 @@ for page in PAGES:
 for dangling in sorted(referenced_ids - defined_ids):
     fail("structured data", f"@id referenced but never defined: {dangling}")
 
+# --- every list of posts agrees with every other --------------------------
+# Five surfaces enumerate the posts: the files themselves, sitemap.xml,
+# feed.xml, llms.txt and the blog index. publish.py rebuilds all of them, so
+# they agree today -- but a hand edit to any one of them desyncs the set
+# silently, and the symptom is a post that exists and is never discovered.
+_posts = {os.path.basename(p)[:-5] for p in glob.glob("blog/*.html")
+          if os.path.basename(p) != "index.html"}
+_surfaces = {}
+if os.path.isfile("sitemap.xml"):
+    _surfaces["sitemap.xml"] = {m for m in re.findall(
+        r"<loc>https://runixcloud\.io/blog/([a-z0-9-]+)</loc>", open("sitemap.xml").read())}
+if os.path.isfile("feed.xml"):
+    _surfaces["feed.xml"] = {m for m in re.findall(
+        r"<link>https://runixcloud\.io/blog/([a-z0-9-]+)</link>", open("feed.xml").read())}
+if os.path.isfile("llms.txt"):
+    _surfaces["llms.txt"] = {m for m in re.findall(
+        r"runixcloud\.io/blog/([a-z0-9-]+)\)", open("llms.txt").read())}
+if os.path.isfile("blog/index.html"):
+    _surfaces["blog index"] = {m for m in re.findall(
+        r'href="/blog/([a-z0-9-]+)"', open("blog/index.html").read())}
+for _name, _listed in _surfaces.items():
+    for _missing in sorted(_posts - _listed):
+        fail(_name, f"does not list the published post {_missing}")
+    for _extra in sorted(_listed - _posts):
+        fail(_name, f"lists {_extra}, which is not a published post")
+
 # --- the feed is valid RSS ------------------------------------------------
 # A malformed feed does not error anywhere — readers just silently stop
 # updating, and nobody finds out. build_feed.py generates it from each post's

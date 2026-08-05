@@ -537,3 +537,53 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .copy-btn.done { color: #7ee2a8; border-color: rgba(126,226,168,.4); }
 .article pre { position: relative; }
 .article pre .copy-btn { position: absolute; top: 10px; right: 12px; margin: 0; }
+
+/* Sticky header is 68px; without this every in-page anchor lands with its
+   heading hidden underneath it. */
+:where(h1, h2, h3, h4, [id]) { scroll-margin-top: 88px; }
+
+/* Documentation: contents rail + sibling nav */
+.doc-wrap { max-width: 820px; margin: 0 auto; }
+.doc-wrap .article { margin: 0; }
+.doc-toc {
+  padding: 40px 24px 0;
+}
+.toc-title {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 12px;
+}
+.doc-toc ul { list-style: none; margin: 0; padding: 0; }
+.doc-toc li { margin: 0 0 8px; }
+.doc-toc a {
+  color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.45;
+  display: block; border-left: 2px solid var(--line); padding: 2px 0 2px 12px;
+}
+.doc-toc a:hover { color: var(--ink); border-left-color: var(--indigo); }
+.doc-next {
+  border-top: 1px solid var(--line); margin-top: 56px; padding-top: 32px;
+}
+.doc-next .toc-title {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 16px;
+}
+.doc-next ul {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.doc-next a { color: var(--indigo); text-decoration: none; font-weight: 500; }
+.doc-next a:hover { text-decoration: underline; }
+
+@media (min-width: 1200px) {
+  .doc-wrap {
+    /* Same container token as the header and hero, so the contents rail lines
+       up with the logo and the h1 instead of sitting 20px to their left.
+       212 + 40 + 820 exactly fills the 1072px content box. */
+    max-width: var(--maxw);
+    display: grid; grid-template-columns: 212px minmax(0, 820px); gap: 40px;
+    padding: 0 24px;
+  }
+  .doc-toc {
+    position: sticky; top: 92px; align-self: start;
+    padding: 56px 0 0; max-height: calc(100vh - 120px); overflow-y: auto;
+  }
+}

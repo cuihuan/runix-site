@@ -20,15 +20,15 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://runixcloud.io/docs/code">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=4">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=4">
-<link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=5">
+<link rel="icon" href="../assets/favicon.svg?v=4" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=5">
-<script src="../assets/site-config.js?v=2" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=6">
+<script src="../assets/site-config.js?v=3" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -39,7 +39,7 @@
     "@type": "WebPage",
     "@id": "https://runixcloud.io/docs/code"
   },
-  "image": "https://runixcloud.io/assets/og-cover.png?v=4",
+  "image": "https://runixcloud.io/assets/og-cover.png?v=5",
   "author": {
     "@id": "https://runixcloud.io/#org"
   },
@@ -110,29 +110,41 @@
   </div>
 </div>
 
+<div class="doc-wrap">
+<nav class="doc-toc" aria-labelledby="toc-heading">
+  <p id="toc-heading" class="toc-title">On this page</p>
+  <ul>
+    <li><a href="#joining-a-cohort">1. Joining a cohort</a></li>
+    <li><a href="#seats-and-policies">2. Seats and policies</a></li>
+    <li><a href="#the-working-loop">3. The working loop</a></li>
+    <li><a href="#credits-and-what-one-buys">4. Credits, and what one buys</a></li>
+    <li><a href="#what-to-tell-us">5. What to tell us</a></li>
+  </ul>
+</nav>
+
 <article class="article">
 
 <p><a href="/code">Runix Code</a> is an AI coding agent being built for teams. It is in development and not generally available; this page describes how adoption is designed to work, so you can decide whether to join the waitlist. Everything here is the plan being built with early cohorts — not a shipped product.</p>
 
-<h2>1. Joining a cohort</h2>
+<h2 id="joining-a-cohort">1. Joining a cohort</h2>
 <p>We onboard from the <!--email_off--><a href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">waitlist</a><!--/email_off--> in small cohorts. When your team's turn comes we set up together: your stack, your repositories, and which policies you want enforced from day one. Cohort feedback decides what lands next, which is the honest reason to join early.</p>
 
-<h2>2. Seats and policies</h2>
+<h2 id="seats-and-policies">2. Seats and policies</h2>
 <ul>
 <li><strong>Seats</strong> — access is per developer, with usage attributed per seat so you can see where the value lands.</li>
 <li><strong>Model routing</strong> — policies decide which models serve which repositories; sensitive code can be held to a stricter boundary than experiments.</li>
 <li><strong>Data boundary</strong> — where prompts may travel is configured, and code is never training data. The posture is written down in <a href="/privacy">Privacy</a>.</li>
 </ul>
 
-<h2>3. The working loop</h2>
+<h2 id="the-working-loop">3. The working loop</h2>
 <p>Day to day, Runix Code is designed to work in two modes. <strong>Assist</strong>: completion and chat in the editor and terminal, grounded in your repository rather than generic patterns. <strong>Agent</strong>: hand it a task — implement, refactor, add tests — and it works across files, validating against your test suite, and lands the result as a reviewable diff. Nothing merges without a human decision; the review gate is the product's spine, not an option.</p>
 
-<h2>4. Credits, and what one buys</h2>
+<h2 id="credits-and-what-one-buys">4. Credits, and what one buys</h2>
 <p>Seats carry credits, and credits are what everything is metered in — no per-model price list to reason about. <strong>One credit is $0.01.</strong> A request's cost is derived from the tokens it reads and writes, weighted by the model: a frontier model spends more credits per token than a lighter one, and tool calls such as search or fetch are metered the same way.</p>
 <p>Three rolling windows apply to every seat at once — a 5-hour cap, a weekly cap and the monthly allowance. Hitting one pauses that seat until the window resets rather than producing an overage bill, which is what keeps a runaway agent from spending the team's month in an afternoon.</p>
 <p>The seat counts and credit allowances on the <a href="/code-plans">team plans page</a> are indicative while the product is in development; the rate that applies to your team is confirmed in writing before you commit.</p>
 
-<h2>5. What to tell us</h2>
+<h2 id="what-to-tell-us">5. What to tell us</h2>
 <p>When you <a href="/about#contact">write in</a>, include your language stack, repository scale, team size, and the first workflow you would hand to an agent. We reply within one business day with where the product is and when your cohort would start.</p>
 
 <div class="callout" style="margin-top:40px;">
@@ -140,7 +152,18 @@
   <span>Questions this page does not answer? <a href="/about#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
 </div>
 
+
+<nav class="doc-next" aria-labelledby="more-docs">
+  <p id="more-docs" class="toc-title">More documentation</p>
+  <ul>
+    <li><a href="/docs/router">Router documentation</a></li>
+    <li><a href="/docs/pipeline">Pipeline documentation</a></li>
+    <li><a href="/docs/comic">Comic documentation</a></li>
+    <li><a href="/docs/">All documentation</a></li>
+  </ul>
+</nav>
 </article>
+</div>
 
 </main>
 

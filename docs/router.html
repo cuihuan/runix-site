@@ -20,15 +20,15 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://runixcloud.io/docs/router">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=4">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=4">
-<link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=5">
+<link rel="icon" href="../assets/favicon.svg?v=4" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=5">
-<script src="../assets/site-config.js?v=2" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=6">
+<script src="../assets/site-config.js?v=3" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -39,7 +39,7 @@
     "@type": "WebPage",
     "@id": "https://runixcloud.io/docs/router"
   },
-  "image": "https://runixcloud.io/assets/og-cover.png?v=4",
+  "image": "https://runixcloud.io/assets/og-cover.png?v=5",
   "author": {
     "@id": "https://runixcloud.io/#org"
   },
@@ -110,11 +110,26 @@
   </div>
 </div>
 
+<div class="doc-wrap">
+<nav class="doc-toc" aria-labelledby="toc-heading">
+  <p id="toc-heading" class="toc-title">On this page</p>
+  <ul>
+    <li><a href="#quickstart">1. Quickstart</a></li>
+    <li><a href="#model-selection">2. Model selection</a></li>
+    <li><a href="#streaming">3. Streaming</a></li>
+    <li><a href="#failover-semantics">4. Failover semantics</a></li>
+    <li><a href="#limits-usage-and-cost">5. Limits, usage and cost</a></li>
+    <li><a href="#errors-and-request-ids">6. Errors and request ids</a></li>
+    <li><a href="#data-handling">7. Data handling</a></li>
+    <li><a href="#getting-a-key">8. Getting a key</a></li>
+  </ul>
+</nav>
+
 <article class="article">
 
 <p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="/router">early access</a> — keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
 
-<h2>1. Quickstart</h2>
+<h2 id="quickstart">1. Quickstart</h2>
 <p>Set your client's base URL to <code>https://api.router.runixcloud.io/v1</code> and use the key issued during onboarding. Everything else about your existing integration stays the same.</p>
 <pre><code># cURL
 curl https://api.router.runixcloud.io/v1/chat/completions \
@@ -135,7 +150,7 @@ resp = client.chat.completions.create(
 )</code></pre>
 <p>The same base-URL swap works for any tool that speaks the OpenAI API — LangChain, LlamaIndex, the Vercel AI SDK, or plain HTTP.</p>
 
-<h2>2. Model selection</h2>
+<h2 id="model-selection">2. Model selection</h2>
 <p>Two ways to choose what serves a request:</p>
 <ul>
 <li><strong>Pin a model id</strong> — pass a specific model id in the <code>model</code> field and Router dispatches to that model, applying failover only within the providers that serve it.</li>
@@ -143,10 +158,10 @@ resp = client.chat.completions.create(
 <li><strong>Discover what a key can call</strong> — <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
 </ul>
 
-<h2>3. Streaming</h2>
+<h2 id="streaming">3. Streaming</h2>
 <p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed — including tool-call deltas — so time-to-first-token stays close to the provider's own.</p>
 
-<h2>4. Failover semantics</h2>
+<h2 id="failover-semantics">4. Failover semantics</h2>
 <p>What happens when an upstream provider degrades is the part worth reading twice:</p>
 <ul>
 <li><strong>Errors, rate limits and timeouts</strong> trip a circuit breaker; the request is re-issued to a healthy alternative under a retry budget, so one provider's bad hour does not become your outage.</li>
@@ -155,23 +170,23 @@ resp = client.chat.completions.create(
 </ul>
 <p>For the background on retry budgets and failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>.</p>
 
-<h2>5. Limits, usage and cost</h2>
+<h2 id="limits-usage-and-cost">5. Limits, usage and cost</h2>
 <ul>
 <li><strong>Per-key quotas</strong> — each key carries limits and quotas set during onboarding, revocable and adjustable without a redeploy.</li>
 <li><strong>Usage tracking</strong> — usage is recorded per request from the first call; billing is usage-based in USD with itemised statements. See <a href="/pricing">Pricing</a> for how quotes work.</li>
 <li><strong>Attribution</strong> — issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="/blog/llm-cost-attribution">LLM cost attribution</a>.</li>
 </ul>
 
-<h2>6. Errors and request ids</h2>
+<h2 id="errors-and-request-ids">6. Errors and request ids</h2>
 <p>Errors come back as JSON in the shape your OpenAI-compatible client already parses: an <code>error</code> object carrying <code>message</code>, <code>type</code> and <code>code</code>. The message embeds a request id — quote it when you contact us and we can trace that exact call.</p>
 <pre><code>// missing or invalid key -> HTTP 401
 "Invalid token (request id: 20260805082847…)"</code></pre>
 <p>A path the API does not serve returns <code>404</code>. Per-key quota and rate limits are set during onboarding (see section 5); when a limit or an upstream failure is involved, the router applies the failover behaviour in section 4 before an error reaches you.</p>
 
-<h2>7. Data handling</h2>
+<h2 id="data-handling">7. Data handling</h2>
 <p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>
 
-<h2>8. Getting a key</h2>
+<h2 id="getting-a-key">8. Getting a key</h2>
 <p>Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. <a href="/about#contact">Tell us what you are building</a> — models, expected volume, latency needs — and we reply within one business day with an access plan. A complete API reference ships with general availability; early-access teams receive onboarding documentation directly.</p>
 
 <div class="callout" style="margin-top:40px;">
@@ -179,7 +194,18 @@ resp = client.chat.completions.create(
   <span>Questions this page does not answer? <a href="/about#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
 </div>
 
+
+<nav class="doc-next" aria-labelledby="more-docs">
+  <p id="more-docs" class="toc-title">More documentation</p>
+  <ul>
+    <li><a href="/docs/pipeline">Pipeline documentation</a></li>
+    <li><a href="/docs/code">Code documentation</a></li>
+    <li><a href="/docs/comic">Comic documentation</a></li>
+    <li><a href="/docs/">All documentation</a></li>
+  </ul>
+</nav>
 </article>
+</div>
 
 </main>
 

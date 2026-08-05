@@ -31,6 +31,11 @@ if [ -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]; then
   python3 "$SRC/tools/visual_qa.py" index.html pricing.html about.html \
     docs/router.html blog/model-failover.html terms.html \
     || { echo "visual_qa.py failed — not deploying." >&2; exit 1; }
+  # Homepage only: enough to catch a gross regression (an image without
+  # dimensions, a stylesheet that doubled) without adding half a minute to
+  # every deploy. Run the full set by hand after a change to assets.
+  python3 "$SRC/tools/perf_check.py" index.html \
+    || { echo "perf_check.py failed — not deploying." >&2; exit 1; }
 else
   echo "    (no Chrome here — skipping the render checks)"
 fi

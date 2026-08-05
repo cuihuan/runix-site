@@ -35,15 +35,14 @@
   /* 4 equal-height cards with the CTA pinned to the bottom, so nothing spills
      past the border and every button lines up across tiers. */
   .plans.plans-4 { grid-template-columns: repeat(4, 1fr); align-items: stretch; }
-  @media (max-width: 980px) { .plans.plans-4 { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 560px) { .plans.plans-4 { grid-template-columns: 1fr; } }
+  @media (max-width: 920px) { .plans.plans-4 { grid-template-columns: 1fr; } }
   .plans-4 .plan { display: flex; flex-direction: column; }
   .plans-4 .plan ul { flex: 1 0 auto; }
   .plans-4 .plan .btn-block { margin-top: 20px; }
-  .plan .credits { margin: 12px 0 4px; font-size: 15px; color: var(--ink); font-weight: 600; }
+  .plan .credits { margin: 12px 0 4px; font-size: 15px; color: var(--ink); font-weight: 600; white-space: nowrap; }
   .plan .credits b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .plan .save { display: inline-block; margin-left: 7px; font: 700 11px/1 var(--mono); letter-spacing: .04em;
-    color: #05080f; background: linear-gradient(100deg,#5b8cff,#22d3ee); padding: 3px 9px; border-radius: 999px; vertical-align: middle; }
+  .plan .save { display: block; width: fit-content; margin: 8px 0 0; font: 700 11px/1 var(--mono); letter-spacing: .04em;
+    color: var(--on-accent); background: var(--grad); padding: 4px 10px; border-radius: 999px; }
   .plan .rate { color: var(--ink-3); font-size: 12.5px; margin: 2px 0 0; }
   .windows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .window { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; background: var(--bg-alt); }
@@ -74,7 +73,7 @@
     { "@type": "Question", "name": "What happens when a seat hits its limit?",
       "acceptedAnswer": { "@type": "Answer", "text": "Usage pauses until the window resets — a runaway agent cannot drain the whole team's month in an afternoon, and you never get a surprise bill. Each seat has a rolling 5-hour cap, a weekly cap and a monthly allowance." } },
     { "@type": "Question", "name": "Can we get invoices and pay by bank transfer?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Card and online payment are instant; for teams we issue proper invoices with your company name and tax ID, support net terms and bank transfer, and can top up your team's credit balance against a redemption code after an offline payment." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Teams are invoiced with your company name and tax ID, with net terms and bank transfer supported; a redemption code tops up your team's credit balance once an offline payment clears." } },
     { "@type": "Question", "name": "How many seats can we buy?",
       "acceptedAnswer": { "@type": "Answer", "text": "Plans are built for teams from a handful of seats up to 30–50 and beyond. Credits pool across the team, and an admin can set per-seat caps, restrict models and see per-seat usage." } }
   ]
@@ -102,11 +101,11 @@
 
 <div class="page-hero">
   <div class="container">
-    <span class="badge">Runix Code · Early access</span>
+    <span class="badge">Runix Code · In development</span>
     <h1>Coding plans for<br>your whole team</h1>
     <p>Buy seats. Each seat gets a monthly credit allowance that covers every model and tool at one rate — with 5-hour, weekly and monthly caps that keep spend predictable and stop a runaway agent from burning the month in an afternoon.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
-      <a class="btn btn-primary" href="#plans">See plans &amp; get started</a>
+      <a class="btn btn-primary" href="#plans">See the plans</a>
       <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20plans">Talk to sales</a>
     </div>
   </div>
@@ -146,7 +145,7 @@
   <div class="container">
     <div class="section-head center">
       <h2>Team plans</h2>
-      <p>Indicative early-access tiers. Credits pool across your team; the CTA gets you onboarded and a quote for your seat count.</p>
+      <p>Indicative tiers while the product is in development. Credits pool across your team; joining the waitlist gets you a cohort slot and a quote for your seat count.</p>
     </div>
     <div class="plans plans-4">
       <div class="plan">
@@ -161,7 +160,7 @@
           <li>Pooled team credits</li>
           <li>Email support</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="https://console.router.runixcloud.io">Get started</a>
+        <a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
       </div>
       <div class="plan featured">
         <span class="flag">Most teams</span>
@@ -177,7 +176,7 @@
           <li>Admin controls, model policy</li>
           <li>Priority support</li>
         </ul>
-        <a class="btn btn-grad btn-block" href="https://console.router.runixcloud.io">Get started</a>
+        <a class="btn btn-grad btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
       </div>
       <div class="plan">
         <h3>Ultra</h3>
@@ -191,7 +190,7 @@
           <li>Invoices, net terms, tax ID</li>
           <li>SSO / OIDC sign-in</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="https://console.router.runixcloud.io">Get started</a>
+        <a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
       </div>
       <div class="plan">
         <h3>Enterprise</h3>
@@ -208,7 +207,7 @@
         <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Enterprise">Talk to sales</a>
       </div>
     </div>
-    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">The more credits a seat carries, the cheaper each one gets — Pro to Ultra is a 40% better rate. Prices are indicative for early access. <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote for your seat count.</a></p>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">The more credits a seat carries, the cheaper each one gets — Pro to Ultra is a 40% better rate. Prices are indicative while the product is in development. <a href="code.html" style="color:var(--indigo);font-weight:600;">About Runix Code</a> · <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote</a></p>
   </div>
 </section>
 
@@ -284,8 +283,8 @@
   <div class="container">
     <div class="cta-band">
       <h2>Put a coding agent in front of your team</h2>
-      <p>Pick a plan, add your seats, and your team is coding on Runix in minutes. Need a custom seat count or invoice terms? Talk to sales.</p>
-      <a class="btn btn-grad" href="#plans">Choose a plan</a>
+      <p>Runix Code is still being built. Tell us your team size and stack and we will put you in the next onboarding cohort — and price the seats before you commit.</p>
+      <a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
     </div>
   </div>
 </section>

@@ -10,7 +10,9 @@
   --on-accent: #ffffff;
   --indigo: #4a5bd6;
   --cyan: #0b96b8;
-  --grad: linear-gradient(100deg, #5b8cff, #22d3ee);
+  /* Same hues as --indigo/--cyan: the light theme needs stops that stay legible
+     as text on white, which the brighter dark-theme gradient did not. */
+  --grad: linear-gradient(100deg, #4a5bd6, #0b96b8);
   --radius: 16px;
   --maxw: 1120px;
   --mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
@@ -88,7 +90,7 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 }
 .btn-primary { background: var(--ink); color: var(--on-accent); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22); }
-.btn-grad { background: var(--grad); color: #05080f; }
+.btn-grad { background: var(--grad); color: var(--on-accent); }
 .btn-grad:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(79, 108, 255, 0.30); }
 .btn-ghost { border-color: var(--line-2); color: var(--ink); background: #fff; }
 .btn-ghost:hover { border-color: var(--ink-3); background: rgba(13, 17, 23, 0.03); }
@@ -108,7 +110,7 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .code-card pre {
   padding: 22px 24px; overflow-x: auto;
   font-family: "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13.5px; line-height: 1.9; color: #c9d1d9;
+  font-size: 12.5px; line-height: 1.9; color: #c9d1d9;
 }
 .code-card .c { color: #6b7684; } .code-card .k { color: #79b8ff; } .code-card .s { color: #7ee2a8; }
 
@@ -171,7 +173,7 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 }
 
 /* ---------- Pricing ---------- */
-.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start; }
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
 .plan {
   background: var(--bg); border: 1px solid var(--line); border-radius: 20px; padding: 34px 30px;
   transition: all 0.2s; position: relative;
@@ -191,7 +193,11 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .plan ul { list-style: none; margin: 22px 0 0; }
 .plan ul li { padding: 8px 0 8px 24px; position: relative; color: var(--ink-2); font-size: 14px; border-bottom: 1px solid var(--line); }
 .plan ul li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
-.plan .btn { width: 100%; text-align: center; margin-top: 24px; }
+/* Cards stretch to the tallest in the row, so the CTA is pinned to the bottom
+   instead of floating wherever that card's feature list happens to end. */
+.plan { display: flex; flex-direction: column; }
+.plan ul { flex: 1 0 auto; }
+.plan .btn { width: 100%; text-align: center; margin-top: auto; }
 
 /* ---------- CTA band ---------- */
 .cta-band {
@@ -416,7 +422,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 /* ---------- Company facts (what procurement asks for) ---------- */
 .facts { border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt); overflow: hidden; }
 .facts .facts-head { font-size: 16px; font-weight: 700; padding: 18px 24px; border-bottom: 1px solid var(--line); }
-.facts .frow { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 13px 24px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+/* Grid, not wrapping flex: a long value has to wrap inside its own column
+   rather than dropping underneath the label and breaking the row rhythm. */
+.facts .frow { display: grid; grid-template-columns: 148px 1fr; gap: 4px 18px; padding: 13px 24px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
 .facts .frow:last-child { border-bottom: none; }
 .facts .frow > * { min-width: 0; overflow-wrap: anywhere; }
 .facts .k { color: var(--ink-3); min-width: 148px; }

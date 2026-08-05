@@ -1,3 +1,10 @@
+# Note for whoever edits this next: www -> apex cannot live here. Cloudflare
+# Pages does not support a hostname in the source of a _redirects rule ("domain
+# level redirects" are listed as unsupported), so a rule like
+#   https://www.runixcloud.io/* https://runixcloud.io/:splat 301
+# deploys without error and silently never matches. It needs a zone-level
+# Redirect Rule instead — see GATEWAY-READINESS.md.
+
 /gateway /router 301
 /gateway.html /router 301
 /forge / 301

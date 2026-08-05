@@ -210,6 +210,28 @@ if os.path.isfile(_og):
             if _dh and int(_dh.group(1)) != _h:
                 fail(page, f"og:image:height says {_dh.group(1)} but the file is {_h}")
 
+import html as _html2
+
+# --- examples do not name a model that will be retired --------------------
+# A dated vendor model id in an example is a countdown. blog/llm-gateway-guide
+# shipped "model": "claude-sonnet-4" in a sample request; that id was retired
+# on 2026-06-15, so the example named something that no longer exists -- which
+# is precisely what our own deprecation post warns about. Placeholders in
+# generic examples; real ids only where they are the subject.
+MODEL_ID_SUBJECT_PAGES = {"blog/model-deprecation-without-a-redeploy.html"}
+_MODEL_ID = re.compile(
+    r"\b(?:claude-[a-z0-9]+-[0-9][\w.-]*|gpt-[0-9][\w.-]*|gemini-[0-9][\w.-]*)\b", re.I)
+for page in PAGES:
+    if page in MODEL_ID_SUBJECT_PAGES:
+        continue
+    for _blk in re.findall(r"<pre[^>]*>(?:<code[^>]*>)?(.*?)(?:</code>)?</pre>",
+                           open(page).read(), re.S):
+        _code = _html2.unescape(re.sub(r"<[^>]+>", "", _blk))
+        _m = _MODEL_ID.search(_code)
+        if _m:
+            fail(page, f"a code example names the model id \u201c{_m.group(0)}\u201d, which "
+                       f"will be retired on someone else's schedule -- use a placeholder")
+
 # --- code examples must survive being copied ------------------------------
 # Every code block now has a Copy button, so a snippet that only works after a
 # human edits it is worse than no snippet. The homepage shipped a JSON body

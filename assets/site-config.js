@@ -82,3 +82,51 @@
     inject();
   }
 })();
+
+/* ---------------------------------------------------------------------------
+ * Copy buttons on code blocks.
+ *
+ * The whole integration pitch is "change one base URL", so the base URL and the
+ * curl example are the highest-frequency thing anyone does on this site. Making
+ * them selectable-by-eye and copyable-by-hand was the only option until now.
+ * ------------------------------------------------------------------------- */
+(function () {
+  function attach(target, source) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "copy-btn";
+    btn.textContent = "Copy";
+    btn.setAttribute("aria-label", "Copy code to clipboard");
+    btn.addEventListener("click", function () {
+      var text = (source.innerText || source.textContent || "").trim();
+      var done = function () {
+        btn.textContent = "Copied";
+        btn.classList.add("done");
+        setTimeout(function () {
+          btn.textContent = "Copy";
+          btn.classList.remove("done");
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+        return;
+      }
+      var ta = document.createElement("textarea");   // older browsers
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    });
+    target.appendChild(btn);
+  }
+
+  document.querySelectorAll(".code-card").forEach(function (card) {
+    var bar = card.querySelector(".bar");
+    var pre = card.querySelector("pre");
+    if (bar && pre) attach(bar, pre);
+  });
+  document.querySelectorAll(".article pre").forEach(function (pre) {
+    attach(pre, pre);
+  });
+})();

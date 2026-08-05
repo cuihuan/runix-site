@@ -135,6 +135,24 @@ for page in PAGES:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- the nav is the same everywhere -------------------------------------
+# It is the most-seen component on the site; an item missing on one page makes
+# the whole bar shift when a visitor navigates.
+navs = {}
+for page in PAGES:
+    html = open(page).read()
+    start = html.find('<div class="nav-links">')
+    if start < 0:
+        fail(page, "no nav-links block")
+        continue
+    block = html[start:html.find("</div>", start)]
+    navs[page] = tuple(re.findall(r">([^<>]+)</a>", block))
+if navs:
+    common = max(set(navs.values()), key=list(navs.values()).count)
+    for page, items in navs.items():
+        if items != common:
+            fail(page, f"nav differs from the rest: {items} vs {common}")
+
 # --- the entity graph resolves ------------------------------------------
 defined_ids, referenced_ids = set(), set()
 for page in PAGES:

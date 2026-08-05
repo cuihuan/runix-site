@@ -57,6 +57,9 @@ body {
 a { color: inherit; text-decoration: none; transition: all 0.18s; }
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
+/* Headings without a deliberate .line break get balanced instead of
+   leaving one orphaned word on the last line. */
+h2, h3, .section-head h2 { text-wrap: balance; }
 /* A headline broken across lines without gluing the words together
    when the text is extracted. */
 .line { display: block; }
@@ -182,7 +185,9 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .card p { color: var(--ink-2); font-size: 14.5px; }
 .card ul { list-style: none; margin-top: 16px; }
 .card ul li { padding: 7px 0 7px 24px; position: relative; color: var(--ink-2); font-size: 14px; }
-.card ul li::before {
+/* One tick mark, used everywhere except .feature, which keeps the circled
+   variant as its deliberate emphasis. */
+.card ul li::before, .plan ul li::before, .pillar ul li::before {
   content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 700;
 }
 
@@ -221,7 +226,6 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .plan .for { color: var(--ink-3); font-size: 13.5px; }
 .plan ul { list-style: none; margin: 22px 0 0; }
 .plan ul li { padding: 8px 0 8px 24px; position: relative; color: var(--ink-2); font-size: 14px; border-bottom: 1px solid var(--line); }
-.plan ul li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
 /* Cards stretch to the tallest in the row, so the CTA is pinned to the bottom
    instead of floating wherever that card's feature list happens to end. */
 .plan { display: flex; flex-direction: column; }
@@ -370,7 +374,7 @@ h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 .pillar ul { list-style: none; margin-top: 18px; }
 .pillar ul li { position: relative; padding: 10px 0 10px 26px; color: var(--ink); font-size: 14px; border-top: 1px solid var(--line); }
 .pillar ul li:first-child { border-top: none; }
-.pillar ul li::before { content: "✓"; position: absolute; left: 0; top: 10px; color: var(--cyan); font-weight: 700; }
+.pillar ul li::before { top: 10px; }
 .pillar ul li b { font-weight: 600; }
 
 /* ---------- Conversion paths ---------- */
@@ -522,3 +526,14 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .article .related li:first-child { border-top: none; }
 .article .related a { color: var(--indigo); font-weight: 600; }
 .article .related a:hover { text-decoration: underline; }
+
+/* ---------- Copy button on code blocks ---------- */
+.copy-btn {
+  margin-left: auto; font: 600 12px/1 var(--mono); letter-spacing: .02em;
+  color: #8b95a1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+  padding: 5px 11px; border-radius: 999px; cursor: pointer; transition: all .15s;
+}
+.copy-btn:hover { color: #e9edf6; background: rgba(255,255,255,.12); }
+.copy-btn.done { color: #7ee2a8; border-color: rgba(126,226,168,.4); }
+.article pre { position: relative; }
+.article pre .copy-btn { position: absolute; top: 10px; right: 12px; margin: 0; }

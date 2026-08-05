@@ -151,6 +151,37 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- one status per product, everywhere ----------------------------------
+# Statuses on this site are meant to be literal, so the same product must not
+# be "in development" on one page and something else on another. Read from the
+# structured labels (hero badges and card-meta) rather than from prose: a
+# sentence-level scan cannot tell which card a "Status:" belongs to when cards
+# carry no sentence punctuation, and it reports three inconsistencies that are
+# not real.
+PRODUCT_STATUS = {"router": "early access", "pipeline": "in development",
+                  "code": "in development", "comic": "in development"}
+seen_status = {}
+for page in PAGES:
+    doc = open(page).read()
+    for badge in re.findall(r'<span class="badge">([^<]*)</span>', doc):
+        for prod, expected in PRODUCT_STATUS.items():
+            if f"Runix {prod.capitalize()} " in badge and "\u00b7" in badge:
+                got = badge.split("\u00b7", 1)[1].strip().lower()
+                if got != expected:
+                    fail(page, f"badge says Runix {prod} is “{got}”, "
+                               f"elsewhere it is “{expected}”")
+    for meta in re.findall(r'<p class="card-meta">(.*?)</p>', doc, re.S):
+        text = " ".join(re.sub(r"<[^>]+>", " ", meta).split())
+        m = re.search(r"Status:\s*([^\u00b7|]+)", text)
+        if m:
+            seen_status.setdefault(page, []).append(m.group(1).strip().lower())
+# Cards appear in product order on both index pages; compare the multisets.
+expected_set = sorted(PRODUCT_STATUS.values())
+for page, statuses in seen_status.items():
+    if len(statuses) == len(expected_set) and sorted(statuses) != expected_set:
+        fail(page, f"card statuses {sorted(statuses)} do not match the "
+                   f"canonical set {expected_set}")
+
 # --- two links with nothing between them ----------------------------------
 # Automated link insertion produced "<a>FAQ</a> <a>Glossary</a>", which reads
 # as "the FAQ Glossary". Inside a sentence, two anchors separated only by

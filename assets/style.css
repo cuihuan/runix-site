@@ -360,6 +360,18 @@ h2, h3, .section-head h2 { text-wrap: balance; }
   .hero { padding: 72px 0 60px; }
   .hero h1 { font-size: 31px; }
   .page-hero h1 { font-size: 32px; }
+  /* Buttons inside the plan cards are already full-width on a phone; hero
+     buttons sized to their own text look ragged next to that. Match them. */
+  .hero .actions, .page-hero .actions { flex-direction: column; align-items: stretch; }
+  /* Explicit line breaks in a headline are composed for a wide measure. On a
+     phone they strand words ("endpoint" alone on its own line); let the text
+     wrap naturally instead. The source has whitespace between the spans, so
+     going inline keeps the word gap. Scoped to .page-hero: the homepage
+     headline is a deliberate two-part composition ("AI," then the gradient
+     phrase whole) and must keep its breaks. */
+  .page-hero h1 .line { display: inline; }
+  /* .btn is inline-block, so the label centres with text-align, not flexbox. */
+  .hero .actions .btn, .page-hero .actions .btn { width: 100%; text-align: center; }
 }
 
 /* ---------- Gateway pillars ---------- */

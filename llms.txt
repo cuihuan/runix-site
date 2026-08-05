@@ -36,7 +36,7 @@ Products at different stages. The statuses below are literal.
 - [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
 - [Docs hub](https://runixcloud.io/docs/): guides for every product, honest about status.
 - [Router quickstart](https://runixcloud.io/docs/router): base URL and key, model selection, streaming, failover semantics, limits.
-- [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the five stages, delivery and the quality report.
+- [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the six stages, delivery and the quality report.
 - [Code rollout guide](https://runixcloud.io/docs/code): cohorts, seats and policies, the review-gated workflow.
 - [Comic workflow guide](https://runixcloud.io/docs/comic): the three production stages and how cohorts run.
 
@@ -61,7 +61,7 @@ Products at different stages. The statuses below are literal.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
 - [Home](https://runixcloud.io/): the product line, how the router is integrated, company facts.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
-- [Runix Pipeline](https://runixcloud.io/pipeline): the five pipeline stages and what an engagement looks like.
+- [Runix Pipeline](https://runixcloud.io/pipeline): the six pipeline stages and what an engagement looks like.
 - [Runix Code](https://runixcloud.io/code): codebase-aware assistance, agentic workflows, team controls, and the waitlist.
 - [Runix Comic](https://runixcloud.io/comic): the three production stages being built, who it is for, and the waitlist.
 - [Pricing](https://runixcloud.io/pricing): billing models and exactly what every quote states.

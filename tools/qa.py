@@ -151,6 +151,28 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- a stated count must match what is on the page ------------------------
+# /pipeline said "Six stages" and showed six cards while /docs/pipeline,
+# /docs/ and llms.txt all said "five" — two different decompositions of the
+# same process, and a prospect reading both pages sees a contradiction about
+# how the product works. Nothing was watching the number.
+NUMBER_WORDS = {"three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+for page in PAGES:
+    doc = open(page).read()
+    for word, expected in NUMBER_WORDS.items():
+        # Only when the count is in a heading — that is a page presenting the
+        # list. The same phrase in prose is a reference to it, and counting the
+        # headings that happen to follow gives a false positive (it did, on
+        # /docs/, where the following headings are other products' cards).
+        m = re.search(rf"<h[12][^>]*>[^<]*\b{word}\s+(?:pipeline\s+)?stages\b",
+                      doc, re.I)
+        if not m:
+            continue
+        section = doc[m.end():]
+        cards = len(re.findall(r"<h3[^>]*>", section[:section.find("</section>") + 1]))
+        if cards and cards != expected:
+            fail(page, f"heading says “{word} stages” but lists {cards}")
+
 # --- versioned asset URLs -------------------------------------------------
 # /assets/* is cached for a year as immutable. An asset referenced without a
 # ?v= would therefore be pinned in browsers for a year with no way to replace

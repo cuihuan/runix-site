@@ -13,10 +13,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Runix Pipeline Docs — How an Engagement Works</title>
-<meta name="description" content="How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.">
+<meta name="description" content="How a Runix Pipeline data preparation engagement runs: scoping, the six stages, delivery formats and the quality report that ships with every batch.">
 <link rel="canonical" href="https://runixcloud.io/docs/pipeline">
 <meta property="og:title" content="Runix Pipeline Docs — How an Engagement Works">
-<meta property="og:description" content="How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.">
+<meta property="og:description" content="How a Runix Pipeline data preparation engagement runs: scoping, the six stages, delivery formats and the quality report that ships with every batch.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://runixcloud.io/docs/pipeline">
 <meta property="og:site_name" content="Runix">
@@ -34,7 +34,7 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "Runix Pipeline Docs — How an Engagement Works",
-  "description": "How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.",
+  "description": "How a Runix Pipeline data preparation engagement runs: scoping, the six stages, delivery formats and the quality report that ships with every batch.",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://runixcloud.io/docs/pipeline"
@@ -78,7 +78,7 @@
 </script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix Pipeline Docs — How an Engagement Works">
-<meta name="twitter:description" content="How a Runix Pipeline data preparation engagement runs: scoping, the five stages, delivery formats and the quality report that ships with every batch.">
+<meta name="twitter:description" content="How a Runix Pipeline data preparation engagement runs: scoping, the six stages, delivery formats and the quality report that ships with every batch.">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -115,7 +115,7 @@
   <p id="toc-heading" class="toc-title">On this page</p>
   <ul>
     <li><a href="#scoping">1. Scoping</a></li>
-    <li><a href="#the-five-stages">2. The five stages</a></li>
+    <li><a href="#the-six-stages">2. The six stages</a></li>
     <li><a href="#delivery">3. Delivery</a></li>
     <li><a href="#starting-a-project">4. Starting a project</a></li>
   </ul>
@@ -128,18 +128,19 @@
 <h2 id="scoping">1. Scoping</h2>
 <p>Every engagement starts with your data and your goal. You describe the sources (documents, exports, crawls, databases), roughly how much there is, and what the output feeds — analytics, retrieval, or model training. We come back with a written scope: stages to run, delivery format, timeline and price. Scope is agreed before work starts and changes are agreed in writing.</p>
 
-<h2 id="the-five-stages">2. The five stages</h2>
+<h2 id="the-six-stages">2. The six stages</h2>
 <ul>
-<li><strong>Ingestion</strong> — pulling from your sources into a working store, with provenance kept per record.</li>
-<li><strong>Cleaning</strong> — format normalisation, error and noise reduction.</li>
-<li><strong>Deduplication</strong> — exact, near-duplicate and semantic tiers, applied to the depth the use case needs.</li>
-<li><strong>Structured extraction</strong> — schema-validated extraction from unstructured text, so downstream code gets fields, not prose.</li>
-<li><strong>PII masking</strong> — personal information identified and masked before data travels; the masking step fails closed.</li>
+<li><strong>Ingest</strong> — pulling from your sources into a working store, with provenance kept per record.</li>
+<li><strong>Clean &amp; dedupe</strong> — format normalisation and noise reduction, then deduplication at exact, near-duplicate and semantic tiers, applied to the depth the use case needs.</li>
+<li><strong>Structure</strong> — schema-validated extraction from unstructured text, so downstream code gets fields, not prose.</li>
+<li><strong>Mask</strong> — personal information identified and masked before data travels; the masking step fails closed.</li>
+<li><strong>Report</strong> — coverage, duplication rates, extraction confidence, and what was dropped and why. Part of the deliverable, not an extra.</li>
+<li><strong>Deliver</strong> — dataset files, database tables or an endpoint, batch or continuous, whichever your downstream actually consumes.</li>
 </ul>
 <p>Not every project needs every stage — the scope names which ones run and why. The background reasoning is in <a href="/blog/ai-data-pipelines">Building AI data pipelines</a>.</p>
 
 <h2 id="delivery">3. Delivery</h2>
-<p>You receive the processed dataset in the agreed format — dataset files, database tables or an API handoff — together with a <strong>quality report</strong>: what was ingested, what was dropped and why, duplication rates, extraction validation results and masking coverage. The report is part of the deliverable, not an extra.</p>
+<p>The last two stages above are what you actually receive: the processed dataset in the agreed format — dataset files, database tables or an API handoff — and the <strong>quality report</strong> that goes with it, covering what was ingested, what was dropped and why, duplication rates, extraction validation results and masking coverage.</p>
 
 <h2 id="starting-a-project">4. Starting a project</h2>
 <p><a href="/about#contact">Tell us about your data</a> — sources, volume, and what it needs to feed. We reply within one business day; if the fit is right, the next step is a written scope.</p>

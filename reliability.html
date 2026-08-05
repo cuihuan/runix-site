@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<script src="assets/site-config.js?v=1" defer></script>
+<title>How Runix Router handles provider failure — Runix</title>
+<meta name="description" content="Circuit breaking, retry budgets and mid-stream re-issue: how the router routes around a failing model provider, and why there is no published SLA during early access.">
+<link rel="canonical" href="https://runixcloud.io/reliability">
+<meta property="og:title" content="How Runix Router handles provider failure — Runix">
+<meta property="og:description" content="Circuit breaking, retry budgets and mid-stream re-issue: how the router routes around a failing model provider, and why there is no published SLA during early access.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/reliability">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "How Runix Router handles provider failure",
+  "description": "Circuit breaking, retry budgets and mid-stream re-issue.",
+  "url": "https://runixcloud.io/reliability",
+  "isPartOf": {
+    "@id": "https://runixcloud.io/#website"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Reliability",
+      "item": "https://runixcloud.io/reliability"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <div class="nav-links">
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Reliability</span>
+    <h1>What happens when a provider fails</h1>
+    <p>A gateway earns its place on the bad days. This is the mechanism, described plainly — not a status page, and not a service level agreement.</p>
+  </div>
+</div>
+
+<main id="main">
+<article class="article">
+<h2>No published SLA during early access</h2>
+<p>Start with what this page is not. Runix Router is in early access, and there is no
+published SLA, no uptime percentage and no historical availability chart — because
+publishing one would mean standing behind a number we have not operated long enough to
+promise. What follows is how the system behaves, which is a different and more useful
+claim.</p>
+
+<h2>Failure is expected, so it is designed for</h2>
+<p>Model providers degrade. They rate-limit, they time out, they return errors in bursts,
+and they have bad hours that have nothing to do with your code. A router that simply
+forwards requests passes every one of those through to your users.</p>
+<ul>
+<li><strong>Errors, rate limits and timeouts trip a circuit breaker.</strong> The request is
+re-issued to a healthy alternative under a retry budget, so a provider's bad hour does not
+become your outage — and the budget exists so that retrying never becomes its own outage.</li>
+<li><strong>Mid-stream failures are re-issued too.</strong> A failure part-way through a
+streamed response is the awkward case most integrations get wrong; the mechanics and the
+edge cases are in <a href="/blog/streaming-llm-failover">how streaming failover works</a>.</li>
+<li><strong>A degrading provider leaves the rotation</strong> before it drags your latency,
+and comes back when health checks pass.</li>
+</ul>
+
+<h2>Why the key matters here</h2>
+<p>Failover is only safe if the alternative is one you would have chosen. Routing
+preferences are set per key server-side — cheapest acceptable, latency-first, provider
+allowlists — so when the router moves a request, it moves it inside the boundary you
+defined rather than to whatever happened to be up.</p>
+
+<h2>What you can verify yourself</h2>
+<p>Every response carries a request id, and errors use a structured envelope, so a failure
+can be traced to a specific call rather than argued about. The
+<a href="/docs/router">Router quickstart</a> documents the error shape and the failover
+semantics in full.</p>
+
+<h2>What is not here yet</h2>
+<p>A continuously updated public status feed is not live. When it is, it will report
+measured availability rather than an aspiration. Until then, the honest answer to "what is
+your uptime" is that we will tell you what we have measured for your workload, and we will
+not quote a number we cannot evidence. If reliability guarantees are a procurement
+requirement for you, say so during <a href="/access">intake</a> and we will tell you
+plainly whether early access fits.</p>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

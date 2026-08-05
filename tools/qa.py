@@ -101,6 +101,14 @@ for page in PAGES:
     if base != "404.html" and not re.search(r'<script type="application/ld\+json">', html):
         fail(page, "no structured data")
 
+    # An unbalanced script tag leaves JSON rendering as visible text.
+    opens, closes = len(re.findall(r"<script\b", html)), html.count("</script>")
+    if opens != closes:
+        fail(page, f"unbalanced script tags ({opens} open, {closes} close)")
+    head = html[: html.index("</head>")] if "</head>" in html else ""
+    if re.search(r'"@context"', re.sub(r"<script\b.*?</script>", "", head, flags=re.S)):
+        fail(page, "JSON-LD leaked outside a script block in the head")
+
     # --- content hygiene ------------------------------------------------
     if re.search(r"lorem ipsum|TODO:|FIXME|XXX_PLACEHOLDER", html, re.I):
         fail(page, "placeholder text left in the page")

@@ -54,6 +54,9 @@ Products at different stages. The statuses below are literal.
 
 ## Pages
 
+- [FAQ](https://runixcloud.io/faq): access, billing, data handling, contracting, certifications.
+- [Access](https://runixcloud.io/access): how keys are issued and what intake involves.
+- [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
 - [Home](https://runixcloud.io/): the product line, how the router is integrated, company facts.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the five pipeline stages and what an engagement looks like.

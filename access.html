@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<script src="assets/site-config.js?v=1" defer></script>
+<title>How to get access to Runix Router — Runix</title>
+<meta name="description" content="Runix Router is in early access: keys are issued after a short intake rather than through self-serve signup. Here is exactly what that involves.">
+<link rel="canonical" href="https://runixcloud.io/access">
+<meta property="og:title" content="How to get access to Runix Router — Runix">
+<meta property="og:description" content="Runix Router is in early access: keys are issued after a short intake rather than through self-serve signup. Here is exactly what that involves.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/access">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "url": "https://runixcloud.io/access",
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is there no self-serve signup?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because keys carry real quotas and routing configuration, and during early access those are set per team rather than issued blindly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does it cost to evaluate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nothing. Evaluation credits are issued on request and no card is required to start."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You get a reply within one business day."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Access",
+      "item": "https://runixcloud.io/access"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <div class="nav-links">
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <span class="badge">Early access</span>
+    <h1>How access works</h1>
+    <p>Keys are issued on request, not through self-serve signup. That is a deliberate choice, and this page describes precisely what happens between asking and sending your first request.</p>
+  </div>
+</div>
+
+<main id="main">
+<article class="article">
+<h2>1. Tell us what you are building</h2>
+<p>Send your use case, the volume you expect, and your timeline to
+<!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->.
+Rough numbers are fine; the point is to size the quota and pick sensible routing, not to
+qualify you.</p>
+
+<h2>2. We reply within one business day</h2>
+<p>You get an access plan and a quote for the workload you described. Pricing is
+usage-based in USD and the rate table is stated in writing — there is no published rate
+card because quotes depend on the models and volume you actually use.</p>
+
+<h2>3. Evaluate before you pay</h2>
+<p>Evaluation credits are issued on request. Full router functionality, no card required
+to start. This is the stage where you find out whether the failover behaviour and the cost
+reporting match what you need.</p>
+
+<h2>4. Your key arrives configured</h2>
+<p>A key is not just a credential here. It carries its own quota and limits, the set of
+models it is allowed to call, and routing preferences applied server-side — so the
+controls are in place from the first call rather than bolted on later. Issue separate keys
+per team or product and the usage reporting splits along those lines.</p>
+
+<h2>5. Then you integrate</h2>
+<p>Integration is a base-URL change: point your existing OpenAI-compatible client at
+<code>https://api.router.runixcloud.io/v1</code> and swap the key. The
+<a href="/docs/router">Router quickstart</a> covers model selection, streaming, failover
+semantics and the error envelope.</p>
+
+<h2>Common questions</h2>
+<h3>Why is there no self-serve signup?</h3>
+<p>Because keys carry real quotas and routing configuration, and during early access those are set per team rather than issued blindly.</p>
+<h3>What does it cost to evaluate?</h3>
+<p>Nothing. Evaluation credits are issued on request and no card is required to start.</p>
+<h3>How long does it take?</h3>
+<p>You get a reply within one business day.</p>
+<p>Everything else is on the <a href="/faq">FAQ</a>, and what happens when a provider
+degrades is on the <a href="/reliability">reliability page</a>.</p>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

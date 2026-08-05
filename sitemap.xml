@@ -17,6 +17,7 @@
   <url><loc>https://runixcloud.io/careers</loc><lastmod>2026-08-06</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/</loc><lastmod>2026-07-23</lastmod><priority>0.7</priority></url>
   <url><loc>https://runixcloud.io/blog/model-deprecation-without-a-redeploy</loc><lastmod>2026-08-06</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/migrating-to-an-llm-gateway-without-downtime</loc><lastmod>2026-08-06</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/what-openai-compatible-actually-means</loc><lastmod>2026-08-06</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic</loc><lastmod>2026-07-29</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/llm-router-vs-llm-gateway</loc><lastmod>2026-07-28</lastmod><priority>0.6</priority></url>

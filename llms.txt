@@ -72,8 +72,9 @@ Products at different stages. The statuses below are literal.
 
 ## Writing
 
-All 21 posts, newest first. Descriptions are the pages' own.
+All 22 posts, newest first. Descriptions are the pages' own.
 
+- [How to tell whether a model change made things worse](https://runixcloud.io/blog/did-the-model-change-make-it-worse) — Output varies run to run, so a quality regression does not announce itself. Four signals that move before anyone files a ticket.
 - [Migrating to a gateway without a maintenance window](https://runixcloud.io/blog/migrating-to-an-llm-gateway-without-downtime) — Shadow, then a percentage, then a cutover you can reverse in one config change — and the three things about LLM traffic the usual playbook does not cover.
 - [Your model id has an expiry date](https://runixcloud.io/blog/model-deprecation-without-a-redeploy) — Providers retire model versions on a published schedule. If the id is a string literal in your code, their calendar is your deploy calendar.
 - ["OpenAI-compatible" is a surface, not a contract](https://runixcloud.io/blog/what-openai-compatible-actually-means) — Compatibility claims cover the endpoint shape, rarely the details that break you: ignored parameters, missing usage, streaming that ends wrong. How to test one.

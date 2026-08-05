@@ -648,3 +648,21 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   .diagram-steps { display: block; }
   .diagram figcaption { text-align: left; }
 }
+
+/* A page's hero follows the alignment of its own body: centred on the product
+   and pricing pages, left on anything you read as an article. */
+.page-hero.center { text-align: center; }
+.page-hero.center p { margin-inline: auto; max-width: 680px; }
+.page-hero.center .actions { justify-content: center; }
+
+/* The hero already separates itself with a rule and a colour change; the first
+   section does not need a full section's worth of padding on top of that. */
+main > .section:first-child { padding-top: 64px; }
+
+/* The hero glow was positioned for left-aligned text; centred heroes need it
+   centred too, or the page lights up on one side of its own headline. */
+.page-hero.center {
+  background: radial-gradient(760px 320px at 50% 0%, rgba(91, 140, 255, 0.14), transparent 65%);
+}
+/* Stops the lede stranding a single word on its own last line. */
+.page-hero p { text-wrap: pretty; }

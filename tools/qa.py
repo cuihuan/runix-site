@@ -209,6 +209,36 @@ for page in PAGES:
                 fail(page, f"a curl example's JSON body does not parse as written, "
                            f"so copying it fails: {_exc}")
 
+# --- Python examples must run, not just parse -----------------------------
+# The router quickstart passed api_key=RUNIX_API_KEY, which is valid Python and
+# a NameError the moment anyone copies it. Same shape as the JSON comment: the
+# snippet looks right and fails on paste.
+import ast as _ast
+for page in PAGES:
+    for _blk in re.findall(r"<pre[^>]*>(?:<code[^>]*>)?(.*?)(?:</code>)?</pre>",
+                           open(page).read(), re.S):
+        _code = _html2.unescape(re.sub(r"<[^>]+>", "", _blk)).strip()
+        if not re.search(r"^\s*(from|import)\s", _code, re.M):
+            continue
+        try:
+            _tree = _ast.parse(_code)
+        except SyntaxError as _exc:
+            fail(page, f"a Python example does not parse: {_exc}")
+            continue
+        _assigned = {n.id for n in _ast.walk(_tree)
+                     if isinstance(n, _ast.Name) and isinstance(n.ctx, _ast.Store)}
+        _imported = set()
+        for _n in _ast.walk(_tree):
+            if isinstance(_n, (_ast.Import, _ast.ImportFrom)):
+                for _a in _n.names:
+                    _imported.add(_a.asname or _a.name.split(".")[0])
+        _used = {n.id for n in _ast.walk(_tree)
+                 if isinstance(n, _ast.Name) and isinstance(n.ctx, _ast.Load)}
+        _undefined = _used - _assigned - _imported - set(dir(__builtins__))
+        if _undefined:
+            fail(page, f"a Python example uses undefined name(s) "
+                       f"{sorted(_undefined)} — copying it raises NameError")
+
 # --- the mobile nav has a no-script fallback ------------------------------
 # Under 920px the nav links are display:none and only .open reveals them, and
 # .open is added by script. Without this block a visitor with scripting off has

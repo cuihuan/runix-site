@@ -30,12 +30,15 @@
   --bg-alt: #f6f7f9;
   --ink: #0d1117;
   --ink-2: #48505e;
-  --ink-3: #6b7480;
+  --ink-3: #676f7b;
   --line: rgba(13, 17, 23, 0.09);
   --line-2: rgba(13, 17, 23, 0.14);
   --on-accent: #ffffff;
   --indigo: #4a5bd6;
   --cyan: #0b96b8;
+  /* Same hue, dark enough to pass AA as text on the tinted panels too (5.4:1 on white).
+     --cyan itself stays put: it carries the gradient and the borders. */
+  --cyan-text: #08748d;
   /* Same hues as --indigo/--cyan: the light theme needs stops that stay legible
      as text on white, which the brighter dark-theme gradient did not. */
   --grad: linear-gradient(100deg, #4a5bd6, #0b96b8);
@@ -144,7 +147,7 @@ h2, h3, .section-head h2 { text-wrap: balance; }
   font-family: "SF Mono", Menlo, Consolas, monospace;
   font-size: 12.5px; line-height: 1.9; color: #c9d1d9;
 }
-.code-card .c { color: #6b7684; } .code-card .k { color: #79b8ff; } .code-card .s { color: #7ee2a8; }
+.code-card .c { color: #78828f; } .code-card .k { color: #79b8ff; } .code-card .s { color: #7ee2a8; }
 
 /* ---------- Logos / stats strip ---------- */
 .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-alt); }
@@ -217,7 +220,7 @@ h2, h3, .section-head h2 { text-wrap: balance; }
   linear-gradient(var(--bg), var(--bg)) padding-box, var(--grad) border-box; }
 .plan .flag {
   position: absolute; top: -13px; left: 28px; background: var(--grad); color: var(--on-accent);
-  font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 4px 12px; border-radius: 999px;
 }
 .plan h3 { font-size: 17px; font-weight: 700; }
@@ -304,7 +307,7 @@ h2, h3, .section-head h2 { text-wrap: balance; }
 /* ---------- Blog ---------- */
 .post-meta { display: flex; gap: 10px; align-items: center; color: var(--ink-3); font-size: 13.5px; margin-bottom: 14px; flex-wrap: wrap; }
 .post-meta .cat {
-  font-size: 11.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
   color: var(--indigo); background: rgba(107, 149, 255, 0.12); padding: 3px 10px; border-radius: 999px;
 }
 .blog-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
@@ -444,7 +447,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 }
 .hero-metrics div { background: #05080f; padding: 13px 16px; }
 .hero-metrics b { display: block; font-family: var(--mono); font-size: 16px; color: #e9edf6; }
-.hero-metrics span { font-size: 11.5px; color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
+.hero-metrics span { font-size: 12px; color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
 
 /* works-with row */
 .compat { display: flex; gap: 14px 26px; flex-wrap: wrap; align-items: center;
@@ -485,7 +488,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .stack { display: flex; flex-direction: column; gap: 0; max-width: 920px; margin: 0 auto; }
 .layer { border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 30px;
   background: var(--bg-alt); }
-.layer-tag { font: 600 11.5px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
+.layer-tag { font: 600 12px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink-3); margin-bottom: 12px; }
 .layer-body h3 { font-size: 21px; font-weight: 800; margin-bottom: 8px; }
 .layer-body p { color: var(--ink-2); font-size: 15px; max-width: 68ch; }
@@ -503,7 +506,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .layer-mid .layer-body h3 {
   background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .layer-flow { display: flex; justify-content: center; gap: 40px; padding: 8px 0;
-  font: 500 11px/1 var(--mono); color: var(--ink-3); letter-spacing: 0.06em; }
+  font: 500 12px/1 var(--mono); color: var(--ink-3); letter-spacing: 0.06em; }
 @media (max-width: 640px) {
   .layer { padding: 22px; }
   .layer-flow { gap: 20px; }

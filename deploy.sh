@@ -37,8 +37,16 @@ npx --yes wrangler@4 pages deploy "$STAGE" --project-name="$PROJECT" \
 echo "==> Verify from outside"
 sleep 3
 fail=0
-for path in / /pricing /about /security /blog/ /terms /privacy /refund /cancellation /acceptable-use /careers; do
-  code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 15 "$DOMAIN$path")
+# Edge nodes pick up a new build at slightly different times, so a single probe
+# straight after upload can report a 404 for a page that is served fine a few
+# seconds later. Retry the same way the content checks below already do, and
+# only call it a failure when it stays wrong.
+for path in / /pricing /about /security /blog/ /terms /privacy /refund /cancellation /acceptable-use /careers /faq /access /reliability; do
+  for attempt in 1 2 3 4 5 6; do
+    code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 15 "$DOMAIN$path")
+    [ "$code" = "200" ] && break
+    sleep 10
+  done
   printf '    %-20s %s\n' "$path" "$code"
   [ "$code" = "200" ] || fail=1
 done

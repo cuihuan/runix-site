@@ -145,6 +145,7 @@ resp = client.chat.completions.create(
 <ul>
 <li><strong>Pin a model id</strong> — pass a specific model id in the <code>model</code> field and Router dispatches to that model, applying failover only within the providers that serve it.</li>
 <li><strong>Route automatically</strong> — pass <code>"model": "auto"</code> and Router selects by cost, health and your account's configuration. Routing preferences are set per key during onboarding; tell us your priorities (cheapest acceptable, latency-first, provider allowlists) and they are applied server-side.</li>
+<li><strong>Discover what a key can call</strong> — <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
 </ul>
 
 <h2>3. Streaming</h2>
@@ -166,10 +167,16 @@ resp = client.chat.completions.create(
 <li><strong>Attribution</strong> — issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="../blog/llm-cost-attribution.html">LLM cost attribution</a>.</li>
 </ul>
 
-<h2>6. Data handling</h2>
+<h2>6. Errors and request ids</h2>
+<p>Errors come back as JSON in the shape your OpenAI-compatible client already parses: an <code>error</code> object carrying <code>message</code>, <code>type</code> and <code>code</code>. The message embeds a request id — quote it when you contact us and we can trace that exact call.</p>
+<pre><code>// missing or invalid key -> HTTP 401
+"Invalid token (request id: 20260805082847…)"</code></pre>
+<p>A path the API does not serve returns <code>404</code>. Per-key quota and rate limits are set during onboarding (see section 5); when a limit or an upstream failure is involved, the router applies the failover behaviour in section 4 before an error reaches you.</p>
+
+<h2>7. Data handling</h2>
 <p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="../privacy.html">Privacy Policy</a>, and the security posture in <a href="../security.html">Security</a>.</p>
 
-<h2>7. Getting a key</h2>
+<h2>8. Getting a key</h2>
 <p>Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. <a href="../about.html#contact">Tell us what you are building</a> — models, expected volume, latency needs — and we reply within one business day with an access plan. A complete API reference ships with general availability; early-access teams receive onboarding documentation directly.</p>
 
 <div class="callout" style="margin-top:40px;">

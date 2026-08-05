@@ -85,7 +85,7 @@ to clean URLs and every rewrite pattern silently stopped matching.
 | `refresh_llms_txt.py` | regenerate the writing section of `/llms.txt` from the posts |
 | `add_related.py` | add a curated related-reading block to a post (edit the map inside first) |
 | `sync_schema.py` | rebuild FAQPage blocks from each page's visible questions |
-| `bump_assets.py` | bump `?v=` on CSS/JS/images so a change takes effect immediately |
+| `bump_assets.py --if-changed` | bump `?v=` only on assets whose bytes moved (deploy.sh runs this); plain `bump_assets.py` still bumps everything |
 
 **There is a draft waiting**: `scheduled/open-source-gateway-continuity.html`.
 It is finished and checked but deliberately unpublished — it names competitors,

@@ -151,6 +151,17 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- versioned asset URLs -------------------------------------------------
+# /assets/* is cached for a year as immutable. An asset referenced without a
+# ?v= would therefore be pinned in browsers for a year with no way to replace
+# it — the one failure mode that policy introduces.
+for page in PAGES:
+    doc = open(page).read()
+    for ref in set(re.findall(r'(?:href|src)="([^"]*assets/[^"]+)"', doc)):
+        if "?v=" not in ref:
+            fail(page, f"asset referenced without a ?v= while /assets/* is "
+                       f"immutable for a year: {ref}")
+
 # --- every SVG is either decorative or labelled ---------------------------
 # The site uses inline SVG for every icon and has no <img> at all, so this is
 # where alternative text lives or fails to. A decorative icon needs

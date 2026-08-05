@@ -6,11 +6,19 @@ purge Cloudflare's cache, so without a query bump a CSS edit can sit behind a
 stale copy for hours. Run this after touching anything in assets/, before
 deploying:
 
-    python3 tools/bump_assets.py            # bump every tracked asset
-    python3 tools/bump_assets.py style.css  # bump just one
+    python3 tools/bump_assets.py             # bump every tracked asset
+    python3 tools/bump_assets.py style.css   # bump just one
+    python3 tools/bump_assets.py --if-changed  # bump only what actually changed
+
+--if-changed hashes each asset against tools/assets.json and bumps only the
+ones whose bytes moved. That is what deploy.sh runs, and it is what makes a
+one-year cache on assets/ safe: an asset cannot be served stale, because a
+changed asset always gets a new URL, and an unchanged one never needs one.
 
 Prints the new version so it can be quoted in a commit message.
 """
+import hashlib
+import json
 import glob
 import os
 import re
@@ -19,13 +27,36 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-TRACKED = ["style.css", "site-config.js", "favicon.svg", "logo.svg", "og-cover.png"]
-wanted = sys.argv[1:] or TRACKED
+TRACKED = ["style.css", "site-config.js", "favicon.svg", "logo.svg", "og-cover.png",
+           "fonts/inter-latin.woff2", "fonts/inter-latin-ext.woff2"]
+MANIFEST = os.path.join("tools", "assets.json")
+
+if_changed = "--if-changed" in sys.argv
+args = [a for a in sys.argv[1:] if a != "--if-changed"]
+
+if if_changed:
+    previous = json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else {}
+    digests = {a: hashlib.sha256(open(os.path.join("assets", a), "rb").read()).hexdigest()[:16]
+               for a in TRACKED if os.path.exists(os.path.join("assets", a))}
+    wanted = [a for a in TRACKED if digests.get(a) and previous.get(a) != digests[a]]
+    first_run = not previous
+    if first_run:
+        json.dump(digests, open(MANIFEST, "w"), indent=1, sort_keys=True)
+        print(f"  first run: recorded {len(digests)} asset hash(es), bumped nothing")
+        sys.exit(0)
+    if not wanted:
+        print("  no asset changed")
+        sys.exit(0)
+else:
+    wanted = args or TRACKED
 unknown = [w for w in wanted if w not in TRACKED]
 if unknown:
     sys.exit(f"not a tracked asset: {', '.join(unknown)} (known: {', '.join(TRACKED)})")
 
-pages = glob.glob("*.html") + glob.glob("docs/*.html") + glob.glob("blog/*.html")
+# Font URLs live in the stylesheet, not in the pages; everything else is
+# referenced from the HTML. Both are rewritten the same way.
+pages = (glob.glob("*.html") + glob.glob("docs/*.html") + glob.glob("blog/*.html")
+         + ["assets/style.css"])
 current = {}
 for asset in wanted:
     seen = set()
@@ -48,4 +79,8 @@ for asset in wanted:
             changed_pages.add(page)
     print(f"  {asset}: v{current[asset]} -> v{new}")
 
-print(f"updated {len(changed_pages)} page(s)")
+print(f"updated {len(changed_pages)} file(s)")
+
+if if_changed:
+    json.dump(digests, open(MANIFEST, "w"), indent=1, sort_keys=True)
+    print(f"  manifest updated ({len(digests)} asset(s))")

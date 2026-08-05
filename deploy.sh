@@ -19,6 +19,11 @@ if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   exit 1
 fi
 
+echo "==> Bump ?v= on assets whose bytes changed"
+# Must run before the checks, since it rewrites the pages. This is what makes
+# the one-year cache on /assets/* safe: forgetting to bump is no longer possible.
+python3 "$SRC/tools/bump_assets.py" --if-changed
+
 echo "==> Refresh sitemap lastmod for pages whose content changed"
 python3 "$SRC/tools/update_lastmod.py" --write
 

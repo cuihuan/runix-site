@@ -144,6 +144,31 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- structured data must match what the page says ------------------------
+# FAQPage markup that answers a question differently from the visible copy is
+# worse than none: it is what an assistant quotes, and nobody proofreads it.
+# Every question and answer must appear verbatim in the rendered text.
+import html as _html
+
+for page in PAGES:
+    doc = open(page).read()
+    visible = " ".join(_html.unescape(re.sub(r"<(script|style)\b.*?</\1>", " ",
+                                             doc, flags=re.S | re.I)).split())
+    visible = " ".join(_html.unescape(re.sub(r"<[^>]+>", " ", visible)).split())
+    for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', doc, re.S):
+        try:
+            data = json.loads(block)
+        except Exception:
+            continue
+        if data.get("@type") != "FAQPage":
+            continue
+        for entry in data.get("mainEntity", []):
+            for label, value in (("question", entry.get("name", "")),
+                                 ("answer", entry.get("acceptedAnswer", {}).get("text", ""))):
+                needle = " ".join(_html.unescape(value).split())
+                if needle and needle not in visible:
+                    fail(page, f"FAQPage {label} is not in the visible copy: “{needle[:70]}”")
+
 # --- claims the site is not allowed to make ------------------------------
 # The standing rule is that Runix never publishes a customer count, an uptime
 # percentage, a latency figure or a certification it does not hold. Copy is

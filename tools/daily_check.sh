@@ -76,13 +76,26 @@ for h in gateway comic code data; do
   sub_csp=$(curl -sI --max-time 15 "https://$h.runixcloud.io/?b=$$" | grep -ic content-security)
   sub_cache=$(curl -sI --max-time 15 "https://$h.runixcloud.io/assets/style.css?b=$$" \
     | grep -i '^cache-control' | tr -d '\r' | cut -d: -f2- | tr -d ' ')
-  if [ "$sub_csp" = "$main_csp" ] && [ "$sub_cache" = "$main_cache" ]; then
-    echo "  OK   $h subdomain headers match the main site"
+  # Headers alone were not enough: all four subdomains matched on headers while
+  # serving a stylesheet two versions behind, because they embed their own copy
+  # of assets/ and reference whatever ?v= they were built with. Compare the
+  # stylesheet the page actually asks for, byte for byte.
+  main_ref=$(curl -s --max-time 15 "https://runixcloud.io/?b=$$" \
+    | grep -o 'assets/style\.css?v=[0-9]*' | head -1)
+  main_css=$(curl -s -o /dev/null -w '%{size_download}' --max-time 15 \
+    "https://runixcloud.io/$main_ref")
+  sub_ref=$(curl -s --max-time 15 "https://$h.runixcloud.io/?b=$$" \
+    | grep -o 'assets/style\.css?v=[0-9]*' | head -1)
+  sub_css=$(curl -s -o /dev/null -w '%{size_download}' --max-time 15 \
+    "https://$h.runixcloud.io/$sub_ref")
+  if [ "$sub_csp" = "$main_csp" ] && [ "$sub_cache" = "$main_cache" ] \
+     && [ "$sub_css" = "$main_css" ]; then
+    echo "  OK   $h subdomain matches the main site (headers and stylesheet)"
   else
     FAIL=1
     echo "  FAIL $h subdomain headers drifted from the main site"
-    echo "         main: csp=$main_csp cache=$main_cache"
-    echo "         sub:  csp=$sub_csp cache=$sub_cache"
+    echo "         main: csp=$main_csp cache=$main_cache css=$main_ref ($main_css bytes)"
+    echo "         sub:  csp=$sub_csp cache=$sub_cache css=$sub_ref ($sub_css bytes)"
     echo "         fix:  CLOUDFLARE_API_TOKEN=... tools/deploy_subsites.sh"
   fi
 done

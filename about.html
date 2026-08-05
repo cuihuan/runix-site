@@ -33,9 +33,10 @@
 <script src="assets/site-config.js" defer></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
-  <nav class="nav">
+  <nav class="nav" aria-label="Primary">
     <a class="brand" href="index.html"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
         <div class="nav-links">
@@ -50,6 +51,8 @@
     </div>
   </nav>
 </header>
+
+<main id="main">
 
 <div class="page-hero">
   <div class="container">
@@ -93,6 +96,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <footer class="site-footer">
   <div class="container">

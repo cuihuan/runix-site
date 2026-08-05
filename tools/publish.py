@@ -44,6 +44,12 @@ def main(slug):
     b.write_index(posts)
     b.write_sitemap(posts)
     print(f"index and sitemap rebuilt: {len(posts)} posts live")
+
+    # These two also list every post. Keeping them hand-maintained is how
+    # llms.txt ended up advertising four posts out of nineteen.
+    import subprocess
+    for tool in ("build_feed.py", "refresh_llms_txt.py"):
+        subprocess.run(["python3", str(ROOT / "tools" / tool)], check=True)
     print("next: ./deploy.sh")
 
 

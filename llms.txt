@@ -70,17 +70,29 @@ Products at different stages. The statuses below are literal.
 - [Careers](https://runixcloud.io/careers): open roles.
 - [Blog](https://runixcloud.io/blog/): engineering notes on running LLMs in production.
 
-## Selected writing
+## Writing
 
-- [Model Failover for Production LLM Traffic](https://runixcloud.io/blog/model-failover):
-  failure taxonomy, retry budgets, circuit breakers, degradation tiers.
-- [LLM Cost Control: Tokens, Caching and Budgets](https://runixcloud.io/blog/llm-cost-control):
-  token pricing asymmetry, prompt caching, routing, budget enforcement.
-- [Choosing an LLM Gateway: 7 Things That Matter](https://runixcloud.io/blog/llm-gateway-guide):
-  how to evaluate gateways on compatibility, failover, cost attribution and operational burden.
-- [Building AI Data Pipelines: Raw to Model-Ready](https://runixcloud.io/blog/ai-data-pipelines):
-  ingestion, deduplication tiers, LLM extraction with schema validation, PII masking.
+All 19 posts, newest first. Descriptions are the pages' own.
 
+- [Your model id has an expiry date](https://runixcloud.io/blog/model-deprecation-without-a-redeploy) — Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.
+- [Comic Drama vs Webtoon vs Motion Comic, Explained](https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic) — Three overlapping formats for drawn stories: how webtoons, motion comics and comic dramas differ in production, distribution and audience — and which to make.
+- [How to Make a Comic Drama with AI: Script to Screen](https://runixcloud.io/blog/how-to-make-a-comic-drama-with-ai) — The full AI comic drama production line: script and characters, storyboards, styled panels, motion, voice and publishing — and where tools still fall short.
+- [LLM Router vs LLM Gateway: What's the Difference?](https://runixcloud.io/blog/llm-router-vs-llm-gateway) — The two names describe overlapping tools. What routing and gateway features actually do, when the difference matters, and how to choose on capabilities.
+- [12 Data Questions to Ask an AI Vendor](https://runixcloud.io/blog/ai-vendor-data-questions) — The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.
+- [Build or Buy an LLM Gateway: An Honest Comparison](https://runixcloud.io/blog/build-vs-buy-llm-gateway) — The first version of a gateway is a weekend. The parts that take a year are retry budgets, streaming failover, cost accounting and being on call for all of it.
+- [LLM Provider Keys: Scope, Rotation and Blast Radius](https://runixcloud.io/blog/llm-api-key-management) — Provider keys spread through repos, CI and notebooks. How to scope and rotate them, and why a compromised LLM key is a billing incident as well as a data one.
+- [Per-Team LLM Cost Attribution That Survives Audit](https://runixcloud.io/blog/llm-cost-attribution) — Provider invoices arrive as one number. How to attach cost to a team, feature and request at call time, and why reconstructing it later never works.
+- [What to Log for LLM Traffic, and What Not To](https://runixcloud.io/blog/llm-observability) — Status codes and latency miss the failures that matter for LLM traffic. The signals worth recording, the fields to redact, and the alerts worth waking up for.
+- [Surviving LLM Rate Limits: 429s, Budgets and Queues](https://runixcloud.io/blog/llm-rate-limits) — Why provider rate limits bite in bursts, how RPM, TPM and concurrency interact, and the queueing and backoff patterns that keep throughput stable under 429s.
+- [OpenRouter Alternatives: A Buyer's Checklist](https://runixcloud.io/blog/openrouter-alternatives) — Evaluating LLM gateways beyond routing: the contract, data, failover and cost-attribution questions that decide whether a gateway survives procurement.
+- [Prompt Caching: When It Pays and When It Bites](https://runixcloud.io/blog/prompt-caching-explained) — How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.
+- [Streaming LLM Responses Without Breaking Failover](https://runixcloud.io/blog/streaming-llm-failover) — Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.
+- [What Is an LLM Gateway? A Plain Definition](https://runixcloud.io/blog/what-is-an-llm-gateway) — An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.
+- [LLM Cost Control: Tokens, Caching and Budgets](https://runixcloud.io/blog/llm-cost-control) — Token pricing asymmetry, prompt caching, model routing, budgets and kill switches — and the waste patterns that quietly inflate an LLM bill.
+- [Building AI Data Pipelines: Raw to Model-Ready](https://runixcloud.io/blog/ai-data-pipelines) — A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.
+- [Model Failover for Production LLM Traffic](https://runixcloud.io/blog/model-failover) — Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.
+- [Choosing an LLM Gateway: 7 Things That Matter](https://runixcloud.io/blog/llm-gateway-guide) — How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.
+- [Introducing Runix](https://runixcloud.io/blog/introducing-runix) — Why we are building an OpenAI-compatible LLM gateway, managed data pipelines and ready-to-deploy solutions — and what comes next.
 ## Legal
 
 - [Terms of Service](https://runixcloud.io/terms)

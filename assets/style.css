@@ -590,3 +590,61 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
     padding: 56px 0 0; max-height: calc(100vh - 120px); overflow-y: auto;
   }
 }
+
+/* ---------- Failover diagram (/router) ---------- */
+.diagram { margin: 0; max-width: 940px; margin-inline: auto; }
+.diagram-svg {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg); padding: 20px 12px;
+}
+.diagram-svg .d-node rect { fill: var(--bg); stroke: var(--line-2); stroke-width: 1.25; }
+.diagram-svg .d-gw rect { fill: var(--bg-alt); stroke: var(--indigo); }
+.diagram-svg .d-title {
+  font-weight: 700; font-size: 15px; fill: var(--ink); text-anchor: middle;
+}
+.diagram-svg .d-sub {
+  font-weight: 400; font-size: 13px; fill: var(--ink-3); text-anchor: middle;
+}
+.diagram-svg .d-left { text-anchor: start; }
+.diagram-svg .d-chip rect { fill: var(--bg); stroke: var(--line-2); stroke-width: 1; }
+.diagram-svg .d-chip text {
+  font: 600 13px/1 var(--mono); fill: var(--ink-2); text-anchor: middle;
+  letter-spacing: 0.02em;
+}
+.diagram-svg .d-flow { color: var(--ink-3); }
+.diagram-svg .d-flow line, .diagram-svg .d-flow path {
+  stroke: currentColor; stroke-width: 1.5;
+}
+.diagram-svg .d-edge {
+  font: 600 12px/1 var(--mono); fill: var(--ink-3); text-anchor: middle;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.diagram-svg .d-ok { color: var(--cyan-text); }
+.diagram-svg .d-ok .d-edge { fill: var(--cyan-text); }
+.diagram-svg .d-down, .diagram-svg .d-idle { color: var(--ink-4, #9aa3af); }
+.diagram-svg .d-x line { stroke: #c2410c; stroke-width: 2; stroke-linecap: round; }
+.diagram-svg .d-prov-down rect { stroke-dasharray: 5 4; }
+.diagram-svg .d-prov-idle rect, .diagram-svg .d-prov-idle text { opacity: 0.62; }
+
+.diagram-steps {
+  display: none; margin: 0; padding-left: 22px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg); padding: 22px 22px 22px 42px;
+}
+.diagram-steps li { margin: 0 0 12px; color: var(--ink-2); line-height: 1.6; }
+.diagram-steps li:last-child { margin-bottom: 0; }
+.diagram-steps b { color: var(--ink); font-weight: 600; }
+
+.diagram figcaption {
+  margin-top: 16px; color: var(--ink-3); font-size: 14.5px; line-height: 1.6;
+  text-align: center; max-width: 640px; margin-inline: auto;
+}
+
+/* A 880-wide drawing on a phone puts its labels at about 6px. Below that, the
+   ordered list says the same thing at a readable size. */
+@media (max-width: 719px) {
+  .diagram-svg { display: none; }
+  .diagram-steps { display: block; }
+  .diagram figcaption { text-align: left; }
+}

@@ -169,7 +169,14 @@ for page in PAGES:
         if not m:
             continue
         section = doc[m.end():]
-        cards = len(re.findall(r"<h3[^>]*>", section[:section.find("</section>") + 1]))
+        end = section.find("</section>")
+        window = section[:end if end > 0 else 4000]
+        # Product pages list stages as cards, docs list them as bullets. Count
+        # whichever the page used — counting only h3 missed the docs entirely.
+        cards = len(re.findall(r"<h3[^>]*>", window))
+        if not cards:
+            first_list = re.search(r"<ul>(.*?)</ul>", window, re.S)
+            cards = len(re.findall(r"<li\b", first_list.group(1))) if first_list else 0
         if cards and cards != expected:
             fail(page, f"heading says “{word} stages” but lists {cards}")
 

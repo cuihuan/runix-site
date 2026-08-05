@@ -18,6 +18,9 @@ difference matters, so they are separated below.
 | `qa.py` | Source-level checks: structure, meta, JSON-LD validity and FAQ/visible-copy agreement, link and anchor resolution, nav consistency, sitemap coverage, forbidden claims, mailto routing, product-status consistency, description length. | **yes** |
 | `visual_qa.py` (6-page sample) | Renders in Chrome at 375/768/1440 — overflow, sub-12px text, target size, anchors under the sticky header, WCAG AA contrast, link distinguishability. | **yes** |
 | `perf_check.py index.html` | Page weight, request count, LCP, and images without reserved space. | **yes** |
+| `make_og.py` | Renders each page's own 1200x630 social card in Chrome, only for cards whose text changed. Measures every card's layout in one batch run first and refuses to ship a set where every card measures identically. | **yes** |
+| `point_og.py` | Rewrites `og:image`/`twitter:image` to that card, versioned by the card's content hash. | **yes** |
+| `code_overflow.py` | Renders every page with a `<pre>` at 1440px and fails on any code sample cut off by its container. Desktop only — horizontal scroll is the right answer on a phone. | **yes** |
 | `verify_live.py` | After upload: every path, three rounds, flicker reported as propagation rather than breakage. | **yes** |
 
 ## Run on a schedule
@@ -74,6 +77,7 @@ to clean URLs and every rewrite pattern silently stopped matching.
 | `perf_check.py` (no args) | after changing assets | measures every template, not just the homepage |
 | `check_tls.py` | monthly | `/security` publishes a TLS claim; the policy lives at the edge and nothing here would notice it changing |
 | `verify_live.py` | any time the site looks wrong | distinguishes a real failure from edge propagation |
+| `check_idempotent.sh` | Re-runs every applied builder and fails if any of them changes anything. Idempotence is load-bearing here: a builder that edits on every run silently reverts later work. |
 
 ## Content workflow
 
@@ -101,7 +105,8 @@ research behind it.
 `expand_about.py` · `fix_links.py` · `fix_orphans.py` · `fix_schema.py` ·
 `wrap_tables.py` · `write_compat_post.py` · `write_deprecation_post.py` ·
 `write_migration_post.py` · `write_regression_post.py` · `write_timeout_post.py` · `write_launch_checklist_post.py` · `write_dataflow_post.py` ·
-`write_oss_risk_draft.py` · `build_subsites.py`
+`write_oss_risk_draft.py` · `build_subsites.py` · `add_crosslinks.py` ·
+`add_related.py`
 
 Each is idempotent and prints "nothing to do" on a second run. Read the
 docstring before re-running one — several assert that a page still looks the

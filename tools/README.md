@@ -56,6 +56,10 @@ the main site changed all night.
 | `runix-code` | code.runixcloud.io |
 | `runix-data` | data.runixcloud.io |
 
+**They also carry `_headers`, so a change to the CSP or cache policy on the main
+site does not reach them until they are rebuilt.** That gap was live for about
+fifteen minutes after the CSP went in.
+
 Each is one page whose canonical points at the main site, so they never compete
 with it in search. The builder exits non-zero if any internal link is left
 pointing at the subdomain — which is what caught it after the main site moved

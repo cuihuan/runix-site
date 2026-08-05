@@ -98,6 +98,9 @@ for page in PAGES:
         except Exception as exc:
             fail(page, f"invalid JSON-LD: {exc}")
 
+    if base != "404.html" and not re.search(r'<script type="application/ld\+json">', html):
+        fail(page, "no structured data")
+
     # --- content hygiene ------------------------------------------------
     if re.search(r"lorem ipsum|TODO:|FIXME|XXX_PLACEHOLDER", html, re.I):
         fail(page, "placeholder text left in the page")
@@ -123,6 +126,35 @@ for page in PAGES:
     for img in re.findall(r"<img\b[^>]*>", html):
         if 'alt=' not in img:
             fail(page, "img without alt")
+
+# --- the entity graph resolves ------------------------------------------
+defined_ids, referenced_ids = set(), set()
+for page in PAGES:
+    for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', open(page).read(), re.S):
+        try:
+            data = json.loads(block)
+        except Exception:
+            continue  # already reported above
+
+        def walk(node, page=page):
+            if isinstance(node, list):
+                for item in node:
+                    walk(item)
+                return
+            if not isinstance(node, dict):
+                return
+            if "@id" in node:
+                (defined_ids if len(node) > 1 else referenced_ids).add(node["@id"])
+            if node.get("@type") == "BreadcrumbList":
+                for step in node.get("itemListElement", []):
+                    if "#" in str(step.get("item", "")):
+                        fail(page, f"breadcrumb step points at a fragment: {step.get('item')}")
+            for value in node.values():
+                walk(value)
+
+        walk(data)
+for dangling in sorted(referenced_ids - defined_ids):
+    fail("structured data", f"@id referenced but never defined: {dangling}")
 
 # --- sitemap ------------------------------------------------------------
 if os.path.isfile("sitemap.xml"):

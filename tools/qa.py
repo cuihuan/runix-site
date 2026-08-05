@@ -112,7 +112,10 @@ for page in PAGES:
     # --- content hygiene ------------------------------------------------
     if re.search(r"lorem ipsum|TODO:|FIXME|XXX_PLACEHOLDER", html, re.I):
         fail(page, "placeholder text left in the page")
-    if re.search(r"[一-鿿]", html):
+    # The range is escaped rather than written literally, so this file does not
+    # contain the very characters it exists to reject — otherwise the tool trips
+    # its own check the moment anyone points it at itself.
+    if re.search(r"[\u4e00-\u9fff]", html):
         fail(page, "CJK characters in an English-only site")
     for comment in re.findall(r"<!--(.*?)-->", html, re.S):
         if re.search(r"\.md\b|internal|margin|supply cost", comment, re.I):

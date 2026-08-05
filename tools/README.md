@@ -20,6 +20,22 @@ difference matters, so they are separated below.
 | `perf_check.py index.html` | Page weight, request count, LCP, and images without reserved space. | **yes** |
 | `verify_live.py` | After upload: every path, three rounds, flicker reported as propagation rather than breakage. | **yes** |
 
+## Run on a schedule
+
+`daily_check.sh` bundles the periodic checks into one read-only run against
+production — nothing it does changes anything, so it is safe unattended. It
+verifies every path is serving, that `/security`'s TLS claim is still true,
+that the pages pass their own checks, that the gateway still answers 401 to an
+unauthenticated call, and that no certificate is inside 14 days of expiry.
+Exit code is non-zero if anything failed.
+
+    crontab -e
+    17 9 * * *  /Users/cuihuan/Desktop/workspace/AI/runix/site/tools/daily_check.sh >> /tmp/runix-daily.log 2>&1
+
+Certificates were 77-87 days out when this was written; the check is there
+because a lapsed certificate takes everything down and gives a month of
+warning nobody is watching for.
+
 ## Run by hand, regularly
 
 | Tool | When | Why |

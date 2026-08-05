@@ -36,3 +36,8 @@
 # not manual any more.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Cloudflare Pages serves .xml as application/xml, which readers accept but is
+# not what a feed declares itself to be. Some aggregators key on this.
+/feed.xml
+  Content-Type: application/rss+xml; charset=utf-8

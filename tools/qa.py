@@ -406,6 +406,42 @@ for page in PAGES:
 for dangling in sorted(referenced_ids - defined_ids):
     fail("structured data", f"@id referenced but never defined: {dangling}")
 
+# --- the feed is valid RSS ------------------------------------------------
+# A malformed feed does not error anywhere — readers just silently stop
+# updating, and nobody finds out. build_feed.py generates it from each post's
+# schema, so a change there can break every entry at once.
+if os.path.isfile("feed.xml"):
+    import xml.etree.ElementTree as _ET
+    from email.utils import parsedate_to_datetime as _parsedate
+    try:
+        _root = _ET.parse("feed.xml").getroot()
+        _ch = _root.find("channel")
+        if _ch is None:
+            fail("feed.xml", "no <channel>")
+        else:
+            for _req in ("title", "link", "description"):
+                if _ch.find(_req) is None or not (_ch.find(_req).text or "").strip():
+                    fail("feed.xml", f"channel is missing <{_req}>")
+            _items = _ch.findall("item")
+            if not _items:
+                fail("feed.xml", "no items")
+            for _i, _it in enumerate(_items):
+                for _req in ("title", "link", "description", "pubDate", "guid"):
+                    if _it.find(_req) is None or not (_it.find(_req).text or "").strip():
+                        fail("feed.xml", f"item {_i + 1} is missing <{_req}>")
+                _pd = _it.find("pubDate")
+                if _pd is not None and _pd.text:
+                    try:
+                        _parsedate(_pd.text)
+                    except Exception:
+                        fail("feed.xml", f"item {_i + 1} pubDate is not RFC 822: {_pd.text}")
+            _posts = len([p for p in glob.glob("blog/*.html")
+                          if os.path.basename(p) != "index.html"])
+            if len(_items) != _posts:
+                fail("feed.xml", f"has {len(_items)} items but {_posts} posts are published")
+    except _ET.ParseError as _exc:
+        fail("feed.xml", f"is not well-formed XML: {_exc}")
+
 # --- sitemap ------------------------------------------------------------
 if os.path.isfile("sitemap.xml"):
     sm = open("sitemap.xml").read()

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Runix Blog</title>
+    <link>https://runixcloud.io/blog/</link>
+    <atom:link href="https://runixcloud.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Engineering notes on LLM gateways, reliability, cost control and data pipelines, from the team building Runix.</description>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Comic Drama vs Webtoon vs Motion Comic, Explained</title>
+      <link>https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic</guid>
+      <description>Three overlapping formats for drawn stories: how webtoons, motion comics and comic dramas differ in production, distribution and audience — and which to make.</description>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>How to Make a Comic Drama with AI: Script to Screen</title>
+      <link>https://runixcloud.io/blog/how-to-make-a-comic-drama-with-ai</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/how-to-make-a-comic-drama-with-ai</guid>
+      <description>The full AI comic drama production line: script and characters, storyboards, styled panels, motion, voice and publishing — and where tools still fall short.</description>
+      <pubDate>Tue, 28 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>LLM Router vs LLM Gateway: What's the Difference?</title>
+      <link>https://runixcloud.io/blog/llm-router-vs-llm-gateway</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-router-vs-llm-gateway</guid>
+      <description>The two names describe overlapping tools. What routing and gateway features actually do, when the difference matters, and how to choose on capabilities.</description>
+      <pubDate>Tue, 28 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>OpenRouter Alternatives: A Buyer's Checklist</title>
+      <link>https://runixcloud.io/blog/openrouter-alternatives</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/openrouter-alternatives</guid>
+      <description>Evaluating LLM gateways beyond routing: the contract, data, failover and cost-attribution questions that decide whether a gateway survives procurement.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>What Is an LLM Gateway? A Plain Definition</title>
+      <link>https://runixcloud.io/blog/what-is-an-llm-gateway</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/what-is-an-llm-gateway</guid>
+      <description>An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Surviving LLM Rate Limits: 429s, Budgets and Queues</title>
+      <link>https://runixcloud.io/blog/llm-rate-limits</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-rate-limits</guid>
+      <description>Why provider rate limits bite in bursts, how RPM, TPM and concurrency interact, and the queueing and backoff patterns that keep throughput stable under 429s.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Streaming LLM Responses Without Breaking Failover</title>
+      <link>https://runixcloud.io/blog/streaming-llm-failover</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/streaming-llm-failover</guid>
+      <description>Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>What to Log for LLM Traffic, and What Not To</title>
+      <link>https://runixcloud.io/blog/llm-observability</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-observability</guid>
+      <description>Status codes and latency miss the failures that matter for LLM traffic. The signals worth recording, the fields to redact, and the alerts worth waking up for.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>LLM Provider Keys: Scope, Rotation and Blast Radius</title>
+      <link>https://runixcloud.io/blog/llm-api-key-management</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-api-key-management</guid>
+      <description>Provider keys spread through repos, CI and notebooks. How to scope and rotate them, and why a compromised LLM key is a billing incident as well as a data one.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Per-Team LLM Cost Attribution That Survives Audit</title>
+      <link>https://runixcloud.io/blog/llm-cost-attribution</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-cost-attribution</guid>
+      <description>Provider invoices arrive as one number. How to attach cost to a team, feature and request at call time, and why reconstructing it later never works.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Prompt Caching: When It Pays and When It Bites</title>
+      <link>https://runixcloud.io/blog/prompt-caching-explained</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/prompt-caching-explained</guid>
+      <description>How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>12 Data Questions to Ask an AI Vendor</title>
+      <link>https://runixcloud.io/blog/ai-vendor-data-questions</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/ai-vendor-data-questions</guid>
+      <description>The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Build or Buy an LLM Gateway: An Honest Comparison</title>
+      <link>https://runixcloud.io/blog/build-vs-buy-llm-gateway</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/build-vs-buy-llm-gateway</guid>
+      <description>The first version of a gateway is a weekend. The parts that take a year are retry budgets, streaming failover, cost accounting and being on call for all of it.</description>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>LLM Cost Control: Tokens, Caching and Budgets</title>
+      <link>https://runixcloud.io/blog/llm-cost-control</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-cost-control</guid>
+      <description>Token pricing asymmetry, prompt caching, model routing, budgets and kill switches — and the waste patterns that quietly inflate an LLM bill.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Building AI Data Pipelines: Raw to Model-Ready</title>
+      <link>https://runixcloud.io/blog/ai-data-pipelines</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/ai-data-pipelines</guid>
+      <description>A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.</description>
+      <pubDate>Sun, 19 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Model Failover for Production LLM Traffic</title>
+      <link>https://runixcloud.io/blog/model-failover</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/model-failover</guid>
+      <description>Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.</description>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Choosing an LLM Gateway: 7 Things That Matter</title>
+      <link>https://runixcloud.io/blog/llm-gateway-guide</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-gateway-guide</guid>
+      <description>How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.</description>
+      <pubDate>Sun, 12 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Introducing Runix</title>
+      <link>https://runixcloud.io/blog/introducing-runix</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/introducing-runix</guid>
+      <description>Why we are building an OpenAI-compatible LLM gateway, managed data pipelines and ready-to-deploy solutions — and what comes next.</description>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>

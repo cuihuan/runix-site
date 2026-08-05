@@ -1,7 +1,22 @@
 User-agent: *
 Allow: /
+Disallow: /cdn-cgi/
+
+# Assistants that cite sources are welcome here — there is a summary written
+# for them at /llms.txt, and the blog is the part worth quoting.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
 
 Sitemap: https://runixcloud.io/sitemap.xml
-
-# Site summary for LLM crawlers
-# https://runixcloud.io/llms.txt

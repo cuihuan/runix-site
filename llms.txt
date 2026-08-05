@@ -33,6 +33,7 @@ Products at different stages. The statuses below are literal.
 
 ## Documentation
 
+- [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
 - [Docs hub](https://runixcloud.io/docs/): guides for every product, honest about status.
 - [Router quickstart](https://runixcloud.io/docs/router): base URL and key, model selection, streaming, failover semantics, limits.
 - [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the five stages, delivery and the quality report.

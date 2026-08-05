@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-launch checklist for an LLM feature — Runix</title>
+<meta name="description" content="Twelve decisions that are cheap before launch and expensive after: cost ceilings, timeouts, failover, what you log, and how you roll back.">
+<meta property="og:title" content="Pre-launch checklist for an LLM feature — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta property="og:description" content="Twelve decisions that are cheap before launch and expensive after: cost ceilings, timeouts, failover, what you log, and how you roll back.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=12">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=12">
+<meta property="og:url" content="https://runixcloud.io/blog/llm-feature-pre-launch-checklist">
+<link rel="canonical" href="https://runixcloud.io/blog/llm-feature-pre-launch-checklist">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=16">
+<script src="../assets/site-config.js?v=10" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What to settle before an LLM feature carries real traffic",
+  "description": "Twelve decisions that are cheap before launch and expensive after: cost ceilings, timeouts, failover, what you log, and how you roll back.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/llm-feature-pre-launch-checklist"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=12",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-06",
+  "dateModified": "2026-08-06",
+  "url": "https://runixcloud.io/blog/llm-feature-pre-launch-checklist"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What to settle before an LLM feature carries real traffic",
+      "item": "https://runixcloud.io/blog/llm-feature-pre-launch-checklist"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Pre-launch checklist for an LLM feature — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta name="twitter:description" content="Twelve decisions that are cheap before launch and expensive after: cost ceilings, timeouts, failover, what you log, and how you roll back.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Buyer's guide</span><span>August 6, 2026</span><span>·</span><span>4 min read</span></div>
+    <h1 style="margin-top: 14px;">What to settle before an LLM feature carries real traffic</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>The demo works. Someone has asked when it ships. This is the point at which a list
+is more useful than an opinion, because every item below is cheap to decide now and expensive
+to retrofit once traffic is on it.</p>
+
+<p>Twelve things, grouped by the conversation each one belongs to. If an item makes you say
+"we should check that", that is the item.</p>
+
+<h2>Money</h2>
+
+<p><strong>1. A ceiling that stops spending, not one that emails you.</strong> Budget alerts
+tell you after the money is gone. What you want is a limit that refuses requests — per key,
+per team, or per feature — and you want to have seen it trigger at least once in staging.
+Which means deliberately blowing a small budget before launch rather than hoping.</p>
+
+<p><strong>2. Attribution decided before, not reconstructed after.</strong> If you cannot
+answer "what did this feature cost last month" without a spreadsheet, the boundary was not in
+the credential. Issue a separate key per boundary you will be asked about —
+<a href="/blog/llm-cost-attribution">the reasoning is here</a> — because retrofitting
+attribution means reconstructing it from logs and arguing about the result.</p>
+
+<p><strong>3. Know what a retry costs.</strong> Every retry is a second full-price request.
+A retry policy set without a budget can multiply spend during exactly the incident when
+nobody is watching the bill.</p>
+
+<h2>Failure</h2>
+
+<p><strong>4. A timeout chain, written on one line.</strong> Four numbers — connect, first
+byte, inter-token, total — that decrease as you move inward from the user.
+<a href="/blog/how-long-should-an-llm-request-wait">Ordered the other way</a>, your outer
+layer gives up while the inner one is still generating and you pay for output nobody
+received.</p>
+
+<p><strong>5. A failover target and a retry budget.</strong> Not "retry three times" — a cap
+on what share of your traffic may be retries, so a provider's bad hour cannot become a
+self-inflicted load spike. <a href="/blog/model-failover">The failure taxonomy is here</a>.</p>
+
+<p><strong>6. A decision about streaming failure.</strong> If you stream, work out now what
+happens when a stream dies at token 200. Restart? Show partial? Fail? Whatever it is, decide
+it before it happens — <a href="/blog/streaming-llm-failover">the edge cases are worse than
+they look</a>.</p>
+
+<p><strong>7. A degraded mode that is not an error page.</strong> A smaller model, a cached
+answer, a form. Something that keeps the feature usable when the ideal path is unavailable.</p>
+
+<h2>Change</h2>
+
+<p><strong>8. The model id out of your application code.</strong> Providers retire model
+versions on their own schedule — <a href="/blog/model-deprecation-without-a-redeploy">two
+months' notice is normal</a> — so the id will change on a date you did not choose. If it lives
+in configuration, that is a config change; if it lives in a binary, it is a release under time
+pressure.</p>
+
+<p><strong>9. Baselines recorded before you need them.</strong> Parse rate on structured
+routes, output length distribution, refusal rate. <a href="/blog/did-the-model-change-make-it-worse">
+Without a before, you cannot tell whether a model change hurt</a> — and you cannot collect a
+before retroactively.</p>
+
+<p><strong>10. A rollback you have actually run.</strong> Not a documented one. Flip back,
+confirm traffic serves, flip forward. A rollback nobody has exercised is a hypothesis.</p>
+
+<h2>Evidence</h2>
+
+<p><strong>11. Logs that answer the question you will be asked.</strong> The question is
+always "what happened to this request", so you need a request id you can quote, the model
+that served it, the token counts, and the outcome. <a href="/blog/llm-observability">What not
+to log matters as much</a>: prompts and completions are the highest-risk data in the system
+and the least often the field you needed.</p>
+
+<p><strong>12. A written answer to the data question.</strong> Someone will ask what happens
+to the content users send — internally before launch if you are lucky, by a customer's
+security team if you are not. <a href="/blog/ai-vendor-data-questions">The questions worth
+being ready for</a> are known in advance.</p>
+
+<h2>What this list deliberately leaves out</h2>
+
+<p>Evaluation quality, prompt engineering and model choice are not here. Not because they do
+not matter — they are most of the product — but because they are the part teams already spend
+their time on. The twelve above are the ones that get discovered in production, and every one
+of them is a decision rather than an implementation.</p>
+
+<p>A useful test: pick any three and ask who would make the change and how long it would take.
+If the answer involves a deploy, that item is not settled yet.</p>
+
+<p>Several of these land in the same place, which is the argument for a gateway rather than a
+library: the spend ceiling, the retry budget, the timeout chain, the model pin and the request
+log are one decision each, and either they live in one place or they live in every service
+that calls a model. <a href="/router">Runix Router</a> is where ours live. The list is worth
+running whatever you decide.</p>
+
+<aside class="related">
+  <h2>Related reading</h2>
+  <ul>
+  <li><a href="/blog/how-long-should-an-llm-request-wait">How long should an LLM request be allowed to take?</a></li>
+  <li><a href="/blog/llm-cost-attribution">Per-Team LLM Cost Attribution That Survives Audit</a></li>
+  <li><a href="/blog/did-the-model-change-make-it-worse">How to tell whether a model change made things worse</a></li>
+    <li><a href="/router">Runix Router: one OpenAI-compatible endpoint across providers</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css">
-<script src="assets/site-config.js" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<script src="assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,17 +47,17 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="index.html#products">Products</a>
-      <a href="pricing.html" class="active">Pricing</a>
-      <a href="docs/">Docs</a>
-      <a href="security.html">Security</a>
-      <a href="about.html">Company</a>
-      <a href="blog/">Blog</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing" class="active">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -84,7 +84,7 @@
           <li>No card required to start evaluating</li>
           <li>Community &amp; email support</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="about.html#contact">Request access</a>
+        <a class="btn btn-ghost btn-block" href="/about#contact">Request access</a>
       </div>
       <div class="plan featured">
         <span class="flag">Most common</span>
@@ -98,7 +98,7 @@
           <li>Itemized statements</li>
           <li>Priority support available</li>
         </ul>
-        <a class="btn btn-grad btn-block" href="about.html#contact">Request access</a>
+        <a class="btn btn-grad btn-block" href="/about#contact">Request access</a>
       </div>
       <div class="plan">
         <h3>Enterprise</h3>
@@ -110,10 +110,10 @@
           <li>Formal invoicing &amp; procurement support</li>
           <li>Enterprise agreements and DPAs on request</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Enterprise%20pricing">Talk to sales</a>
+        <!--email_off--><a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Enterprise%20pricing">Talk to sales</a><!--/email_off-->
       </div>
     </div>
-    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">Current per-model rates depend on the models and volume you use. <a href="mailto:sales@runixcloud.io?subject=Pricing" style="color:var(--indigo);font-weight:600;">Ask us for a quote</a> — we'll recommend the most cost-effective setup for your workload.</p>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">Current per-model rates depend on the models and volume you use. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Pricing" style="color:var(--indigo);font-weight:600;">Ask us for a quote</a><!--/email_off--> — we'll recommend the most cost-effective setup for your workload.</p>
   </div>
 </section>
 
@@ -126,19 +126,19 @@
     <div class="grid cols-2">
       <div class="card">
         <h3>Runix Router</h3>
-        <p><strong>Usage-based</strong> — per token or per request, by model, with optional prepaid balance and per-key limits. Quoted per workload; every quote states the rate table in writing. <a href="docs/router.html">Integration docs</a> · <a href="router.html">Product page</a></p>
+        <p><strong>Usage-based</strong> — per token or per request, by model, with optional prepaid balance and per-key limits. Quoted per workload; every quote states the rate table in writing. <a href="/docs/router">Integration docs</a> · <a href="/router">Product page</a></p>
       </div>
       <div class="card">
         <h3>Runix Pipeline</h3>
-        <p><strong>Per project or volume</strong> — each engagement is scoped in writing: stages, delivery format, timeline and price, agreed before work starts. <a href="docs/pipeline.html">How an engagement works</a> · <a href="pipeline.html">Product page</a></p>
+        <p><strong>Per project or volume</strong> — each engagement is scoped in writing: stages, delivery format, timeline and price, agreed before work starts. <a href="/docs/pipeline">How an engagement works</a> · <a href="/pipeline">Product page</a></p>
       </div>
       <div class="card">
         <h3>Runix Code</h3>
-        <p><strong>Indicative seat plans published</strong> — the product is in development, so the numbers are there to size a budget against, not to buy today. <a href="code-plans.html">Team plans</a> · <a href="docs/code.html">Rollout guide</a> · <a href="code.html">Product page</a></p>
+        <p><strong>Indicative seat plans published</strong> — the product is in development, so the numbers are there to size a budget against, not to buy today. <a href="/code-plans">Team plans</a> · <a href="/docs/code">Rollout guide</a> · <a href="/code">Product page</a></p>
       </div>
       <div class="card">
         <h3>Runix Comic</h3>
-        <p><strong>Pricing announced with general availability</strong> — in development, waitlist open. Early cohorts work with us under individually agreed terms. <a href="docs/comic.html">Workflow guide</a> · <a href="comic.html">Product page</a></p>
+        <p><strong>Pricing announced with general availability</strong> — in development, waitlist open. Early cohorts work with us under individually agreed terms. <a href="/docs/comic">Workflow guide</a> · <a href="/comic">Product page</a></p>
       </div>
     </div>
   </div>
@@ -160,7 +160,7 @@
         <div class="frow"><span class="k">Minimums</span><span class="v">Stated explicitly<small>Including "none", where none apply</small></span></div>
         <div class="frow"><span class="k">Billing period</span><span class="v">Stated explicitly<small>Prepaid draw-down or invoiced in arrears</small></span></div>
         <div class="frow"><span class="k">Statement detail</span><span class="v">Itemised per model<small>Usage you can reconcile against your own logs</small></span></div>
-        <div class="frow"><span class="k">Where it is written</span><span class="v">In an order form<small>Which takes precedence over the standard <a href="terms.html" style="color:var(--indigo);">Terms</a></small></span></div>
+        <div class="frow"><span class="k">Where it is written</span><span class="v">In an order form<small>Which takes precedence over the standard <a href="/terms" style="color:var(--indigo);">Terms</a></small></span></div>
       </div>
     </div>
   </div>
@@ -183,7 +183,7 @@
       </div>
       <div class="card">
         <h3>Prepaid credits</h3>
-        <p>Prepaid balance is drawn down as you use the Services during your <strong>service period</strong> (the term covered by your plan or agreement). Unused balance is refundable per the <a href="refund.html">Refund Policy</a>; consumed usage is not.</p>
+        <p>Prepaid balance is drawn down as you use the Services during your <strong>service period</strong> (the term covered by your plan or agreement). Unused balance is refundable per the <a href="/refund">Refund Policy</a>; consumed usage is not.</p>
       </div>
       <div class="card">
         <h3>Renewal &amp; auto-recharge</h3>
@@ -195,7 +195,7 @@
       </div>
       <div class="card">
         <h3>Cancel &amp; refunds</h3>
-        <p>Cancel anytime — access continues to the end of the paid period. See the <a href="cancellation.html">Cancellation Policy</a> and <a href="refund.html">Refund Policy</a> for exactly what happens to access, renewals, and balance.</p>
+        <p>Cancel anytime — access continues to the end of the paid period. See the <a href="/cancellation">Cancellation Policy</a> and <a href="/refund">Refund Policy</a> for exactly what happens to access, renewals, and balance.</p>
       </div>
       <div class="card">
         <h3>Invoices &amp; receipts</h3>
@@ -203,11 +203,11 @@
       </div>
       <div class="card">
         <h3>Payment options</h3>
-        <p>We're onboarding payment processing now. When self-serve checkout is live it will use a hosted, PCI-compliant checkout; today, enterprise billing (card or bank transfer) is arranged with our team. <a href="mailto:sales@runixcloud.io?subject=Billing%20setup">Contact us</a> to set up billing.</p>
+        <p>We're onboarding payment processing now. When self-serve checkout is live it will use a hosted, PCI-compliant checkout; today, enterprise billing (card or bank transfer) is arranged with our team. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Billing%20setup">Contact us</a><!--/email_off--> to set up billing.</p>
       </div>
       <div class="card">
         <h3>Questions</h3>
-        <p>Not sure which model fits? Tell us your expected volume and use case and we'll recommend the cheapest way to run it. <a href="mailto:sales@runixcloud.io?subject=Pricing">Get a quote</a>.</p>
+        <p>Not sure which model fits? Tell us your expected volume and use case and we'll recommend the cheapest way to run it. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Pricing">Get a quote</a><!--/email_off-->.</p>
       </div>
     </div>
   </div>
@@ -218,7 +218,7 @@
     <div class="cta-band">
       <h2>Get a quote for your workload</h2>
       <p>Share your expected volume and the models you want — we'll come back with a clear plan and pricing.</p>
-      <a class="btn btn-grad" href="about.html#contact">Request access</a>
+      <a class="btn btn-grad" href="/about#contact">Request access</a>
     </div>
   </div>
 </section>
@@ -228,40 +228,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="router.html">Runix Router</a>
-        <a href="pipeline.html">Runix Pipeline</a>
-        <a href="code.html">Runix Code</a>
-        <a href="comic.html">Runix Comic</a>
-        <a href="pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="about.html">About</a>
-        <a href="about.html#contact">Contact</a>
-        <a href="security.html">Security</a>
-        <a href="careers.html">Careers</a>
-        <a href="blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="terms.html">Terms of Service</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="refund.html">Refund Policy</a>
-        <a href="cancellation.html">Cancellation Policy</a>
-        <a href="acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

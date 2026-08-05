@@ -27,8 +27,8 @@
 <link rel="canonical" href="https://runixcloud.io/blog/ai-data-pipelines">
 <link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/site-config.js" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+<script src="../assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,17 +89,17 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="../index.html#products">Products</a>
-      <a href="../pricing.html">Pricing</a>
-      <a href="../docs/">Docs</a>
-      <a href="../security.html">Security</a>
-      <a href="../about.html">Company</a>
-      <a href="../blog/" class="active">Blog</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="../about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -144,7 +144,7 @@
 <li>Validate every response against the schema. Treat validation failure as a normal, expected event.</li>
 <li>On invalid JSON, retry with the validator's error message appended to the prompt. One or two retries recover the large majority of failures; after that, route the record to a dead-letter queue for inspection rather than looping forever.</li>
 </ol>
-<p>Log the model, prompt version, and token cost per record. Extraction is usually the most expensive stage per document, and routing it through a gateway that handles retries, fallback models, and cost attribution keeps it operable. This is precisely the workload our <a href="../index.html#products">LLM gateway</a> was built for: the same extraction prompt can run against 20+ models through one OpenAI-compatible API, so you can benchmark a cheap model against a strong one on your own data before committing.</p>
+<p>Log the model, prompt version, and token cost per record. Extraction is usually the most expensive stage per document, and routing it through a gateway that handles retries, fallback models, and cost attribution keeps it operable. This is precisely the workload our <a href="/#products">LLM gateway</a> was built for: the same extraction prompt can run against 20+ models through one OpenAI-compatible API, so you can benchmark a cheap model against a strong one on your own data before committing.</p>
 
 <h2>PII detection and masking</h2>
 <p>PII handling must happen inside the pipeline, before data reaches any external system — including the LLM used for extraction, if that model is third-party. Once a name or card number has left your boundary, no downstream deletion fixes it.</p>
@@ -169,10 +169,10 @@
 <tr><td>Quality scoring</td><td>Only good records enter the dataset</td><td>Threshold scores, quarantine with reason codes</td></tr>
 <tr><td>Orchestration</td><td>Fresh and reproducible data</td><td>Incremental runs + periodic full batch rebuilds</td></tr>
 </table>
-<p>There is no magic in any of these stages. What separates working pipelines from science projects is treating each one as a real component — versioned, monitored, and allowed to say no to bad data. If you would rather not build all seven yourself, our managed data pipelines cover this stack end to end; <a href="../about.html#contact">get in touch</a>.</p>
+<p>There is no magic in any of these stages. What separates working pipelines from science projects is treating each one as a real component — versioned, monitored, and allowed to say no to bad data. If you would rather not build all seven yourself, our managed data pipelines cover this stack end to end; <a href="/about#contact">get in touch</a>.</p>
 
   <div class="notice">
-    <p><strong>Want to go deeper?</strong> Runix builds AI infrastructure for production teams — a unified LLM gateway, managed data pipelines, and ready-to-deploy solutions. <a href="../about.html#contact">Talk to us</a> about your use case.</p>
+    <p><strong>Want to go deeper?</strong> Runix builds AI infrastructure for production teams — a unified LLM gateway, managed data pipelines, and ready-to-deploy solutions. <a href="/about#contact">Talk to us</a> about your use case.</p>
   </div>
 </article>
 
@@ -182,40 +182,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../router.html">Runix Router</a>
-        <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../code.html">Runix Code</a>
-        <a href="../comic.html">Runix Comic</a>
-        <a href="../pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../about.html#contact">Contact</a>
-        <a href="../security.html">Security</a>
-        <a href="../careers.html">Careers</a>
-        <a href="../blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../terms.html">Terms of Service</a>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../refund.html">Refund Policy</a>
-        <a href="../cancellation.html">Cancellation Policy</a>
-        <a href="../acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../terms.html">Terms</a>
-        <a href="../privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

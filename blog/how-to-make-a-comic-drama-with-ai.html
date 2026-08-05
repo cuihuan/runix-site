@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/site-config.js" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+<script src="../assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,17 +89,17 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="../index.html#products">Products</a>
-      <a href="../pricing.html">Pricing</a>
-      <a href="../docs/">Docs</a>
-      <a href="../security.html">Security</a>
-      <a href="../about.html">Company</a>
-      <a href="../blog/" class="active">Blog</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="../about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -130,20 +130,20 @@
 
 <h2>Stage 2 — Production: panels, motion, voice</h2>
 <p>This is the stage most AI comic generators cover, and the stage where they struggle in a specific, predictable way: <strong>consistency</strong>. Getting one good image is easy. Getting the same character, in the same style, across two hundred panels and twelve episodes is the hard problem. Working methods that help: generate from the character sheet rather than from scratch each time, fix a style reference for the whole episode rather than per panel, and review panels in board order so drift is caught early rather than in the edit.</p>
-<p>Motion is what separates a comic drama from a webtoon: camera pans and zooms across panels, timed transitions, and occasional in-panel effects. The craft is restraint — motion should carry the eye through the story, not show off. Voice and sound follow the same logic: cast one synthetic voice per character and keep it for the season, keep music under dialogue, and generate subtitles from the script you already have rather than transcribing your own audio. Under the hood, all of this leans on several different models — text, image, speech — which is the same multi-provider reality that <a href="../router.html">API-side teams</a> deal with, wearing a different costume.</p>
+<p>Motion is what separates a comic drama from a webtoon: camera pans and zooms across panels, timed transitions, and occasional in-panel effects. The craft is restraint — motion should carry the eye through the story, not show off. Voice and sound follow the same logic: cast one synthetic voice per character and keep it for the season, keep music under dialogue, and generate subtitles from the script you already have rather than transcribing your own audio. Under the hood, all of this leans on several different models — text, image, speech — which is the same multi-provider reality that <a href="/router">API-side teams</a> deal with, wearing a different costume.</p>
 
 <h2>Stage 3 — Publishing: shipped, then seen</h2>
 <p>An episode is not done when the render finishes. It still needs export in the formats each platform wants (vertical cuts for short-video feeds, full episodes elsewhere), a cover image worth tapping, a title and description per platform, and the upload itself. None of this is creatively interesting, all of it decides whether anyone sees the work, and almost none of it is covered by image-generation tools — it is usually a spreadsheet and an evening per episode. Treat promo assets as part of the episode: cut the trailer from the strongest three shots while the project is still open, not as a separate job next day.</p>
 
 <h2>Where the tools still fall short</h2>
-<p>Being specific about the gaps, because anyone selling "one click to finished series" is skipping them: character consistency degrades across long runs and needs human review; style drifts between episodes generated weeks apart; and the pipeline is fragmented, so state lives in export files between tools. The fix for the last one is structural, not a better model — the same lesson data teams learned about <a href="ai-data-pipelines.html">pipelines generally</a>: the value is in the joins, not the stages.</p>
+<p>Being specific about the gaps, because anyone selling "one click to finished series" is skipping them: character consistency degrades across long runs and needs human review; style drifts between episodes generated weeks apart; and the pipeline is fragmented, so state lives in export files between tools. The fix for the last one is structural, not a better model — the same lesson data teams learned about <a href="/blog/ai-data-pipelines">pipelines generally</a>: the value is in the joins, not the stages.</p>
 
 <h2>Doing it end to end</h2>
-<p>That structural gap is exactly what <a href="../comic.html">Runix Comic</a> is being built to close: one project that carries a story from script and character sheets through boards, panels, motion and voice to published, promoted episodes. It is in development, not shipped — the <a href="../comic.html">product page</a> says plainly which stages are being built and in what order. If you make serialised visual stories, <a href="../about.html#contact">join the waitlist</a> and tell us what you make; early cohorts shape what lands first.</p>
+<p>That structural gap is exactly what <a href="/comic">Runix Comic</a> is being built to close: one project that carries a story from script and character sheets through boards, panels, motion and voice to published, promoted episodes. It is in development, not shipped — the <a href="/comic">product page</a> says plainly which stages are being built and in what order. If you make serialised visual stories, <a href="/about#contact">join the waitlist</a> and tell us what you make; early cohorts shape what lands first.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-  <span>Runix Comic is an end-to-end AI studio for comic dramas, in development with a waitlist open. <a href="../comic.html">See what is being built</a> — or <a href="../about.html#contact">tell us about your series</a> and we reply within one business day.</span>
+  <span>Runix Comic is an end-to-end AI studio for comic dramas, in development with a waitlist open. <a href="/comic">See what is being built</a> — or <a href="/about#contact">tell us about your series</a> and we reply within one business day.</span>
 </div>
 
 </article>
@@ -154,40 +154,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../router.html">Runix Router</a>
-        <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../code.html">Runix Code</a>
-        <a href="../comic.html">Runix Comic</a>
-        <a href="../pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../about.html#contact">Contact</a>
-        <a href="../security.html">Security</a>
-        <a href="../careers.html">Careers</a>
-        <a href="../blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../terms.html">Terms of Service</a>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../refund.html">Refund Policy</a>
-        <a href="../cancellation.html">Cancellation Policy</a>
-        <a href="../acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../terms.html">Terms</a>
-        <a href="../privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

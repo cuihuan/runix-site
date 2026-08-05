@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/site-config.js" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+<script src="../assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,17 +89,17 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="../index.html#products">Products</a>
-      <a href="../pricing.html">Pricing</a>
-      <a href="../docs/">Docs</a>
-      <a href="../security.html">Security</a>
-      <a href="../about.html">Company</a>
-      <a href="../blog/" class="active">Blog</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="../about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -121,29 +121,29 @@
 <p>Routing is the <em>choice</em> half of the job. Given a request, something has to decide which provider and which model serves it, and what happens when that choice goes wrong:</p>
 <ul>
 <li><strong>Model selection</strong> — send the request to a pinned model, or choose one by configuration: cost tier, capability class, provider preference.</li>
-<li><strong>Health-aware dispatch</strong> — a provider that is <a href="llm-rate-limits.html">rate-limiting</a>, timing out or degrading gets taken out of rotation before it hurts your latency.</li>
-<li><strong>Failover</strong> — when a request fails mid-flight, it is re-issued to a healthy alternative under a retry budget, ideally <a href="streaming-llm-failover.html">without breaking a stream</a> already in progress.</li>
-<li><strong>Cost-aware policies</strong> — route cheap traffic to cheap models and reserve expensive ones for requests that need them, which is usually the biggest <a href="llm-cost-control.html">cost lever</a> after prompt design.</li>
+<li><strong>Health-aware dispatch</strong> — a provider that is <a href="/blog/llm-rate-limits">rate-limiting</a>, timing out or degrading gets taken out of rotation before it hurts your latency.</li>
+<li><strong>Failover</strong> — when a request fails mid-flight, it is re-issued to a healthy alternative under a retry budget, ideally <a href="/blog/streaming-llm-failover">without breaking a stream</a> already in progress.</li>
+<li><strong>Cost-aware policies</strong> — route cheap traffic to cheap models and reserve expensive ones for requests that need them, which is usually the biggest <a href="/blog/llm-cost-control">cost lever</a> after prompt design.</li>
 </ul>
 
 <h2>What "gateway" emphasises: the checkpoint</h2>
-<p>Gateway is the <em>control</em> half: one place where all model traffic enters, so policy can be applied once instead of in every codebase. We covered the full definition in <a href="what-is-an-llm-gateway.html">What is an LLM gateway</a>; the short list:</p>
+<p>Gateway is the <em>control</em> half: one place where all model traffic enters, so policy can be applied once instead of in every codebase. We covered the full definition in <a href="/blog/what-is-an-llm-gateway">What is an LLM gateway</a>; the short list:</p>
 <ul>
-<li><strong>Key custody</strong> — provider credentials live in one audited place, not in <a href="llm-api-key-management.html">a dozen .env files</a>.</li>
+<li><strong>Key custody</strong> — provider credentials live in one audited place, not in <a href="/blog/llm-api-key-management">a dozen .env files</a>.</li>
 <li><strong>Quotas and limits</strong> — per-key, per-team ceilings enforced before requests reach a provider.</li>
-<li><strong>Attribution</strong> — <a href="llm-cost-attribution.html">who spent what</a>, per request, per key, per team.</li>
+<li><strong>Attribution</strong> — <a href="/blog/llm-cost-attribution">who spent what</a>, per request, per key, per team.</li>
 <li><strong>Data terms</strong> — a single point where retention, masking and compliance posture can be stated and enforced.</li>
 </ul>
 
 <h2>The honest answer: mature products do both</h2>
-<p>A router that holds no keys and enforces no quotas pushes the governance problem back into your codebase. A gateway that cannot fail over is <a href="model-failover.html">a single point of disappointment</a> in front of unreliable upstreams. That is why every serious product in this space — whatever it calls itself — converges on the same capability set, and why the name on the tin tells you about positioning, not features. The practical consequence for buyers: <a href="llm-gateway-guide.html">evaluate on the capability list</a>, not the noun. Ask how failover behaves mid-stream, where keys live, how cost is attributed, and what the data terms say — the answers separate products far better than their category labels do. We keep a worked comparison in <a href="openrouter-alternatives.html">our OpenRouter alternatives guide</a>.</p>
+<p>A router that holds no keys and enforces no quotas pushes the governance problem back into your codebase. A gateway that cannot fail over is <a href="/blog/model-failover">a single point of disappointment</a> in front of unreliable upstreams. That is why every serious product in this space — whatever it calls itself — converges on the same capability set, and why the name on the tin tells you about positioning, not features. The practical consequence for buyers: <a href="/blog/llm-gateway-guide">evaluate on the capability list</a>, not the noun. Ask how failover behaves mid-stream, where keys live, how cost is attributed, and what the data terms say — the answers separate products far better than their category labels do. We keep a worked comparison in <a href="/blog/openrouter-alternatives">our OpenRouter alternatives guide</a>.</p>
 
 <h2>Why our product is called Runix Router</h2>
-<p><a href="../router.html">Runix Router</a> does both halves — key custody, quotas and attribution on the control side; model selection, health-aware dispatch and mid-request failover on the decision side. We put <em>Router</em> on the label because the decision half is where the engineering effort concentrates and where products differ most in practice: anyone can store a key; keeping a stream alive through a provider's bad hour is the part that earns the name. If you are choosing infrastructure right now, the checklist above is the evaluation we would want to be held to — <a href="../about.html#contact">ask us those questions</a> and we will answer concretely, in writing.</p>
+<p><a href="/router">Runix Router</a> does both halves — key custody, quotas and attribution on the control side; model selection, health-aware dispatch and mid-request failover on the decision side. We put <em>Router</em> on the label because the decision half is where the engineering effort concentrates and where products differ most in practice: anyone can store a key; keeping a stream alive through a provider's bad hour is the part that earns the name. If you are choosing infrastructure right now, the checklist above is the evaluation we would want to be held to — <a href="/about#contact">ask us those questions</a> and we will answer concretely, in writing.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-  <span><a href="../router.html">Runix Router</a> is in early access — one OpenAI-compatible endpoint with routing, mid-request failover and per-request cost tracking. <a href="../about.html#contact">Tell us what you are building</a> and we reply within one business day.</span>
+  <span><a href="/router">Runix Router</a> is in early access — one OpenAI-compatible endpoint with routing, mid-request failover and per-request cost tracking. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
 </div>
 
 </article>
@@ -154,40 +154,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../router.html">Runix Router</a>
-        <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../code.html">Runix Code</a>
-        <a href="../comic.html">Runix Comic</a>
-        <a href="../pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../about.html#contact">Contact</a>
-        <a href="../security.html">Security</a>
-        <a href="../careers.html">Careers</a>
-        <a href="../blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../terms.html">Terms of Service</a>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../refund.html">Refund Policy</a>
-        <a href="../cancellation.html">Cancellation Policy</a>
-        <a href="../acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../terms.html">Terms</a>
-        <a href="../privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/site-config.js" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+<script src="../assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,17 +89,17 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="../index.html#products">Products</a>
-      <a href="../pricing.html">Pricing</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
       <a href="./" class="active">Docs</a>
-      <a href="../security.html">Security</a>
-      <a href="../about.html">Company</a>
-      <a href="../blog/">Blog</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="../about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -115,7 +115,7 @@
 
 <article class="article">
 
-<p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="../router.html">early access</a> — keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
+<p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="/router">early access</a> — keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
 
 <h2>1. Quickstart</h2>
 <p>Set your client's base URL to <code>https://api.router.runixcloud.io/v1</code> and use the key issued during onboarding. Everything else about your existing integration stays the same.</p>
@@ -153,16 +153,16 @@ resp = client.chat.completions.create(
 <p>What happens when an upstream provider degrades is the part worth reading twice:</p>
 <ul>
 <li><strong>Errors, rate limits and timeouts</strong> trip a circuit breaker; the request is re-issued to a healthy alternative under a retry budget, so one provider's bad hour does not become your outage.</li>
-<li><strong>Mid-stream failures</strong> are re-issued as well — see <a href="../blog/streaming-llm-failover.html">how streaming failover works</a> for the mechanics and the edge cases.</li>
+<li><strong>Mid-stream failures</strong> are re-issued as well — see <a href="/blog/streaming-llm-failover">how streaming failover works</a> for the mechanics and the edge cases.</li>
 <li><strong>A degrading provider</strong> is taken out of rotation before it drags your latency, and returns when health checks pass.</li>
 </ul>
-<p>For the background on retry budgets and failure taxonomy, read <a href="../blog/model-failover.html">Model failover for production LLM traffic</a>.</p>
+<p>For the background on retry budgets and failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>.</p>
 
 <h2>5. Limits, usage and cost</h2>
 <ul>
 <li><strong>Per-key quotas</strong> — each key carries limits and quotas set during onboarding, revocable and adjustable without a redeploy.</li>
-<li><strong>Usage tracking</strong> — usage is recorded per request from the first call; billing is usage-based in USD with itemised statements. See <a href="../pricing.html">Pricing</a> for how quotes work.</li>
-<li><strong>Attribution</strong> — issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="../blog/llm-cost-attribution.html">LLM cost attribution</a>.</li>
+<li><strong>Usage tracking</strong> — usage is recorded per request from the first call; billing is usage-based in USD with itemised statements. See <a href="/pricing">Pricing</a> for how quotes work.</li>
+<li><strong>Attribution</strong> — issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="/blog/llm-cost-attribution">LLM cost attribution</a>.</li>
 </ul>
 
 <h2>6. Errors and request ids</h2>
@@ -172,14 +172,14 @@ resp = client.chat.completions.create(
 <p>A path the API does not serve returns <code>404</code>. Per-key quota and rate limits are set during onboarding (see section 5); when a limit or an upstream failure is involved, the router applies the failover behaviour in section 4 before an error reaches you.</p>
 
 <h2>7. Data handling</h2>
-<p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="../privacy.html">Privacy Policy</a>, and the security posture in <a href="../security.html">Security</a>.</p>
+<p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>
 
 <h2>8. Getting a key</h2>
-<p>Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. <a href="../about.html#contact">Tell us what you are building</a> — models, expected volume, latency needs — and we reply within one business day with an access plan. A complete API reference ships with general availability; early-access teams receive onboarding documentation directly.</p>
+<p>Router is in early access: we issue keys and onboard teams individually rather than through self-serve signup. <a href="/about#contact">Tell us what you are building</a> — models, expected volume, latency needs — and we reply within one business day with an access plan. A complete API reference ships with general availability; early-access teams receive onboarding documentation directly.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-  <span>Questions this page does not answer? <a href="../about.html#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
+  <span>Questions this page does not answer? <a href="/about#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
 </div>
 
 </article>
@@ -190,40 +190,40 @@ resp = client.chat.completions.create(
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../router.html">Runix Router</a>
-        <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../code.html">Runix Code</a>
-        <a href="../comic.html">Runix Comic</a>
-        <a href="../pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../about.html#contact">Contact</a>
-        <a href="../security.html">Security</a>
-        <a href="../careers.html">Careers</a>
-        <a href="../blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../terms.html">Terms of Service</a>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../refund.html">Refund Policy</a>
-        <a href="../cancellation.html">Cancellation Policy</a>
-        <a href="../acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../terms.html">Terms</a>
-        <a href="../privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

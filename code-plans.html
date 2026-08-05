@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css">
-<script src="assets/site-config.js" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<script src="assets/site-config.js?v=1" defer></script>
 <style>
   /* 4 equal-height cards with the CTA pinned to the bottom, so nothing spills
      past the border and every button lines up across tiers. */
@@ -82,17 +82,17 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="index.html#products">Products</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="docs/">Docs</a>
-      <a href="security.html">Security</a>
-      <a href="about.html">Company</a>
-      <a href="blog/">Blog</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -104,7 +104,7 @@
     <p>Buy seats. Each seat gets a monthly credit allowance that covers every model and tool at one rate — with 5-hour, weekly and monthly caps that keep spend predictable and stop a runaway agent from burning the month in an afternoon.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
       <a class="btn btn-primary" href="#plans">See the plans</a>
-      <a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20plans">Talk to sales</a>
+      <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20plans">Talk to sales</a><!--/email_off-->
     </div>
   </div>
 </div>
@@ -158,7 +158,7 @@
           <li>Pooled team credits</li>
           <li>Email support</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
+        <!--email_off--><a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a><!--/email_off-->
       </div>
       <div class="plan featured">
         <span class="flag">Most teams</span>
@@ -174,7 +174,7 @@
           <li>Admin controls, model policy</li>
           <li>Priority support</li>
         </ul>
-        <a class="btn btn-grad btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
+        <!--email_off--><a class="btn btn-grad btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a><!--/email_off-->
       </div>
       <div class="plan">
         <h3>Ultra</h3>
@@ -188,7 +188,7 @@
           <li>Invoices, net terms, tax ID</li>
           <li>SSO / OIDC sign-in</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
+        <!--email_off--><a class="btn btn-ghost btn-block" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a><!--/email_off-->
       </div>
       <div class="plan">
         <h3>Enterprise</h3>
@@ -202,10 +202,10 @@
           <li>Private deployment options</li>
           <li>Dedicated support</li>
         </ul>
-        <a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Enterprise">Talk to sales</a>
+        <!--email_off--><a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20Enterprise">Talk to sales</a><!--/email_off-->
       </div>
     </div>
-    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">The more credits a seat carries, the cheaper each one gets — Pro to Ultra is a 40% better rate. Prices are indicative while the product is in development. <a href="code.html" style="color:var(--indigo);font-weight:600;">About Runix Code</a> · <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote</a></p>
+    <p class="model-note" style="text-align:center;margin-top:24px;color:var(--ink-3);font-size:14px;">The more credits a seat carries, the cheaper each one gets — Pro to Ultra is a 40% better rate. Prices are indicative while the product is in development. <a href="/code" style="color:var(--indigo);font-weight:600;">About Runix Code</a> · <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20pricing" style="color:var(--indigo);font-weight:600;">Ask for a quote</a><!--/email_off--></p>
   </div>
 </section>
 
@@ -272,7 +272,7 @@
       <div class="card"><h3>What is a credit?</h3><p>A fixed unit of usage that covers any model or tool at one published rate. You never reason about tokens or per-model dollar prices — frontier models, lighter models, and search / fetch / data tools all meter in the same credit.</p></div>
       <div class="card"><h3>What happens at the limit?</h3><p>Usage pauses until the window resets. Each seat runs against a rolling 5-hour cap, a weekly cap and a monthly allowance — so no runaway agent, no surprise bill. Need more? Top up the pool.</p></div>
       <div class="card"><h3>Invoices &amp; bank transfer?</h3><p>Yes. Card and online payment are instant; for teams we issue invoices with your company name and tax ID, support net terms, and can credit your pool against a redemption code after an offline transfer.</p></div>
-      <div class="card"><h3>How many seats?</h3><p>From a handful up to 30–50 and beyond. Credits pool across the team; an admin sets per-seat caps, restricts models, and sees per-seat usage. <a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20seats">Tell us your team size.</a></p></div>
+      <div class="card"><h3>How many seats?</h3><p>From a handful up to 30–50 and beyond. Credits pool across the team; an admin sets per-seat caps, restricts models, and sees per-seat usage. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Runix%20Code%20seats">Tell us your team size.</a><!--/email_off--></p></div>
     </div>
   </div>
 </section>
@@ -282,7 +282,7 @@
     <div class="cta-band">
       <h2>Put a coding agent in front of your team</h2>
       <p>Runix Code is still being built. Tell us your team size and stack and we will put you in the next onboarding cohort — and price the seats before you commit.</p>
-      <a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a>
+      <!--email_off--><a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a><!--/email_off-->
     </div>
   </div>
 </section>
@@ -293,40 +293,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="router.html">Runix Router</a>
-        <a href="pipeline.html">Runix Pipeline</a>
-        <a href="code.html">Runix Code</a>
-        <a href="comic.html">Runix Comic</a>
-        <a href="pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="about.html">About</a>
-        <a href="about.html#contact">Contact</a>
-        <a href="security.html">Security</a>
-        <a href="careers.html">Careers</a>
-        <a href="blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="terms.html">Terms of Service</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="refund.html">Refund Policy</a>
-        <a href="cancellation.html">Cancellation Policy</a>
-        <a href="acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

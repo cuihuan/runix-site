@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/site-config.js" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+<script src="../assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,17 +89,17 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="../index.html#products">Products</a>
-      <a href="../pricing.html">Pricing</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
       <a href="./" class="active">Docs</a>
-      <a href="../security.html">Security</a>
-      <a href="../about.html">Company</a>
-      <a href="../blog/">Blog</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="../about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -115,16 +115,16 @@
 
 <article class="article">
 
-<p><a href="../code.html">Runix Code</a> is an AI coding agent being built for teams. It is in development and not generally available; this page describes how adoption is designed to work, so you can decide whether to join the waitlist. Everything here is the plan being built with early cohorts — not a shipped product.</p>
+<p><a href="/code">Runix Code</a> is an AI coding agent being built for teams. It is in development and not generally available; this page describes how adoption is designed to work, so you can decide whether to join the waitlist. Everything here is the plan being built with early cohorts — not a shipped product.</p>
 
 <h2>1. Joining a cohort</h2>
-<p>We onboard from the <a href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">waitlist</a> in small cohorts. When your team's turn comes we set up together: your stack, your repositories, and which policies you want enforced from day one. Cohort feedback decides what lands next, which is the honest reason to join early.</p>
+<p>We onboard from the <!--email_off--><a href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">waitlist</a><!--/email_off--> in small cohorts. When your team's turn comes we set up together: your stack, your repositories, and which policies you want enforced from day one. Cohort feedback decides what lands next, which is the honest reason to join early.</p>
 
 <h2>2. Seats and policies</h2>
 <ul>
 <li><strong>Seats</strong> — access is per developer, with usage attributed per seat so you can see where the value lands.</li>
 <li><strong>Model routing</strong> — policies decide which models serve which repositories; sensitive code can be held to a stricter boundary than experiments.</li>
-<li><strong>Data boundary</strong> — where prompts may travel is configured, and code is never training data. The posture is written down in <a href="../privacy.html">Privacy</a>.</li>
+<li><strong>Data boundary</strong> — where prompts may travel is configured, and code is never training data. The posture is written down in <a href="/privacy">Privacy</a>.</li>
 </ul>
 
 <h2>3. The working loop</h2>
@@ -133,14 +133,14 @@
 <h2>4. Credits, and what one buys</h2>
 <p>Seats carry credits, and credits are what everything is metered in — no per-model price list to reason about. <strong>One credit is $0.01.</strong> A request's cost is derived from the tokens it reads and writes, weighted by the model: a frontier model spends more credits per token than a lighter one, and tool calls such as search or fetch are metered the same way.</p>
 <p>Three rolling windows apply to every seat at once — a 5-hour cap, a weekly cap and the monthly allowance. Hitting one pauses that seat until the window resets rather than producing an overage bill, which is what keeps a runaway agent from spending the team's month in an afternoon.</p>
-<p>The seat counts and credit allowances on the <a href="../code-plans.html">team plans page</a> are indicative while the product is in development; the rate that applies to your team is confirmed in writing before you commit.</p>
+<p>The seat counts and credit allowances on the <a href="/code-plans">team plans page</a> are indicative while the product is in development; the rate that applies to your team is confirmed in writing before you commit.</p>
 
 <h2>5. What to tell us</h2>
-<p>When you <a href="../about.html#contact">write in</a>, include your language stack, repository scale, team size, and the first workflow you would hand to an agent. We reply within one business day with where the product is and when your cohort would start.</p>
+<p>When you <a href="/about#contact">write in</a>, include your language stack, repository scale, team size, and the first workflow you would hand to an agent. We reply within one business day with where the product is and when your cohort would start.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-  <span>Questions this page does not answer? <a href="../about.html#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
+  <span>Questions this page does not answer? <a href="/about#contact">Ask us directly</a> — a real engineer replies within one business day.</span>
 </div>
 
 </article>
@@ -151,40 +151,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../router.html">Runix Router</a>
-        <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../code.html">Runix Code</a>
-        <a href="../comic.html">Runix Comic</a>
-        <a href="../pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../about.html#contact">Contact</a>
-        <a href="../security.html">Security</a>
-        <a href="../careers.html">Careers</a>
-        <a href="../blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../terms.html">Terms of Service</a>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../refund.html">Refund Policy</a>
-        <a href="../cancellation.html">Cancellation Policy</a>
-        <a href="../acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../terms.html">Terms</a>
-        <a href="../privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

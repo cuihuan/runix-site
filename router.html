@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css">
-<script src="assets/site-config.js" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<script src="assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -124,17 +124,17 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="index.html#products" class="active">Products</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="docs/">Docs</a>
-      <a href="security.html">Security</a>
-      <a href="about.html">Company</a>
-      <a href="blog/">Blog</a>
+      <a href="/#products" class="active">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -144,10 +144,10 @@
     <h1>One compliant endpoint<br>for every model</h1>
     <p>The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request — behind one OpenAI-compatible API.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
-      <a class="btn btn-primary" href="about.html#contact">Request access</a>
-      <a class="btn btn-ghost" href="pricing.html">See how billing works</a>
+      <a class="btn btn-primary" href="/about#contact">Request access</a>
+      <a class="btn btn-ghost" href="/pricing">See how billing works</a>
     
-      <a class="btn btn-ghost" href="docs/router.html">Read the docs</a>
+      <a class="btn btn-ghost" href="/docs/router">Read the docs</a>
       <a class="btn btn-ghost" href="https://console.router.runixcloud.io">Sign in to console →</a></div>
   </div>
 </div>
@@ -241,8 +241,8 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
     <div class="grid cols-2">
       <div class="card"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
       <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage.</p></div>
-      <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="privacy.html">Privacy</a>.</p></div>
-      <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="terms.html">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
+      <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
+      <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
     </div>
   </div>
 </section>
@@ -252,7 +252,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
     <div class="cta-band">
       <h2>Put the gateway in front of your traffic</h2>
       <p>Tell us the models you call and roughly how much — we come back with an access plan and a quote within one business day.</p>
-      <a class="btn btn-grad" href="about.html#contact">Request access</a>
+      <a class="btn btn-grad" href="/about#contact">Request access</a>
     </div>
   </div>
 </section>
@@ -263,40 +263,40 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="router.html">Runix Router</a>
-        <a href="pipeline.html">Runix Pipeline</a>
-        <a href="code.html">Runix Code</a>
-        <a href="comic.html">Runix Comic</a>
-        <a href="pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="about.html">About</a>
-        <a href="about.html#contact">Contact</a>
-        <a href="security.html">Security</a>
-        <a href="careers.html">Careers</a>
-        <a href="blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="terms.html">Terms of Service</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="refund.html">Refund Policy</a>
-        <a href="cancellation.html">Cancellation Policy</a>
-        <a href="acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> · <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

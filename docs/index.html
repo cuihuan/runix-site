@@ -27,8 +27,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=3">
 <link rel="icon" href="../assets/favicon.svg?v=3" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/site-config.js" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+<script src="../assets/site-config.js?v=1" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,17 +55,17 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="../index.html"><span class="mark">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="../index.html#products">Products</a>
-      <a href="../pricing.html">Pricing</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
       <a href="./" class="active">Docs</a>
-      <a href="../security.html">Security</a>
-      <a href="../about.html">Company</a>
-      <a href="../blog/">Blog</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="../about.html#contact">Request access</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -87,28 +87,28 @@
         <h3>Runix Router</h3>
         <p><strong>Integration quickstart</strong> — base URL and key, model selection with <code>"auto"</code>, streaming, failover semantics, limits and data handling. If your code speaks the OpenAI API, you are one config change away.</p>
         <p class="card-meta"><span>Status: early access</span> · <span>Integration guide</span></p>
-        <a class="read-more" href="router.html">Read the Router docs →</a>
+        <a class="read-more" href="/docs/router">Read the Router docs →</a>
       </div>
       <div class="card">
         <h3>Runix Pipeline</h3>
         <p><strong>Engagement guide</strong> — how a data preparation project runs: scoping, the five pipeline stages, what you receive at delivery, and the quality report that comes with it.</p>
         <p class="card-meta"><span>Status: design partners</span> · <span>Engagement guide</span></p>
-        <a class="read-more" href="pipeline.html">Read the Pipeline docs →</a>
+        <a class="read-more" href="/docs/pipeline">Read the Pipeline docs →</a>
       </div>
       <div class="card">
         <h3>Runix Code</h3>
         <p><strong>Rollout guide</strong> — how a team adopts Runix Code: what the waitlist cohorts get, how seats and policies are configured, and what the review-gated workflow looks like day to day.</p>
         <p class="card-meta"><span>Status: in development</span> · <span>Rollout guide</span></p>
-        <a class="read-more" href="code.html">Read the Code docs →</a>
+        <a class="read-more" href="/docs/code">Read the Code docs →</a>
       </div>
       <div class="card">
         <h3>Runix Comic</h3>
         <p><strong>Workflow guide</strong> — the three production stages, what you bring versus what the studio generates, and how waitlist cohorts work with us while the product is being built.</p>
         <p class="card-meta"><span>Status: in development</span> · <span>Workflow guide</span></p>
-        <a class="read-more" href="comic.html">Read the Comic docs →</a>
+        <a class="read-more" href="/docs/comic">Read the Comic docs →</a>
       </div>
     </div>
-    <p class="model-note" style="text-align:center;margin-top:26px;color:var(--ink-3);font-size:14px;">A complete API reference ships with general availability. Until then, onboarded teams get documentation and support directly from the engineers — <a href="../about.html#contact" style="color:var(--indigo);font-weight:600;">ask us anything</a>.</p>
+    <p class="model-note" style="text-align:center;margin-top:26px;color:var(--ink-3);font-size:14px;">A complete API reference ships with general availability. Until then, onboarded teams get documentation and support directly from the engineers — <a href="/about#contact" style="color:var(--indigo);font-weight:600;">ask us anything</a>.</p>
   </div>
 </section>
 
@@ -121,15 +121,15 @@
     <div class="grid cols-3">
       <div class="card">
         <h3>Failover</h3>
-        <p><a href="../blog/model-failover.html">Model failover for production traffic</a> and <a href="../blog/streaming-llm-failover.html">how mid-stream failover works</a>.</p>
+        <p><a href="/blog/model-failover">Model failover for production traffic</a> and <a href="/blog/streaming-llm-failover">how mid-stream failover works</a>.</p>
       </div>
       <div class="card">
         <h3>Cost</h3>
-        <p><a href="../blog/llm-cost-control.html">Cost control levers</a>, <a href="../blog/prompt-caching-explained.html">prompt caching</a>, and <a href="../blog/llm-cost-attribution.html">attribution per team</a>.</p>
+        <p><a href="/blog/llm-cost-control">Cost control levers</a>, <a href="/blog/prompt-caching-explained">prompt caching</a>, and <a href="/blog/llm-cost-attribution">attribution per team</a>.</p>
       </div>
       <div class="card">
         <h3>Choosing infrastructure</h3>
-        <p><a href="../blog/llm-router-vs-llm-gateway.html">Router vs gateway</a>, <a href="../blog/llm-gateway-guide.html">what to evaluate</a>, and <a href="../blog/build-vs-buy-llm-gateway.html">build vs buy</a>.</p>
+        <p><a href="/blog/llm-router-vs-llm-gateway">Router vs gateway</a>, <a href="/blog/llm-gateway-guide">what to evaluate</a>, and <a href="/blog/build-vs-buy-llm-gateway">build vs buy</a>.</p>
       </div>
     </div>
   </div>
@@ -141,40 +141,40 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="../index.html"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
         <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <h4>Product</h4>
-        <a href="../router.html">Runix Router</a>
-        <a href="../pipeline.html">Runix Pipeline</a>
-        <a href="../code.html">Runix Code</a>
-        <a href="../comic.html">Runix Comic</a>
-        <a href="../pricing.html">Pricing</a>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
       </div>
       <div>
         <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../about.html#contact">Contact</a>
-        <a href="../security.html">Security</a>
-        <a href="../careers.html">Careers</a>
-        <a href="../blog/">Blog</a>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="../terms.html">Terms of Service</a>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../refund.html">Refund Policy</a>
-        <a href="../cancellation.html">Cancellation Policy</a>
-        <a href="../acceptable-use.html">Acceptable Use</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
       <span>
-        <a href="../terms.html">Terms</a>
-        <a href="../privacy.html">Privacy</a>
-        <a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
       </span>
     </div>
   </div>

@@ -507,3 +507,18 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 
 /* nav "Sign in" reads like a text link next to the primary CTA (OpenAI/Google pattern) */
 .nav-links a.nav-signin { font-weight: 600; }
+
+/* ---------- Related reading (end of an article) ---------- */
+.article .related {
+  margin-top: 48px; padding: 26px 28px;
+  background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.article .related h2 {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--ink-3); margin: 0 0 14px;
+}
+.article .related ul { list-style: none; margin: 0; }
+.article .related li { margin: 0; padding: 9px 0; border-top: 1px solid var(--line); }
+.article .related li:first-child { border-top: none; }
+.article .related a { color: var(--indigo); font-weight: 600; }
+.article .related a:hover { text-decoration: underline; }

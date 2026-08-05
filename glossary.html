@@ -206,37 +206,37 @@
 <p>A service that sits between your application and one or more model providers, presenting a single API while handling routing, retries, key custody, quotas and usage accounting.</p>
 <p><strong>How you would check it.</strong> Point a client at it and remove a provider key from your application — if the request still works and the spend still shows up attributed correctly, the gateway is doing its job.</p>
 <p><strong>Where people go wrong.</strong> Treating it as a proxy. A proxy forwards; a gateway takes responsibility for what happens when the thing it forwards to misbehaves.</p>
-<p class="g-more"><a href="/blog/what-is-an-llm-gateway">Read more on this</a></p>
+<p class="g-more"><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></p>
 
 <h2 id="llm-router">LLM router</h2>
 <p>The part that decides which model or provider serves a given request, by cost, health, capability or explicit policy.</p>
 <p><strong>How you would check it.</strong> Send the same request twice under different routing policies and compare which upstream served it — the response metadata should tell you.</p>
 <p><strong>Where people go wrong.</strong> Assuming routing means cheapest. Routing on health matters more the day a provider degrades.</p>
-<p class="g-more"><a href="/blog/llm-router-vs-llm-gateway">Read more on this</a></p>
+<p class="g-more"><a href="/blog/llm-router-vs-llm-gateway">LLM Router vs LLM Gateway: What's the Difference?</a></p>
 
 <h2 id="failover">Failover</h2>
 <p>Re-issuing a request to a healthy alternative when the first choice errors, rate-limits or times out.</p>
 <p><strong>How you would check it.</strong> Block one provider at the network level and watch whether requests still complete, and how the latency distribution changes when they do.</p>
 <p><strong>Where people go wrong.</strong> Counting a retry to the same failing provider as failover. If the alternative shares the failure domain, nothing failed over.</p>
-<p class="g-more"><a href="/blog/model-failover">Read more on this</a></p>
+<p class="g-more"><a href="/blog/model-failover">Designing for Model Failover: Lessons from Production LLM Traffic</a></p>
 
 <h2 id="retry-budget">Retry budget</h2>
 <p>A cap on how much of your traffic may be retries, so that a widespread failure cannot turn into self-inflicted load amplification.</p>
 <p><strong>How you would check it.</strong> Express it as a percentage of window traffic and alert when the retry share approaches it.</p>
 <p><strong>Where people go wrong.</strong> Setting per-request retry counts without a global budget — three retries each sounds modest until every request needs them at once.</p>
-<p class="g-more"><a href="/blog/model-failover">Read more on this</a></p>
+<p class="g-more"><a href="/blog/model-failover">Designing for Model Failover: Lessons from Production LLM Traffic</a></p>
 
 <h2 id="circuit-breaker">Circuit breaker</h2>
 <p>A switch that stops sending traffic to an upstream once its failure rate crosses a threshold, then probes cautiously before restoring it.</p>
 <p><strong>How you would check it.</strong> Watch the breaker state transitions in your logs during a real incident; a breaker that never opens is not tuned, it is decorative.</p>
 <p><strong>Where people go wrong.</strong> Keying the breaker on the provider alone. Providers fail per model far more often than they fail entirely.</p>
-<p class="g-more"><a href="/blog/model-failover">Read more on this</a></p>
+<p class="g-more"><a href="/blog/model-failover">Designing for Model Failover: Lessons from Production LLM Traffic</a></p>
 
 <h2 id="streaming">Streaming (SSE)</h2>
 <p>Delivering a response incrementally as it is generated, usually as server-sent events, so the reader sees output before the model has finished.</p>
 <p><strong>How you would check it.</strong> Measure time to first token separately from total time — streaming changes the first and barely moves the second.</p>
 <p><strong>Where people go wrong.</strong> Assuming failover still works mid-stream. Once bytes have been sent, recovering cleanly is a different and harder problem.</p>
-<p class="g-more"><a href="/blog/streaming-llm-failover">Read more on this</a></p>
+<p class="g-more"><a href="/blog/streaming-llm-failover">Streaming LLM Responses Without Breaking Failover</a></p>
 
 <h2 id="ttft">Time to first token (TTFT)</h2>
 <p>The delay between sending a request and receiving the first token of the response.</p>
@@ -247,49 +247,49 @@
 <p>Reusing the provider-side computation for a repeated prefix of a prompt, so the shared part is not paid for twice.</p>
 <p><strong>How you would check it.</strong> Compare billed input tokens against sent input tokens for a workload with a stable system prompt; the gap is the cache working.</p>
 <p><strong>Where people go wrong.</strong> Assuming any repetition caches. Caching keys on an exact prefix, so a timestamp near the top of the prompt quietly defeats it.</p>
-<p class="g-more"><a href="/blog/prompt-caching-explained">Read more on this</a></p>
+<p class="g-more"><a href="/blog/prompt-caching-explained">Prompt Caching: When It Pays and When It Bites</a></p>
 
 <h2 id="rate-limit">Rate limit (429)</h2>
 <p>A provider's cap on requests or tokens per interval, signalled by an HTTP 429 response.</p>
 <p><strong>How you would check it.</strong> Track the ratio of 429s to total requests per provider and per model, not just the absolute count.</p>
 <p><strong>Where people go wrong.</strong> Retrying a 429 immediately. Without backoff you consume the next window's allowance before it opens.</p>
-<p class="g-more"><a href="/blog/llm-rate-limits">Read more on this</a></p>
+<p class="g-more"><a href="/blog/llm-rate-limits">Surviving LLM Rate Limits: 429s, Budgets and Queues</a></p>
 
 <h2 id="cost-attribution">Cost attribution</h2>
 <p>Assigning model spend to the team, customer or feature that caused it, rather than to one undifferentiated bill.</p>
 <p><strong>How you would check it.</strong> Issue separate keys per boundary you care about and check that the statement splits along the same lines.</p>
 <p><strong>Where people go wrong.</strong> Attributing after the fact from logs. If the boundary is not in the key, the attribution is a reconstruction and it will be argued with.</p>
-<p class="g-more"><a href="/blog/llm-cost-attribution">Read more on this</a></p>
+<p class="g-more"><a href="/blog/llm-cost-attribution">Per-Team LLM Cost Attribution That Survives Audit</a></p>
 
 <h2 id="virtual-key">Virtual key</h2>
 <p>A credential issued by the gateway rather than the provider, carrying its own quota, model allowlist and rate limits.</p>
 <p><strong>How you would check it.</strong> Revoke one and confirm the blast radius is exactly one consumer and no provider key had to be rotated.</p>
 <p><strong>Where people go wrong.</strong> Sharing one key across teams because it is easier. The day you need to revoke it, you find out what it cost.</p>
-<p class="g-more"><a href="/blog/llm-api-key-management">Read more on this</a></p>
+<p class="g-more"><a href="/blog/llm-api-key-management">LLM Provider Keys: Scope, Rotation and Blast Radius</a></p>
 
 <h2 id="blast-radius">Blast radius</h2>
 <p>How much breaks when one credential, provider or component fails.</p>
 <p><strong>How you would check it.</strong> Ask what stops working if this key leaks and has to be revoked in the next five minutes.</p>
 <p><strong>Where people go wrong.</strong> Measuring it only for outages. A leaked credential is the more common incident and the answer is usually worse.</p>
-<p class="g-more"><a href="/blog/llm-api-key-management">Read more on this</a></p>
+<p class="g-more"><a href="/blog/llm-api-key-management">LLM Provider Keys: Scope, Rotation and Blast Radius</a></p>
 
 <h2 id="deduplication">Deduplication</h2>
 <p>Removing repeated records from a corpus before it is used for retrieval or fine-tuning — exact, near-duplicate and semantic.</p>
 <p><strong>How you would check it.</strong> Report how much was removed at each tier; a pipeline that cannot tell you what it dropped cannot be audited.</p>
 <p><strong>Where people go wrong.</strong> Stopping at exact matches. Near-duplicates are the ones that quietly skew a retrieval corpus.</p>
-<p class="g-more"><a href="/blog/ai-data-pipelines">Read more on this</a></p>
+<p class="g-more"><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></p>
 
 <h2 id="pii-masking">PII masking</h2>
 <p>Detecting and redacting personal data before it reaches a model or a stored corpus.</p>
 <p><strong>How you would check it.</strong> Verify the failure mode: on an ambiguous field the pipeline should mask rather than pass through.</p>
 <p><strong>Where people go wrong.</strong> Treating recall as the only metric. A masker that fails open is a compliance incident waiting for a bad input.</p>
-<p class="g-more"><a href="/blog/ai-vendor-data-questions">Read more on this</a></p>
+<p class="g-more"><a href="/blog/ai-vendor-data-questions">12 Data Questions to Ask an AI Vendor</a></p>
 
 <h2 id="observability">Observability (for LLM traffic)</h2>
 <p>Recording enough about each request — latency, tokens, model, outcome, request id — to answer questions after the fact, without hoarding content you should not keep.</p>
 <p><strong>How you would check it.</strong> Pick a past incident and check whether the logs you keep would have explained it.</p>
 <p><strong>Where people go wrong.</strong> Logging whole prompts and responses by default. That is a data-retention liability, and it is rarely the field you needed.</p>
-<p class="g-more"><a href="/blog/llm-observability">Read more on this</a></p>
+<p class="g-more"><a href="/blog/llm-observability">What to Log for LLM Traffic, and What Not To</a></p>
 
 <h2 id="missing">Something missing?</h2>
 <p>If a term left you guessing, tell us and it belongs here — <!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->.</p>

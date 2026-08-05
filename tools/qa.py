@@ -151,6 +151,36 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- same link text must mean the same destination ------------------------
+# A screen-reader user can list the links on a page. Fourteen entries all
+# reading "Read more on this", each going somewhere different, is a page they
+# cannot navigate — the glossary shipped exactly that. The same text pointing
+# at the same place is fine and common; it is the divergence that fails.
+GENERIC = {"read more", "read more on this", "learn more", "click here",
+           "here", "this page", "more", "read post"}
+for page in PAGES:
+    doc = open(page).read()
+    body = doc[doc.find("<main"):doc.find("</main>")] if "<main" in doc else doc
+    body = re.sub(r"<nav\b.*?</nav>", " ", body, flags=re.S | re.I)
+    by_text = {}
+    for href, text in re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', body, re.S):
+        label = " ".join(re.sub(r"<[^>]+>", " ", text).split()).lower()
+        if not label:
+            continue
+        target = href.split("#")[0]
+        # A mailto with a prefilled subject is the same destination — the same
+        # inbox — so three "contact@..." links differing only in ?subject= are
+        # not the failure this check is for.
+        if target.startswith("mailto:"):
+            target = target.split("?")[0]
+        by_text.setdefault(label, set()).add(target)
+    for label, targets in by_text.items():
+        if len(targets) > 1 and label not in ("read post \u2192",):
+            fail(page, f"link text “{label}” points at {len(targets)} different "
+                       f"destinations: {sorted(targets)[:3]}")
+        if label in GENERIC and len(by_text) > 1:
+            notes.append(f"{page}: non-descriptive link text “{label}”")
+
 # --- internal links use the URLs the host serves ---------------------------
 # Every internal .html link costs a 308. A site-wide pass fixed 1110 of them,
 # and then build_blog_index.py quietly reintroduced 42 on the next publish

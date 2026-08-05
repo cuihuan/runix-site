@@ -10,7 +10,10 @@ No benchmark values, no vendor performance figures: where a number would be
 the interesting part, the entry says how to measure it instead of asserting
 one.
 """
+import html as html_mod
 import os
+import pathlib
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -99,9 +102,18 @@ TERMS = [
 
 
 def entry_html(term, anchor, definition, measure, mistake, link):
-    related = (
-        f'\n<p class="g-more"><a href="{link}">Read more on this</a></p>' if link else ""
-    )
+    # The anchor text is the target's own headline. Fourteen links all reading
+    # "Read more on this" is what a screen-reader user hears when they list the
+    # links on this page, and it tells them nothing about which is which.
+    related = ""
+    if link:
+        target = pathlib.Path(link.strip("/") + ".html")
+        title = "Read more on this"
+        if target.exists():
+            m = re.search(r"<h1[^>]*>(.*?)</h1>", target.read_text(), re.S)
+            if m:
+                title = " ".join(html_mod.unescape(re.sub(r"<[^>]+>", " ", m.group(1))).split())
+        related = f'\n<p class="g-more"><a href="{link}">{title}</a></p>'
     return f"""<h2 id="{anchor}">{term}</h2>
 <p>{definition}</p>
 <p><strong>How you would check it.</strong> {measure}</p>

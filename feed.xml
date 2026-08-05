@@ -15,6 +15,13 @@
       <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
     </item>
     <item>
+      <title>"OpenAI-compatible" is a surface, not a contract</title>
+      <link>https://runixcloud.io/blog/what-openai-compatible-actually-means</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/what-openai-compatible-actually-means</guid>
+      <description>Compatibility claims cover the endpoint shape, rarely the details that break you: ignored parameters, missing usage, streaming that ends wrong. How to test one.</description>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>Comic Drama vs Webtoon vs Motion Comic, Explained</title>
       <link>https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic</link>
       <guid isPermaLink="true">https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic</guid>

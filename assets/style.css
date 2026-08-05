@@ -204,9 +204,19 @@ main a:not(.btn):hover { text-decoration-color: currentColor; }
 
 /* Exceptions: surfaces where the whole element is the affordance, so an
    underline would be noise rather than a cue. */
-main a.card, main a[class*="card-clickable"],
-main nav a, main .chips a, main .doc-toc a, main .doc-next a,
-main .layer a, main .compat a, main .facts-head a {
+/* Exceptions: surfaces where the whole element is the affordance.
+   Every selector here carries :not(.btn) so it out-specifies the body-link
+   rule above — which is (0,1,2). `main .read-more` alone is (0,1,1) and loses,
+   and `main nav a` is (0,0,3) and loses badly; both were written that way
+   first and silently did nothing. Measured, not assumed. */
+main a.card:not(.btn), main a[class*="card-clickable"]:not(.btn),
+main nav a:not(.btn), main .chips a:not(.btn),
+main .doc-toc a:not(.btn), main .doc-next a:not(.btn),
+main .layer a:not(.btn), main .compat a:not(.btn), main .facts-head a:not(.btn),
+/* A link that is an entire heading, and a card's own "Read post →" affordance,
+   are not links inside a sentence — underlining every card title turns an index
+   into a wall of rules. The arrow is read-more's non-colour cue. */
+main :is(h1, h2, h3, h4) > a:not(.btn), main .read-more:not(.btn) {
   text-decoration: none;
 }
 main a.card, main a[class*="card-clickable"] { color: inherit; font-weight: inherit; }

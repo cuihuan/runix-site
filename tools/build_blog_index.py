@@ -37,13 +37,16 @@ def read_posts():
     return posts
 
 
+# Links are the clean URLs the host actually serves. Writing "<slug>.html"
+# costs a 308 on every card, and this generator runs on every publish — so it
+# silently undid the site-wide clean-URL pass once already.
 def write_index(posts):
     cards = [
         f"""      <div class="card">
         <div class="post-meta"><span class="cat">{p['cat']}</span><span>{p['date']}</span><span>·</span><span>{p['read']}</span></div>
-        <h3><a href="{p['slug']}.html">{p['headline']}</a></h3>
+        <h3><a href="/blog/{p['slug']}">{p['headline']}</a></h3>
         <p class="excerpt">{html.escape(p['desc'], quote=False)}</p>
-        <a class="read-more" href="{p['slug']}.html">Read post →</a>
+        <a class="read-more" href="/blog/{p['slug']}">Read post →</a>
       </div>"""
         for p in posts
     ]

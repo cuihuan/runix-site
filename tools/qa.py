@@ -151,6 +151,16 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- internal links use the URLs the host serves ---------------------------
+# Every internal .html link costs a 308. A site-wide pass fixed 1110 of them,
+# and then build_blog_index.py quietly reintroduced 42 on the next publish
+# because it wrote "<slug>.html". Generators are exactly where this comes back.
+for page in PAGES:
+    for href in set(re.findall(r'href="([^"]+\.html[^"]*)"', open(page).read())):
+        if href.startswith(("http://", "https://", "//")):
+            continue
+        fail(page, f"internal link keeps the .html extension (costs a 308): {href}")
+
 # --- one status per product, everywhere ----------------------------------
 # Statuses on this site are meant to be literal, so the same product must not
 # be "in development" on one page and something else on another. Read from the

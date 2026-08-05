@@ -180,8 +180,32 @@ resp = client.chat.completions.create(
 <h2 id="errors-and-request-ids">6. Errors and request ids</h2>
 <p>Errors come back as JSON in the shape your OpenAI-compatible client already parses: an <code>error</code> object carrying <code>message</code>, <code>type</code> and <code>code</code>. The message embeds a request id — quote it when you contact us and we can trace that exact call.</p>
 <pre><code>// missing or invalid key -> HTTP 401
-"Invalid token (request id: 20260805082847…)"</code></pre>
-<p>A path the API does not serve returns <code>404</code>. Per-key quota and rate limits are set during onboarding (see section 5); when a limit or an upstream failure is involved, the router applies the failover behaviour in section 4 before an error reaches you.</p>
+{
+  "error": {
+    "code": "",
+    "message": "Invalid token (request id: 20260805082847...)",
+    "type": "runix_error"
+  }
+}
+
+// a path under /v1 that does not exist -> HTTP 404
+{
+  "error": {
+    "message": "Invalid URL (POST /v1/nope)",
+    "type": "invalid_request_error",
+    "param": "",
+    "code": ""
+  }
+}</code></pre>
+<p>Two things worth knowing before you write error handling. First, branch on the HTTP status
+rather than on <code>error.type</code> — the status is what the OpenAI SDKs already map to
+their own exception classes, and it is the part that will not surprise you. Second, the
+request id lives inside <code>message</code>, not in a field of its own; quote it when you
+contact us and we can trace that exact call.</p>
+<p>Paths outside <code>/v1</code> on this host are not part of the API surface and do not
+return this envelope. Per-key quota and rate limits are set during onboarding (see section 5);
+when a limit or an upstream failure is involved, the router applies the failover behaviour in
+section 4 before an error reaches you.</p>
 
 <h2 id="data-handling">7. Data handling</h2>
 <p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>

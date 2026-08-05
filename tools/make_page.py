@@ -42,7 +42,8 @@ def _chrome():
     return head_common, header, footer
 
 
-def render(slug, title, description, badge, h1, lede, body, schema=(), out=None):
+def render(slug, title, description, badge, h1, lede, body, schema=(), out=None,
+           force=False):
     head_common, header, footer = _chrome()
     url = f"{SITE}/{slug}"
     blocks = "".join(
@@ -63,11 +64,13 @@ def render(slug, title, description, badge, h1, lede, body, schema=(), out=None)
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="{SITE}/assets/og-cover.png?v=3">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="{SITE}/assets/og-cover.png?v={_cover_version()}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta name="twitter:title" content="{title}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{SITE}/assets/og-cover.png?v=3">
+<meta name="twitter:image" content="{SITE}/assets/og-cover.png?v={_cover_version()}">
 {blocks}</head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -93,8 +96,35 @@ def render(slug, title, description, badge, h1, lede, body, schema=(), out=None)
 </html>
 """
     path = os.path.join(ROOT, out or f"{slug}.html")
+    # This module builds a page; it does not maintain one. Pages get edited by
+    # later passes — SEO metadata appended, copy tightened, schema regenerated —
+    # and re-running the builder would silently revert all of it. It did:
+    # re-running add_glossary.py restored a description that had been shortened
+    # to fit search results and an og:image version that was nine bumps stale.
+    # So refuse to clobber, and say what to do instead.
+    if os.path.exists(path) and not force:
+        print(f"  {path} already exists — not overwriting. "
+              f"Edit the page, or pass force=True if you really mean to rebuild it.")
+        return path
     open(path, "w").write(page)
     return path
+
+
+def _cover_version():
+    """Current ?v= on the share image, read from a page rather than hardcoded.
+
+    This was a literal 3 while the live pages were on 12. Any page built by this
+    module would have shipped pointing at a stale version of the share image —
+    invisible until someone shared the link. bump_assets.py owns the number, so
+    ask the pages what it is.
+    """
+    for candidate in ("index.html", "faq.html"):
+        path = os.path.join(ROOT, candidate)
+        if os.path.exists(path):
+            m = re.search(r"og-cover\.png\?v=(\d+)", open(path).read())
+            if m:
+                return m.group(1)
+    return "1"
 
 
 def crumbs(name, url):

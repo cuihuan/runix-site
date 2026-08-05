@@ -52,8 +52,13 @@ for path, old, new in EDITS:
         continue
     p = pathlib.Path(path)
     html = p.read_text()
-    if new.split(">")[1][:30] in html and old not in html:
-        continue  # already applied
+    # Idempotency: check for the part this edit ADDS, not for the anchor it
+    # attaches to. The anchor stays present after the edit, so a guard keyed on
+    # it re-applies the change on every run — which duplicated a bullet on
+    # /about the first time these tools were re-run as a set.
+    added = new.replace(old, "").strip()
+    if added and added[:60] in html:
+        continue
     if old not in html:
         print(f"  ! {path}: anchor not found, skipped")
         continue

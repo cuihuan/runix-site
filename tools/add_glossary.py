@@ -156,9 +156,10 @@ schema = [
 render(
     slug="glossary",
     title="LLM gateway glossary — Runix",
-    description="Failover, retry budgets, prompt caching, cost attribution, virtual keys: "
-                "the terms that come up when evaluating an LLM gateway, defined plainly and "
-                "with the common mistakes called out.",
+    # Kept under 160 characters: past that, search results truncate the end of
+    # the sentence, which is the part that earns the click.
+    description="Failover, retry budgets, prompt caching, virtual keys: the terms that come up "
+                "when evaluating an LLM gateway, defined with how to verify each.",
     badge="Glossary",
     h1="LLM infrastructure, term by term",
     lede="Definitions you can quote, a way to verify each one yourself, and the mistake "

@@ -54,6 +54,7 @@ Products at different stages. The statuses below are literal.
 
 ## Pages
 
+- [Glossary](https://runixcloud.io/glossary): gateway terms defined, with how to verify each.
 - [FAQ](https://runixcloud.io/faq): access, billing, data handling, contracting, certifications.
 - [Access](https://runixcloud.io/access): how keys are issued and what intake involves.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.

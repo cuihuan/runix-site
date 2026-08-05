@@ -50,22 +50,17 @@ echo "==> Deploy to Cloudflare Pages project $PROJECT (branch $PROD_BRANCH)"
 npx --yes wrangler@4 pages deploy "$STAGE" --project-name="$PROJECT" \
   --branch="$PROD_BRANCH" --commit-dirty=true
 
-echo "==> Verify from outside"
-sleep 3
 fail=0
-# Edge nodes pick up a new build at slightly different times, so a single probe
-# straight after upload can report a 404 for a page that is served fine a few
-# seconds later. Retry the same way the content checks below already do, and
-# only call it a failure when it stays wrong.
-for path in / /pricing /about /security /blog/ /terms /privacy /refund /cancellation /acceptable-use /careers /faq /access /reliability; do
-  for attempt in 1 2 3 4 5 6; do
-    code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 15 "$DOMAIN$path")
-    [ "$code" = "200" ] && break
-    sleep 10
-  done
-  printf '    %-20s %s\n' "$path" "$code"
-  [ "$code" = "200" ] || fail=1
-done
+echo "==> Verify from outside"
+# This used to be a per-path retry loop that called a 404 a failure the moment
+# it saw one. Cloudflare edge nodes pick up a build at different times, so a
+# single probe disagrees with the next one for about a minute after upload, and
+# the loop cried wolf on four separate deploys tonight. tools/verify_live.py
+# probes every path three times with a gap and only reports a failure when the
+# answer is consistently wrong — a flicker is reported as propagation, which is
+# what it is. A gate that is wrong this often gets ignored, which is worse than
+# not having it.
+python3 "$SRC/tools/verify_live.py" || fail=1
 
 # A 200 only proves something is served. Compare what is served with what was
 # built — and retry, because the edge takes up to a minute to catch up and a

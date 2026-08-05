@@ -151,6 +151,19 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- two links with nothing between them ----------------------------------
+# Automated link insertion produced "<a>FAQ</a> <a>Glossary</a>", which reads
+# as "the FAQ Glossary". Inside a sentence, two anchors separated only by
+# whitespace almost always means a missing conjunction or comma. Adjacent links
+# in a list or a nav are normal, so only paragraphs are checked.
+for page in PAGES:
+    doc = open(page).read()
+    body = doc[doc.find("<main"):doc.find("</main>")] if "<main" in doc else doc
+    for para in re.findall(r"<p[^>]*>(.*?)</p>", body, re.S):
+        if re.search(r"</a>\s+<a\b", para, re.S):
+            snippet = " ".join(re.sub(r"<[^>]+>", " ", para).split())[:80]
+            fail(page, f"two links with only a space between them: “{snippet}”")
+
 # --- every address the site asks people to write to must exist ------------
 # The whole funnel is "email us". An address in a CTA that has no routing rule
 # drops customer mail silently, which is the most expensive failure this site

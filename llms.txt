@@ -74,7 +74,7 @@ Products at different stages. The statuses below are literal.
 
 All 19 posts, newest first. Descriptions are the pages' own.
 
-- [Your model id has an expiry date](https://runixcloud.io/blog/model-deprecation-without-a-redeploy) — Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.
+- [Your model id has an expiry date](https://runixcloud.io/blog/model-deprecation-without-a-redeploy) — Providers retire model versions on a published schedule. If the id is a string literal in your code, their calendar is your deploy calendar.
 - [Comic Drama vs Webtoon vs Motion Comic, Explained](https://runixcloud.io/blog/comic-drama-vs-webtoon-vs-motion-comic) — Three overlapping formats for drawn stories: how webtoons, motion comics and comic dramas differ in production, distribution and audience — and which to make.
 - [How to Make a Comic Drama with AI: Script to Screen](https://runixcloud.io/blog/how-to-make-a-comic-drama-with-ai) — The full AI comic drama production line: script and characters, storyboards, styled panels, motion, voice and publishing — and where tools still fall short.
 - [LLM Router vs LLM Gateway: What's the Difference?](https://runixcloud.io/blog/llm-router-vs-llm-gateway) — The two names describe overlapping tools. What routing and gateway features actually do, when the difference matters, and how to choose on capabilities.

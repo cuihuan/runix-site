@@ -94,6 +94,13 @@ for page in PAGES + DRAFTS:
         ):
             if not re.search(pattern, html):
                 fail(page, f"missing {tag}")
+        desc = re.search(r'name="description" content="(.*?)"', html, re.S)
+        if desc:
+            # Search results truncate around 160 characters; past that the end of
+            # the sentence — usually the reason to click — is never shown.
+            text = re.sub(r"\s+", " ", desc.group(1)).strip()
+            if len(text) > 160:
+                fail(page, f"meta description is {len(text)} chars; truncates past ~160")
 
     # --- structured data ------------------------------------------------
     for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):

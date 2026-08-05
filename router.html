@@ -79,6 +79,14 @@
         "@type": "Answer",
         "text": "Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard Terms . USD billing with itemised statements, prepaid or invoiced."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get access?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Router is in early access, so keys are issued after a short intake rather than through self-serve signup. Tell us the workload, the providers you need and the volume you expect, and you get a key and a named engineer. The full process is on Access ."
+      }
     }
   ]
 }
@@ -325,6 +333,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
       <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage.</p></div>
       <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
       <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
+      <div class="card"><h3>How do I get access?</h3><p>Router is in early access, so keys are issued after a short intake rather than through self-serve signup. Tell us the workload, the providers you need and the volume you expect, and you get a key and a named engineer. The full process is on <a href="/access">Access</a>.</p></div>
     </div>
   </div>
 </section>

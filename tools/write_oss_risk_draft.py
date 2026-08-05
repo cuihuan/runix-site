@@ -28,8 +28,7 @@ SLUG = "open-source-gateway-continuity"
 TITLE = "Will your gateway still be there in a year? — Runix"
 H1 = "The licence on your gateway is a dependency"
 DESC = ("Open-source AI gateways change licences, gate the features you need, and get "
-        "acquired. What to check before you build on one — with the licence files, "
-        "commits and announcements to check it against.")
+        "acquired. Five checks to run before you build on one.")
 
 L_ELASTIC = "https://github.com/vllora/vllora/blob/main/LICENSE.md"
 L_LITELLM = "https://github.com/BerriAI/litellm/blob/main/LICENSE"

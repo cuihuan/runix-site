@@ -11,7 +11,7 @@
       <title>Your model id has an expiry date</title>
       <link>https://runixcloud.io/blog/model-deprecation-without-a-redeploy</link>
       <guid isPermaLink="true">https://runixcloud.io/blog/model-deprecation-without-a-redeploy</guid>
-      <description>Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.</description>
+      <description>Providers retire model versions on a published schedule. If the id is a string literal in your code, their calendar is your deploy calendar.</description>
       <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
     </item>
     <item>

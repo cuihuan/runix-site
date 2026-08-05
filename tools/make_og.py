@@ -15,6 +15,7 @@ Chrome renders it at 1200x630 and screenshots. Requires Chrome; skips with a
 clear message if absent rather than silently shipping the shared cover.
 """
 
+import hashlib
 import html as _h
 import json
 import os
@@ -104,8 +105,23 @@ def size_for(title):
     return 78 if n <= 30 else 70 if n <= 48 else 62 if n <= 70 else 54
 
 
-def render(jobs, font_uri):
-    """One Chrome invocation per card; screenshot the 1200x630 viewport."""
+MANIFEST = pathlib.Path("tools/og.json")
+
+
+def fingerprint(title, cat, foot):
+    return hashlib.sha256(f"{title}\x00{cat}\x00{foot}\x00{size_for(title)}".encode()).hexdigest()[:16]
+
+
+def render(jobs, font_uri, only=None):
+    """One Chrome invocation per card; screenshot the 1200x630 viewport.
+
+    Rendering all fifty takes about a minute, which pushed the deploy past its
+    timeout. `only` restricts the run to cards whose text actually changed --
+    the cards are byte-deterministic, so re-rendering an unchanged one produces
+    an identical file and buys nothing.
+    """
+    if only is not None:
+        jobs = [j for j in jobs if j[0] in only]
     OUT.mkdir(parents=True, exist_ok=True)
     made = []
     for path, out, title, cat, foot in jobs:
@@ -243,10 +259,29 @@ def main():
         return 1
     print(f"  {seen} cards measured in Chrome, all fit")
 
-    made = render(jobs, font_uri)
+    old = json.loads(MANIFEST.read_text()) if MANIFEST.exists() else {}
+    new = {path: fingerprint(title, cat, foot) for path, _o, title, cat, foot in jobs}
+    stale = {p for p, fp in new.items()
+             if old.get(p) != fp or not (OUT / f"{p.replace('/', '-').replace('.html', '')}.png").exists()}
+    for gone in set(old) - set(new):
+        f = OUT / f"{gone.replace('/', '-').replace('.html', '')}.png"
+        if f.exists():
+            f.unlink()
+            print(f"  removed card for {gone}, which is no longer a page")
+
+    if not stale:
+        print(f"  {len(jobs)} cards already current")
+        MANIFEST.write_text(json.dumps(new, indent=2, sort_keys=True) + "\n")
+        return 0
+
+    made = render(jobs, font_uri, only=stale)
+    if len(made) != len(stale):
+        print(f"  !! rendered {len(made)} of {len(stale)} stale cards")
+        return 1
     total = sum(n for _, _, n in made)
-    print(f"  rendered {len(made)} cards, {total // 1024}KB total, "
-          f"largest {max((n for _,_,n in made), default=0) // 1024}KB")
+    print(f"  rendered {len(made)} of {len(jobs)} cards ({len(jobs) - len(stale)} already current), "
+          f"{total // 1024}KB written, largest {max((n for _,_,n in made), default=0) // 1024}KB")
+    MANIFEST.write_text(json.dumps(new, indent=2, sort_keys=True) + "\n")
     return 0
 
 

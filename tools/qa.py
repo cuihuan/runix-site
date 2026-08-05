@@ -341,7 +341,13 @@ for page in PAGES:
     body = doc[doc.find("<main"):doc.find("</main>")] if "<main" in doc else doc
     body = re.sub(r"<nav\b.*?</nav>", " ", body, flags=re.S | re.I)
     by_text = {}
-    for href, text in re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', body, re.S):
+    for tag, href, text in re.findall(r'(<a\b[^>]*href="([^"]+)"[^>]*>)(.*?)</a>', body, re.S):
+        # A link removed from the accessibility tree is not in the link list a
+        # screen-reader user reads, so it cannot collide with anything there.
+        # It must also be unfocusable, which is checked separately below --
+        # aria-hidden on a focusable element is its own violation.
+        if 'aria-hidden="true"' in tag:
+            continue
         label = " ".join(re.sub(r"<[^>]+>", " ", text).split()).lower()
         if not label:
             continue
@@ -353,11 +359,28 @@ for page in PAGES:
             target = target.split("?")[0]
         by_text.setdefault(label, set()).add(target)
     for label, targets in by_text.items():
-        if len(targets) > 1 and label not in ("read post \u2192",):
+        # There used to be an exemption here for "read post →". It was written
+        # to quieten the blog index, where every card carried both a headline
+        # link and a "Read post" link to the same post -- twenty-five identical
+        # entries in the link list. The exemption hid the defect instead of
+        # fixing it; the duplicates are now decorative and the exemption is gone.
+        if len(targets) > 1:
             fail(page, f"link text “{label}” points at {len(targets)} different "
                        f"destinations: {sorted(targets)[:3]}")
         if label in GENERIC and len(by_text) > 1:
             notes.append(f"{page}: non-descriptive link text “{label}”")
+
+# --- a hidden link must also be unfocusable --------------------------------
+# aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
+# focus lands on an element the screen reader refuses to announce, and the user
+# is somewhere with no name. Whenever we hide a redundant link we must also
+# take it out of the tab order.
+for page in PAGES:
+    doc = open(page).read()
+    for tag in re.findall(r'<a\b[^>]*aria-hidden="true"[^>]*>', doc):
+        if 'tabindex="-1"' not in tag:
+            fail(page, "a link is aria-hidden but still focusable -- focus would "
+                       "land somewhere a screen reader will not announce")
 
 # --- internal links use the URLs the host serves ---------------------------
 # Every internal .html link costs a 308. A site-wide pass fixed 1110 of them,

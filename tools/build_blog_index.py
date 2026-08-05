@@ -37,6 +37,14 @@ def read_posts():
     return posts
 
 
+# The "Read post" link goes exactly where the headline above it already goes.
+# Sighted users read it as an affordance; for everyone else it was pure cost --
+# twenty-five extra tab stops to cross the index, and twenty-five identical
+# "Read post" entries in a screen reader's link list, each pointing somewhere
+# different. aria-hidden plus tabindex=-1 keeps the affordance visible and
+# drops the duplicate: the headline is the real link. (aria-hidden alone on a
+# focusable element is itself a violation -- both attributes are required.)
+#
 # Links are the clean URLs the host actually serves. Writing "<slug>.html"
 # costs a 308 on every card, and this generator runs on every publish — so it
 # silently undid the site-wide clean-URL pass once already.
@@ -46,7 +54,7 @@ def write_index(posts):
         <div class="post-meta"><span class="cat">{p['cat']}</span><span>{p['date']}</span><span>·</span><span>{p['read']}</span></div>
         <h3><a href="/blog/{p['slug']}">{p['headline']}</a></h3>
         <p class="excerpt">{html.escape(p['desc'], quote=False)}</p>
-        <a class="read-more" href="/blog/{p['slug']}">Read post →</a>
+        <a class="read-more" href="/blog/{p['slug']}" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>"""
         for p in posts
     ]

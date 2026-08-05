@@ -151,6 +151,19 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- every SVG is either decorative or labelled ---------------------------
+# The site uses inline SVG for every icon and has no <img> at all, so this is
+# where alternative text lives or fails to. A decorative icon needs
+# aria-hidden, or a screen reader announces "graphic" for each of 43 of them;
+# an informative one needs role="img" and a label, or it announces nothing.
+for page in PAGES:
+    for tag in re.findall(r"<svg\b[^>]*>", open(page).read()):
+        if "aria-hidden" in tag:
+            continue
+        if 'role="img"' in tag and ("aria-labelledby" in tag or "aria-label" in tag):
+            continue
+        fail(page, f"svg is neither aria-hidden nor role=img with a label: {tag[:70]}")
+
 # --- same link text must mean the same destination ------------------------
 # A screen-reader user can list the links on a page. Fourteen entries all
 # reading "Read more on this", each going somewhere different, is a page they

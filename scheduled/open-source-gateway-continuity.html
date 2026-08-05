@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will your gateway still be there in a year? — Runix</title>
+<meta name="description" content="Open-source AI gateways change licences, gate the features you need, and get acquired. What to check before you build on one — with the licence files, commits and announcements to check it against.">
+<meta property="og:title" content="Will your gateway still be there in a year? — Runix">
+<meta property="og:description" content="Open-source AI gateways change licences, gate the features you need, and get acquired. What to check before you build on one — with the licence files, commits and announcements to check it against.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=11">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=11">
+<meta property="og:url" content="https://runixcloud.io/blog/open-source-gateway-continuity">
+<link rel="canonical" href="https://runixcloud.io/blog/open-source-gateway-continuity">
+<link rel="icon" href="../assets/favicon.svg?v=10" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=12">
+<script src="../assets/site-config.js?v=9" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The licence on your gateway is a dependency",
+  "description": "Open-source AI gateways change licences, gate the features you need, and get acquired. What to check before you build on one — with the licence files, commits and announcements to check it against.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/open-source-gateway-continuity"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=11",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-06",
+  "dateModified": "2026-08-06",
+  "url": "https://runixcloud.io/blog/open-source-gateway-continuity"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "The licence on your gateway is a dependency",
+      "item": "https://runixcloud.io/blog/open-source-gateway-continuity"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Will your gateway still be there in a year? — Runix">
+<meta name="twitter:description" content="Open-source AI gateways change licences, gate the features you need, and get acquired. What to check before you build on one — with the licence files, commits and announcements to check it against.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>PENDING</span><span>·</span><span>7 min read</span></div>
+    <h1 style="margin-top: 14px;">The licence on your gateway is a dependency</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>Choosing an open-source gateway is usually framed as a feature question. It is
+mostly a continuity question. The features you can evaluate in an afternoon; whether the
+project will still be there, still be licensed the way it is today, and still ship the
+capability you depend on — that is what actually decides whether the choice was right,
+and it is much harder to check.</p>
+
+<p>Here is what to check, and what checking it turns up right now. Every claim below links
+to the licence file, commit or announcement it came from, because these things move.</p>
+
+<h2>1. Read the licence file, not the badge</h2>
+
+<p>The licence shown on a repository page is a guess made by a classifier. It is wrong often
+enough to matter.</p>
+
+<p><a href="https://github.com/BerriAI/litellm/blob/main/LICENSE">LiteLLM's LICENSE</a> opens with: <q>Portions of this software are
+licensed as follows: * All content that resides under the "enterprise/" directory of this
+repository, if that directory exists, is licensed under the license defined in
+"enterprise/LICENSE".</q> Everything else is MIT. The <code>enterprise/</code> licence is
+proprietary and forbids production use without a subscription. GitHub cannot classify a
+modified preamble, so it reports the repository as "Other" rather than MIT — which is
+accurate, and easy to skim past. That carve-out was <a href="https://github.com/BerriAI/litellm/commit/a9e79c8d4645f963c642387e2fef9b8c5474765e">added in
+February 2024</a>; the project was plain MIT before it.</p>
+
+<p>The sharper case is a project whose licence forbids the thing you want to do with it. The
+gateway formerly published as LangDB, now <a href="https://github.com/vllora/vllora/blob/main/LICENSE.md">vllora</a>, is under the
+Elastic License 2.0, which states: <q>You may not provide the software to third parties as a
+hosted or managed service, where the service provides users with access to any substantial
+set of the features or functionality of the software.</q> If your plan is to run it for other
+people, that is the plan disallowed. It is listed as Apache-2.0 in several widely-copied
+"awesome" lists. The repository has never had an Apache licence at its root.</p>
+
+<p><strong>What to do:</strong> open the LICENSE file itself, and check <code>git log</code>
+on that file. A licence with a history is a licence that can have more history.</p>
+
+<h2>2. Licences change, and they change in one direction</h2>
+
+<p>In this category, over roughly two years: LiteLLM added a proprietary directory to an MIT
+project. Helicone's Rust gateway went <a href="https://github.com/Helicone/ai-gateway/commit/9649b27bdc9fb0907d359e899894102a15f3a085">from Apache-2.0 to GPL-3.0 in
+November 2025</a> — and that licence change is the last commit the repository has received.
+new-api went MIT to Apache-2.0 to a custom dual licence to AGPL-3.0, four licences in two
+years.</p>
+
+<p>None of these is wrong of the project to do. Maintainers get to change terms on new
+versions, and most of these changes were made to fund the work. The point is that a licence
+is a term of your dependency, not a property of it, and the direction of travel is
+consistently toward more restriction, not less.</p>
+
+<p><strong>What to do:</strong> put a quarterly reminder on re-reading the LICENSE file of
+anything you depend on commercially. It costs a minute and it is the only way you find out
+before an upgrade forces the question.</p>
+
+<h2>3. "Open source" and "the part you need is open source" are different claims</h2>
+
+<p>Kong AI Gateway is genuinely Apache-2.0. The Apache-licensed tree ships
+<a href="https://github.com/Kong/kong/tree/master/kong/plugins">six <code>ai-*</code> plugins</a>; the plugin catalogue lists
+roughly twenty-three. The <a href="https://developer.konghq.com/plugins/ai-proxy-advanced/">plugin that does multi-provider load
+balancing and failover</a> — the thing most people mean when they say "AI gateway" — carries
+an enterprise tier marker. So does semantic caching, and so does token-based rate limiting.</p>
+
+<p>By contrast, Apache APISIX ships <a href="https://apisix.apache.org/docs/apisix/plugins/ai-proxy-multi/"><code>ai-proxy-multi</code></a>
+in its Apache-2.0 tree, described in its own docs as extending the basic proxy <q>with load
+balancing, retries, fallbacks, and health checks</q>. Same capability, no tier.</p>
+
+<p>Neither approach is dishonest. But "X is Apache-2.0" answers a question you were not
+asking. The question is whether the specific capability you are adopting the project for is
+in the tree you are licensed to use.</p>
+
+<p><strong>What to do:</strong> list the three features you are actually adopting it for,
+then find each one in the open-source source tree. Not the docs — the tree.</p>
+
+<h2>4. Check whether the project and its paid edition are still the same software</h2>
+
+<p>A subtler version of the same problem: the open-source edition and the commercial edition
+can drift apart in version, not just in features. When the OSS changelog stops years behind
+the enterprise changelog, "we're on the open-source build" starts to mean "we are on an old
+build", and the security backport question becomes real.</p>
+
+<p><strong>What to do:</strong> compare the newest OSS release tag with the newest enterprise
+release, and the newest tag on the public container image with the commercial one. If they
+have diverged by more than a minor version, ask what the OSS maintenance commitment actually
+is, and get the answer in writing.</p>
+
+<h2>5. Assume the vendor may not be independent next year</h2>
+
+<p>Between March and June 2026, three projects in this category stopped being independent
+concerns. <a href="https://www.mintlify.com/blog/mintlify-acquires-helicone">Mintlify acquired Helicone</a>, stating that Helicone
+<q>will continue operating in maintenance mode</q> and that they would <q>work closely with
+every customer to support a smooth migration to another platform</q>.
+<a href="https://www.paloaltonetworks.com/company/press/2026/palo-alto-networks-completes-acquisition-of-portkey-to-secure-ai-agents">Palo Alto Networks completed its acquisition of Portkey</a> in May.
+<a href="https://github.com/tensorzero/tensorzero">TensorZero archived its repository</a> in June; its co-founder wrote that
+the team <q>came to the difficult decision to wind down the project</q> and that the
+repository <q>won't be actively maintained by the team moving forward</q>.</p>
+
+<p>This is not a scandal. It is what a young, well-funded category does, and two of those
+three are good outcomes for the people involved. But it does mean the question <em>"what
+happens to us if this project stops moving"</em> is not hypothetical, and the honest answer
+depends almost entirely on one thing: how much of your system knows it is talking to that
+specific gateway.</p>
+
+<p><strong>What to do:</strong> write down the exit. Not a plan — a paragraph. Which of your
+services would need to change, how long the change takes, and whether you have the data to
+reproduce your current routing and spend attribution somewhere else. If that paragraph is
+hard to write, that difficulty <em>is</em> the lock-in, and it exists whether or not you
+self-host.</p>
+
+<h2>6. Cost the operation, not the licence</h2>
+
+<p>Self-hosting is free in the sense that the software costs nothing. The operational floor
+varies by more than an order of magnitude between projects, and the projects themselves are
+the most reliable source on it.</p>
+
+<p><a href="https://www.helicone.ai/blog/self-hosting-journey">Helicone</a>, describing its own rebuild: <q>Our original
+self-hosting architecture required managing twelve separate containers with complex
+configuration requirements.</q> They spent a month reducing it to four.
+<a href="https://docs.litellm.ai/docs/proxy/prod">LiteLLM's production guide</a> is candid about where the ceiling
+is: <q>At very high traffic (roughly 1000+ requests per second, or 10+ instances), spend
+tracking itself becomes a database bottleneck.</q>
+<a href="https://aigateway.envoyproxy.io/docs/getting-started/prerequisites">Envoy AI Gateway</a> requires <q>Kubernetes version 1.32 or
+higher</q> and a matching Envoy Gateway version — there is no single-binary path at all.</p>
+
+<p>Meanwhile several projects run from one container with an embedded database. The spread is
+real, and it is knowable before you commit.</p>
+
+<p><strong>What to do:</strong> before evaluating features, read the production deployment
+page and write down every stateful component it requires. That list is your actual on-call
+surface, and it is the number to compare against a managed price — not the licence fee,
+which is zero on both sides of the comparison you are trying to make.</p>
+
+<h2>The short version</h2>
+
+<ol>
+<li>Open the LICENSE file. Check its history.</li>
+<li>Find your three must-have features in the open-source tree, not the docs.</li>
+<li>Compare the OSS release cadence with the commercial one.</li>
+<li>Write the exit paragraph. Its difficulty is your lock-in.</li>
+<li>Count the stateful components before you count the features.</li>
+</ol>
+
+<p>None of this argues against self-hosting. Plenty of teams should self-host, and some of
+these projects are excellent. It argues against choosing on features alone, because features
+are the part that does not change when a licence does, when a capability turns out to be
+enterprise-only, or when the company is acquired.</p>
+
+<p>If you would rather not carry that evaluation at all, that is what a managed gateway is
+for, and <a href="/router">Runix Router</a> is ours. But the checks above are worth running
+either way — including on us. Ask what happens to your traffic and your usage history if you
+leave, and expect a straight answer.</p>
+
+<p class="note-line">Every licence, commit and announcement referenced above was read
+directly from its primary source on 6 August 2026. Repositories and terms change; check the
+links before relying on any of it.</p>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

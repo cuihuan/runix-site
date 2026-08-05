@@ -22,6 +22,10 @@ os.chdir(ROOT)
 PAGES = sorted(glob.glob("*.html") + glob.glob("docs/*.html") + glob.glob("blog/*.html"))
 # 404 is deliberately noindex and outside the nav/sitemap conventions.
 INDEXABLE = [p for p in PAGES if os.path.basename(p) != "404.html"]
+# Drafts are not deployed and not in the sitemap, but a draft with a broken
+# schema block or a dead internal link only announces itself at publish time,
+# which is the worst moment to find out. They get the structural checks.
+DRAFTS = sorted(glob.glob("scheduled/*.html"))
 
 failures = []
 notes = []
@@ -58,7 +62,7 @@ def ids_of(path):
     return ids_cache[path]
 
 
-for page in PAGES:
+for page in PAGES + DRAFTS:
     html = open(page).read()
     base = os.path.basename(page)
 
@@ -110,6 +114,8 @@ for page in PAGES:
         fail(page, "JSON-LD leaked outside a script block in the head")
 
     # --- content hygiene ------------------------------------------------
+    if "PENDING" in html and page not in DRAFTS:
+        fail(page, "publish.py date placeholder left in a live page")
     if re.search(r"lorem ipsum|TODO:|FIXME|XXX_PLACEHOLDER", html, re.I):
         fail(page, "placeholder text left in the page")
     # The range is escaped rather than written literally, so this file does not
@@ -240,7 +246,7 @@ else:
     fail("sitemap.xml", "missing")
 
 # --- report -------------------------------------------------------------
-print(f"checked {len(PAGES)} pages")
+print(f"checked {len(PAGES)} pages and {len(DRAFTS)} draft(s)")
 for note in notes:
     print(f"  note: {note}")
 if failures:

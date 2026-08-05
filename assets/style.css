@@ -736,3 +736,14 @@ main > .section:first-child { padding-top: 64px; }
 .feature ul.status-list li { padding-left: 0; }
 .feature ul.status-list li::before { content: none; }
 .feature ul.status-list li em { color: var(--ink-3); font-style: normal; }
+
+/* Without JavaScript the mobile nav cannot open: .nav-links is display:none
+   under the breakpoint and only .open shows it, and .open is added by script.
+   A <noscript> block on every page turns this on, so a visitor with JS off —
+   or with the script blocked or failed — still has navigation instead of only
+   the footer. */
+.no-js-nav .nav-links {
+  display: flex !important; position: static; flex-direction: row;
+  flex-wrap: wrap; background: none; padding: 0; border: none; gap: 14px 18px;
+}
+.no-js-nav .nav-toggle { display: none !important; }

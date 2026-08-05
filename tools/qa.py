@@ -191,6 +191,15 @@ for page in PAGES:
             fail(page, f"asset referenced without a ?v= while /assets/* is "
                        f"immutable for a year: {ref}")
 
+# --- the mobile nav has a no-script fallback ------------------------------
+# Under 920px the nav links are display:none and only .open reveals them, and
+# .open is added by script. Without this block a visitor with scripting off has
+# no navigation at all except the footer.
+for page in PAGES:
+    doc = open(page).read()
+    if 'class="nav-toggle"' in doc and "<noscript>" not in doc:
+        fail(page, "mobile nav depends on script with no <noscript> fallback")
+
 # --- every SVG is either decorative or labelled ---------------------------
 # The site uses inline SVG for every icon and has no <img> at all, so this is
 # where alternative text lives or fails to. A decorative icon needs

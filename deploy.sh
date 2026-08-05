@@ -101,9 +101,15 @@ check_content "index <h1>" \
   "$(grep -o '<h1>.*</h1>' "$SRC/index.html" | head -1)" \
   "curl -sL --max-time 15 '$DOMAIN/' | grep -o '<h1>.*</h1>' | head -1" || fail=1
 
+# Check the URL the pages actually request, not the bare one. Since /assets/*
+# became immutable for a year, the unversioned URL is frozen at whatever was
+# cached when the policy landed — and nothing references it, so it can differ
+# from the deployed file forever. Checking it reported a failed deploy on a
+# deploy that was entirely correct.
+css_ref=$(grep -o 'assets/style\.css?v=[0-9]*' "$SRC/index.html" | head -1)
 check_content "assets/style.css size" \
   "$(wc -c < "$SRC/assets/style.css" | tr -d ' ')" \
-  "curl -sL -o /dev/null -w '%{size_download}' --max-time 15 '$DOMAIN/assets/style.css'" || fail=1
+  "curl -sL -o /dev/null -w '%{size_download}' --max-time 15 '$DOMAIN/$css_ref'" || fail=1
 
 # whatever the pages point at socially has to actually exist
 og=$(grep -o 'og:image" content="[^"]*"' "$SRC/index.html" | head -1 | sed 's/.*content="//;s/"$//')

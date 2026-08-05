@@ -191,6 +191,25 @@ for page in PAGES:
             fail(page, f"asset referenced without a ?v= while /assets/* is "
                        f"immutable for a year: {ref}")
 
+# --- the share image is the size the pages claim --------------------------
+# og:image:width/height are hints social platforms lay out against before the
+# image loads. If they stop matching the file, previews crop wrong -- and that
+# only ever shows up when somebody shares a link, which is the worst time.
+import struct as _struct
+_og = os.path.join("assets", "og-cover.png")
+if os.path.isfile(_og):
+    _data = open(_og, "rb").read(24)
+    if _data[:8] == b"\x89PNG\r\n\x1a\n":
+        _w, _h = _struct.unpack(">II", _data[16:24])
+        for page in PAGES:
+            _doc = open(page).read()
+            _dw = re.search(r'og:image:width" content="(\d+)"', _doc)
+            _dh = re.search(r'og:image:height" content="(\d+)"', _doc)
+            if _dw and int(_dw.group(1)) != _w:
+                fail(page, f"og:image:width says {_dw.group(1)} but the file is {_w}")
+            if _dh and int(_dh.group(1)) != _h:
+                fail(page, f"og:image:height says {_dh.group(1)} but the file is {_h}")
+
 # --- code examples must survive being copied ------------------------------
 # Every code block now has a Copy button, so a snippet that only works after a
 # human edits it is worse than no snippet. The homepage shipped a JSON body

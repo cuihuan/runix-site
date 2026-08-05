@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changing models without a redeploy — Runix</title>
+<meta name="description" content="Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.">
+<meta property="og:title" content="Changing models without a redeploy — Runix">
+<meta property="og:description" content="Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=9">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=9">
+<meta property="og:url" content="https://runixcloud.io/blog/model-deprecation-without-a-redeploy">
+<link rel="canonical" href="https://runixcloud.io/blog/model-deprecation-without-a-redeploy">
+<link rel="icon" href="../assets/favicon.svg?v=8" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=10">
+<script src="../assets/site-config.js?v=7" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Your model id has an expiry date",
+  "description": "Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/model-deprecation-without-a-redeploy"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=9",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-06",
+  "dateModified": "2026-08-06",
+  "url": "https://runixcloud.io/blog/model-deprecation-without-a-redeploy"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Your model id has an expiry date",
+      "item": "https://runixcloud.io/blog/model-deprecation-without-a-redeploy"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Changing models without a redeploy — Runix">
+<meta name="twitter:description" content="Every major provider retires model versions on a published schedule. If the id is a string literal in your application, their calendar becomes your deploy calendar. What each provider actually commits to, and why aliases are not the escape hatch.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var e=document.querySelector('.nav-links');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/about">Company</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>August 6, 2026</span><span>·</span><span>8 min read</span></div>
+    <h1 style="margin-top: 14px;">Your model id has an expiry date</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>On 5 August 2026, <code>claude-opus-4-1-20250805</code> reached its retirement date on
+the Claude API. Anthropic's own wording for what happens next is unambiguous:
+<q>Requests to retired models will fail.</q> If that string is a literal somewhere in your
+application, the fix is a code change, a review, a build and a deploy — and the deadline
+was set by someone else, two months earlier.</p>
+
+<p>This is not an Anthropic problem. It is the normal operating model of every major
+provider, and it has been for years. What varies is how much warning you get and whether
+anyone moves you. Below is what each provider actually commits to, read from their own
+policy pages, followed by the part most teams get wrong: assuming an alias protects them.</p>
+
+<h2>What the providers actually commit to</h2>
+
+<p>These are the published floors, not observed behaviour. Each links to the page it came
+from, because these pages change.</p>
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
+<table>
+<thead><tr><th>Provider</th><th>Committed notice</th><th>What happens at the end</th></tr></thead>
+<tbody>
+<tr>
+  <td><a href="https://platform.claude.com/docs/en/docs/about-claude/model-deprecations">Anthropic</a></td>
+  <td>At least 60 days before retirement, for publicly released models</td>
+  <td>Requests to retired models fail</td>
+</tr>
+<tr>
+  <td><a href="https://developers.openai.com/api/docs/deprecations">OpenAI</a></td>
+  <td>At least 6 months for generally available models; at least 3 months for specialised
+      variants (chat, Codex, deep research); preview models <q>may be retired with much
+      shorter notice, such as 2 weeks</q></td>
+  <td>Model is shut down and no longer accessible</td>
+</tr>
+<tr>
+  <td><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-lifecycle.html">AWS Bedrock</a></td>
+  <td>At least 12 months on Bedrock before EOL, and at least 6 months in the Legacy state
+      before EOL</td>
+  <td>Requests fail. <q>Migration will not happen automatically.</q></td>
+</tr>
+<tr>
+  <td><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/model-retirements">Microsoft Foundry / Azure OpenAI</a></td>
+  <td>GA retirement dates are set programmatically at launch, 18 months out (12 months for
+      Anthropic, DeepSeek, Fireworks and Mistral models); active notice at least 60 days for
+      GA, 30 days for preview</td>
+  <td>All inference returns <code>410 Gone</code></td>
+</tr>
+<tr>
+  <td><a href="https://ai.google.dev/gemini-api/docs/deprecations">Google Gemini API</a></td>
+  <td>No numeric minimum is stated on the deprecation policy page. Preview models get
+      <a href="https://ai.google.dev/gemini-api/docs/models">at least 2 weeks</a></td>
+  <td>Model is shut down</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>Two details in that table deserve more attention than they usually get.</p>
+
+<p><strong>Google's dates are floors, not schedules.</strong> The page states that
+<q>the shutdown dates listed in the table indicate the <em>earliest possible dates</em> on which
+a model might be retired</q>. A date in that column is not a date you can plan a migration
+around; it is the earliest one you might have to.</p>
+
+<p><strong>Anthropic's floor is also its practice.</strong> Take the three most recent
+retirements from its own deprecation history: Haiku 3 was announced 19 February 2026 and
+retired 20 April 2026; Sonnet 4 and Opus 4 were announced 14 April and retired 15 June;
+Opus 4.1 was announced 5 June and retired 5 August. Sixty, sixty-two, and sixty-one days.
+The published <q>at least 60 days</q> is what you will get, not a conservative worst case
+with slack behind it.</p>
+
+<h2>The "latest" alias is not the escape hatch</h2>
+
+<p>The obvious response to a dated model id is to stop writing dated model ids — point at
+<code>-latest</code> and let the provider handle it. This fails in three separate ways, and
+each one is documented by the provider itself.</p>
+
+<p><strong>Aliases get deprecated too.</strong> They are model ids, and they die like model
+ids. From OpenAI's own deprecation list: <code>chatgpt-4o-latest</code> announced 18 November
+2025 and shut down 17 February 2026; <code>codex-mini-latest</code> announced 17 November 2025,
+shut down 12 February 2026; <code>gpt-5-chat-latest</code> and <code>gpt-5.1-chat-latest</code>
+announced 22 April 2026 and shut down 23 July 2026. Pointing at an alias does not buy you a
+stable target — and note that OpenAI classes chat variants as <em>specialised</em>, so they
+carry the 3-month floor rather than the 6-month one.</p>
+
+<p><strong>An alias that works moves under you.</strong> Google is explicit that a
+<code>-latest</code> id <q>will get hot-swapped with every new release</q>, with two weeks'
+notice before a breaking change. That is the correct behaviour for an alias, and it is also
+a model change landing in production on a date you did not choose, with no deploy of yours
+attached to it. If your evaluations are pinned to a snapshot and your serving is pinned to an
+alias, they are measuring different things.</p>
+
+<p><strong>An id that looks like an alias may not be one.</strong> Anthropic calls this out
+directly: <q>A common misconception is that dateless model IDs such as
+<code>claude-sonnet-4-6</code> behave as evergreen pointers that route to the latest or
+best-performing version. That is not the case.</q> Meanwhile
+<a href="https://platform.claude.com/docs/en/docs/about-claude/models/model-ids-and-versions">shorter aliases for pre-4.6 models</a>, such as
+<code>claude-sonnet-4-5</code>, <em>do</em> point at the most recent dated snapshot. Two ids
+with the same shape, opposite semantics, in the same provider. Nothing in your code will tell
+you which one you have.</p>
+
+<h2>The same model dies on different days depending on where you call it</h2>
+
+<p>This is the one that catches teams who thought they had done the work. The provider's
+retirement date is not the retirement date — the retirement date belongs to the endpoint.</p>
+
+<p>Anthropic states that its dates <q>apply to Anthropic-operated platforms</q> and that
+<q>partner-operated platforms (Amazon Bedrock and Google Cloud) set their own retirement
+schedules</q>. AWS states the same thing from its side: Bedrock's dates <q>may differ from
+dates published by model providers (such as Anthropic or Cohere). For Amazon Bedrock usage,
+only the dates on this page apply.</q></p>
+
+<p>Concretely, for the model that retired yesterday: <code>claude-opus-4-1-20250805</code> is
+retired on the Claude API as of 5 August 2026, while
+<code>anthropic.claude-opus-4-1-20250805-v1:0</code> on Bedrock went Legacy on 8 July 2026 with
+an EOL of 8 January 2027. Same weights, five extra months, depending only on which endpoint
+your code points at. The reverse also happens: <code>claude-sonnet-4-20250514</code> was
+retired by Anthropic on 15 June 2026 and has a Bedrock EOL of 14 October 2026.</p>
+
+<p>If you run multi-provider — and the reason most teams put a gateway in front of their
+traffic is that they do — then "when does this model die" has more than one answer, and the
+answer you need is the one for the path the request actually takes.</p>
+
+<h2>One platform will move you. Read what it moves.</h2>
+
+<p>Azure is the interesting exception: for Global Standard, Data Zone Standard and Standard
+deployment types, Microsoft <q>manages automatic upgrades when a model version is retired</q>,
+on a rolling region-by-region basis. Its documented example is gpt-4o version
+<code>2024-05-13</code> being automatically upgraded to gpt-5.1 at its retirement.</p>
+
+<p>Three caveats sit in the same document, and each one turns the guarantee off:</p>
+
+<ul>
+<li><strong>Provisioned deployments are not auto-upgraded.</strong> The docs put it in bold:
+    provisioned customers must manually migrate.</li>
+<li><strong>You can opt out, and opting out is not neutral.</strong> Setting
+    <code>versionUpgradeOption</code> to <code>NoAutoUpgrade</code> means the
+    <q>deployment stops working at retirement</q>.</li>
+<li><strong>There is no appeal.</strong> Asked whether a retirement date can be extended, the
+    FAQ answers: <q>No. Retirement dates aren't extendable.</q></li>
+</ul>
+
+<p>There is also a trap for anyone who tries to monitor this programmatically. Microsoft warns
+that <q>the API uses different terminology than the docs and portal</q>: a model the
+documentation calls <strong>Deprecated</strong> — still serving, closed to new customers —
+reports <code>lifecycleStatus: "Deprecating"</code>, while the API value
+<code>"Deprecated"</code> means the model is <em>retired</em> and returns <code>410 Gone</code>.
+A monitoring script that greps for <code>Deprecated</code> reads the opposite of what its
+author intended.</p>
+
+<h2>Where the indirection belongs</h2>
+
+<p>None of this argues for never pinning a version. Pinning is correct: it is what makes an
+evaluation result mean something, and Anthropic's guarantee that weights are fixed for the
+lifetime of an id is exactly what you want from a serving contract. The problem is not the
+pin. The problem is <em>where</em> the pin lives.</p>
+
+<p>A model id in application code has three properties you do not want. It is duplicated
+across every service that calls the model. It is only changeable by whoever can deploy that
+service. And changing it is indistinguishable, in your release process, from changing
+business logic — same review, same risk, same window.</p>
+
+<p>Moving the pin outward — into configuration, or into a routing layer the application
+talks to — leaves the pin intact and changes only who can move it and how fast. The
+application asks for a capability; something else decides which id serves it today. That
+decision becomes a config change with an audit trail instead of a release, which matters
+most on the day you have sixty days of notice and a change freeze.</p>
+
+<p>This is one of the reasons <a href="/router">Runix Router</a> exists: your application
+holds one base URL, and which upstream id serves a request is decided behind it. But the
+argument stands regardless of what you put there — a config file you can reload, an internal
+service, a gateway you host yourself. What matters is that the id stops being a string
+literal in a binary you have to rebuild.</p>
+
+<h2>What to check this week</h2>
+
+<ol>
+<li><strong>Grep for model ids.</strong> Every repository, plus environment variables, plus
+    Terraform, plus notebooks, plus anything that was "just a script". Count the places. That
+    count is your migration cost, and it is usually larger than the estimate.</li>
+<li><strong>Write down the retirement date for each id, per endpoint.</strong> Not per model —
+    per endpoint. If you call the same model through two providers, that is two dates.</li>
+<li><strong>Find out whether you are on an alias, and whether it is really an alias.</strong>
+    Both mistakes are common, and they fail in opposite directions.</li>
+<li><strong>Check the notification path.</strong> These notices go to account owners and
+    subscription owners by email. If that address is a founder's inbox or a distribution list
+    nobody reads, the 60 days you were promised are not 60 days you will get.</li>
+<li><strong>Time the change.</strong> Not the code edit — the whole path from decision to
+    production, including review and any change freeze. Compare that number against 60 days,
+    and against the two weeks a preview model gets.</li>
+</ol>
+
+<p>The providers are not being unreasonable; they publish these schedules years in advance and
+mostly meet them. But every one of these dates is a deadline in someone else's calendar, and
+the only question that matters is whether meeting it costs you a deploy or a config change.</p>
+
+<p class="note-line">Every provider claim above was read from the linked policy page on
+6 August 2026. These pages are revised; check the source before relying on a number.</p>
+
+<aside class="related">
+  <h2>Related reading</h2>
+  <ul>
+  <li><a href="/blog/llm-gateway-guide">Choosing an LLM Gateway: Seven Things That Actually Matter</a></li>
+  <li><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></li>
+  <li><a href="/blog/build-vs-buy-llm-gateway">Build or Buy an LLM Gateway: An Honest Comparison</a></li>
+    <li><a href="/router">Runix Router: one OpenAI-compatible endpoint across providers</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">Contact</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -666,3 +666,12 @@ main > .section:first-child { padding-top: 64px; }
 }
 /* Stops the lede stranding a single word on its own last line. */
 .page-hero p { text-wrap: pretty; }
+
+/* Wide tables scroll inside their own region rather than pushing the page
+   sideways. tabindex makes the region keyboard-scrollable. */
+.article .table-scroll {
+  overflow-x: auto; margin: 18px 0;
+  border: 1px solid var(--line); border-radius: var(--radius);
+}
+.article .table-scroll table { margin: 0; min-width: 560px; border: none; }
+.article .table-scroll:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }

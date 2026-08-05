@@ -40,7 +40,8 @@ WIDTHS = [(375, "phone"), (768, "tablet"), (1440, "desktop")]
 
 PROBE = r"""
 <script>window.addEventListener('load',function(){setTimeout(function(){
-  var out = {overflow:null, wide:[], tiny:[], small_targets:[], covered:[]};
+  var out = {overflow:null, wide:[], tiny:[], small_targets:[], covered:[], vw:0};
+  out.vw = document.documentElement.clientWidth;
   var vw = document.documentElement.clientWidth;
 
   if (document.documentElement.scrollWidth > vw + 1) {
@@ -187,18 +188,38 @@ def serve():
 
 
 def probe(path, width):
-    tmp = "_vqa.html"
-    html = open(path).read()
-    open(tmp, "w").write(html.replace("</body>", PROBE + "</body>", 1))
+    """Render `path` at exactly `width` and return what the probe found.
+
+    Chrome headless clamps its viewport to a 500px minimum, so --window-size=375
+    silently renders at 500 and every phone-width check is a lie. The target is
+    therefore loaded inside an iframe of the requested width: media queries and
+    getBoundingClientRect inside an iframe key off the iframe's own viewport, so
+    375 really is 375. The frame is same-origin, so the parent can read the
+    result the probe leaves in the inner document's title.
+    """
+    inner, outer = "_vqa.html", "_vqa_frame.html"
+    open(inner, "w").write(open(path).read().replace("</body>", PROBE + "</body>", 1))
+    open(outer, "w").write(
+        f'<!DOCTYPE html><html><body style="margin:0">'
+        f'<iframe id="f" src="/{inner}" style="width:{width}px;height:900px;border:0"></iframe>'
+        f'<script>window.addEventListener("load",function(){{'
+        f'  var n=0,t=setInterval(function(){{'
+        f'    var d=document.getElementById("f").contentDocument;'
+        f'    if(d&&d.title.indexOf("VQA ")===0){{document.title=d.title;clearInterval(t);}}'
+        f'    if(++n>60)clearInterval(t);'
+        f'  }},100);}});</script></body></html>')
     try:
         out = subprocess.run(
             [CHROME, "--headless", "--disable-gpu", "--hide-scrollbars",
-             f"--window-size={width},900", "--virtual-time-budget=4000",
-             "--dump-dom", f"http://127.0.0.1:{PORT}/{tmp}"],
+             f"--window-size={max(width + 60, 620)},1000",
+             "--virtual-time-budget=6000", "--dump-dom",
+             f"http://127.0.0.1:{PORT}/{outer}"],
             capture_output=True, text=True, timeout=90,
         ).stdout
     finally:
-        os.remove(tmp)
+        for f in (inner, outer):
+            if os.path.exists(f):
+                os.remove(f)
     match = re.search(r"VQA (\{.*?\})</title>", out, re.S)
     return json.loads(match.group(1)) if match else None
 
@@ -217,6 +238,8 @@ try:
             if r is None:
                 problems.append(f"{page} @{name}: probe did not report")
                 continue
+            if r.get("vw") != width:
+                problems.append(f"{page} @{name}: asked for {width}px, rendered at {r.get('vw')}px")
             if r["overflow"]:
                 problems.append(f"{page} @{name}: page scrolls {r['overflow']}px sideways")
             for w in r["wide"]:

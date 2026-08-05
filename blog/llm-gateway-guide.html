@@ -18,17 +18,17 @@
 <meta property="og:description" content="How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=8">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=9">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=8">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=9">
 <meta property="og:url" content="https://runixcloud.io/blog/llm-gateway-guide">
 <link rel="canonical" href="https://runixcloud.io/blog/llm-gateway-guide">
-<link rel="icon" href="../assets/favicon.svg?v=7" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.svg?v=8" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=9">
-<script src="../assets/site-config.js?v=6" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=10">
+<script src="../assets/site-config.js?v=7" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -39,7 +39,7 @@
     "@type": "WebPage",
     "@id": "https://runixcloud.io/blog/llm-gateway-guide"
   },
-  "image": "https://runixcloud.io/assets/og-cover.png?v=8",
+  "image": "https://runixcloud.io/assets/og-cover.png?v=9",
   "author": {
     "@id": "https://runixcloud.io/#org"
   },
@@ -166,6 +166,7 @@
 <h2>The checklist</h2>
 <p>Condensed into a table you can take into vendor calls:</p>
 
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table>
   <tr><th>Criterion</th><th>What to verify</th></tr>
   <tr><td>API compatibility</td><td>OpenAI-format drop-in; streaming chunks and tool calls tested end to end</td></tr>
@@ -176,6 +177,7 @@
   <tr><td>Security</td><td>Encrypted key custody, configurable retention, no training on your data</td></tr>
   <tr><td>Operations</td><td>Honest managed vs self-hosted cost, 99.9%+ uptime target, status page</td></tr>
 </table>
+</div>
 
 <p>Nothing on this list is unusual — it is the same bar you would set for any load balancer or API proxy in your critical path. The teams that get burned are the ones that evaluated the gateway as an AI product instead of as infrastructure. We build the Runix gateway against this exact list; if you want to compare notes on your evaluation, <a href="/about#contact">get in touch</a>.</p>
 
@@ -186,6 +188,7 @@
 <aside class="related">
   <h2>Related reading</h2>
   <ul>
+    <li><a href="/blog/model-deprecation-without-a-redeploy">Your model id has an expiry date</a></li>
   <li><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></li>
   <li><a href="/blog/build-vs-buy-llm-gateway">Build or Buy an LLM Gateway: An Honest Comparison</a></li>
   <li><a href="/blog/openrouter-alternatives">OpenRouter Alternatives: A Buyer's Checklist</a></li>

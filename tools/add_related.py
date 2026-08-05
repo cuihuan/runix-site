@@ -42,6 +42,8 @@ RELATED = {
     "llm-cost-control": (["prompt-caching-explained", "llm-cost-attribution", "llm-rate-limits"], "/pricing"),
     "llm-cost-attribution": (["llm-cost-control", "llm-observability", "llm-api-key-management"], "/pricing"),
     "prompt-caching-explained": (["llm-cost-control", "llm-cost-attribution", "llm-gateway-guide"], "/pricing"),
+    # model lifecycle
+    "model-deprecation-without-a-redeploy": (["llm-gateway-guide", "what-is-an-llm-gateway", "build-vs-buy-llm-gateway"], "/router"),
     # operations
     "llm-observability": (["llm-cost-attribution", "llm-api-key-management", "model-failover"], "/router"),
     "llm-api-key-management": (["llm-observability", "llm-cost-attribution", "ai-vendor-data-questions"], "/router"),

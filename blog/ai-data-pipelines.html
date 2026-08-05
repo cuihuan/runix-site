@@ -18,17 +18,17 @@
 <meta property="og:description" content="A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=8">
+<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png?v=9">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=8">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png?v=9">
 <meta property="og:url" content="https://runixcloud.io/blog/ai-data-pipelines">
 <link rel="canonical" href="https://runixcloud.io/blog/ai-data-pipelines">
-<link rel="icon" href="../assets/favicon.svg?v=7" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.svg?v=8" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=9">
-<script src="../assets/site-config.js?v=6" defer></script>
+<link rel="stylesheet" href="../assets/style.css?v=10">
+<script src="../assets/site-config.js?v=7" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -39,7 +39,7 @@
     "@type": "WebPage",
     "@id": "https://runixcloud.io/blog/ai-data-pipelines"
   },
-  "image": "https://runixcloud.io/assets/og-cover.png?v=8",
+  "image": "https://runixcloud.io/assets/og-cover.png?v=9",
   "author": {
     "@id": "https://runixcloud.io/#org"
   },
@@ -160,6 +160,7 @@
 <p>The pragmatic answer for most teams is both: incremental for freshness, plus a periodic full batch rebuild to flush out drift and apply accumulated fixes. Start batch-only; add the incremental path when latency requirements force it, not before.</p>
 
 <h2>Summary</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table>
 <tr><th>Stage</th><th>Goal</th><th>Common tooling approach</th></tr>
 <tr><td>Ingestion</td><td>Uniform UTF-8 records from any source</td><td>Format-specific parsers, charset detection, JSONL output</td></tr>
@@ -170,6 +171,7 @@
 <tr><td>Quality scoring</td><td>Only good records enter the dataset</td><td>Threshold scores, quarantine with reason codes</td></tr>
 <tr><td>Orchestration</td><td>Fresh and reproducible data</td><td>Incremental runs + periodic full batch rebuilds</td></tr>
 </table>
+</div>
 <p>There is no magic in any of these stages. What separates working pipelines from science projects is treating each one as a real component — versioned, monitored, and allowed to say no to bad data. If you would rather not build all seven yourself, our managed data pipelines cover this stack end to end; <a href="/about#contact">get in touch</a>.</p>
 
   <div class="notice">

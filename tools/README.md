@@ -36,6 +36,31 @@ Certificates were 77-87 days out when this was written; the check is there
 because a lapsed certificate takes everything down and gives a month of
 warning nobody is watching for.
 
+## Product sub-sites (five live subdomains)
+
+`build_subsites.py <outdir>` rebuilds the four product landing pages as
+standalone sites. They are **not** covered by `deploy.sh` — refreshing them is
+a separate step that is easy to forget, and they were three days stale while
+the main site changed all night.
+
+    python3 tools/build_subsites.py /tmp/subsites
+    for s in gateway comic code data; do
+      npx wrangler@4 pages deploy /tmp/subsites/subsite-$s \
+        --project-name=runix-$s --branch=main --commit-dirty=true
+    done
+
+| Project | Domains |
+|---|---|
+| `runix-gateway` | gateway.runixcloud.io, **router.runixcloud.io** (one project, two domains) |
+| `runix-comic` | comic.runixcloud.io |
+| `runix-code` | code.runixcloud.io |
+| `runix-data` | data.runixcloud.io |
+
+Each is one page whose canonical points at the main site, so they never compete
+with it in search. The builder exits non-zero if any internal link is left
+pointing at the subdomain — which is what caught it after the main site moved
+to clean URLs and every rewrite pattern silently stopped matching.
+
 ## Run by hand, regularly
 
 | Tool | When | Why |

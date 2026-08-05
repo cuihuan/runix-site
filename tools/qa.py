@@ -151,6 +151,20 @@ for page in PAGES + DRAFTS:
         if 'alt=' not in img:
             fail(page, "img without alt")
 
+# --- every address the site asks people to write to must exist ------------
+# The whole funnel is "email us". An address in a CTA that has no routing rule
+# drops customer mail silently, which is the most expensive failure this site
+# can have and the one nobody would notice. Verified 2026-08-06 against the
+# zone's Cloudflare Email Routing rules: each of these has an enabled rule, and
+# a catch-all exists behind them. Adding an address here without adding the
+# rule is the mistake this guards against.
+ROUTED = {"contact", "sales", "support", "billing", "hello", "cuihuan"}
+for page in PAGES:
+    for addr in set(re.findall(r"mailto:([a-z0-9._%-]+)@runixcloud\.io", open(page).read(), re.I)):
+        if addr.lower() not in ROUTED:
+            fail(page, f"mailto:{addr}@runixcloud.io has no known routing rule — "
+                       f"mail to it would be dropped")
+
 # --- structured data must match what the page says ------------------------
 # FAQPage markup that answers a question differently from the visible copy is
 # worse than none: it is what an assistant quotes, and nobody proofreads it.

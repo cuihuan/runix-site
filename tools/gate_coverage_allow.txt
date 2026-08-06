@@ -1,0 +1,10 @@
+# Checks known to be unreachable, with the reason. Anything not listed here
+# fails the deploy -- the point is to separate "dead and explained" from "dead
+# and nobody noticed".
+#
+# Format: <script basename>:<text that appears in the reporting line>
+#
+# The site has no <img> at all; every graphic is inline SVG. Both of these
+# start working the day an image is added, which is the day they are needed.
+qa.py:img without alt
+perf_check.py:<img> without width/height

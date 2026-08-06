@@ -37,6 +37,12 @@ python3 "$SRC/tools/update_lastmod.py" --write
 echo "==> Code samples fit their container"
 python3 tools/code_overflow.py || { echo "    a code sample is cut off"; exit 1; }
 
+echo "==> Every check can still be reached"
+# A gate whose condition is never evaluated reports a clean run forever. Five
+# written tonight were in that state. Costs a quarter of a second.
+python3 tools/gate_coverage.py tools/qa.py || { echo "    an unexplained dead check"; exit 1; }
+python3 tools/gate_coverage.py tools/perf_check.py || { echo "    an unexplained dead check"; exit 1; }
+
 echo "==> Pre-deploy checks"
 # Source-level checks are cheap, so everything gets them.
 python3 "$SRC/tools/qa.py" || { echo "qa.py failed — not deploying." >&2; exit 1; }

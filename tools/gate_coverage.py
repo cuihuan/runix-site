@@ -25,7 +25,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-TARGET = os.path.abspath("tools/qa.py")
+# Any of the check scripts can be measured; qa.py is the default because it
+# holds most of the fail points.
+TARGET = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "tools/qa.py")
+REPORTERS = {"fail", "problem"}
 
 
 def guards(tree):
@@ -37,8 +40,16 @@ def guards(tree):
             g = guard
             if isinstance(child, ast.If):
                 g = child.lineno
-            if (isinstance(child, ast.Call) and isinstance(child.func, ast.Name)
-                    and child.func.id == "fail"):
+            _is_fail = (isinstance(child, ast.Call) and isinstance(child.func, ast.Name)
+                        and child.func.id in REPORTERS)
+            # perf_check and visual_qa collect into a list instead of calling a
+            # helper, so problems.append(...) is the same thing by another name.
+            _is_append = (isinstance(child, ast.Call)
+                          and isinstance(child.func, ast.Attribute)
+                          and child.func.attr == "append"
+                          and isinstance(child.func.value, ast.Name)
+                          and child.func.value.id in ("problems", "issues", "notes"))
+            if _is_fail or _is_append:
                 out[child.lineno] = guard
             walk(child, g)
 
@@ -58,11 +69,11 @@ def main():
         return tracer
 
     argv, out = sys.argv[:], sys.stdout
-    sys.argv = ["qa.py"]
+    sys.argv = [os.path.basename(TARGET)] + (["index.html"] if "perf" in TARGET else [])
     sys.stdout = open(os.devnull, "w")
     sys.settrace(tracer)
     try:
-        runpy.run_path(TARGET, run_name="__qa_traced__")
+        runpy.run_path(TARGET, run_name="__traced__")
     except SystemExit:
         pass
     finally:
@@ -70,19 +81,31 @@ def main():
         sys.stdout.close()
         sys.stdout, sys.argv = out, argv
 
+    allow = []
+    _af = pathlib.Path("tools/gate_coverage_allow.txt")
+    if _af.exists():
+        allow = [l.split(":", 1) for l in _af.read_text().split("\n")
+                 if l.strip() and not l.startswith("#") and ":" in l]
+
     lines = src.split("\n")
-    dead = []
+    dead, excused = [], []
     for fail_line, guard_line in sorted(fails.items()):
         if guard_line is None:
             continue
         if guard_line not in seen:
             msg = lines[fail_line - 1].strip()[:74]
-            dead.append((guard_line, fail_line, msg))
+            _name = os.path.basename(TARGET)
+            if any(a[0].strip() == _name and a[1].strip() in lines[fail_line - 1]
+                   for a in allow):
+                excused.append((fail_line, msg))
+            else:
+                dead.append((guard_line, fail_line, msg))
 
-    print(f"  {len(fails)} fail point(s); {len(fails) - len(dead)} had their "
-          f"condition evaluated against the current site")
+    print(f"  {len(fails)} fail point(s); "
+          f"{len(fails) - len(dead) - len(excused)} evaluated, "
+          f"{len(excused)} unreachable but accounted for, {len(dead)} unexplained")
     for guard_line, fail_line, msg in dead:
-        print(f"  ✗ qa.py:{fail_line} never reached (guard at line {guard_line})")
+        print(f"  ✗ {os.path.basename(TARGET)}:{fail_line} never reached (guard at line {guard_line})")
         print(f"      {msg}")
     return 1 if dead else 0
 

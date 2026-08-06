@@ -161,6 +161,10 @@ for page in pages:
         if not (has_attrs or has_ratio):
             problems.append(f"{page}: <img> without width/height or aspect-ratio "
                             f"reserves no space until it loads — {img[:70]}")
+# NOTE: the site has no <img> at all -- every graphic is inline SVG -- so this
+# loop has nothing to iterate and tools/gate_coverage.py reports it as never
+# reached. Dead by absence, not defect: it starts working the day an image is
+# added, which is the day it is needed. qa.py's alt-text check is the same.
 
 print(f"{'page':<34}{'total':>9}{'reqs':>6}{'LCP':>8}{'CLS':>7}  LCP element")
 for p, r in rows:

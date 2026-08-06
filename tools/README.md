@@ -74,7 +74,7 @@ to clean URLs and every rewrite pattern silently stopped matching.
 
 | Tool | What it does |
 |---|---|
-| `gate_coverage.py` | Traces `qa.py` and reports any check whose condition is never evaluated against the current site. Five gates written tonight could not fire when first written and every one reported a clean run; hand-falsification catches that for new gates, this is the net for the ones already in the file. Reaching a condition is not the same as being able to fail it, so this narrows where to look — it does not replace injection. |
+| `gate_coverage.py` (also on every deploy) | Traces a check script (`qa.py` by default, any script as an argument) and reports any check whose condition is never evaluated against the current site. Five gates written tonight could not fire when first written and every one reported a clean run; hand-falsification catches that for new gates, this is the net for the ones already in the file. Unreachable checks that are dead by absence rather than defect go in `gate_coverage_allow.txt` with the reason; anything else fails the deploy. Reaching a condition is not the same as being able to fail it, so this narrows where to look — it does not replace injection. |
 
 
 | Tool | When | Why |

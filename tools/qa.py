@@ -656,6 +656,21 @@ for page in PAGES:
             break
         _prev = _lv
 
+# --- the skip link must not skip the page's title --------------------------
+# "Skip to content" targets #main. On fifteen pages the hero sat between
+# </header> and <main>, so the feature built for keyboard and screen-reader
+# users skipped the h1, the opening description and every button, landing in
+# the second section. On /router it skipped "One compliant endpoint for every
+# model" entirely. Also why five checks tonight had a <main>-shaped blind spot.
+for page in PAGES:
+    doc = open(page).read()
+    _m, _e, _h = doc.find("<main"), doc.find("</main>"), doc.find("<h1")
+    if _h < 0:
+        continue
+    if not (_m >= 0 and _m < _h < _e):
+        fail(page, "the h1 is outside <main>, so “skip to content” skips the "
+                   "title of the page")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

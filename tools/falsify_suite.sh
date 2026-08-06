@@ -90,6 +90,11 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+try "skip link that skips the page title" \
+    router.html '</header>
+<main id="main">' '</header>' \
+    "skips the title of the page"
+
 try "a gap in the heading outline" \
     docs/router.html '<h2 id=' '<h4 id=' \
     "heading outline jumps"

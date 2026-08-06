@@ -444,6 +444,59 @@ if _m:
                 if _WORD[_w.lower()] != _real:
                     fail(page, f"says “{_w} stages” but /pipeline lists {_real}")
 
+# --- counted claims are derived, not typed --------------------------------
+# The pipeline stage count above is one instance of a class: a number stated in
+# prose on several pages, with the thing being counted living on one page. Two
+# of tonight's defects were this shape, and the second was residue from fixing
+# the first. Each entry below sources its number from the page that actually
+# lists the items.
+_COUNTED = [
+    # (source page, section heading pattern, item tag, prose pattern, label)
+    # The item tag differs per page -- /pipeline uses <h3> per stage, the comic
+    # guide uses <li>. Getting it wrong produces a section with zero items,
+    # which is now an error rather than a skip, so a mis-pointed check announces
+    # itself instead of passing.
+    # The stages are listed in the docs guide, not on the product page. The
+    # first version of this pointed at comic.html, which has no stages section,
+    # so the gate silently did nothing -- it reported clean because it never
+    # ran. A source page that does not match must be an error, not a skip;
+    # see the assertion below.
+    ("docs/comic.html", r"<h2[^>]*>[^<]*stages[^<]*</h2>", "li",
+     r"\b(" + "|".join(_WORD) + r")\s+production\s+stages\b", "production stages"),
+]
+for _src, _sec, _tag, _prose, _label in _COUNTED:
+    if not os.path.isfile(_src):
+        continue
+    _m = re.search(_sec + r"(.*?)(?=<h2|</section>)", open(_src).read(), re.S | re.I)
+    if not _m:
+        fail(_src, f"is the source of truth for {_label} but has no section "
+                   f"matching it -- this check would silently do nothing")
+        continue
+    _real = len(re.findall(rf"<{_tag}\b", _m.group(1)))
+    if not _real:
+        fail(_src, f"has a {_label} section with no items -- this check would "
+                   f"silently do nothing")
+        continue
+    for page in PAGES + ["llms.txt"]:
+        if not os.path.isfile(page):
+            continue
+        for _w in re.findall(_prose, open(page).read(), re.I):
+            if _WORD[_w.lower()] != _real:
+                fail(page, f"says “{_w} {_label}” but {_src} lists {_real}")
+
+# --- the products the site claims to have are the products it has ----------
+# "four products" appears in prose; the products themselves are pages. If one
+# ships or is dropped, the sentence is the thing that gets forgotten.
+_PRODUCT_PAGES = [f for f in ("router.html", "pipeline.html", "code.html", "comic.html")
+                  if os.path.isfile(f)]
+for page in PAGES + ["llms.txt"]:
+    if not os.path.isfile(page):
+        continue
+    for _w in re.findall(r"\b(" + "|".join(_WORD) + r")\s+products\b", open(page).read(), re.I):
+        if _WORD[_w.lower()] != len(_PRODUCT_PAGES):
+            fail(page, f"says “{_w} products” but the site has "
+                       f"{len(_PRODUCT_PAGES)} product pages")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

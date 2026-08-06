@@ -118,6 +118,7 @@ research behind it.
 `wrap_tables.py` · `write_compat_post.py` · `write_deprecation_post.py` ·
 `write_migration_post.py` · `write_regression_post.py` · `write_timeout_post.py` · `write_launch_checklist_post.py` · `write_dataflow_post.py` ·
 `write_oss_risk_draft.py` · `build_subsites.py` · `add_crosslinks.py` ·
+`add_lookup_toc.py` · `main_wraps_hero.py` ·
 `add_related.py`
 
 Each is idempotent and prints "nothing to do" on a second run. Read the

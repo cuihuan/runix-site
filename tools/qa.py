@@ -150,6 +150,11 @@ for page in PAGES + DRAFTS:
     for img in re.findall(r"<img\b[^>]*>", html):
         if 'alt=' not in img:
             fail(page, "img without alt")
+# NOTE: the site currently has no <img> at all -- every graphic is inline SVG --
+# so the loop above has nothing to iterate and tools/gate_coverage.py reports
+# this check as never reached. That is dead by absence, not by defect: it will
+# start running the moment an image is added, which is exactly when it is
+# needed. Left in deliberately.
 
 # --- a stated count must match what is on the page ------------------------
 # /pipeline said "Six stages" and showed six cards while /docs/pipeline,
@@ -430,7 +435,13 @@ for page in PAGES:
 # llms.txt said five (with a stale #the-five-stages anchor), and after that was
 # fixed /about was still saying five. Derive the number from the page that
 # actually lists them and make every prose claim agree.
-_WORD = {"four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+# "two" and "three" were missing, and the comic guide says "three
+# production stages" -- so the check was blind to the only value the site
+# actually uses. Falsifying it by hand did not reveal that, because the
+# value I injected happened to be one of the words that was present.
+# tools/gate_coverage.py found it: the condition was never evaluated.
+_WORD = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+         "seven": 7, "eight": 8}
 _pipe = open("pipeline.html").read() if os.path.isfile("pipeline.html") else ""
 _m = re.search(r"<h2[^>]*>[^<]*stages[^<]*</h2>(.*?)(?=<h2|</section>)", _pipe, re.S | re.I)
 if _m:
@@ -440,7 +451,19 @@ if _m:
             if not os.path.isfile(page):
                 continue
             _txt = open(page).read()
-            for _w in re.findall(r"\b(" + "|".join(_WORD) + r")\s+(?:pipeline\s+)?stages\b", _txt, re.I):
+            # "The three stages" on the comic guide is the comic's stages, not
+            # Pipeline's. A bare "the N stages" only means Pipeline on a page
+            # about Pipeline; anywhere else the claim has to name it, which the
+            # optional "pipeline" in the pattern already requires.
+            if "pipeline" not in page.lower() and page != "llms.txt":
+                _txt = "\n".join(l for l in _txt.split("\n") if "pipeline" in l.lower())
+# A count claim is "the six stages", not any sentence containing a number and
+# the word stages. Widening the number map surfaced two false positives that
+# say exactly why: "The last two stages above are what you receive" counts a
+# subset, and "a confusing bug three stages later" is a distance. Requiring the
+# number to sit directly after "the" excludes both -- "the last two" puts a word
+# in between, and "bug three stages later" has no article at all.
+            for _w in re.findall(r"\bthe\s+(" + "|".join(_WORD) + r")\s+(?:pipeline\s+)?stages\b", _txt, re.I):
                 if _WORD[_w.lower()] != _real:
                     fail(page, f"says “{_w} stages” but /pipeline lists {_real}")
 
@@ -462,7 +485,7 @@ _COUNTED = [
     # ran. A source page that does not match must be an error, not a skip;
     # see the assertion below.
     ("docs/comic.html", r"<h2[^>]*>[^<]*stages[^<]*</h2>", "li",
-     r"\b(" + "|".join(_WORD) + r")\s+production\s+stages\b", "production stages"),
+     r"\bthe\s+(" + "|".join(_WORD) + r")\s+production\s+stages\b", "production stages"),
 ]
 for _src, _sec, _tag, _prose, _label in _COUNTED:
     if not os.path.isfile(_src):

@@ -72,6 +72,11 @@ to clean URLs and every rewrite pattern silently stopped matching.
 
 ## Run by hand, regularly
 
+| Tool | What it does |
+|---|---|
+| `gate_coverage.py` | Traces `qa.py` and reports any check whose condition is never evaluated against the current site. Five gates written tonight could not fire when first written and every one reported a clean run; hand-falsification catches that for new gates, this is the net for the ones already in the file. Reaching a condition is not the same as being able to fail it, so this narrows where to look — it does not replace injection. |
+
+
 | Tool | When | Why |
 |---|---|---|
 | `visual_qa.py` (no args) | after any change to tokens or layout | the 6-page deploy sample is a smoke test, not coverage |

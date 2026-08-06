@@ -37,6 +37,9 @@ python3 "$SRC/tools/update_lastmod.py" --write
 echo "==> Code samples fit their container"
 python3 tools/code_overflow.py || { echo "    a code sample is cut off"; exit 1; }
 
+echo "==> The site still works with scripts off"
+python3 tools/nojs_check.py || { echo "    the no-script nav fallback is broken"; exit 1; }
+
 echo "==> Every check can still be reached"
 # A gate whose condition is never evaluated reports a clean run forever. Five
 # written tonight were in that state. Costs a quarter of a second.

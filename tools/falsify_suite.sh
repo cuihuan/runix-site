@@ -90,6 +90,16 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+QA_SAVE=$QA
+QA="python3 tools/nojs_check.py"
+try "no-script nav fallback removed" \
+    index.html '<noscript><style>' '<noscript><style-disabled>' \
+    "no <noscript> nav fallback"
+try "no-script fallback that reveals nothing" \
+    index.html '.nav-links{display:flex!important' '.nav-links{display:none!important' \
+    "nav link(s) visible"
+QA=$QA_SAVE
+
 echo
 echo "  $pass gate(s) proved, $fail unproved"
 [ "$fail" -eq 0 ]

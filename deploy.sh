@@ -46,6 +46,9 @@ echo "==> The markup actually parses"
 # damage. A parser sees what a pattern cannot.
 python3 tools/html_structure.py || { echo "    the markup is structurally broken"; exit 1; }
 
+echo "==> The pages run without errors"
+python3 tools/console_check.py || { echo "    a page throws in the browser"; exit 1; }
+
 echo "==> Every check can still be reached"
 # A gate whose condition is never evaluated reports a clean run forever. Five
 # written tonight were in that state. Costs a quarter of a second.

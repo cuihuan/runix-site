@@ -168,8 +168,8 @@
 <p>Condensed into a table you can take into vendor calls:</p>
 
 <div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
-<table>
-  <tr><th>Criterion</th><th>What to verify</th></tr>
+<table aria-label="Gateway evaluation checklist: each criterion and what to verify">
+  <tr><th scope="col">Criterion</th><th scope="col">What to verify</th></tr>
   <tr><td>API compatibility</td><td>OpenAI-format drop-in; streaming chunks and tool calls tested end to end</td></tr>
   <tr><td>Routing &amp; failover</td><td>Health-based routing, per-model fallback chains, defined mid-stream behavior</td></tr>
   <tr><td>Rate limits</td><td>Per-key RPM and TPM, fair queuing, live limit updates</td></tr>

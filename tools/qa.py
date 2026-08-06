@@ -714,6 +714,44 @@ for page in PAGES:
         if _n != 1:
             fail(page, f"{_n} <{_tag}> element(s) -- there must be exactly one")
 
+# --- no attribute value carries a literal backslash -------------------------
+# A replacement string written as r'scope=\"col\"' puts real backslashes into
+# the markup, which a browser parses as a malformed attribute. That shipped to
+# four pages tonight and every source-level check passed, because they grep for
+# `scope=` and that still matched. The falsification harness caught it by
+# reporting that the string it was told to edit did not exist.
+for page in PAGES:
+    doc = open(page).read()
+    for _t in re.findall(r"<[a-zA-Z][^>]*>", doc):
+        if '=\\"' in _t:
+            fail(page, f"an attribute value has a literal backslash: "
+                       f"{_t[:60]}")
+            break
+
+# --- a table's header cells say which way they head -------------------------
+# Without scope, a screen reader cannot associate a cell with its column, so a
+# row is read as a list of values with no idea what any of them mean. All four
+# tables on the site shipped without it, and without a name.
+#
+# The name is an aria-label rather than a visible <caption>: every one of these
+# tables already has a sentence introducing it, so a caption would repeat it on
+# screen. A caption also renders inside the table's border, which read as an
+# extra header row when tried.
+for page in PAGES:
+    doc = open(page).read()
+    for _t in re.findall(r"<table\b.*?</table>", doc, re.S):
+        _open = re.match(r"<table\b[^>]*>", _t).group(0)
+        _ths = re.findall(r"<th\b([^>]*)>", _t)
+        if not _ths:
+            fail(page, "a table with no header cells")
+            continue
+        _bare = [h for h in _ths if "scope=" not in h]
+        if _bare:
+            fail(page, f"{len(_bare)} of {len(_ths)} header cell(s) have no "
+                       f"scope -- a row reads as values with no headings")
+        if "aria-label" not in _open and "<caption" not in _t:
+            fail(page, "a table with no accessible name")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

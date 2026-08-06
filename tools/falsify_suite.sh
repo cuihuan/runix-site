@@ -90,6 +90,12 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+try "header cells without scope" \
+    privacy.html ' scope="col"' '' "have no scope"
+
+try "an attribute value with a literal backslash" \
+    privacy.html '<th scope="col">' '<th scope=\"col\">' "literal backslash"
+
 try "an unnamed complementary landmark" \
     blog/llm-observability.html '<aside class="related" aria-labelledby="related-reading">' \
     '<aside class="related">' "no name"

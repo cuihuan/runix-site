@@ -162,8 +162,8 @@
 
 <h2>Summary</h2>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
-<table>
-<tr><th>Stage</th><th>Goal</th><th>Common tooling approach</th></tr>
+<table aria-label="Pipeline stages, their goal, and the usual tooling approach">
+<tr><th scope="col">Stage</th><th scope="col">Goal</th><th scope="col">Common tooling approach</th></tr>
 <tr><td>Ingestion</td><td>Uniform UTF-8 records from any source</td><td>Format-specific parsers, charset detection, JSONL output</td></tr>
 <tr><td>Cleaning</td><td>Deterministic, normalized text</td><td>Boilerplate strippers, ftfy-style repair, canonical formats</td></tr>
 <tr><td>Deduplication</td><td>One copy of each idea</td><td>SHA-256, MinHash/LSH, embedding ANN (by scale)</td></tr>

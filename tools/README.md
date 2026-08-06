@@ -16,7 +16,7 @@ difference matters, so they are separated below.
 |---|---|---|
 | `update_lastmod.py --write` | Bumps sitemap `lastmod` only for pages whose *content* hash changed. Never on an asset-version bump. | no |
 | `qa.py` | Source-level checks: structure, meta, JSON-LD validity and FAQ/visible-copy agreement, link and anchor resolution, nav consistency, sitemap coverage, forbidden claims, mailto routing, product-status consistency, description length. | **yes** |
-| `visual_qa.py` (6-page sample) | Renders in Chrome at 375/768/1440 — overflow, sub-12px text, target size, anchors under the sticky header, WCAG AA contrast, link distinguishability. | **yes** |
+| `visual_qa.py` (6-page sample) | Renders in Chrome at 375/768/1440 — overflow, sub-12px text, target size, anchors under the sticky header, WCAG AA contrast, link distinguishability. Also counts how many elements each selector-based detector examined and fails if any examined none: a detector that matches nothing reports nothing and reads as coverage. | **yes** |
 | `perf_check.py index.html` | Page weight, request count, LCP, and images without reserved space. | **yes** |
 | `make_og.py` | Renders each page's own 1200x630 social card in Chrome, only for cards whose text changed. Measures every card's layout in one batch run first and refuses to ship a set where every card measures identically. | **yes** |
 | `point_og.py` | Rewrites `og:image`/`twitter:image` to that card, versioned by the card's content hash. | **yes** |

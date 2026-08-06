@@ -40,7 +40,11 @@ WIDTHS = [(375, "phone"), (768, "tablet"), (1440, "desktop")]
 
 PROBE = r"""
 <script>window.addEventListener('load',function(){setTimeout(function(){
-  var out = {overflow:null, wide:[], tiny:[], small_targets:[], covered:[], vw:0};
+  var out = {overflow:null, wide:[], tiny:[], small_targets:[], covered:[], vw:0,
+  // How many elements each selector-based detector actually looked at. A
+  // detector that examines nothing can never report anything, and reads as
+  // coverage -- see tools/gate_coverage.py for the same idea in qa.py.
+  seen: {controls:0, contentlinks:0, anchors:0}};
   out.vw = document.documentElement.clientWidth;
   var vw = document.documentElement.clientWidth;
 
@@ -87,6 +91,7 @@ PROBE = r"""
   // WCAG 2.2 2.5.8 minimum target size, applied to real controls rather than
   // inline prose links (which the spec exempts).
   var controls = document.querySelectorAll('.btn, .nav-links a, button, .copy-btn');
+      out.seen.controls += controls.length;
   for (var j = 0; j < controls.length; j++) {
     var c = controls[j], cr = c.getBoundingClientRect();
     if (cr.width === 0 || cr.height === 0) continue;
@@ -167,6 +172,7 @@ PROBE = r"""
   // colour, in practice a de-emphasis. Underlined links are exempt.
   out.dimlinks = [];
   var content = document.querySelectorAll('main a[href^="/"], main a[href^="http"]');
+      out.seen.contentlinks += content.length;
   for (var q = 0; q < content.length; q++) {
     var a = content[q];
     if (a.closest('nav') || a.closest('footer') || a.classList.contains('btn')) continue;
@@ -197,6 +203,7 @@ PROBE = r"""
   if (hdr) {
     var hh = hdr.getBoundingClientRect().height;
     var targets = document.querySelectorAll('h1[id], h2[id], h3[id]');
+        out.seen.anchors += targets.length;
     for (var k = 0; k < targets.length; k++) {
       var sm = parseFloat(getComputedStyle(targets[k]).scrollMarginTop) || 0;
       if (sm < hh && out.covered.length < 4)
@@ -262,6 +269,7 @@ httpd = serve()
 time.sleep(0.6)
 
 problems = []
+examined = {}
 try:
     for page in pages:
         for width, name in WIDTHS:
@@ -285,10 +293,25 @@ try:
                 problems.append(f"{page} @{name}: contrast — {c}")
             for c in r["covered"]:
                 problems.append(f"{page} @{name}: anchor lands under header — {c}")
+            for _k, _v in (r.get("seen") or {}).items():
+                examined[_k] = examined.get(_k, 0) + _v
 finally:
     httpd.shutdown()
 
 print(f"rendered {len(pages)} page(s) x {len(WIDTHS)} widths")
+
+# A detector whose selector matches nothing cannot report anything, and a run
+# with zero findings then reads as coverage it does not have. qa.py has the same
+# failure mode; tools/gate_coverage.py finds it there by tracing. Here the
+# detectors live in the browser, so the probe counts what each one looked at.
+_dead = [k for k, v in sorted(examined.items()) if v == 0]
+if _dead:
+    print("  ! detector(s) examined nothing, so they cannot report: "
+          + ", ".join(_dead))
+    problems.append("a detector examined no elements: " + ", ".join(_dead))
+else:
+    print("  detectors examined: "
+          + ", ".join(f"{k}={v}" for k, v in sorted(examined.items())))
 if problems:
     seen, unique = set(), []
     for p in problems:

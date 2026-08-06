@@ -393,6 +393,37 @@ for _sel, _body in re.findall(r"([^{}]+)\{([^}]*)\}", _css_flat):
              f"“{_sel}” rules every row including the last, leaving a hairline "
              f"under nothing -- add a :last-child reset")
 
+# --- a hero CTA does not repeat a link already on the same screen ----------
+# /router's hero offered four buttons, and the fourth pointed at exactly the
+# URL the global "Sign in" in the header points at -- the same destination
+# twice on one screen, four hundred pixels apart. Four equal-weight choices in
+# a hero means no clear next step; one of them being a duplicate makes that
+# worse for nothing. The check is deliberately narrow: same href as a header
+# link, not merely similar intent. "See how billing works" also resolves to
+# /pricing, but it answers a question a prospect actually has and reads
+# nothing like the nav item, so it is not the same defect.
+for page in PAGES:
+    doc = open(page).read()
+    _head = doc[:doc.find("</header>")] if "</header>" in doc else ""
+    _nav_hrefs = set(re.findall(r'<a\b[^>]*href="([^"#]+)"', _head))
+    # The hero is <section class="hero"> on the home page and
+    # <div class="page-hero"> on every product page. The first version of this
+    # check only matched the former, so it never ran on the page whose defect
+    # motivated it -- the gate reported clean while the duplicate was still
+    # there. Match the actual container, and take the button block inside it.
+    _hero = re.search(r'<(section|div) class="[^"]*\b(?:page-)?hero\b[^"]*".*?</\1>', doc, re.S)
+    if not _hero or not _nav_hrefs:
+        continue
+    # Match the whole anchor, not just its opening tag. The first version
+    # tested the label against the opening tag, where the label is not -- so
+    # the condition was always false and the gate could never fire.
+    for _a in re.findall(r'<a\b[^>]*class="[^"]*\bbtn\b[^"]*"[^>]*>.*?</a>',
+                         _hero.group(0), re.S):
+        _h = re.search(r'href="([^"#]+)"', _a)
+        if _h and _h.group(1) in _nav_hrefs and "sign in" in _a.lower():
+            fail(page, f"a hero button points at {_h.group(1)}, which the header "
+                       f"already links to on the same screen")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

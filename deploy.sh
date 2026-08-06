@@ -135,3 +135,11 @@ for path in /payments/money.js /package.json; do
 done
 
 [ "$fail" = "0" ] && echo "==> Deploy OK" || { echo "==> Deploy FAILED verification"; exit 1; }
+
+echo "==> Keep the product sub-domains in step"
+# They embed their own copy of assets/, so every stylesheet change here leaves
+# them behind. Re-deploying them was a separate command someone had to remember,
+# and it was missed twice -- five live domains served two-versions-old CSS.
+if ! ./tools/subsite_drift.sh; then
+  ./tools/deploy_subsites.sh || echo "    sub-domain re-deploy failed -- run tools/deploy_subsites.sh"
+fi

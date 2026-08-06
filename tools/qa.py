@@ -424,6 +424,26 @@ for page in PAGES:
             fail(page, f"a hero button points at {_h.group(1)}, which the header "
                        f"already links to on the same screen")
 
+# --- the pipeline stage count is one number, not a per-page opinion --------
+# /pipeline lists the stages; every other page states how many there are in
+# prose. That number diverged twice: the product page said six while docs and
+# llms.txt said five (with a stale #the-five-stages anchor), and after that was
+# fixed /about was still saying five. Derive the number from the page that
+# actually lists them and make every prose claim agree.
+_WORD = {"four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+_pipe = open("pipeline.html").read() if os.path.isfile("pipeline.html") else ""
+_m = re.search(r"<h2[^>]*>[^<]*stages[^<]*</h2>(.*?)(?=<h2|</section>)", _pipe, re.S | re.I)
+if _m:
+    _real = len(re.findall(r"<h3\b", _m.group(1)))
+    if _real:
+        for page in PAGES + ["llms.txt"]:
+            if not os.path.isfile(page):
+                continue
+            _txt = open(page).read()
+            for _w in re.findall(r"\b(" + "|".join(_WORD) + r")\s+(?:pipeline\s+)?stages\b", _txt, re.I):
+                if _WORD[_w.lower()] != _real:
+                    fail(page, f"says “{_w} stages” but /pipeline lists {_real}")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

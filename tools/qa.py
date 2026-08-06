@@ -552,6 +552,45 @@ for page in PAGES:
         if re.search(re.escape(_phrase), re.sub(r"<[^>]+>", " ", _vis), re.I):
             fail(page, f"names “{_phrase}” in prose without linking it to {_target}")
 
+# --- an article tells one story about when it was written ------------------
+# Three surfaces carry a date: the visible byline, Article.datePublished /
+# dateModified, and the sitemap's lastmod. Search engines read all three. They
+# are produced by different code -- the page template, fix_schema.py and
+# update_lastmod.py -- so nothing but a check keeps them agreeing.
+import datetime as _dt
+_MONTHS = ("January February March April May June July August September "
+           "October November December").split()
+_lastmod = dict(re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>",
+                           open("sitemap.xml").read())) if os.path.isfile("sitemap.xml") else {}
+for page in PAGES:
+    if not page.startswith("blog/") or page.endswith("index.html"):
+        continue
+    doc = open(page).read()
+    _art = None
+    for _m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', doc, re.S):
+        try:
+            _d = json.loads(_m.group(1))
+        except Exception:
+            continue
+        if isinstance(_d, dict) and _d.get("@type") == "Article":
+            _art = _d
+    if not _art:
+        fail(page, "a post with no Article schema")
+        continue
+    _dp, _dm = (_art.get("datePublished") or "")[:10], (_art.get("dateModified") or "")[:10]
+    if not _dm:
+        fail(page, "Article has no dateModified")
+    _vis = re.search(r"<span>((?:" + "|".join(_MONTHS) + r") \d+, \d{4})</span>", doc)
+    if _vis:
+        _visd = _dt.datetime.strptime(_vis.group(1), "%B %d, %Y").strftime("%Y-%m-%d")
+        if _dp and _dp != _visd:
+            fail(page, f"byline says {_visd} but Article.datePublished says {_dp}")
+    if _dm and _dp and _dm < _dp:
+        fail(page, f"dateModified {_dm} is before datePublished {_dp}")
+    _lm = _lastmod.get("https://runixcloud.io/" + page[:-5], "")[:10]
+    if _dm and _lm and _dm != _lm:
+        fail(page, f"Article.dateModified {_dm} but sitemap lastmod {_lm}")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

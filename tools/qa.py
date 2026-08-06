@@ -752,6 +752,28 @@ for page in PAGES:
         if "aria-label" not in _open and "<caption" not in _t:
             fail(page, "a table with no accessible name")
 
+# --- a relative asset path resolves from the URL, not the file ------------
+# Pages at the site root write assets/style.css, pages one level down write
+# ../assets/style.css, and 404.html writes /assets/style.css because it is
+# served from whatever path the visitor mistyped. Get the number of ../ wrong
+# and the page ships without styling, which no source-level check notices and
+# no test exercises -- the file exists, the reference is just pointing
+# somewhere else.
+#
+# Resolve each reference against the URL the page is published at, exactly as a
+# browser does, and require the result to be a file in this repository.
+import posixpath as _pp
+for page in PAGES:
+    doc = open(page).read()
+    _url = "/" + (page[:-5].replace("/index", "") if page != "index.html" else "")
+    _dir = _pp.dirname(_url) or "/"
+    for _ref in re.findall(r'(?:href|src)="((?!https?:|data:|mailto:|#)[^"]+\.(?:css|js|woff2|svg|png))(?:\?[^"]*)?"', doc):
+        _resolved = _ref if _ref.startswith("/") else _pp.normpath(_pp.join(_dir, _ref))
+        _local = _resolved.lstrip("/")
+        if not os.path.isfile(_local):
+            fail(page, f"asset “{_ref}” resolves to {_resolved} from {_url}, "
+                       f"which is not a file here")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

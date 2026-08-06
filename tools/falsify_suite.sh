@@ -102,6 +102,14 @@ try "a fragment link pointing nowhere" \
     docs/router.html 'href="#quickstart"' 'href="#does-not-exist"' "not an id"
 QA=$QA_SAVE0
 
+try "a relative asset path with the wrong depth" \
+    blog/llm-observability.html '../assets/style.css' 'assets/style.css' \
+    "is not a file here"
+
+try "an asset reference to a file that does not exist" \
+    router.html 'assets/site-config.js' 'assets/site-config-renamed.js' \
+    "is not a file here"
+
 try "header cells without scope" \
     privacy.html ' scope="col"' '' "have no scope"
 

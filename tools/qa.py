@@ -671,6 +671,49 @@ for page in PAGES:
         fail(page, "the h1 is outside <main>, so “skip to content” skips the "
                    "title of the page")
 
+# --- every landmark has a name if there is more than one of its kind -------
+# An <aside> is a complementary landmark. Twenty-five posts had one with no
+# name, so a screen-reader user navigating by landmark reached a region
+# announced only as "complementary". Each already had a "Related reading"
+# heading; pointing at it names the landmark without duplicating the string.
+# The same applies to a second <nav> on a page.
+for page in PAGES:
+    doc = open(page).read()
+    for _tag in re.findall(r"<aside\b[^>]*>", doc):
+        if "aria-label" not in _tag:
+            fail(page, "an <aside> with no name -- it announces only as "
+                       "“complementary”")
+    # Every <nav> needs a name, and two on a page must not share one -- a
+    # screen reader lists them by name and cannot tell apart two called the
+    # same thing. Four docs pages carry three navs each.
+    #
+    # Both labelling mechanisms count. A first version of this collected only
+    # aria-label and read the docs pages' aria-labelledby navs as unnamed,
+    # reporting a defect that was not there; they are named "On this page" and
+    # "More documentation" via the headings they already show.
+    _nav_names = []
+    for _n in re.findall(r"<nav\b[^>]*>", doc):
+        _l = re.search(r'aria-label="([^"]+)"', _n)
+        if _l:
+            _nav_names.append(_l.group(1))
+            continue
+        _lb = re.search(r'aria-labelledby="([^"]+)"', _n)
+        if _lb:
+            _t = re.search(rf'id="{re.escape(_lb.group(1))}"[^>]*>([^<]*)<', doc)
+            _nav_names.append(_t.group(1).strip() if _t else f"#{_lb.group(1)}")
+            if not _t:
+                fail(page, f"a nav is labelled by #{_lb.group(1)}, which does "
+                           f"not exist on the page")
+            continue
+        fail(page, "a navigation landmark with no name")
+    if len(_nav_names) != len(set(_nav_names)):
+        _dup = [n for n in _nav_names if _nav_names.count(n) > 1][0]
+        fail(page, f"two navigation landmarks share the name “{_dup}”")
+    for _tag, _n in (("main", doc.count("<main")), ("header", doc.count("<header")),
+                     ("footer", doc.count("<footer"))):
+        if _n != 1:
+            fail(page, f"{_n} <{_tag}> element(s) -- there must be exactly one")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

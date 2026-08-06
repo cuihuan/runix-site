@@ -90,6 +90,14 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+try "an unnamed complementary landmark" \
+    blog/llm-observability.html '<aside class="related" aria-labelledby="related-reading">' \
+    '<aside class="related">' "no name"
+
+try "two navs sharing one name" \
+    docs/router.html 'aria-labelledby="toc-heading"' 'aria-labelledby="more-docs"' \
+    "share the name"
+
 try "skip link that skips the page title" \
     router.html '</header>
 <main id="main">' '</header>' \

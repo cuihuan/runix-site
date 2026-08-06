@@ -93,8 +93,11 @@ for slug, (siblings, product) in RELATED.items():
         f'\n  <li><a href="/blog/{s}">{titles[s]}</a></li>' for s in siblings
     )
     block = (
-        f'\n<aside class="related">\n'
-        f"  <h2>Related reading</h2>\n"
+        # An <aside> is a complementary landmark. Unnamed, it appears in a screen
+        # reader's landmark list as just "complementary" -- pointing it at the
+        # heading it already has gives it a name without duplicating the string.
+        f'\n<aside class="related" aria-labelledby="related-reading">\n'
+        f"  <h2 id="related-reading">Related reading</h2>\n"
         f"  <ul>{items}\n"
         f'    <li><a href="{product}">{PRODUCT[product]}</a></li>\n'
         f"  </ul>\n"

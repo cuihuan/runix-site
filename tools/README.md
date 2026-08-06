@@ -74,6 +74,7 @@ to clean URLs and every rewrite pattern silently stopped matching.
 
 | Tool | What it does |
 |---|---|
+| `falsify.py` | Injects a defect, runs a check, restores the file, and refuses to call it a success unless the gate actually fired for the right reason. Enforces the three rules tonight's failures needed: the file must really change, the change must land inside the region the check scans, and a non-zero exit caused by a port clash or a traceback is reported as environment noise rather than a finding. Usage: `tools/falsify.py <file> <old> <new> --check "<cmd>" [--scope-start S --scope-end E] [--expect TEXT]`. |
 | `gate_coverage.py` (also on every deploy) | Traces a check script (`qa.py` by default, any script as an argument) and reports any check whose condition is never evaluated against the current site. Five gates written tonight could not fire when first written and every one reported a clean run; hand-falsification catches that for new gates, this is the net for the ones already in the file. Unreachable checks that are dead by absence rather than defect go in `gate_coverage_allow.txt` with the reason; anything else fails the deploy. Reaching a condition is not the same as being able to fail it, so this narrows where to look — it does not replace injection. |
 
 

@@ -64,41 +64,24 @@ else
   echo "  FAIL gateway returned $API_CODE for an unauthenticated /v1/models (expected 401)"
 fi
 
-# The sub-sites embed a copy of _headers taken when they were built, so a
-# change to the CSP or the cache policy on the main site does not reach them
-# until tools/deploy_subsites.sh runs. That drift has been live twice; detecting
-# it beats remembering. Read through a cache-busting query so a stale edge copy
-# is not mistaken for stale configuration.
-main_csp=$(curl -sI --max-time 15 "https://runixcloud.io/?b=$$" | grep -ic content-security)
-main_cache=$(curl -sI --max-time 15 "https://runixcloud.io/assets/style.css?b=$$" \
-  | grep -i '^cache-control' | tr -d '\r' | cut -d: -f2- | tr -d ' ')
-for h in gateway comic code data; do
-  sub_csp=$(curl -sI --max-time 15 "https://$h.runixcloud.io/?b=$$" | grep -ic content-security)
-  sub_cache=$(curl -sI --max-time 15 "https://$h.runixcloud.io/assets/style.css?b=$$" \
-    | grep -i '^cache-control' | tr -d '\r' | cut -d: -f2- | tr -d ' ')
-  # Headers alone were not enough: all four subdomains matched on headers while
-  # serving a stylesheet two versions behind, because they embed their own copy
-  # of assets/ and reference whatever ?v= they were built with. Compare the
-  # stylesheet the page actually asks for, byte for byte.
-  main_ref=$(curl -s --max-time 15 "https://runixcloud.io/?b=$$" \
-    | grep -o 'assets/style\.css?v=[0-9]*' | head -1)
-  main_css=$(curl -s -o /dev/null -w '%{size_download}' --max-time 15 \
-    "https://runixcloud.io/$main_ref")
-  sub_ref=$(curl -s --max-time 15 "https://$h.runixcloud.io/?b=$$" \
-    | grep -o 'assets/style\.css?v=[0-9]*' | head -1)
-  sub_css=$(curl -s -o /dev/null -w '%{size_download}' --max-time 15 \
-    "https://$h.runixcloud.io/$sub_ref")
-  if [ "$sub_csp" = "$main_csp" ] && [ "$sub_cache" = "$main_cache" ] \
-     && [ "$sub_css" = "$main_css" ]; then
-    echo "  OK   $h subdomain matches the main site (headers and stylesheet)"
-  else
-    FAIL=1
-    echo "  FAIL $h subdomain headers drifted from the main site"
-    echo "         main: csp=$main_csp cache=$main_cache css=$main_ref ($main_css bytes)"
-    echo "         sub:  csp=$sub_csp cache=$sub_cache css=$sub_ref ($sub_css bytes)"
-    echo "         fix:  CLOUDFLARE_API_TOKEN=... tools/deploy_subsites.sh"
-  fi
-done
+# The sub-sites embed a copy of _headers and of assets/, so a change to the CSP,
+# the cache policy or the stylesheet on the main site does not reach them until
+# tools/deploy_subsites.sh runs. That drift has been live twice.
+#
+# This used to probe once, and reported two false failures tonight within a
+# minute of a sub-site deploy -- Cloudflare edge nodes had not caught up, and
+# the same hosts served byte-identical CSS thirty seconds later. A watchdog that
+# cries wolf unattended is a watchdog people learn to ignore, so it now shares
+# the two-probe detector deploy.sh uses.
+if ./tools/subsite_drift.sh; then
+  echo "  OK   sub-domains match the main site (stylesheet, byte for byte)"
+else
+  FAIL=1
+  echo "  FAIL a sub-domain drifted from the main site"
+  echo "         fix:  CLOUDFLARE_API_TOKEN=... tools/deploy_subsites.sh"
+  echo "         (deploy.sh does this itself now -- drift here means something"
+  echo "          was deployed by another route)"
+fi
 
 # Certificate expiry, because a cert that lapses takes everything with it and
 # gives about a month of warning that nobody is watching for.

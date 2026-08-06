@@ -90,6 +90,18 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+QA_HS="python3 tools/html_structure.py"
+QA_SAVE0=$QA
+QA=$QA_HS
+try "markup with an unclosed element" \
+    router.html '</main>' '<section>' "never closed"
+try "a duplicate id" \
+    blog/llm-observability.html '<aside class="related"' \
+    '<div id="related-reading"></div><aside class="related"' "appears 2 times"
+try "a fragment link pointing nowhere" \
+    docs/router.html 'href="#quickstart"' 'href="#does-not-exist"' "not an id"
+QA=$QA_SAVE0
+
 try "header cells without scope" \
     privacy.html ' scope="col"' '' "have no scope"
 

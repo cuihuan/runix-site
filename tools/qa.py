@@ -497,6 +497,38 @@ for page in PAGES + ["llms.txt"]:
             fail(page, f"says “{_w} products” but the site has "
                        f"{len(_PRODUCT_PAGES)} product pages")
 
+# --- naming one of our own pages in prose means linking it -----------------
+# The FAQ answered "do you have SOC 2?" with "the Security page describes the
+# controls that are actually in place" and did not link the Security page. An
+# answer that points somewhere should take you there.
+#
+# Blog posts are excluded on purpose, not for convenience: the deprecation post
+# says "the FAQ answers: No. Retirement dates aren't extendable", and that is
+# Anthropic's FAQ. Auto-linking it would have sent readers to our own page and
+# attributed someone else's policy to us.
+_NAMED_PAGES = {
+    "the Security page": "/security",
+    "the reliability page": "/reliability",
+    "the pricing page": "/pricing",
+    "the access page": "/access",
+}
+for page in PAGES:
+    if page.startswith("blog/"):
+        continue
+    doc = open(page).read()
+    _self = "/" + (page[:-5].replace("/index", "") if page != "index.html" else "")
+    _vis = re.sub(r"<script\b.*?</script>", " ", doc, flags=re.S)
+    _vis = re.sub(r"<a\b.*?</a>", " ", _vis, flags=re.S)
+    for _phrase, _target in _NAMED_PAGES.items():
+        if _target.rstrip("/") == _self.rstrip("/"):
+            continue
+        # Case-insensitive on purpose: the FAQ writes "The Security page" at the
+        # start of a sentence. The first version of this matched only the
+        # lower-case article, so it could not fire on the very sentence that
+        # motivated it.
+        if re.search(re.escape(_phrase), re.sub(r"<[^>]+>", " ", _vis), re.I):
+            fail(page, f"names “{_phrase}” in prose without linking it to {_target}")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

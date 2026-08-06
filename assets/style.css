@@ -62,7 +62,11 @@ a { color: inherit; text-decoration: none; transition: all 0.18s; }
 h1, h2, h3 { letter-spacing: -0.025em; line-height: 1.2; }
 /* Headings without a deliberate .line break get balanced instead of
    leaving one orphaned word on the last line. */
-h2, h3, .section-head h2 { text-wrap: balance; }
+/* h1 was missing from this list, so article titles could drop a one-word
+   last line while every h2 below them balanced correctly. Most titles
+   happen to break evenly, which is why it showed on one page and the
+   gap was in the rule for all of them. */
+h1, h2, h3, .section-head h2 { text-wrap: balance; }
 /* A headline broken across lines without gluing the words together
    when the text is extracted. */
 .line { display: block; }

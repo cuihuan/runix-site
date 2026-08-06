@@ -774,6 +774,22 @@ for page in PAGES:
             fail(page, f"asset “{_ref}” resolves to {_resolved} from {_url}, "
                        f"which is not a file here")
 
+# --- every heading level balances its line breaks --------------------------
+# text-wrap: balance covered h2 and h3 but not h1, so article titles could drop
+# a one-word last line while every h2 under them broke evenly. It showed on one
+# page, because most titles happen to break well -- the gap was in the rule for
+# all of them, and phone width is where headings wrap most.
+_css_all = open(os.path.join("assets", "style.css")).read()
+_balanced = set()
+for _sel, _body in re.findall(r"([^{}]+)\{([^}]*)\}", re.sub(r"/\*.*?\*/", " ", _css_all, flags=re.S)):
+    if "text-wrap" in _body and "balance" in _body:
+        for _s in _sel.split(","):
+            _balanced.add(_s.strip().split()[-1])
+for _h in ("h1", "h2", "h3"):
+    if _h not in _balanced:
+        fail("assets/style.css", f"{_h} has no text-wrap: balance -- it can drop "
+                                 f"a one-word last line where h2 and h3 do not")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

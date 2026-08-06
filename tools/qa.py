@@ -596,6 +596,27 @@ for page in PAGES:
     if _dm and _lm and _dm != _lm:
         fail(page, f"Article.dateModified {_dm} but sitemap lastmod {_lm}")
 
+# --- a shared link previews completely, or it previews as a bare URL --------
+# The per-page cards are worth nothing if the tags that carry them are
+# incomplete: twitter:card must be summary_large_image for a 1200x630 image to
+# render large rather than as a thumbnail, and og:type/og:site_name are what
+# stop some clients falling back to the raw URL. All 50 real pages have the
+# full set today; this keeps it that way. 404 is exempt -- nobody shares one.
+_SOCIAL = ("og:title", "og:description", "og:image", "og:url", "og:type",
+           "og:site_name", "og:image:width", "og:image:height",
+           "twitter:card", "twitter:title", "twitter:description", "twitter:image")
+for page in PAGES:
+    if os.path.basename(page) == "404.html":
+        continue
+    _head = open(page).read().split("</head>")[0]
+    for _t in _SOCIAL:
+        if f'"{_t}"' not in _head:
+            fail(page, f"no {_t} -- a shared link will preview incompletely")
+    _c = re.search(r'name="twitter:card" content="([^"]+)"', _head)
+    if _c and _c.group(1) != "summary_large_image":
+        fail(page, f'twitter:card is "{_c.group(1)}" -- a 1200x630 card needs '
+                   f'summary_large_image or it renders as a thumbnail')
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

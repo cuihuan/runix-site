@@ -81,6 +81,15 @@ try "ruled list without a last-child reset" \
     assets/style.css ".plan ul li:last-child { border-bottom: none; }" "" \
     "rules every row including the last"
 
+try "incomplete social preview tags" \
+    router.html '<meta property="og:type"' '<meta property="og:TYPO"' \
+    "will preview incompletely"
+
+try "twitter:card too small for a 1200x630 image" \
+    router.html 'name="twitter:card" content="summary_large_image"' \
+    'name="twitter:card" content="summary"' \
+    "renders as a thumbnail"
+
 echo
 echo "  $pass gate(s) proved, $fail unproved"
 [ "$fail" -eq 0 ]

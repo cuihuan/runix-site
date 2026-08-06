@@ -90,6 +90,10 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+try "a link whose name is a paragraph" \
+    index.html ' aria-label="Explore Runix Router"' '' \
+    "accessible name is"
+
 QA_SAVE=$QA
 QA="python3 tools/nojs_check.py"
 try "no-script nav fallback removed" \

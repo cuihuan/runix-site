@@ -617,6 +617,23 @@ for page in PAGES:
         fail(page, f'twitter:card is "{_c.group(1)}" -- a 1200x630 card needs '
                    f'summary_large_image or it renders as a thumbnail')
 
+# --- a link's accessible name is a name, not a paragraph -------------------
+# The four product cards on the home page were whole-card links, so each one's
+# accessible name was the entire card: heading, description, three bullets,
+# status line -- around fifty words. A screen-reader user listing the links on
+# the home page heard four fifty-word entries. An aria-label carrying the
+# card's own visible call to action fixes it and satisfies 2.5.3, because the
+# name is exactly the text a speech-input user would say.
+for page in PAGES:
+    doc = open(page).read()
+    for _tag, _body in re.findall(r'(<a\b[^>]*>)(.*?)</a>', doc, re.S):
+        if 'aria-hidden="true"' in _tag or "aria-label" in _tag:
+            continue
+        _t = " ".join(re.sub(r"<[^>]+>", " ", _body).split())
+        if len(_t.split()) > 15:
+            fail(page, f"a link's accessible name is {len(_t.split())} words "
+                       f"(“{_t[:40]}…”) -- give it an aria-label")
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

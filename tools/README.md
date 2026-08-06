@@ -20,7 +20,7 @@ difference matters, so they are separated below.
 | `perf_check.py index.html` | Page weight, request count, LCP, and images without reserved space. | **yes** |
 | `make_og.py` | Renders each page's own 1200x630 social card in Chrome, only for cards whose text changed. Measures every card's layout in one batch run first and refuses to ship a set where every card measures identically. | **yes** |
 | `point_og.py` | Rewrites `og:image`/`twitter:image` to that card, versioned by the card's content hash. | **yes** |
-| `subsite_drift.sh` | Probes each product sub-domain twice and exits 1 if it serves a different stylesheet from the main site. `deploy.sh` re-deploys them itself when it fires, so the mirror stays a mirror without anyone remembering a second command. | no (triggers a fix) |
+| `subsite_drift.sh` | Probes each product sub-domain twice and exits 1 if it serves a different stylesheet, or different copy, from the main site. Copy is compared against the local source file rather than the live main site, because this runs straight after a deploy when the edge may still be serving the previous build — comparing two live URLs compared stale against stale. The compared range is `</header>` to `<footer>`, not `<main>`: the hero sits outside `<main>` on every product page. `deploy.sh` re-deploys them itself when it fires, so the mirror stays a mirror without anyone remembering a second command. | no (triggers a fix) |
 | `code_overflow.py` | Renders every page with a `<pre>` at 1440px and fails on any code sample cut off by its container. Desktop only — horizontal scroll is the right answer on a phone. | **yes** |
 | `verify_live.py` | After upload: every path, three rounds, flicker reported as propagation rather than breakage. | **yes** |
 

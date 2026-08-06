@@ -343,7 +343,12 @@ GENERIC = {"read more", "read more on this", "learn more", "click here",
            "here", "this page", "more", "read post"}
 for page in PAGES:
     doc = open(page).read()
-    body = doc[doc.find("<main"):doc.find("</main>")] if "<main" in doc else doc
+    # </header> to <footer>, not <main>: the hero sits outside <main> on every
+    # product page, so a <main>-scoped scan could not see hero buttons at all.
+    # That is why the duplicate "Sign in to console" button on /router had to be
+    # caught by a separate check rather than by this one.
+    _i, _j = doc.find("</header>"), doc.rfind("<footer")
+    body = doc[_i + 9:_j] if _i >= 0 and _j > _i else doc
     body = re.sub(r"<nav\b.*?</nav>", " ", body, flags=re.S | re.I)
     by_text = {}
     for tag, href, text in re.findall(r'(<a\b[^>]*href="([^"]+)"[^>]*>)(.*?)</a>', body, re.S):
@@ -666,7 +671,11 @@ for page, statuses in seen_status.items():
 # in a list or a nav are normal, so only paragraphs are checked.
 for page in PAGES:
     doc = open(page).read()
-    body = doc[doc.find("<main"):doc.find("</main>")] if "<main" in doc else doc
+    # Same widening as above -- hero copy is outside <main>. Safe here because
+    # hero buttons live in a div, not a paragraph, so they are not adjacent
+    # links inside a <p> and cannot become false positives.
+    _i, _j = doc.find("</header>"), doc.rfind("<footer")
+    body = doc[_i + 9:_j] if _i >= 0 and _j > _i else doc
     for para in re.findall(r"<p[^>]*>(.*?)</p>", body, re.S):
         if re.search(r"</a>\s+<a\b", para, re.S):
             snippet = " ".join(re.sub(r"<[^>]+>", " ", para).split())[:80]

@@ -70,6 +70,11 @@ rsync -a \
   --exclude 'payments' --exclude 'package.json' --exclude 'package-lock.json' \
   --exclude 'README.md' --exclude 'deploy.sh' --exclude '.DS_Store' --exclude '.gitignore' \
   --exclude 'scheduled' --exclude 'tools' \
+  `# Check tools write temp pages into the site root and clean them up in a
+   # finally block -- which SIGKILL skips. A killed visual_qa left a
+   # zero-byte _vqa.html here tonight. qa.py catches it and aborts the
+   # deploy, which is the real guard; this is the second line.` \
+  --exclude '_*' \
   "$SRC/" "$STAGE/"
 echo "    $(find "$STAGE" -type f | wc -l | tr -d ' ') files"
 

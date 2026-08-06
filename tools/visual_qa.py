@@ -171,7 +171,7 @@ PROBE = r"""
   // lists were rendering LIGHTER than the body text — technically a different
   // colour, in practice a de-emphasis. Underlined links are exempt.
   out.dimlinks = [];
-  var content = document.querySelectorAll('main a[href^="/"], main a[href^="http"]');
+  var content = document.querySelectorAll('main a[href^="/"], main a[href^="http"], .page-hero a[href^="/"], .hero a[href^="/"]');
       out.seen.contentlinks += content.length;
   for (var q = 0; q < content.length; q++) {
     var a = content[q];

@@ -34,8 +34,8 @@ def probe(url):
 
 def main():
     where = collections.defaultdict(list)
-    for p in sorted(set(glob.glob("*.html")) | set(glob.glob("blog/*.html"))
-                    | set(glob.glob("docs/*.html")) | set(glob.glob("scheduled/*.html"))):
+    for p in sorted(set([_p for _p in glob.glob("*.html") if not os.path.basename(_p).startswith("_")]) | set([_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")])
+                    | set([_p for _p in glob.glob("docs/*.html") if not os.path.basename(_p).startswith("_")]) | set([_p for _p in glob.glob("scheduled/*.html") if not os.path.basename(_p).startswith("_")])):
         s = open(p).read()
         body = s[s.find("</header>"):s.rfind("<footer")]
         for u in re.findall(r'href="(https?://[^"]+)"', body):

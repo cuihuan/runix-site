@@ -37,9 +37,9 @@ def main():
     if not os.path.exists(CHROME):
         print("  Chrome not found -- cannot measure code overflow")
         return 0
-    pages = sorted(set(str(p) for p in pathlib.Path(".").glob("*.html"))
-                   | set(str(p) for p in pathlib.Path("blog").glob("*.html"))
-                   | set(str(p) for p in pathlib.Path("docs").glob("*.html")))
+    pages = sorted(set(str(p) for p in [_p for _p in pathlib.Path(".").glob("*.html") if not _p.name.startswith("_")])
+                   | set(str(p) for p in [_p for _p in pathlib.Path("blog").glob("*.html") if not _p.name.startswith("_")])
+                   | set(str(p) for p in [_p for _p in pathlib.Path("docs").glob("*.html") if not _p.name.startswith("_")]))
     bad, checked = [], 0
     probe = pathlib.Path(PROBE)
     for page in pages:

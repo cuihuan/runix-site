@@ -758,3 +758,38 @@ main > .section:first-child { padding-top: 64px; }
   flex-wrap: wrap; background: none; padding: 0; border: none; gap: 14px 18px;
 }
 .no-js-nav .nav-toggle { display: none !important; }
+
+
+/* .model-note carried its styling inline on every page, which is why a media
+   query could not left-align it -- an inline style beats any selector without
+   !important. Moved here so the responsive rule below can actually win. */
+.model-note {
+  text-align: center; margin-top: 24px;
+  color: var(--ink-3); font-size: 14px;
+}
+
+/* ---------- Centred body copy is a phone-width readability problem ---------- */
+/* Centred text is fine for a line or two -- a label, a short deck. Past that the
+   ragged left edge makes the reader hunt for the start of every line, and at
+   375px a paragraph that sits on two lines on a desktop runs to five, seven or
+   nine. Measured: 35 centred paragraphs of three lines or more across eight
+   pages, the longest at nine.
+
+   Headings stay centred, because that is the site's convention everywhere
+   (twenty-seven centred section heads across ten pages) and a heading is short
+   enough that centring costs nothing. Only the prose under them changes, and
+   only below the phone breakpoint. */
+@media (max-width: 560px) {
+  .section-head.center p,
+  .page-hero.center p,
+  .cta-band p,
+  /* .model-note is the "here is the caveat" paragraph under several sections;
+     it is the longest centred copy on the site -- eleven lines at 375px on
+     /code-plans. .path is the two-column "adopt the stack or start with one"
+     block, which stacks on a phone. */
+  p.model-note,
+  .path p {
+    text-align: left;
+    margin-inline: 0;
+  }
+}

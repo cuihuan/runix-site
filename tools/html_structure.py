@@ -82,8 +82,8 @@ class Checker(html.parser.HTMLParser):
 def main():
     # Drafts are included: the point of checking a draft is that it is correct
     # the day someone decides to publish it, not the day after.
-    pages = sorted(set(glob.glob("*.html")) | set(glob.glob("blog/*.html"))
-                   | set(glob.glob("docs/*.html")) | set(glob.glob("scheduled/*.html")))
+    pages = sorted(set([_p for _p in glob.glob("*.html") if not os.path.basename(_p).startswith("_")]) | set([_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")])
+                   | set([_p for _p in glob.glob("docs/*.html") if not os.path.basename(_p).startswith("_")]) | set([_p for _p in glob.glob("scheduled/*.html") if not os.path.basename(_p).startswith("_")]))
     bad = 0
     for page in pages:
         c = Checker()

@@ -36,6 +36,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PORT = 8913
+# Temp files written by the check tools use a leading underscore; every tool
+# that globs pages skips them. A killed run leaves them behind twice tonight.
 PAGES = ["index.html", "router.html", "pricing.html", "blog/index.html", "docs/index.html"]
 
 

@@ -126,6 +126,15 @@ way they expect and will tell you if it does not.
 
 ---
 
+## One convention these tools share
+
+**A file whose name starts with `_` is a temp file.** The checkers write pages
+into the site root to render them in an iframe and delete them in a `finally`
+block, which a SIGKILL skips. Twice tonight a killed run left one behind: once
+`deploy.sh` would have published it, and once `qa.py` reported twenty-seven
+failures against it. Every tool that globs pages now skips `_*`, and rsync
+excludes it.
+
 ## Two rules these tools were built under
 
 **A check that cannot fail is worse than no check.** Two were shipped tonight

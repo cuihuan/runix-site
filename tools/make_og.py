@@ -235,9 +235,9 @@ def main():
         return 1
     font_uri = "data:font/woff2;base64," + base64.b64encode(fb.read_bytes()).decode()
 
-    pages = sorted(set(str(p) for p in pathlib.Path(".").glob("*.html"))
-                   | set(str(p) for p in pathlib.Path("blog").glob("*.html"))
-                   | set(str(p) for p in pathlib.Path("docs").glob("*.html")))
+    pages = sorted(set(str(p) for p in [_p for _p in pathlib.Path(".").glob("*.html") if not _p.name.startswith("_")])
+                   | set(str(p) for p in [_p for _p in pathlib.Path("blog").glob("*.html") if not _p.name.startswith("_")])
+                   | set(str(p) for p in [_p for _p in pathlib.Path("docs").glob("*.html") if not _p.name.startswith("_")]))
     jobs = []
     for path in pages:
         if path in COVER:

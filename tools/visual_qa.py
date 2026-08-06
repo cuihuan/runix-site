@@ -263,7 +263,7 @@ def probe(path, width):
 
 
 pages = sys.argv[1:] or sorted(
-    glob.glob("*.html") + glob.glob("docs/*.html") + glob.glob("blog/*.html")
+    [_p for _p in glob.glob("*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("docs/*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")]
 )
 httpd = serve()
 time.sleep(0.6)

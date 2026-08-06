@@ -29,9 +29,9 @@ ATTRS = ('property="og:image"', 'name="twitter:image"', 'property="og:image:secu
 def main():
     changed = 0
     missing = []
-    for path in sorted(set(str(p) for p in pathlib.Path(".").glob("*.html"))
-                       | set(str(p) for p in pathlib.Path("blog").glob("*.html"))
-                       | set(str(p) for p in pathlib.Path("docs").glob("*.html"))):
+    for path in sorted(set(str(p) for p in [_p for _p in pathlib.Path(".").glob("*.html") if not _p.name.startswith("_")])
+                       | set(str(p) for p in [_p for _p in pathlib.Path("blog").glob("*.html") if not _p.name.startswith("_")])
+                       | set(str(p) for p in [_p for _p in pathlib.Path("docs").glob("*.html") if not _p.name.startswith("_")])):
         if path in SKIP:
             continue
         slug = path.replace("/", "-").replace(".html", "")

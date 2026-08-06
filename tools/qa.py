@@ -19,13 +19,13 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-PAGES = sorted(glob.glob("*.html") + glob.glob("docs/*.html") + glob.glob("blog/*.html"))
+PAGES = sorted([_p for _p in glob.glob("*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("docs/*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")])
 # 404 is deliberately noindex and outside the nav/sitemap conventions.
 INDEXABLE = [p for p in PAGES if os.path.basename(p) != "404.html"]
 # Drafts are not deployed and not in the sitemap, but a draft with a broken
 # schema block or a dead internal link only announces itself at publish time,
 # which is the worst moment to find out. They get the structural checks.
-DRAFTS = sorted(glob.glob("scheduled/*.html"))
+DRAFTS = sorted([_p for _p in glob.glob("scheduled/*.html") if not os.path.basename(_p).startswith("_")])
 
 failures = []
 notes = []
@@ -998,7 +998,7 @@ for dangling in sorted(referenced_ids - defined_ids):
 # feed.xml, llms.txt and the blog index. publish.py rebuilds all of them, so
 # they agree today -- but a hand edit to any one of them desyncs the set
 # silently, and the symptom is a post that exists and is never discovered.
-_posts = {os.path.basename(p)[:-5] for p in glob.glob("blog/*.html")
+_posts = {os.path.basename(p)[:-5] for p in [_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")]
           if os.path.basename(p) != "index.html"}
 _surfaces = {}
 if os.path.isfile("sitemap.xml"):
@@ -1048,7 +1048,7 @@ if os.path.isfile("feed.xml"):
                         _parsedate(_pd.text)
                     except Exception:
                         fail("feed.xml", f"item {_i + 1} pubDate is not RFC 822: {_pd.text}")
-            _posts = len([p for p in glob.glob("blog/*.html")
+            _posts = len([p for p in [_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")]
                           if os.path.basename(p) != "index.html"])
             if len(_items) != _posts:
                 fail("feed.xml", f"has {len(_items)} items but {_posts} posts are published")

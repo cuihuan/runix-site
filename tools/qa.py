@@ -436,6 +436,21 @@ for page in PAGES:
             fail(page, "a link is aria-hidden but still focusable -- focus would "
                        "land somewhere a screen reader will not announce")
 
+    # Hiding a link is only safe while something else in the same card still
+    # reaches it. Making the docs cards match the blog nearly produced a card
+    # whose only link to its guide was the decorative one -- the page would have
+    # been visible, clickable with a mouse, and unreachable by keyboard.
+    for card in re.split(r'<div class="card"', doc)[1:]:
+        card = card.split("</section>")[0]
+        _dec = [a or b for a, b in re.findall(
+            r'<a[^>]*aria-hidden="true"[^>]*href="([^"]+)"'
+            r'|<a[^>]*href="([^"]+)"[^>]*aria-hidden="true"', card)]
+        _real = re.findall(r'<a\b(?![^>]*aria-hidden)[^>]*href="([^"]+)"', card)
+        for _d in _dec:
+            if _d not in _real:
+                fail(page, f"a card hides its only link to {_d} -- that page "
+                           f"becomes unreachable by keyboard")
+
 # --- internal links use the URLs the host serves ---------------------------
 # Every internal .html link costs a 308. A site-wide pass fixed 1110 of them,
 # and then build_blog_index.py quietly reintroduced 42 on the next publish

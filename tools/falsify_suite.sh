@@ -90,6 +90,10 @@ try "twitter:card too small for a 1200x630 image" \
     'name="twitter:card" content="summary"' \
     "renders as a thumbnail"
 
+try "a gap in the heading outline" \
+    docs/router.html '<h2 id=' '<h4 id=' \
+    "heading outline jumps"
+
 try "a link whose name is a paragraph" \
     index.html ' aria-label="Explore Runix Router"' '' \
     "accessible name is"

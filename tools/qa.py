@@ -634,6 +634,28 @@ for page in PAGES:
             fail(page, f"a link's accessible name is {len(_t.split())} words "
                        f"(“{_t[:40]}…”) -- give it an aria-label")
 
+# --- the heading outline has no gaps ---------------------------------------
+# Screen readers navigate by heading level; an h2 followed by an h4 tells the
+# user a level exists that does not, and they lose the shape of the page. Six
+# pages shipped with skips earlier tonight and were fixed; all 51 are clean
+# now. This holds it, because adding a page is exactly when it breaks and
+# nothing about a rendered page shows it.
+#
+# Scanned </header> to <footer> rather than <main>, since the hero carries the
+# h1 and lives outside <main> on every product page -- a <main>-scoped scan
+# would start the outline at the first h2 and never see a gap after the h1.
+for page in PAGES:
+    doc = open(page).read()
+    _i, _j = doc.find("</header>"), doc.rfind("<footer")
+    _body = doc[_i:_j] if _i >= 0 and _j > _i else doc
+    _prev = 0
+    for _m in re.finditer(r"<h([1-6])\b", _body):
+        _lv = int(_m.group(1))
+        if _prev and _lv > _prev + 1:
+            fail(page, f"heading outline jumps from h{_prev} to h{_lv}")
+            break
+        _prev = _lv
+
 # --- a hidden link must also be unfocusable --------------------------------
 # aria-hidden="true" on something a keyboard can still reach is WCAG 4.1.2:
 # focus lands on an element the screen reader refuses to announce, and the user

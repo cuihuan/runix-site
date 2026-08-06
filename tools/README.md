@@ -39,6 +39,7 @@ Exit code is non-zero if anything failed.
 Certificates were 77-87 days out when this was written; the check is there
 because a lapsed certificate takes everything down and gives a month of
 warning nobody is watching for.
+| `link_rot.py` | Probes every external source we cite (published pages and drafts) twice and reports any that stop resolving. Wired into `daily_check.sh`: a deploy cannot break a link on another company's site, but time can. |
 
 ## Product sub-sites (five live subdomains)
 

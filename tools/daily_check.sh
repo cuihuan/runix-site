@@ -83,6 +83,11 @@ else
   echo "          was deployed by another route)"
 fi
 
+# Every factual claim on the blog links to the source it came from, which is
+# worth nothing once the source moves. Link rot happens on someone else's
+# schedule, so it belongs here rather than in the deploy pipeline.
+if python3 tools/link_rot.py; then :; else FAIL=1; fi
+
 # Certificate expiry, because a cert that lapses takes everything with it and
 # gives about a month of warning that nobody is watching for.
 for host in runixcloud.io api.router.runixcloud.io console.router.runixcloud.io; do

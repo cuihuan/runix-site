@@ -355,6 +355,9 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   border-top: 1px solid var(--line); margin-top: 44px; padding-top: 24px;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
   color: var(--ink-3); font-size: 13px;
+  /* two literal email links wrap on phones; without this their tap targets
+     stack 7px apart and visual_qa (rightly) blocks the deploy */
+  line-height: 2;
 }
 .footer-bottom a { display: inline; margin-left: 18px; color: var(--ink-2); }
 

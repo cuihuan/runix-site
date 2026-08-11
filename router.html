@@ -85,7 +85,7 @@
       "name": "How do I get access?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Router is in early access, so keys are issued after a short intake rather than through self-serve signup. Tell us the workload, the providers you need and the volume you expect, and you get a key and a named engineer. The full process is on Access ."
+        "text": "Create an account on the console and your key is issued immediately, with evaluation credits to test against real traffic. Teams that need custom routing, higher limits or invoicing can talk to us instead. The full process is on Access ."
       }
     }
   ]
@@ -131,7 +131,7 @@
       <a href="/about">Company</a>
       <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="/about#contact">Request access</a>
+      <a class="nav-cta" href="https://console.router.runixcloud.io/register">Sign up</a>
     </div>
   </nav>
 </header>
@@ -143,7 +143,7 @@
 <span class="line">for every model</span></h1>
     <p>The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request — behind one OpenAI-compatible API.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
-      <a class="btn btn-primary" href="/about#contact">Request access</a>
+      <a class="btn btn-primary" href="https://console.router.runixcloud.io/register">Create an account</a>
       <a class="btn btn-ghost" href="/pricing">See how billing works</a>
     
       <a class="btn btn-ghost" href="/docs/router">Read the docs</a></div>
@@ -192,7 +192,7 @@
     </div>
     <div class="callout">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-      <span>Runix Router is in early access, so treat capability claims as what the product does for onboarded teams today — not as a published SLA. Ask us for specifics on your workload and we will answer concretely, in writing.</span>
+      <span>Runix Router does not publish an SLA, so treat capability claims as what the product does today — not as a contractual commitment. Ask us for specifics on your workload and we will answer concretely, in writing.</span>
     </div>
   </div>
 </section>
@@ -331,7 +331,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
       <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage.</p></div>
       <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
       <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
-      <div class="card"><h3>How do I get access?</h3><p>Router is in early access, so keys are issued after a short intake rather than through self-serve signup. Tell us the workload, the providers you need and the volume you expect, and you get a key and a named engineer. The full process is on <a href="/access">Access</a>.</p></div>
+      <div class="card"><h3>How do I get access?</h3><p>Create an account on the <a href="https://console.router.runixcloud.io/register">console</a> and your key is issued immediately, with evaluation credits to test against real traffic. Teams that need custom routing, higher limits or invoicing can talk to us instead. The full process is on <a href="/access">Access</a>.</p></div>
     </div>
   </div>
 </section>
@@ -340,8 +340,8 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   <div class="container">
     <div class="cta-band">
       <h2>Put the gateway in front of your traffic</h2>
-      <p>Tell us the models you call and roughly how much — we come back with an access plan and a quote within one business day.</p>
-      <a class="btn btn-grad" href="/about#contact">Request access</a>
+      <p>Create an account and point a client at the endpoint — or tell us the models you call and roughly how much, and we come back with a quote within one business day.</p>
+      <a class="btn btn-grad" href="https://console.router.runixcloud.io/register">Create an account</a>
     </div>
   </div>
 </section>

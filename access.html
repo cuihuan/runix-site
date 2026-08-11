@@ -16,10 +16,10 @@
 <link rel="stylesheet" href="assets/style.css?v=21">
 <script src="assets/site-config.js?v=10" defer></script>
 <title>How to get access to Runix Router — Runix</title>
-<meta name="description" content="Runix Router is in early access: keys are issued after a short intake rather than through self-serve signup. Here is exactly what that involves.">
+<meta name="description" content="Runix Router is self-serve: create an account, get evaluation credits and issue a key in minutes. Here is exactly what happens.">
 <link rel="canonical" href="https://runixcloud.io/access">
 <meta property="og:title" content="How to get access to Runix Router — Runix">
-<meta property="og:description" content="Runix Router is in early access: keys are issued after a short intake rather than through self-serve signup. Here is exactly what that involves.">
+<meta property="og:description" content="Runix Router is self-serve: create an account, get evaluation credits and issue a key in minutes. Here is exactly what happens.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/access">
 <meta property="og:site_name" content="Runix">
@@ -39,10 +39,10 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why is there no self-serve signup?",
+      "name": "Do I need to talk to anyone to start?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because keys carry real quotas and routing configuration, and during early access those are set per team rather than issued blindly."
+        "text": "No. Create an account on the console and your key is issued immediately, with evaluation credits. Talk to us when you need custom routing, higher limits, invoicing or a signed agreement."
       }
     },
     {
@@ -50,7 +50,7 @@
       "name": "What does it cost to evaluate?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Nothing. Evaluation credits are issued on request and no card is required to start."
+        "text": "Nothing. New accounts start with evaluation credits and no card is required."
       }
     },
     {
@@ -58,7 +58,7 @@
       "name": "How long does it take?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "You get a reply within one business day."
+        "text": "Minutes. Account creation and key issue are immediate; enterprise onboarding gets a reply within one business day."
       }
     }
   ]
@@ -86,7 +86,7 @@
 </script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="How to get access to Runix Router — Runix">
-<meta name="twitter:description" content="Runix Router is in early access: keys are issued after a short intake rather than through self-serve signup. Here is exactly what that involves.">
+<meta name="twitter:description" content="Runix Router is self-serve: create an account, get evaluation credits and issue a key in minutes. Here is exactly what happens.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
 </head>
 <body>
@@ -104,7 +104,7 @@
       <a href="/about">Company</a>
       <a href="/blog/">Blog</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="/about#contact">Request access</a>
+      <a class="nav-cta" href="https://console.router.runixcloud.io/register">Sign up</a>
     </div>
   </nav>
 </header>
@@ -112,47 +112,50 @@
 
 <div class="page-hero">
   <div class="container">
-    <span class="badge">Early access</span>
+    <span class="badge">Getting started</span>
     <h1>How access works</h1>
-    <p>Keys are issued on request, not through self-serve signup. That is a deliberate choice, and this page describes precisely what happens between asking and sending your first request.</p>
+    <p>Router is self-serve. Create an account, get evaluation credits, and send your first request in minutes. This page describes exactly what happens — and when it is worth talking to us instead.</p>
   </div>
 </div>
 <article class="article">
-<h2>1. Tell us what you are building</h2>
-<p>Send your use case, the volume you expect, and your timeline to
-<!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->.
-Rough numbers are fine; the point is to size the quota and pick sensible routing, not to
-qualify you.</p>
+<h2>1. Create your account</h2>
+<p>Sign up at <a href="https://console.router.runixcloud.io/register">console.router.runixcloud.io</a> with an email
+address and a password. There is no intake form, no waiting list and no card.</p>
 
-<h2>2. We reply within one business day</h2>
-<p>You get an access plan and a quote for the workload you described. Pricing is
-usage-based in USD and the rate table is stated in writing — there is no published rate
-card because quotes depend on the models and volume you actually use.</p>
-
-<h2>3. Evaluate before you pay</h2>
-<p>Evaluation credits are issued on request. Full router functionality, no card required
-to start. This is the stage where you find out whether the failover behaviour and the cost
-reporting match what you need.</p>
-
-<h2>4. Your key arrives configured</h2>
+<h2>2. Your key arrives configured</h2>
 <p>A key is not just a credential here. It carries its own quota and limits, the set of
 models it is allowed to call, and routing preferences applied server-side — so the
 controls are in place from the first call rather than bolted on later. Issue separate keys
 per team or product and the usage reporting splits along those lines.</p>
 
-<h2>5. Then you integrate</h2>
+<h2>3. Evaluate before you pay</h2>
+<p>New accounts start with evaluation credits. Full router functionality, no card required.
+This is the stage where you find out whether the failover behaviour and the cost reporting
+match what you need.</p>
+
+<h2>4. Then you integrate</h2>
 <p>Integration is a base-URL change: point your existing OpenAI-compatible client at
 <code>https://api.router.runixcloud.io/v1</code> and swap the key. The
 <a href="/docs/router">Router quickstart</a> covers model selection, streaming, failover
 semantics and the error envelope.</p>
 
+<h2>5. When to talk to us instead</h2>
+<p>Self-serve covers evaluation and normal production use. Come to
+<!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+when you need custom routing across specific providers, limits above the self-serve
+ceiling, invoicing or bank transfer instead of prepaid balance, or a signed MSA or DPA.
+Pricing is usage-based in USD and quotes are stated in writing — there is no published
+rate card because quotes depend on the models and volume you actually use.</p>
+
 <h2>Common questions</h2>
-<h3>Why is there no self-serve signup?</h3>
-<p>Because keys carry real quotas and routing configuration, and during early access those are set per team rather than issued blindly.</p>
+<h3>Do I need to talk to anyone to start?</h3>
+<p>No. Create an account and your key is issued immediately, with evaluation credits. Talk
+to us when you need custom routing, higher limits, invoicing or a signed agreement.</p>
 <h3>What does it cost to evaluate?</h3>
-<p>Nothing. Evaluation credits are issued on request and no card is required to start.</p>
+<p>Nothing. New accounts start with evaluation credits and no card is required.</p>
 <h3>How long does it take?</h3>
-<p>You get a reply within one business day.</p>
+<p>Minutes. Account creation and key issue are immediate; enterprise onboarding gets a
+reply within one business day.</p>
 <p>Everything else is on the <a href="/faq">FAQ</a>, the terms are defined in the
 <a href="/glossary">glossary</a>, and what happens when a provider degrades is on the
 <a href="/reliability">reliability page</a>.</p>
@@ -160,9 +163,9 @@ semantics and the error envelope.</p>
 <section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>Start the intake</h2>
-      <p>Send the models you call, the volume you expect and any compliance constraints. You get a reply within one business day — and if early access is not a fit for you yet, we will say so rather than stall.</p>
-      <a class="btn btn-grad" href="/about#contact">Request access</a>
+      <h2>Create an account</h2>
+      <p>Sign up, take the evaluation credits and point a client at the endpoint. If you need custom routing, higher limits or invoicing, tell us and we will answer concretely rather than stall.</p>
+      <a class="btn btn-grad" href="https://console.router.runixcloud.io/register">Create an account</a>
     </div>
   </div>
 </section>

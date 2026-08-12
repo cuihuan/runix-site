@@ -796,3 +796,90 @@ main > .section:first-child { padding-top: 64px; }
     margin-inline: 0;
   }
 }
+
+
+/* ---------- numbered product system -------------------------------------
+   The page used to carry two taxonomies for one set of products: a
+   three-band stack and a four-card grid, grouped differently, counts
+   disagreeing. Numbering is what joins them now -- band 01 and the card
+   stamped 01 are the same thing -- so the reader never has to map between
+   two schemes. The bands lost their chips and flow arrows in the process:
+   the chips duplicated the cards, and the arrows described a data flow the
+   numbered sequence no longer claims. */
+.layer {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 0 4px;
+  align-items: start;
+}
+.layer + .layer { margin-top: 14px; }
+.layer-num {
+  font: 800 26px/1 var(--mono);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--line-2);
+  padding-top: 2px;
+}
+/* 01 is the only layer a visitor can buy today, so it is the one that gets
+   the brand weight -- the same treatment the old .layer-mid gave the Router. */
+.layer-lead {
+  border-color: rgba(107, 149, 255, 0.5);
+  background: linear-gradient(180deg, rgba(107, 149, 255, 0.10), rgba(34, 211, 238, 0.05));
+}
+.layer-lead .layer-num { color: var(--cyan); }
+.layer-lead .layer-tag { color: var(--cyan-text); }
+.layer-lead .layer-body h3 {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.layer-prod {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-size: 15px;
+}
+.layer-prod a { color: var(--indigo); font-weight: 700; }
+.layer-prod a:hover { color: var(--cyan-text); text-decoration: underline; }
+.layer-side { color: var(--ink-3); font-size: 13.5px; }
+/* Status reads as a fact, not a badge to be proud of: "in development" must
+   not look like a feature. Only the shipping one gets colour. */
+.layer-state {
+  font: 600 11.5px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  color: var(--ink-3);
+}
+.layer-state.on {
+  color: var(--cyan-text);
+  border-color: rgba(11, 150, 184, 0.45);
+  background: rgba(11, 150, 184, 0.08);
+}
+
+/* The card stamp is the other half of the join. Monospace and muted so it
+   reads as an index, not as a label competing with the product name. */
+.card-layer {
+  font: 700 11.5px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.card-layer b { color: var(--cyan-text); font-weight: 800; }
+
+@media (max-width: 920px) {
+  .layer { grid-template-columns: 44px 1fr; }
+  .layer-num { font-size: 20px; }
+}
+@media (max-width: 560px) {
+  /* The number column costs a third of the width on a phone, so it goes
+     above the tag instead of beside it. */
+  .layer { grid-template-columns: 1fr; }
+  .layer-num { padding-top: 0; margin-bottom: 6px; }
+}

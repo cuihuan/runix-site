@@ -84,13 +84,10 @@
     <div class="nav-links">
       <a href="/#platform">Platform</a>
       <a href="/#products">Products</a>
-      <a href="/pricing">Pricing</a>
       <a href="/docs/">Docs</a>
-      <a href="/security">Security</a>
       <a href="/about">Company</a>
-      <a href="/blog/">Blog</a>
-      <a class="nav-signin" href="https://console.router.runixcloud.io">Sign in</a>
-      <a class="nav-cta" href="https://console.router.runixcloud.io/register">Sign up</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="https://console.router.runixcloud.io/register" target="_blank" rel="noopener">Get API key</a>
     </div>
   </nav>
 </header>
@@ -107,7 +104,7 @@
         <a class="btn btn-primary" href="#platform">See the platform</a>
         <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a><!--/email_off-->
       </div>
-      <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix Router is self-serve: create an account and your key is issued immediately, with evaluation credits to test against real traffic. Pipeline is built with design partners; Code and Comic are in development with waitlists open.</p>
+      <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix Router is self-serve: create an account and your key is issued immediately. Evaluation credits are issued on request, so you can test against real traffic before you pay. Pipeline is built with design partners; Code and Comic are in development with waitlists open.</p>
     </div>
     <div>
       <div class="code-card">
@@ -143,68 +140,61 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
 <section class="section" id="platform">
   <div class="container">
     <div class="section-head center">
-      <h2>One platform, three layers</h2>
-      <p>Runix is built as a stack. The <strong>Router</strong> sits in the middle — the control plane every request passes through. Below it, the models and compute it routes to. Above it, the tools your team actually builds and ships with.</p>
+      <h2>How Runix fits together</h2>
+      <p>Four layers, in the order the work actually happens: get model access under control, make the data usable, then build and create on top.</p>
     </div>
     <div class="stack">
-      <div class="layer layer-top">
-        <div class="layer-tag">Upstream · Build &amp; create</div>
+      <div class="layer layer-lead" id="layer-01">
+        <div class="layer-num" aria-hidden="true">01</div>
         <div class="layer-body">
-          <h3>Applications &amp; tools</h3>
-          <p>Where people get work done — coding, content, and the reusable skills and tools that ride on top of the models.</p>
-          <div class="chips">
-            <a href="/code">Runix Code</a>
-            <a href="/comic">Runix Comic</a>
-            <span>Skill library</span>
-            <span>Agent tools</span>
-            <span>Office &amp; workflow</span>
-          </div>
+          <div class="layer-tag">Access</div>
+          <h3>Gateway &amp; routing</h3>
+          <p>One OpenAI-compatible endpoint in front of every provider: routing, mid-request failover, central key custody, per-key quotas and per-request cost.</p>
+          <p class="layer-prod"><a href="#router">Runix Router</a> <span class="layer-state on">Running traffic today</span></p>
         </div>
       </div>
-      <div class="layer-flow" aria-hidden="true"><span>▲ requests</span><span>results ▼</span></div>
-      <div class="layer layer-mid">
-        <div class="layer-tag">The control plane</div>
+      <div class="layer" id="layer-02">
+        <div class="layer-num" aria-hidden="true">02</div>
         <div class="layer-body">
-          <h3>Runix Router</h3>
-          <p>One OpenAI-compatible endpoint in front of every provider: routing, mid-request failover, key custody, quotas, per-request cost — and the place search, fetch and data tools are called from.</p>
-          <div class="chips">
-            <a href="/router">Routing &amp; failover</a>
-            <a href="/router">Key custody &amp; quotas</a>
-            <a href="/router">Cost &amp; usage</a>
-            <span>Tool calls (search / fetch / data)</span>
-            <a href="/docs/router">Docs</a>
-          </div>
+          <div class="layer-tag">Prepare</div>
+          <h3>Data &amp; models</h3>
+          <p>What the gateway points at, and what makes it worth pointing at — clean data, tuned models, dedicated deployment when a shared endpoint is not enough.</p>
+          <p class="layer-prod"><a href="#pipeline">Runix Pipeline</a> <span class="layer-side">Fine-tuning · Dedicated deployment · Frontier &amp; open models</span></p>
         </div>
       </div>
-      <div class="layer-flow" aria-hidden="true"><span>▲ prompts</span><span>tokens ▼</span></div>
-      <div class="layer layer-base">
-        <div class="layer-tag">Downstream · Models &amp; compute</div>
+      <div class="layer" id="layer-03">
+        <div class="layer-num" aria-hidden="true">03</div>
         <div class="layer-body">
-          <h3>Models, tuning &amp; GPU</h3>
-          <p>What the Router points at — from hosted frontier models to your own tuned models on dedicated hardware, fed by clean data.</p>
-          <div class="chips">
-            <span>Frontier &amp; open models</span>
-            <span>Fine-tuning</span>
-            <span>Dedicated deployment</span>
-            <span>GPU &amp; inference</span>
-            <a href="/pipeline">Runix Pipeline (data)</a>
-          </div>
+          <div class="layer-tag">Build &amp; create</div>
+          <h3>Applications &amp; agents</h3>
+          <p>Where the work actually gets done — code that ships under review gates, and episodes that reach an audience.</p>
+          <p class="layer-prod"><a href="#code">Runix Code</a> · <a href="#comic">Runix Comic</a> <span class="layer-state soon">In development</span></p>
+        </div>
+      </div>
+      <div class="layer" id="layer-04">
+        <div class="layer-num" aria-hidden="true">04</div>
+        <div class="layer-body">
+          <div class="layer-tag">More</div>
+          <h3>Capabilities that ride along</h3>
+          <p>The pieces that are not products in their own right but come with the platform.</p>
+          <p class="layer-prod"><span class="layer-side">Skill library · Agent tools · GPU &amp; inference · Office &amp; workflow</span></p>
         </div>
       </div>
     </div>
-    <p class="model-note">Adopt the whole stack, or start with the layer you need most. <a href="/about#contact">Tell us where you are.</a></p>
+    <p class="model-note">Start at the layer you need — most teams start at 01. <a href="/about#contact">Tell us where you are.</a></p>
   </div>
 </section>
 
 <section class="section alt" id="products">
   <div class="container">
     <div class="section-head center">
-      <h2>Four products, four kinds of easy</h2>
-      <p>Runix is built in the order the work actually happens: get model access under control, make the data usable, then build and create with it.</p>
+      <h2>The four products</h2>
+      <p>Each one sits in a layer above. The statuses are literal, not roadmap language — only the Router is serving traffic today.</p>
     </div>
     <div class="grid cols-2">
       <a class="card card-clickable" id="router" href="/router" aria-label="Explore Runix Router">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M12 4l8 8-8 8"/></svg></div>
+        <p class="card-layer">Layer <b>01</b> · Access</p>
         <h3>Runix Router</h3>
         <p><strong>Security, compliance and performance</strong> for the LLM traffic you already run — one OpenAI-compatible endpoint in front of every provider.</p>
         <ul>
@@ -217,6 +207,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
       </a>
       <a class="card card-clickable" id="pipeline" href="/pipeline" aria-label="Explore Runix Pipeline">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+        <p class="card-layer">Layer <b>02</b> · Prepare</p>
         <h3>Runix Pipeline</h3>
         <p><strong>The unglamorous half of every AI project</strong> — raw, duplicated, half-structured source material turned into something a model can read.</p>
         <ul>
@@ -229,6 +220,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
       </a>
       <a class="card card-clickable" id="code" href="/code" aria-label="Explore Runix Code">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <p class="card-layer">Layer <b>03</b> · Build</p>
         <h3>Runix Code</h3>
         <p><strong>An AI pair that has read your code</strong> — codebase-aware assistance and agentic tasks, under review gates and team controls.</p>
         <ul>
@@ -241,6 +233,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
       </a>
       <a class="card card-clickable" id="comic" href="/comic" aria-label="Explore Runix Comic">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <p class="card-layer">Layer <b>03</b> · Create</p>
         <h3>Runix Comic</h3>
         <p><strong>From script to screen to audience</strong> — an end-to-end studio for AI comic dramas, being built stage by stage.</p>
         <ul>
@@ -330,7 +323,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
       <div class="path">
         <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
         <h3>Create an account</h3>
-        <p>Sign up, get evaluation credits and issue your first key in a couple of minutes.</p>
+        <p>Sign up and issue your first key in a couple of minutes.</p>
         <a class="btn btn-primary" href="https://console.router.runixcloud.io/register">Create an account</a>
       </div>
       <div class="path">

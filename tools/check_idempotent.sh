@@ -20,7 +20,8 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 BUILDERS="add_closing_ctas add_docs_nav add_router_diagram center_product_heroes
-          expand_about fix_orphans wrap_tables sync_schema add_related add_glossary"
+          expand_about fix_orphans wrap_tables sync_schema add_related add_glossary
+          open_self_serve_signup credits_on_request numbered_product_system"
 
 fail=0
 for t in $BUILDERS; do

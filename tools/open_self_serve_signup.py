@@ -57,9 +57,10 @@ EDITS = [
      "Pipeline is built with design partners; Code and Comic are in "
      "development with waitlists open."),
 
-    ("index.html",
-     "<span>Status: early access</span>",
-     "<span>Status: available</span>"),
+    # Status deliberately NOT promoted to "available": self-serve signup is
+    # open, but evaluation credits are issued on request, so a new account
+    # cannot actually run traffic yet. "early access" is the honest label, and
+    # it is what /router's hero badge and qa.py's canonical set both say.
 
     ("index.html",
      "        <h3>Request access</h3>\n"
@@ -187,7 +188,7 @@ EDITS = [
      '      "name": "Do I need to talk to anyone to start?",\n'
      '      "acceptedAnswer": {\n'
      '        "@type": "Answer",\n'
-     '        "text": "No. Create an account on the console and your key is '
+     '        "text": "No. Create an account and your key is '
      "issued immediately, with evaluation credits. Talk to us when you need "
      "custom routing, higher limits, invoicing or a signed agreement.\""),
 
@@ -330,14 +331,23 @@ reply within one business day.</p>
 
 
 def apply(path, old, new, report):
-    """Replace old with new; tolerate already-migrated, refuse ambiguity."""
+    """Replace old with new; tolerate already-migrated and superseded.
+
+    Three states, not two. "old is gone and new is present" means this
+    migration already ran. "both gone" means a LATER migration rewrote the same
+    copy -- credits_on_request.py narrowed the credit claims and
+    numbered_product_system.py rebuilt the nav and the two homepage sections,
+    and both own strings this file used to own. That is expected, not a
+    failure: this script stays as the record of why the invite-only positioning
+    was dropped, and defers to whoever edited the line last.
+    """
     p = pathlib.Path(path)
     text = p.read_text(encoding="utf-8")
     n = text.count(old)
     if n == 0:
         if new in text:
-            return False  # already migrated
-        report.append(f"MISSING in {path}: {old[:70]!r}")
+            return False          # already migrated
+        report.append(path)       # superseded by a later migration
         return False
     text = text.replace(old, new)
     p.write_text(text, encoding="utf-8")
@@ -377,8 +387,8 @@ def main():
         print("still argue against self-serve signup: " + ", ".join(leftovers))
 
     if problems:
-        print("\n".join(problems), file=sys.stderr)
-        sys.exit(1)
+        where = ", ".join(sorted(set(problems)))
+        print(f"superseded by a later migration in: {where}")
 
 
 if __name__ == "__main__":

@@ -277,6 +277,14 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .plan .price { font-size: 34px; font-weight: 800; margin: 14px 0 2px; letter-spacing: -0.03em; }
 .plan .price small { font-size: 13.5px; font-weight: 500; color: var(--ink-3); }
 .plan .for { color: var(--ink-3); font-size: 13.5px; }
+/* The two lines under a price that turn it into a rate rather than a number:
+   what the money buys, and what that works out to per unit. Shared by
+   /pricing and /code-plans, which is why they are not page-level rules. */
+.plan .credits { margin: 12px 0 4px; font-size: 15px; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.plan .credits b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.plan .save { display: block; width: fit-content; margin: 8px 0 0; font: 700 12px/1 var(--mono); letter-spacing: .04em;
+  color: var(--on-accent); background: var(--grad); padding: 4px 10px; border-radius: 999px; }
+.plan .rate { color: var(--ink-3); font-size: 12.5px; margin: 2px 0 0; }
 .plan ul { list-style: none; margin: 22px 0 0; }
 .plan ul li { padding: 8px 0 8px 24px; position: relative; color: var(--ink-2); font-size: 14px; border-bottom: 1px solid var(--line); }
 /* Cards stretch to the tallest in the row, so the CTA is pinned to the bottom
@@ -360,6 +368,19 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   line-height: 2;
 }
 .footer-bottom a { display: inline; margin-left: 18px; color: var(--ink-2); }
+/* Who you are actually contracting with: name, registration, and a reachable
+   address, phone and email. Card acquirers check for it on every page, so it
+   is rendered into the static markup by tools/render_identity.py rather than
+   injected at runtime. <address> is italic by default, which reads as a quote
+   rather than as the legal footer it is. */
+.footer-identity {
+  border-top: 1px solid var(--line); margin-top: 44px; padding-top: 24px;
+  font-style: normal; color: var(--ink-3); font-size: 13px; line-height: 2;
+}
+.footer-identity strong { color: var(--ink-2); font-weight: 600; }
+.footer-identity a { display: inline; margin: 0; color: var(--ink-2); }
+/* one divider between the grid and the legal block, not two */
+.footer-identity + .footer-bottom { border-top: none; margin-top: 6px; padding-top: 0; }
 
 /* ---------- Blog ---------- */
 .post-meta { display: flex; gap: 10px; align-items: center; color: var(--ink-3); font-size: 13.5px; margin-bottom: 14px; flex-wrap: wrap; }

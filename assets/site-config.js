@@ -22,12 +22,20 @@
     tradingName: "Runix",
     registrationJurisdiction: "Wyoming, United States",
 
-    // --- Confirmed but NOT yet published publicly ---
-    // Real values exist in the company's incorporation documents. Left null
-    // here on purpose: do not display a registration number / street address
-    // publicly until the owner explicitly approves it. Do NOT invent one.
-    registrationNumber: null,     // e.g. set to the WY filing number when approved for display
-    businessAddress: null,        // registered-office address, when approved for display
+    // --- Business identification (published in the footer of every page) ---
+    // Card acquirers require a website to display company name, business
+    // registration number and contact details (address, email, phone) —
+    // Airwallex checks all three before enabling a payment method.
+    //
+    // These are still null until the owner supplies the real values. Never
+    // invent one: a wrong filing number is worse than a missing one, and the
+    // renderer hides whatever is null rather than printing a placeholder.
+    // After filling them in, run `python3 tools/render_identity.py --write`
+    // so the values are baked into the static markup (they must be visible
+    // with JavaScript disabled, which is how a reviewer may fetch the page).
+    registrationNumber: null,     // WY filing ID, as printed on the certificate
+    businessAddress: null,        // registered-office address, single line
+    businessPhone: null,          // publicly answerable business line, E.164-ish display form
     // EIN / tax id is intentionally absent — it must never appear on the site.
 
     // --- Contact (addresses route to the owner's inbox via Cloudflare Email Routing) ---
@@ -64,6 +72,10 @@
   // Lightweight injector (runs after DOM parse). Opt-in only:
   //   <span data-cfg="legalCompanyName"></span>
   //   <a data-cfg-mail="supportEmail"></a>
+  //   <a data-cfg-tel="businessPhone"></a>
+  //   <div data-cfg-row="businessAddress">      <- removed entirely when null,
+  //                                                so a contact table never
+  //                                                shows an empty "Address" row
   function inject() {
     document.querySelectorAll("[data-cfg]").forEach(function (el) {
       var v = RUNIX[el.getAttribute("data-cfg")];
@@ -74,6 +86,17 @@
       if (!v) return;
       el.setAttribute("href", "mailto:" + v);
       if (!el.textContent.trim()) el.textContent = v;
+    });
+    document.querySelectorAll("[data-cfg-tel]").forEach(function (el) {
+      var v = RUNIX[el.getAttribute("data-cfg-tel")];
+      if (!v) return;
+      el.setAttribute("href", "tel:" + v.replace(/[^+\d]/g, ""));
+      if (!el.textContent.trim()) el.textContent = v;
+    });
+    document.querySelectorAll("[data-cfg-row]").forEach(function (el) {
+      if (!RUNIX[el.getAttribute("data-cfg-row")] && el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
     });
   }
   if (document.readyState === "loading") {

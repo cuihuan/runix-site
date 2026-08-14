@@ -104,5 +104,6 @@ All 25 posts, newest first. Descriptions are the pages' own.
 - [Terms of Service](https://runixcloud.io/terms)
 - [Privacy Policy](https://runixcloud.io/privacy)
 - [Refund Policy](https://runixcloud.io/refund)
+- [Shipping & Delivery Policy](https://runixcloud.io/delivery)
 - [Cancellation Policy](https://runixcloud.io/cancellation)
 - [Acceptable Use Policy](https://runixcloud.io/acceptable-use)

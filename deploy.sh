@@ -19,6 +19,13 @@ if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   exit 1
 fi
 
+echo "==> Bake the legal identity into every footer"
+# Company name, registration number and contact details have to be visible in
+# the served HTML, not injected by script — card acquirers check for them and a
+# reviewer may read the page with JavaScript off. Runs before the asset bump so
+# any page it rewrites gets a fresh hash.
+python3 "$SRC/tools/render_identity.py" --write
+
 echo "==> Bump ?v= on assets whose bytes changed"
 # Must run before the checks, since it rewrites the pages. This is what makes
 # the one-year cache on /assets/* safe: forgetting to bump is no longer possible.

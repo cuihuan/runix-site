@@ -78,6 +78,7 @@
     <div class="nav-links">
       <a href="/#platform">Platform</a>
       <a href="/#products">Products</a>
+      <a href="/pricing" class="active">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about">Company</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
@@ -100,8 +101,10 @@
       <div class="plans">
       <div class="plan">
         <h3>Evaluation</h3>
-        <div class="price">Free credits</div>
+        <div class="price">Free<small> credits</small></div>
         <div class="for">Try the router before you pay</div>
+        <p class="credits">Issued <b>on request</b>, no card</p>
+        <p class="rate">Same endpoint and models as a paid account</p>
         <ul>
           <li>Free evaluation credits on request</li>
           <li>Full router functionality</li>
@@ -113,11 +116,13 @@
       <div class="plan featured">
         <span class="flag">Most common</span>
         <h3>Pay as you go</h3>
-        <div class="price">Usage-based</div>
+        <div class="price">$0.01<small> /credit</small></div>
         <div class="for">For products running in production</div>
+        <p class="credits"><b>$50</b> tops up 5,000 credits</p>
+        <p class="rate">No monthly fee · no commitment · top up any time</p>
         <ul>
-          <li>Pay only for what you use</li>
-          <li>Optional prepaid balance</li>
+          <li>One credit rate across every model and tool</li>
+          <li>Prepaid balance, drawn down as you use it</li>
           <li>Per-key limits and usage tracking</li>
           <li>Itemized statements</li>
           <li>Priority support available</li>
@@ -128,6 +133,8 @@
         <h3>Enterprise</h3>
         <div class="price">Custom</div>
         <div class="for">For teams with procurement needs</div>
+        <p class="credits">Discounted <b>credit rate</b>, by volume</p>
+        <p class="rate">Quoted against your own models and traffic, in writing</p>
         <ul>
           <li>Volume &amp; committed-use agreements</li>
           <li>Custom data pipelines and solutions</li>
@@ -137,7 +144,7 @@
         <!--email_off--><a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Enterprise%20pricing">Talk to sales</a><!--/email_off-->
       </div>
     </div>
-    <p class="model-note">Current per-model rates depend on the models and volume you use. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Pricing">Ask us for a quote</a><!--/email_off--> — we'll recommend the most cost-effective setup for your workload.</p>
+    <p class="model-note">Everything meters in credits at <strong>$0.01 each</strong>, billed in <span data-cfg="defaultCurrency">USD</span>. How many credits a request costs depends on the model and the size of the request — every charge is itemized in your console, and volume rates are quoted in writing. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Pricing">Ask for a quote</a><!--/email_off--> if you want the numbers against your own traffic first.</p>
   </div>
 </section>
 
@@ -150,7 +157,7 @@
     <div class="grid cols-2">
       <div class="card">
         <h3>Runix Router</h3>
-        <p><strong>Usage-based</strong> — per token or per request, by model, with optional prepaid balance and per-key limits. Quoted per workload; every quote states the rate table in writing. <a href="/docs/router">Integration docs</a> · <a href="/router">Router product page</a></p>
+        <p><strong>$0.01 per credit, generally available</strong> — prepaid balance drawn down by measured usage, with per-key limits and an itemized statement. Committed volume earns a lower rate, quoted in writing. <a href="/docs/router">Integration docs</a> · <a href="/router">Router product page</a></p>
       </div>
       <div class="card">
         <h3>Runix Pipeline</h3>
@@ -172,25 +179,43 @@
   <div class="container">
     <div class="feature">
       <div>
-        <span class="badge">No published rate card yet</span>
-        <h3>What you get instead of a price tag</h3>
-        <p>We quote per workload rather than publishing a rate card, because the number that matters depends on which models you call and how much you send. What we can tell you up front is exactly how the number is built — so a quote is a confirmation, not a surprise.</p>
-        <p style="margin-top:14px;">Ask for a quote with your expected monthly volume and the models you care about, and you get the rate table below filled in, in writing, before you commit to anything.</p>
+        <span class="badge">Rate card</span>
+        <h3>One credit rate, every model</h3>
+        <p>Credits are the single unit of charge: <strong>$0.01 per credit</strong>, in <span data-cfg="defaultCurrency">USD</span>, whichever model or tool a request reaches. There is no platform fee on top, no per-seat charge on pay-as-you-go, and no separate price list per provider to reconcile.</p>
+        <p style="margin-top:14px;">What varies is how many credits a request consumes — a long context on a frontier model costs more than a short one on a lighter model. Every request is metered and itemized in your console, so a month's spend is auditable line by line rather than arriving as one number. Committed volume earns a lower credit rate, quoted in writing before you sign.</p>
       </div>
       <div class="facts">
-        <div class="facts-head">Every quote states</div>
-        <div class="frow"><span class="k">Unit of charge</span><span class="v">Per token or per request<small>By model, input and output counted separately</small></span></div>
-        <div class="frow"><span class="k">Rate table</span><span class="v">One line per model you use<small>Fixed for the agreed term</small></span></div>
-        <div class="frow"><span class="k">Minimums</span><span class="v">Stated explicitly<small>Including "none", where none apply</small></span></div>
-        <div class="frow"><span class="k">Billing period</span><span class="v">Stated explicitly<small>Prepaid draw-down or invoiced in arrears</small></span></div>
-        <div class="frow"><span class="k">Statement detail</span><span class="v">Itemised per model<small>Usage you can reconcile against your own logs</small></span></div>
-        <div class="frow"><span class="k">Where it is written</span><span class="v">In an order form<small>Which takes precedence over the standard <a href="/terms">Terms</a></small></span></div>
+        <div class="facts-head">What a top-up buys</div>
+        <div class="frow"><span class="k">$10</span><span class="v">1,000 credits<small>Enough to take an integration end to end</small></span></div>
+        <div class="frow"><span class="k">$50</span><span class="v">5,000 credits<small>A small production workload</small></span></div>
+        <div class="frow"><span class="k">$100</span><span class="v">10,000 credits<small>Top up any amount; the rate does not change</small></span></div>
+        <div class="frow"><span class="k">Balance</span><span class="v">Drawn down as you use it<small>Unused balance is refundable per the <a href="/refund">Refund Policy</a></small></span></div>
+        <div class="frow"><span class="k">Minimums</span><span class="v">No monthly minimum<small>And no charge in a month you send nothing</small></span></div>
+        <div class="frow"><span class="k">Taxes</span><span class="v">Shown before you pay<small>Where they apply to your billing country</small></span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="how-to-buy">
+  <div class="container">
+    <div class="section-head center">
+      <h2>How to buy</h2>
+      <p>Three steps from this page to a working key. No sales call required, and nothing to install.</p>
+    </div>
+    <div class="steps">
+      <div class="stepc"><div class="n" aria-hidden="true">1</div><h3>Create an account</h3><p>Register at the Runix console — free, instant, no card. You can issue and revoke API keys straight away, and ask for evaluation credits to try the router before paying anything.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">2</div><h3>Choose an amount and pay</h3><p>Top up your prepaid balance at $0.01 per credit. The total, including any tax that applies in your billing country, is shown before you confirm — and the credits are usable within a minute. See the <a href="/delivery">Delivery Policy</a>.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">3</div><h3>Point your code at Runix</h3><p>Change one base URL to <code>api.router.runixcloud.io</code>. Each request draws down credits and lands on an itemized statement you can reconcile against your own logs.</p></div>
+    </div>
+    <p class="model-note">Everything is billed in <span data-cfg="defaultCurrency">USD</span> by <span data-cfg="legalCompanyName">Runix AI Inc</span>, and every receipt and invoice is issued in that name. Card and bank transfer are available for invoiced accounts today; self-serve card checkout is being enabled now, and until it is live <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Set%20up%20billing">email billing</a><!--/email_off--> and we set your account up within one business day.</p>
+    <div class="center" style="margin-top:26px;">
+      <a class="btn btn-grad" href="https://console.router.runixcloud.io/register">Create an account</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <div class="section-head center">
       <h2>How billing works</h2>
@@ -227,7 +252,7 @@
       </div>
       <div class="card">
         <h3>Payment options</h3>
-        <p>We're onboarding payment processing now. When self-serve checkout is live it will use a hosted, PCI-compliant checkout; today, enterprise billing (card or bank transfer) is arranged with our team. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Billing%20setup">Contact us</a><!--/email_off--> to set up billing.</p>
+        <p>Card and bank transfer are both available today through invoiced billing, set up with our team. Self-serve card checkout is being enabled now; it will run on a hosted, PCI-compliant page operated by a licensed payment processor, so Runix never sees or stores card details. <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Billing%20setup">Contact billing</a><!--/email_off--> to set up an account.</p>
       </div>
       <div class="card">
         <h3>Questions</h3>
@@ -280,12 +305,16 @@
         <a href="/terms">Terms of Service</a>
         <a href="/privacy">Privacy Policy</a>
         <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
         <a href="/cancellation">Cancellation Policy</a>
         <a href="/acceptable-use">Acceptable Use</a>
       </div>
     </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
     <div class="footer-bottom">
-      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span> &middot; <span data-cfg="registrationJurisdiction">Wyoming, United States</span></span>
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
       <span>
         <a href="/terms">Terms</a>
         <a href="/privacy">Privacy</a>

@@ -65,6 +65,7 @@ def read_config():
         "businessAddress",
         "businessPhone",
         "supportEmail",
+        "industry",
     ):
         m = re.search(r'^\s*%s:\s*(null|"((?:[^"\\]|\\.)*)")' % key, src, re.M)
         out[key] = None if not m or m.group(1) == "null" else m.group(2)
@@ -147,17 +148,26 @@ def render_terms(cfg):
 
 
 def render_facts(cfg):
-    """The "Company facts" row carrying the registration number."""
-    if not cfg["registrationNumber"]:
-        return ""
-    return (
-        '        <div class="frow"><span class="k">Registration</span>'
-        '<span class="v">%s<small>%s</small></span></div>\n'
-        % (
-            esc(cfg["registrationNumber"]),
-            esc(cfg["registrationJurisdiction"] or "Company registration number"),
+    """The "Company facts" rows: the registration number, and the industry the
+    business declares — the latter so a payment provider can match the site
+    against the industry on an application without inferring it from prose."""
+    rows = []
+    if cfg["registrationNumber"]:
+        rows.append(
+            '        <div class="frow"><span class="k">Registration</span>'
+            '<span class="v">%s<small>%s</small></span></div>'
+            % (
+                esc(cfg["registrationNumber"]),
+                esc(cfg["registrationJurisdiction"] or "Company registration number"),
+            )
         )
-    )
+    if cfg["industry"]:
+        rows.append(
+            '        <div class="frow"><span class="k">Industry</span>'
+            '<span class="v">%s<small>Software development, cloud computing and AI '
+            "infrastructure services</small></span></div>" % esc(cfg["industry"])
+        )
+    return ("\n".join(rows) + "\n") if rows else ""
 
 
 # marker name -> (renderer, indent, anchor to insert before when absent)
@@ -167,6 +177,41 @@ BLOCKS = {
     "identity-facts": (render_facts, "        ", None),
     "identity-terms": (render_terms, "  ", None),
 }
+
+
+US_ADDRESS = re.compile(
+    r"^(?P<street>.+?),\s*"
+    r"(?P<locality>[^,]+),\s*"
+    r"(?P<region>[A-Z]{2})\s+(?P<postal>\d{5}(?:-\d{4})?)"
+    r"(?:,\s*(?P<country>.+))?$"
+)
+
+
+def split_us_address(one_line):
+    """Break a US address into PostalAddress fields, or don't.
+
+    The config holds one display line, because that is what a footer prints.
+    Structured data wants it in parts, and a validator flags a PostalAddress
+    whose entire address sits in streetAddress with no addressLocality. This
+    only splits what unambiguously matches "street, city, ST 12345[, country]"
+    — anything else (a non-US address, a PO box line, a second suite line)
+    falls back to the whole string in streetAddress, which is imprecise but
+    never wrong.
+    """
+    m = US_ADDRESS.match(one_line.strip())
+    if not m:
+        return {"streetAddress": one_line}
+    out = {
+        "streetAddress": m.group("street"),
+        "addressLocality": m.group("locality"),
+        "addressRegion": m.group("region"),
+        "postalCode": m.group("postal"),
+    }
+    if m.group("country"):
+        out["addressCountry"] = "US" if m.group("country").strip() in (
+            "United States", "USA", "US", "United States of America",
+        ) else m.group("country").strip()
+    return out
 
 
 def patch_org_schema(src, cfg):
@@ -208,7 +253,7 @@ def patch_org_schema(src, cfg):
         }
     if cfg["businessAddress"]:
         org.setdefault("address", {"@type": "PostalAddress"})
-        org["address"]["streetAddress"] = cfg["businessAddress"]
+        org["address"].update(split_us_address(cfg["businessAddress"]))
     if cfg["businessPhone"]:
         org["telephone"] = cfg["businessPhone"]
         for cp in org.get("contactPoint", []):

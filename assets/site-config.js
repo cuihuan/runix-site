@@ -21,21 +21,26 @@
     legalCompanyName: "Runix AI Inc",
     tradingName: "Runix",
     registrationJurisdiction: "Wyoming, United States",
+    // Stated on /about so a payment provider can match the site against the
+    // industry declared in an application. Keep the two identical — a website
+    // whose nature disagrees with the declared industry is a rejection reason
+    // in its own right, independently of anything else being wrong.
+    industry: "Software / SaaS — AI infrastructure",
 
     // --- Business identification (published in the footer of every page) ---
     // Card acquirers require a website to display company name, business
     // registration number and contact details (address, email, phone) —
     // Airwallex checks all three before enabling a payment method.
     //
-    // These are still null until the owner supplies the real values. Never
-    // invent one: a wrong filing number is worse than a missing one, and the
-    // renderer hides whatever is null rather than printing a placeholder.
-    // After filling them in, run `python3 tools/render_identity.py --write`
+    // Never invent one: a wrong filing number is worse than a missing one, and
+    // the renderer hides whatever is null rather than printing a placeholder.
+    // After changing any of these, run `python3 tools/render_identity.py --write`
     // so the values are baked into the static markup (they must be visible
     // with JavaScript disabled, which is how a reviewer may fetch the page).
-    registrationNumber: null,     // WY filing ID, as printed on the certificate
-    businessAddress: null,        // registered-office address, single line
-    businessPhone: null,          // publicly answerable business line, E.164-ish display form
+    // deploy.sh runs it for you.
+    registrationNumber: "2026-002036618",   // WY filing ID, as printed on the certificate
+    businessAddress: "30 N Gould St Ste R, Sheridan, WY 82801, United States",
+    businessPhone: "+1 (308) 689-0770",     // display form; the tel: link is derived, digits only
     // EIN / tax id is intentionally absent — it must never appear on the site.
 
     // --- Contact (addresses route to the owner's inbox via Cloudflare Email Routing) ---

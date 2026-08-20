@@ -6,7 +6,28 @@
     <atom:link href="https://runixcloud.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Engineering notes on LLM gateways, reliability, cost control and data pipelines, from the team building Runix.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Why your LLM bill doesn't match the price list</title>
+      <link>https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list</guid>
+      <description>Cache multipliers, injected prompts, tokenizer changes, tiered and off-peak rates: the five mechanics behind a surprising token bill, and how to reconcile one request by hand.</description>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The security review an LLM gateway should survive</title>
+      <link>https://runixcloud.io/blog/llm-gateway-security-review</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-gateway-security-review</guid>
+      <description>A gateway sits between your prompts and every provider. Eight questions a security review should ask it — key custody, logging, retention, isolation, egress — and what good answers look like.</description>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Your LLM traffic needs a retry budget, not a retry count</title>
+      <link>https://runixcloud.io/blog/llm-retry-budget</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/llm-retry-budget</guid>
+      <description>Retries multiply cost and load exactly when a provider is struggling. What a retry budget is, which errors deserve one, and how failover changes the arithmetic.</description>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Where your prompts actually go</title>
       <link>https://runixcloud.io/blog/where-your-prompts-actually-go</link>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why your LLM bill doesn't match the price list — Runix</title>
+<meta name="description" content="Cache multipliers, injected prompts, tokenizer changes, tiered rates: the mechanics behind a surprising token bill, and how to reconcile one request by hand.">
+<meta property="og:title" content="Why your LLM bill doesn't match the price list — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta property="og:description" content="Cache multipliers, injected prompts, tokenizer changes, tiered rates: the mechanics behind a surprising token bill, and how to reconcile one request by hand.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-why-your-llm-bill-doesnt-match-the-price-list.png?v=140d39a7">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-why-your-llm-bill-doesnt-match-the-price-list.png?v=140d39a7">
+<meta property="og:url" content="https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list">
+<link rel="canonical" href="https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=24">
+<script src="../assets/site-config.js?v=12" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why your LLM bill doesn't match the price list",
+  "description": "Cache multipliers, injected prompts, tokenizer changes, tiered rates: the mechanics behind a surprising token bill, and how to reconcile one request by hand.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list"
+  },
+  "image": "https://runixcloud.io/assets/og-cover.png?v=12",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-20",
+  "dateModified": "2026-08-20",
+  "url": "https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Why your LLM bill doesn't match the price list",
+      "item": "https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Why your LLM bill doesn't match the price list — Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta name="twitter:description" content="Cache multipliers, injected prompts, tokenizer changes, tiered rates: the mechanics behind a surprising token bill, and how to reconcile one request by hand.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="https://console.router.runixcloud.io/register" target="_blank" rel="noopener">Get API key</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>August 20, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">Why your LLM bill doesn't match the price list</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>The per-token price is the one number everybody checks before picking a model, and
+it is almost never the number that explains the bill. We recently reconciled a gateway's
+rate tables against five vendors' published price lists, line by line, and then verified the
+result by billing a single live request and recomputing it by hand. The differences we found
+along the way fall into five mechanics, none of which appear in the headline price.</p>
+
+<h2>1. Cached tokens have their own prices — two of them</h2>
+
+<p>Every major provider now prices cached prompt tokens separately, and the multipliers are
+not standardized. Reading a cached prefix typically costs about a tenth of the input rate —
+OpenAI lists cached input at 10% of the normal price, Anthropic at 0.1&times;, and some
+vendors go far lower still. Writing the cache is where they diverge: Anthropic charges a
+25% premium on cache writes (more for a longer-lived cache), MiniMax similarly lists a write
+price a quarter above input, while OpenAI charges nothing at all to create the cache.</p>
+
+<p>That asymmetry means the same traffic pattern — a long, stable system prompt reused across
+requests — produces structurally different bills per provider. It also means a billing layer
+that applies one provider's multipliers to another's models is wrong in a way nobody notices:
+the request succeeds, the ledger has numbers in it, and the numbers are quietly 25% off on
+every cache write, or ten times too high on every cache read a missing entry falls back to
+full price for.</p>
+
+<p><strong>Check it:</strong> your usage object reports cached tokens separately
+(<code>cache_read_input_tokens</code>, <code>cached_tokens</code>, or a vendor equivalent).
+If your cost model multiplies total input tokens by one rate, it disagrees with the invoice
+on exactly the workloads caching was supposed to make cheap.</p>
+
+<h2>2. The prompt you sent is not the prompt you paid for</h2>
+
+<p>Tools and agents inject context. System prompts, tool schemas, harness instructions,
+memory files — all of it is input tokens at full price. The starkest example from our own
+ledger: a two-word request ("Say OK") sent through a coding-assistant proxy arrived at the
+model as <strong>4,099 prompt tokens</strong>, because the upstream injects its agent
+scaffolding into every conversation. The reply was one token. More than 99.9% of that
+request's cost was context the caller never wrote.</p>
+
+<p>This is not misbehaviour — the scaffolding is what makes the tool work — but it changes
+which price matters. For agentic traffic, the input rate and the cache-read rate dominate
+everything else, because the injected prefix is large, repeated, and (if the provider and
+client cooperate) cacheable. A model with a cheap output price and no cache discount can
+cost more in an agent loop than a nominally pricier model with 0.1&times; cache reads.</p>
+
+<h2>3. Tokenizers change between model generations</h2>
+
+<p>Prices are quoted per million tokens, but the tokenizer decides how many tokens your text
+is — and vendors revise tokenizers between model families. A recent Sonnet-generation change,
+for example, tokenizes the same text to roughly 30% more tokens than its predecessor, which
+shifts every token-denominated number: measured context usage, <code>max_tokens</code>
+budgets, and the effective price of identical traffic, all without a price-list change.</p>
+
+<p><strong>Check it:</strong> never reuse token counts measured on one model to budget
+another. Count against the model you will bill on; the count endpoints are free.</p>
+
+<h2>4. Tiered, off-peak and regional prices</h2>
+
+<p>Some price lists are not one number per model. Alibaba's Qwen coder models bill the whole
+request at a higher rate once the input crosses a context threshold (with three tiers, the
+top one at more than double the base). DeepSeek publishes standard rates and a 50%-off
+window covering most of the day. Several vendors publish different prices for their mainland
+and international platforms for the same model id. A flat per-model rate — which is what most
+billing layers, ours included, can express — is therefore an approximation of some vendors'
+lists by construction. The honest options are to pin the rate to the tier most of your
+traffic lands in and say so, or to bill at the ceiling. Silence is the only wrong choice.</p>
+
+<h2>5. Models leave the price list</h2>
+
+<p>The strangest case we hit: a model that was still serving traffic but no longer on its
+vendor's price page at all — the line had been discontinued and replaced two weeks earlier,
+and the old id lived on only in intermediaries' catalogues. There is no "official price" for
+such a model; whatever anyone charges for it is a policy, not an alignment. If your provider
+serves ids the upstream vendor has retired, ask what actually answers those requests, because
+the answer decides what the fair rate would be.</p>
+
+<h2>Reconcile one request by hand</h2>
+
+<p>All five mechanics reduce to one habit: take a single real request and recompute its cost
+from the raw numbers. The formula is the same everywhere:</p>
+
+<pre><code>cost = plain_input &times; input_rate
+     + cache_reads &times; cache_read_rate
+     + cache_writes &times; cache_write_rate
+     + output &times; output_rate</code></pre>
+
+<p>Pull each token count from the response's usage object, each rate from the vendor's
+pricing page (not from memory — they change), and compare against what your ledger recorded.
+When we ran this against our own gateway after the audit, the recomputed figure matched the
+ledger to the rounding of a single quota unit. When it does not match, one of the five
+mechanics above is the reason, and now you know which number to go look at.</p>
+
+<p>This is also, incidentally, the test to run against any gateway or reseller before
+trusting its billing — <a href="/router">ours included</a>. A provider that shows you
+per-request token breakdowns and survives a hand recomputation has earned the invoice. One
+that only shows monthly totals is asking you to take the five mechanics on faith.</p>
+
+<p class="note-line">Multipliers and list prices referenced above were read from the vendors'
+own pricing pages on 20 August 2026. They change without notice — treat the mechanics as
+durable and the numbers as a snapshot.</p>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+  <li><a href="/blog/llm-cost-attribution">Per-Team LLM Cost Attribution That Survives Audit</a></li>
+  <li><a href="/blog/prompt-caching-explained">Prompt Caching: When It Pays and When It Bites</a></li>
+  <li><a href="/blog/llm-cost-control">LLM Cost Control: Tokens, Caching, and Budgets Explained</a></li>
+    <li><a href="/pricing">How Runix pricing works</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

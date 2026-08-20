@@ -68,6 +68,10 @@ RELATED = {
     "comic-drama-vs-webtoon-vs-motion-comic": (["how-to-make-a-comic-drama-with-ai", "what-is-an-llm-gateway"], "/comic"),
     # company
     "introducing-runix": (["what-is-an-llm-gateway", "llm-gateway-guide", "model-failover"], "/router"),
+    # billing mechanics
+    "why-your-llm-bill-doesnt-match-the-price-list": (["llm-cost-attribution", "prompt-caching-explained", "llm-cost-control"], "/pricing"),
+    "llm-retry-budget": (["how-long-should-an-llm-request-wait", "model-failover", "llm-rate-limits"], "/reliability"),
+    "llm-gateway-security-review": (["where-your-prompts-actually-go", "llm-api-key-management", "ai-vendor-data-questions"], "/security"),
 }
 
 MARKER = 'class="related"'
@@ -97,7 +101,7 @@ for slug, (siblings, product) in RELATED.items():
         # reader's landmark list as just "complementary" -- pointing it at the
         # heading it already has gives it a name without duplicating the string.
         f'\n<aside class="related" aria-labelledby="related-reading">\n'
-        f"  <h2 id="related-reading">Related reading</h2>\n"
+        f'  <h2 id="related-reading">Related reading</h2>\n'
         f"  <ul>{items}\n"
         f'    <li><a href="{product}">{PRODUCT[product]}</a></li>\n'
         f"  </ul>\n"

@@ -75,10 +75,10 @@ def main(outdir):
         # problem even when the canonical is correct.
         open(os.path.join(out, "404.html"), "w").write(
             NOT_FOUND.replace("MAIN_SITE", MAIN))
-        left = re.findall(r'href="(?!https?://|mailto:|#|assets/)[^"]+"', html)
+        left = re.findall(r'href="(?!https?://|mailto:|tel:|#|assets/)[^"]+"', html)
         status = "OK" if not left else f"UNRESOLVED: {left}"
         print(f"{sub}: {status}")
-    if any(re.findall(r'href="(?!https?://|mailto:|#|assets/)[^"]+"',
+    if any(re.findall(r'href="(?!https?://|mailto:|tel:|#|assets/)[^"]+"',
                       open(os.path.join(outdir, f"subsite-{s}", "index.html")).read())
            for s in MAP):
         sys.exit(1)

@@ -95,7 +95,7 @@
       <a href="/docs/" class="active">Docs</a>
       <a href="/about">Company</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
-      <a class="nav-cta" href="https://console.router.runixcloud.io/register" target="_blank" rel="noopener">Get API key</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
     </div>
   </nav>
 </header>
@@ -104,7 +104,7 @@
 
 <div class="page-hero">
   <div class="container">
-    <div class="post-meta"><span class="cat">Docs</span><span>Runix Router</span><span>·</span><span>Updated August 2, 2026</span></div>
+    <div class="post-meta"><span class="cat">Docs</span><span>Runix Router</span><span>·</span><span>Updated August 20, 2026</span></div>
     <h1 style="margin-top: 14px;">Router quickstart &amp; integration guide</h1>
   </div>
 </div>
@@ -158,6 +158,7 @@ resp = client.chat.completions.create(
 <li><strong>Route automatically</strong> — pass <code>"model": "auto"</code> and Router selects by cost, health and your account's configuration. Routing preferences are set per key during onboarding; tell us your priorities (cheapest acceptable, latency-first, provider allowlists) and they are applied server-side.</li>
 <li><strong>Discover what a key can call</strong> — <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
 </ul>
+<p>Model ids are the vendors’ own. Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-4-6</code>), and other vendors’ models keep their catalogue names — there is no Runix-specific alias table to maintain, so an id copied from a vendor’s announcement works as-is. The authoritative list for your key is always <code>GET /v1/models</code>.</p>
 
 <h2 id="streaming">3. Streaming</h2>
 <p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed — including tool-call deltas — so the first token is forwarded as soon as the provider emits it rather than after the response completes. That is a statement about the mechanism, not a performance claim: measure time to first token against the provider directly and you will see what the router costs you.</p>
@@ -169,12 +170,22 @@ resp = client.chat.completions.create(
 <li><strong>Mid-stream failures</strong> are re-issued as well — see <a href="/blog/streaming-llm-failover">how streaming failover works</a> for the mechanics and the edge cases.</li>
 <li><strong>A degrading provider</strong> is taken out of rotation before it drags your latency, and returns when health checks pass.</li>
 </ul>
-<p>For the background on retry budgets and failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>.</p>
+<p>For the background on failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>; why retries should be a spend budget rather than a count — and which errors deserve one at all — is covered in <a href="/blog/llm-retry-budget">Retry budgets for LLM APIs</a>.</p>
 
 <h2 id="limits-usage-and-cost">5. Limits, usage and cost</h2>
 <ul>
+<li><strong>List-price metering</strong> — requests are metered per token at the upstream
+    vendors’ published rates, with input, output, cached-read and cache-write tokens priced
+    separately — the same structure the vendors themselves publish. We audit the rate table
+    against the vendors’ own pricing pages; the mechanics of why token bills diverge from
+    price lists — and how to check one by hand — are in
+    <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">Why your LLM bill doesn’t
+    match the price list</a>.</li>
+<li><strong>Usage on every response</strong> — the <code>usage</code> object carries the full
+    token breakdown, cached tokens included, so any single request can be reconciled against
+    the rate card without asking us. Billing is usage-based in USD with itemised statements;
+    see <a href="/pricing">Pricing</a> for how quotes work.</li>
 <li><strong>Per-key quotas</strong> — each key carries limits and quotas set during onboarding, revocable and adjustable without a redeploy.</li>
-<li><strong>Usage tracking</strong> — usage is recorded per request from the first call; billing is usage-based in USD with itemised statements. See <a href="/pricing">Pricing</a> for how quotes work.</li>
 <li><strong>Attribution</strong> — issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="/blog/llm-cost-attribution">LLM cost attribution</a>.</li>
 </ul>
 
@@ -210,9 +221,10 @@ section 4 before an error reaches you.</p>
 
 <h2 id="data-handling">7. Data handling</h2>
 <p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>
+<p>If you are evaluating us — or any gateway — <a href="/blog/llm-gateway-security-review">the security review an LLM gateway should survive</a> is the list of questions we think you should ask, including of Runix.</p>
 
 <h2 id="getting-a-key">8. Getting a key</h2>
-<p>Router is self-serve: <a href="https://console.router.runixcloud.io/register">create an account</a> and your key is issued immediately; evaluation credits are issued on request, so you can test against real traffic before you pay. For custom routing, limits above the self-serve ceiling, invoicing or a signed agreement, <a href="/about#contact">tell us what you are building</a> — models, expected volume, latency needs — and we reply within one business day. A complete API reference ships alongside; onboarded teams receive integration support directly.</p>
+<p>Router is currently <strong>invite-only</strong>: <a href="/about#contact">tell us what you are building</a> — models, expected volume, latency needs — or email <a href="mailto:support@runixcloud.io">support@runixcloud.io</a>, and we reply within one business day and set the account up for you. Evaluation credits are issued on request, so you can test against real traffic before you pay. Existing accounts <a href="https://console.router.runixcloud.io">sign in here</a>.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>

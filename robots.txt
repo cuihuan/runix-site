@@ -4,16 +4,56 @@ Disallow: /cdn-cgi/
 
 # Assistants that cite sources are welcome here — there is a summary written
 # for them at /llms.txt, and the blog is the part worth quoting.
+#
+# The search-and-cite crawlers are listed separately from the training ones
+# below, because most vendors run two and only the first kind sends a reader
+# back with a link.
+
+# --- Search and citation ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# --- Training and dataset collection ---
 User-agent: GPTBot
 Allow: /
 
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: PerplexityBot
+User-agent: Google-Extended
 Allow: /
 
-User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Amazonbot
 Allow: /
 
 User-agent: CCBot

@@ -166,6 +166,13 @@ done
 
 [ "$fail" = "0" ] && echo "==> Deploy OK" || { echo "==> Deploy FAILED verification"; exit 1; }
 
+echo "==> Tell the search engines what changed"
+# Placed after verification so the pages announced here have been seen serving.
+# Submits what update_lastmod.py dated today, which it decides by content hash
+# rather than mtime. Exit status is swallowed: the site is already live at this
+# point, and a search-engine ping failing is not worth a red run.
+python3 "$SRC/tools/indexnow.py" || true
+
 echo "==> Keep the product sub-domains in step"
 # They embed their own copy of assets/, so every stylesheet change here leaves
 # them behind. Re-deploying them was a separate command someone had to remember,

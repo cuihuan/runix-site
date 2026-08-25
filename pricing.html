@@ -15,6 +15,7 @@
 <title>LLM Gateway Pricing — Usage-Based Billing | Runix</title>
 <meta name="description" content="How Runix bills: per-token or per-request usage, itemised statements, prepaid or invoiced, and exactly what every quote states before you commit.">
 <link rel="canonical" href="https://runixcloud.io/pricing">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="LLM Gateway Pricing — Usage-Based Billing | Runix">
 <meta property="og:description" content="How Runix bills: per-token or per-request usage, itemised statements, prepaid or invoiced, and exactly what every quote states before you commit.">
 <meta property="og:type" content="website">
@@ -40,7 +41,41 @@
   "provider": {
     "@id": "https://runixcloud.io/#org"
   },
-  "areaServed": "Worldwide"
+  "areaServed": "Worldwide",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Evaluation",
+      "description": "Free evaluation credits, issued on request. Same endpoint and models as a paid account, no card required.",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/LimitedAvailability",
+      "url": "https://runixcloud.io/pricing"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pay as you go",
+      "description": "Prepaid balance drawn down by measured usage. One credit rate across every model and tool, no monthly fee and no commitment; $50 tops up 5,000 credits.",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://runixcloud.io/pricing",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "0.01",
+        "priceCurrency": "USD",
+        "unitText": "credit",
+        "description": "Every request meters in credits at $0.01 each, billed in USD. How many credits a request costs depends on the model and the size of the request."
+      }
+    },
+    {
+      "@type": "Offer",
+      "name": "Enterprise",
+      "description": "Discounted credit rate by volume, quoted in writing against your own models and traffic. Volume and committed-use agreements, custom data pipelines, formal invoicing and DPAs on request.",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://runixcloud.io/about#contact"
+    }
+  ]
 }
 </script>
 <meta property="og:locale" content="en_US">

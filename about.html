@@ -25,6 +25,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/about.png?v=05e06045">
 <meta property="og:url" content="https://runixcloud.io/about">
 <link rel="canonical" href="https://runixcloud.io/about">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css?v=24">
@@ -171,6 +172,38 @@
         <div class="row"><span class="k">Entity</span><span>Runix AI Inc (Wyoming, USA)</span></div>
         <div class="row"><span class="k">Location</span><span>Remote-first · United States</span></div>
         <div class="row"><span class="k">Legal</span><span><a href="/privacy">Privacy</a>&nbsp;·&nbsp;<a href="/terms">Terms</a></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>What we publish openly</h2>
+      <p>Three of the tools we built to run a gateway are open source, under CC0 or MIT. They work against any OpenAI-compatible endpoint, including the ones we compete with.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <span class="k">Curated list</span>
+        <h3>Awesome AI Gateway</h3>
+        <p class="lead-line">A decision tree over 160+ AI gateways, with a reproducible cost benchmark and a compliance and supply-chain scorecard behind every entry.</p>
+        <p style="margin-top:10px;">CC0, no vendor money and no affiliate links. <strong>Runix Router is deliberately not listed on it</strong> — a maintainer scoring their own product beside competitors is not a score worth reading.
+        <a href="https://github.com/cuihuan/awesome-ai-gateway" rel="noopener">See the list</a>.</p>
+      </div>
+      <div class="pillar">
+        <span class="k">Benchmark</span>
+        <h3>LLM Gateway Bench</h3>
+        <p class="lead-line">A black-box benchmark for any gateway or relay: time-to-first-token, throughput, success rate, price multiple, plus fidelity probes for model echo, fake streaming and usage inflation.</p>
+        <p style="margin-top:10px;">Bring your own key and measure whoever you are evaluating — us included.
+        <a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Run the benchmark</a>.</p>
+      </div>
+      <div class="pillar">
+        <span class="k">Prober</span>
+        <h3>modelprobe</h3>
+        <p class="lead-line">A dependency-free Go binary that reports, per model, whether it is up and how fast — one real but deliberately tiny call each.</p>
+        <p style="margin-top:10px;">Drop it in CI or a cron so an outage reaches you before it reaches your users.
+        <a href="https://github.com/cuihuan/modelprobe" rel="noopener">Get the prober</a>.</p>
       </div>
     </div>
   </div>

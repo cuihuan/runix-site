@@ -7,6 +7,11 @@ twitter:image per page and versions each by the card's own content hash, so a
 retitled page gets a new URL and the year-long immutable cache never serves a
 card for a headline that changed.
 
+The same card is written into the page's JSON-LD `image`. Google reads that
+field, not og:image, when it picks the thumbnail for a rich result or Discover,
+and every article was still declaring the untitled brand cover there long after
+og:image had been fixed.
+
 Pages with no card of their own (the home page keeps the brand cover) are left
 alone. Idempotent: running twice changes nothing.
 """
@@ -24,6 +29,20 @@ SITE = "https://runixcloud.io"
 SKIP = {"404.html"}
 
 ATTRS = ('property="og:image"', 'name="twitter:image"', 'property="og:image:secure_url"')
+
+LD_BLOCK = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+# Matches only image values that already point at a social card. The caller
+# skips pages that have no card of their own, which is what keeps the home
+# page's Organization node on the brand cover.
+LD_IMAGE = re.compile(r'("image":\s*")[^"]*/assets/og[^"]*(")')
+
+
+def point_ld_image(doc, url):
+    """Rewrite the JSON-LD image of every schema block to the page's own card."""
+    def fix_block(m):
+        return "<script type=\"application/ld+json\">" + LD_IMAGE.sub(
+            lambda i: i.group(1) + url + i.group(2), m.group(1)) + "</script>"
+    return LD_BLOCK.sub(fix_block, doc)
 
 
 def main():
@@ -46,6 +65,7 @@ def main():
         if 'property="og:image"' not in doc:
             missing.append(path)
             continue
+        doc = point_ld_image(doc, url)
         if doc != before:
             pathlib.Path(path).write_text(doc)
             changed += 1

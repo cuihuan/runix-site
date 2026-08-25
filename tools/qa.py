@@ -882,7 +882,20 @@ for page in PAGES:
 # zone's Cloudflare Email Routing rules: each of these has an enabled rule, and
 # a catch-all exists behind them. Adding an address here without adding the
 # rule is the mistake this guards against.
-ROUTED = {"contact", "sales", "support", "billing", "hello", "cuihuan"}
+#
+# Kept in sync with `mailalias.sh list` (36 enabled rules as of 2026-08-25).
+ROUTED = {
+    # function addresses used in CTAs
+    "contact", "sales", "support", "billing", "hello",
+    # owner
+    "cuihuan",
+    # person-name aliases (all forward to the same inbox)
+    "austin", "hans", "frank", "david", "oliver",
+    "tony", "mike", "john", "james", "kevin", "peter", "alex", "chris",
+    "daniel", "ryan", "robert", "william", "richard", "thomas", "mark",
+    "paul", "brian", "eric", "jason", "matthew",
+    "wukong", "tangseng", "baijie", "shaseng", "balongma",
+}
 for page in PAGES:
     for addr in set(re.findall(r"mailto:([a-z0-9._%-]+)@runixcloud\.io", open(page).read(), re.I)):
         if addr.lower() not in ROUTED:

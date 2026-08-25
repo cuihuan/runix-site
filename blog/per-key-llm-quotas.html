@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Per-Key LLM Quotas: When One Client Drains the Pool | Runix</title>
+<meta name="description" content="A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.">
+<meta property="og:title" content="Per-Key LLM Quotas: When One Client Drains the Pool | Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta property="og:description" content="A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-per-key-llm-quotas.png?v=5002be3b">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-per-key-llm-quotas.png?v=5002be3b">
+<meta property="og:url" content="https://runixcloud.io/blog/per-key-llm-quotas">
+<link rel="canonical" href="https://runixcloud.io/blog/per-key-llm-quotas">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=24">
+<script src="../assets/site-config.js?v=12" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "One key can drain a shared quota pool",
+  "description": "A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/per-key-llm-quotas"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-per-key-llm-quotas.png?v=5002be3b",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-08-25",
+  "dateModified": "2026-08-25",
+  "url": "https://runixcloud.io/blog/per-key-llm-quotas"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "One key can drain a shared quota pool",
+      "item": "https://runixcloud.io/blog/per-key-llm-quotas"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Per-Key LLM Quotas: When One Client Drains the Pool | Runix"OpenAI-compatible" actually guarantees — Runix">
+<meta name="twitter:description" content="A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.">
+<meta property="article:published_time" content="2026-07-15">
+<meta property="article:modified_time" content="2026-07-15">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#products">Products</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>August 25, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">One key can drain a shared quota pool</h1>
+  </div>
+</div>
+
+<article class="article">
+<p>The first time you put more than one consumer behind one set of provider
+credentials, you have made a tenancy decision whether or not you noticed. A pool of prepaid
+capacity with no per-key ceiling is first-come-first-served: whoever sends the most requests
+gets the most capacity, and the question of who runs out is settled by traffic rather than by
+you. That is fine right up until one consumer starts a backfill.</p>
+
+<h2>Rate limits do not solve this</h2>
+
+<p>The reflex is to point at the rate limiter, but a rate limit and a quota control different
+things and you need both. A rate limit is about <em>instantaneous</em> load — requests per
+minute, concurrent connections — and it protects your infrastructure from a spike. A quota is
+about <em>cumulative</em> consumption over a billing period, and it protects your budget from
+a marathon.</p>
+
+<p>A client sitting politely under a 600-requests-per-minute limit, all day, every day, will
+consume more capacity than a client that briefly bursts past it and gets throttled. The
+limiter will report a clean week. The pool will still be empty.</p>
+
+<h2>Failed requests spend too</h2>
+
+<p>The arithmetic gets worse once errors enter it. An upstream failure that arrives after the
+provider has already processed the prompt is billed, and the client retries — so the
+consumer generating the most errors is often also the one generating the most spend per unit
+of useful work. We have watched a single key account for the large majority of a day's
+failures and a disproportionate share of its consumption at the same time, which is exactly
+what retry amplification looks like from the billing side rather than the latency side.</p>
+
+<p>If your metering counts only successful responses, this traffic is invisible in your own
+dashboards while remaining perfectly visible on the invoice. Count attempts, not answers.
+The gap between them is the number worth alerting on — see
+<a href="/blog/llm-retry-budget">retry budgets</a> for the client-side half of the same
+problem.</p>
+
+<h2>Hard stop or overage — pick deliberately</h2>
+
+<p>Prepaid pools fail in one of two ways when they empty, and the choice matters more than it
+looks:</p>
+
+<ul>
+<li><strong>Hard stop.</strong> Consumption ends at the limit and no bill is generated. Your
+    costs are bounded, which is the point — but every consumer sharing that pool stops at the
+    same instant, including the internal ones you forgot were on it. The team that discovers
+    this at 2am is usually discovering that their own tooling shared a pool with a
+    customer.</li>
+<li><strong>Overage.</strong> Service continues and the excess is billed. Nothing breaks,
+    which is also the problem: a runaway loop has no ceiling except the one your finance team
+    finds at the end of the month.</li>
+</ul>
+
+<p>Neither is wrong. What is wrong is not knowing which one you have configured, because the
+two demand opposite monitoring: hard stop needs a <em>runway</em> alarm, overage needs a
+<em>rate</em> alarm.</p>
+
+<h2>Alert on runway, not on balance</h2>
+
+<p>The most common quota alert is a percentage of the balance — tell me when the pool drops
+below twenty percent. It is the wrong threshold, because the same balance means completely
+different things at different consumption rates. Five thousand credits with a week to go is
+comfortable if you are spending three hundred a day and an emergency if you are spending
+three thousand.</p>
+
+<p>The number that carries meaning is runway: remaining capacity divided by the current
+consumption rate, expressed in days, compared against the days left before the quota resets.
+When runway is shorter than the time to reset, you have a problem regardless of how healthy
+the percentage looks. That single comparison replaces a table of per-tier thresholds nobody
+maintains.</p>
+
+<p>The subtlety is which rate to divide by. A multi-day average is stable but slow — a burst
+that started an hour ago will not move a three-day mean until it has already done the damage.
+An instantaneous rate is the opposite: it panics at every quiet hour and every busy one. Take
+the faster of the two — the recent daily average and the last hour extrapolated forward — and
+divide by that. It stays calm during normal variation and reacts within an hour to a step
+change, which is the behaviour you actually want from something that pages you.</p>
+
+<h2>Reserve before you allocate</h2>
+
+<p>If any of the traffic on a shared pool is <em>yours</em> — internal tooling, evaluation
+jobs, the assistant your own engineers use — that traffic deserves a floor rather than a fair
+share. It is the traffic you notice last, because it fails quietly and nobody files a ticket
+about it, and it is the traffic whose absence stops you from diagnosing the incident that
+caused it.</p>
+
+<p>A workable allocation looks like: a reserved floor for internal use, a per-key ceiling for
+every external consumer that sums to less than the remaining pool, and the difference left
+unallocated as headroom. The ceilings are not there to be hit in normal operation; they are
+there so that one consumer's mistake is bounded by their own allocation rather than by the
+pool.</p>
+
+<h2>What to check on your own setup</h2>
+
+<ul>
+<li>Does any single key have an enforced ceiling, or does the pool limit apply only in
+    aggregate?</li>
+<li>Does your metering count failed attempts, or only successful responses?</li>
+<li>Is your alert threshold a balance percentage or a runway in days?</li>
+<li>When the pool empties, does it stop or does it bill — and does the answer match what
+    you told your finance team?</li>
+<li>Is any internal traffic sharing the pool with external consumers, and would you notice
+    if it stopped?</li>
+</ul>
+
+<p>None of this requires a large system to get right; it requires the allocation to be
+written down somewhere other than in the shape of last month's traffic. Runix Router enforces
+per-key limits and itemizes usage per key, so the ceiling and the ledger come from the same
+place — <a href="/router">how the router handles keys and limits</a>, and
+<a href="/pricing">how the metering is priced</a>.</p>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+  <li><a href="/blog/llm-cost-attribution">Per-Team LLM Cost Attribution That Survives Audit</a></li>
+  <li><a href="/blog/llm-retry-budget">Your LLM traffic needs a retry budget, not a retry count</a></li>
+  <li><a href="/blog/llm-api-key-management">LLM Provider Keys: Scope, Rotation and Blast Radius</a></li>
+    <li><a href="/router">Runix Router: one OpenAI-compatible endpoint across providers</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -20,14 +20,39 @@ os.chdir(ROOT)
 FORWARD = {
     "build-vs-buy-llm-gateway": ["llm-feature-pre-launch-checklist",
                                  "migrating-to-an-llm-gateway-without-downtime"],
-    "llm-gateway-guide": ["what-openai-compatible-actually-means"],
-    "what-is-an-llm-gateway": ["llm-feature-pre-launch-checklist"],
-    "ai-vendor-data-questions": ["where-your-prompts-actually-go"],
+    "llm-gateway-guide": ["what-openai-compatible-actually-means",
+                          "llm-gateway-security-review"],
+    "what-is-an-llm-gateway": ["llm-feature-pre-launch-checklist",
+                               "migrating-to-an-llm-gateway-without-downtime"],
+    "ai-vendor-data-questions": ["where-your-prompts-actually-go",
+                                 "llm-gateway-security-review"],
     "llm-observability": ["where-your-prompts-actually-go"],
-    "llm-rate-limits": ["how-long-should-an-llm-request-wait"],
+    # per-key-llm-quotas (2026-08-25) answers the tenancy question this post and
+    # the key-management one raise and leave open: rate limits are the provider
+    # throttling you, key scope is one consumer's blast radius, and neither
+    # covers several consumers sharing one pool.
+    "llm-rate-limits": ["how-long-should-an-llm-request-wait",
+                        "llm-retry-budget", "per-key-llm-quotas"],
     "streaming-llm-failover": ["how-long-should-an-llm-request-wait"],
-    "prompt-caching-explained": ["did-the-model-change-make-it-worse"],
+    "prompt-caching-explained": ["did-the-model-change-make-it-worse",
+                                 "why-your-llm-bill-doesnt-match-the-price-list"],
     "openrouter-alternatives": ["llm-feature-pre-launch-checklist"],
+
+    # 2026-08-25: the three posts published on 08-20 were sitting on two inbound
+    # links each while the posts that raise exactly their question pointed
+    # nowhere. Each pairing below is the question-then-answer direction:
+    # failover and rate limits both end at "so how many times do I retry",
+    # key custody and prompt paths both end at "what will a security review
+    # ask", and both cost posts end at "so why is the invoice a different
+    # number". Same rule as the rest of the map -- only where the connection
+    # is one a reader would follow.
+    "model-failover": ["llm-retry-budget"],
+    "how-long-should-an-llm-request-wait": ["llm-retry-budget"],
+    "llm-api-key-management": ["llm-gateway-security-review", "per-key-llm-quotas"],
+    "where-your-prompts-actually-go": ["llm-gateway-security-review"],
+    "llm-cost-control": ["why-your-llm-bill-doesnt-match-the-price-list"],
+    "llm-cost-attribution": ["why-your-llm-bill-doesnt-match-the-price-list",
+                             "per-key-llm-quotas"],
 }
 
 # Six, not five. Every block is N posts plus one product page, so five meant
@@ -44,15 +69,22 @@ def headline(slug):
 
 
 added = 0
+missing = 0
 for source, targets in FORWARD.items():
     path = pathlib.Path(f"blog/{source}.html")
     if not path.exists():
         print(f"  ! no such post: {source}")
         continue
     html = path.read_text()
-    block = re.search(r'(<aside class="related">.*?<ul>)(.*?)(</ul>)', html, re.S)
+    # [^>]* because the aside later gained aria-labelledby for the heading
+    # association. The original pattern demanded the tag end right after the
+    # class, so from that commit on this script matched nothing on every post,
+    # printed a tidy "no related block" for each, and still exited 0 — which is
+    # why nobody noticed for weeks. See the run check at the bottom.
+    block = re.search(r'(<aside class="related"[^>]*>.*?<ul>)(.*?)(</ul>)', html, re.S)
     if not block:
         print(f"  ! {source} has no related block")
+        missing += 1
         continue
     items = block.group(2)
     existing = len(re.findall(r"<li>", items))
@@ -70,3 +102,11 @@ for source, targets in FORWARD.items():
     path.write_text(html)
 
 print(f"  added {added} forward link(s)")
+
+# A map of 15 sources that matches none of them is not "nothing to do", it is a
+# broken selector — the exact failure this script shipped with for weeks. Fail
+# loudly instead of reporting a clean run.
+if missing == len(FORWARD):
+    print(f"  !! none of the {len(FORWARD)} sources matched — the related-block "
+          f"selector no longer fits the markup")
+    raise SystemExit(1)

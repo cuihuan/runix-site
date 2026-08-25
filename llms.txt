@@ -72,11 +72,12 @@ Products at different stages. The statuses below are literal.
 
 ## Writing
 
-All 28 posts, newest first. Descriptions are the pages' own.
+All 29 posts, newest first. Descriptions are the pages' own.
 
-- [The security review an LLM gateway should survive](https://runixcloud.io/blog/llm-gateway-security-review) — A gateway sits between your prompts and every provider. Eight questions a security review should ask it — key custody, logging, retention, isolation, egress — and what good answers look like.
+- [One key can drain a shared quota pool](https://runixcloud.io/blog/per-key-llm-quotas) — A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.
+- [The security review an LLM gateway should survive](https://runixcloud.io/blog/llm-gateway-security-review) — Eight questions a security review should ask any LLM gateway — key custody, logging, retention, tenant isolation, egress — and what good answers look like.
 - [Your LLM traffic needs a retry budget, not a retry count](https://runixcloud.io/blog/llm-retry-budget) — Retries multiply cost and load exactly when a provider is struggling. What a retry budget is, which errors deserve one, and how failover changes the arithmetic.
-- [Why your LLM bill doesn't match the price list](https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list) — Cache multipliers, injected prompts, tokenizer changes, tiered and off-peak rates: the five mechanics behind a surprising token bill, and how to reconcile one request by hand.
+- [Why your LLM bill doesn't match the price list](https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list) — Cache multipliers, injected prompts, tokenizer changes, tiered rates: the mechanics behind a surprising token bill, and how to reconcile one request by hand.
 - [How to tell whether a model change made things worse](https://runixcloud.io/blog/did-the-model-change-make-it-worse) — Output varies run to run, so a quality regression does not announce itself. Four signals that move before anyone files a ticket.
 - [How long should an LLM request be allowed to take?](https://runixcloud.io/blog/how-long-should-an-llm-request-wait) — Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.
 - [What to settle before an LLM feature carries real traffic](https://runixcloud.io/blog/llm-feature-pre-launch-checklist) — Twelve decisions that are cheap before launch and expensive after: cost ceilings, timeouts, failover, what you log, and how you roll back.

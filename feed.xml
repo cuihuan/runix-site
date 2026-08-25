@@ -6,19 +6,26 @@
     <atom:link href="https://runixcloud.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Engineering notes on LLM gateways, reliability, cost control and data pipelines, from the team building Runix.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>One key can drain a shared quota pool</title>
+      <link>https://runixcloud.io/blog/per-key-llm-quotas</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/per-key-llm-quotas</guid>
+      <description>A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.</description>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Why your LLM bill doesn't match the price list</title>
       <link>https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list</link>
       <guid isPermaLink="true">https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list</guid>
-      <description>Cache multipliers, injected prompts, tokenizer changes, tiered and off-peak rates: the five mechanics behind a surprising token bill, and how to reconcile one request by hand.</description>
+      <description>Cache multipliers, injected prompts, tokenizer changes, tiered rates: the mechanics behind a surprising token bill, and how to reconcile one request by hand.</description>
       <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
     </item>
     <item>
       <title>The security review an LLM gateway should survive</title>
       <link>https://runixcloud.io/blog/llm-gateway-security-review</link>
       <guid isPermaLink="true">https://runixcloud.io/blog/llm-gateway-security-review</guid>
-      <description>A gateway sits between your prompts and every provider. Eight questions a security review should ask it — key custody, logging, retention, isolation, egress — and what good answers look like.</description>
+      <description>Eight questions a security review should ask any LLM gateway — key custody, logging, retention, tenant isolation, egress — and what good answers look like.</description>
       <pubDate>Thu, 20 Aug 2026 00:00:00 +0000</pubDate>
     </item>
     <item>

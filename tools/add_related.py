@@ -43,6 +43,8 @@ RELATED = {
     "llm-cost-control": (["prompt-caching-explained", "llm-cost-attribution", "llm-rate-limits"], "/pricing"),
     "llm-cost-attribution": (["llm-cost-control", "llm-observability", "llm-api-key-management"], "/pricing"),
     "prompt-caching-explained": (["llm-cost-control", "llm-cost-attribution", "llm-gateway-guide"], "/pricing"),
+    # tenancy — one pool, several consumers, and what stops one taking all of it
+    "per-key-llm-quotas": (["llm-cost-attribution", "llm-retry-budget", "llm-api-key-management"], "/router"),
     # compliance
     "where-your-prompts-actually-go": (["ai-vendor-data-questions", "llm-observability", "llm-api-key-management"], "/security"),
     # launch

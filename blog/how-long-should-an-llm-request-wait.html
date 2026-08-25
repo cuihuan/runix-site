@@ -12,7 +12,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timeouts for LLM requests — Runix</title>
+<title>LLM API Timeouts: How Long Should a Request Wait? | Runix</title>
 <meta name="description" content="Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.">
 <meta property="og:title" content="Timeouts for LLM requests — Runix"OpenAI-compatible" actually guarantees — Runix">
 <meta property="og:description" content="Standard HTTP timeout advice is wrong for model traffic. Which timeout to set, where each one belongs, and why stacked timeouts cause the outage.">
@@ -240,6 +240,7 @@ nobody else can tell you what your longest legitimate response looks like.</p>
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>
   <ul>
+    <li><a href="/blog/llm-retry-budget">Your LLM traffic needs a retry budget, not a retry count</a></li>
   <li><a href="/blog/model-failover">Designing for Model Failover: Lessons from Production LLM Traffic</a></li>
   <li><a href="/blog/streaming-llm-failover">Streaming LLM Responses Without Breaking Failover</a></li>
   <li><a href="/blog/llm-observability">What to Log for LLM Traffic, and What Not To</a></li>

@@ -977,3 +977,20 @@ main > .section:first-child { padding-top: 64px; }
   .layer { grid-template-columns: 1fr; }
   .layer-num { padding-top: 0; margin-bottom: 6px; }
 }
+
+
+/* ---------- Four-across plan grid (/plans) ----------
+   .plans is three columns. /plans has four tiers, and .plans-4 was already
+   being written in the markup on code-plans.html without ever existing here,
+   so those cards were laid out three-across with the fourth wrapping. Declared
+   after .plans because both are single-class selectors and the later rule wins.
+
+   .btn-block was in the same state: used on several pages, defined nowhere, so
+   buttons meant to fill their card were sitting at intrinsic width. */
+.plans-4 { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.plans-4 .plan { padding: 28px 22px; }
+.plans-4 .price { font-size: 30px; }
+@media (max-width: 1080px) { .plans-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .plans-4 { grid-template-columns: 1fr; } }
+
+.btn-block { display: block; width: 100%; text-align: center; }

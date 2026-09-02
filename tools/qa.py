@@ -20,8 +20,19 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 PAGES = sorted([_p for _p in glob.glob("*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("docs/*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")])
-# 404 is deliberately noindex and outside the nav/sitemap conventions.
-INDEXABLE = [p for p in PAGES if os.path.basename(p) != "404.html"]
+# A page that tells crawlers not to index it has no business in the sitemap, so
+# the sitemap check has to read the same signal a crawler does. This was keyed
+# on the filename 404.html, which meant the next deliberately unindexed page --
+# a post-payment confirmation, in this case -- was reported as missing from the
+# sitemap for doing exactly the right thing. Reading the robots meta covers 404
+# too, and covers whatever comes next without another name in this list.
+def _noindex(path):
+    head = open(path, encoding="utf-8").read()
+    head = head[: head.index("</head>")] if "</head>" in head else head
+    m = re.search(r'<meta\s+name=["\']robots["\'][^>]*content=["\']([^"\']*)', head, re.I)
+    return bool(m and "noindex" in m.group(1).lower())
+
+INDEXABLE = [p for p in PAGES if os.path.basename(p) != "404.html" and not _noindex(p)]
 # Drafts are not deployed and not in the sitemap, but a draft with a broken
 # schema block or a dead internal link only announces itself at publish time,
 # which is the worst moment to find out. They get the structural checks.

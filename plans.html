@@ -21,19 +21,111 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/plans">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="https://runixcloud.io/assets/og/pricing.png?v=a8dd0b83">
+<meta property="og:image" content="https://runixcloud.io/assets/og/plans.png?v=0a359fbb">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og/pricing.png?v=a8dd0b83">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/plans.png?v=0a359fbb">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=27">
+<link rel="stylesheet" href="assets/style.css?v=28">
 <script src="assets/site-config.js?v=13" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
 <meta name="twitter:description" content="Basic, 5X, 10X and 30X. Pay by card, billed monthly, cancel any time.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix AI plans",
+  "serviceType": "AI agent subscription plans",
+  "description": "Four monthly Runix AI plans - Basic, 5X, 10X and 30X - differing by agent credits and parallelism. Card checkout hosted by Stripe; Visa, Mastercard, American Express and UnionPay accepted.",
+  "url": "https://runixcloud.io/plans",
+  "provider": { "@id": "https://runixcloud.io/#org" },
+  "areaServed": "Worldwide",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Runix AI Basic",
+      "description": "Base agent credits. Work with Docs, Sheets and Slides. Deep Research. Website deploy. Code Plan included.",
+      "price": "9.90",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://buy.stripe.com/7sY9AM0nS58ncVvcef5J601",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "9.90",
+        "priceCurrency": "USD",
+        "billingIncrement": 1,
+        "billingDuration": "P1M",
+        "unitText": "month"
+      }
+    },
+    {
+      "@type": "Offer",
+      "name": "Runix AI 5X",
+      "description": "5x agent credits. Everything in Basic, plus Swarm - multiple agents running subtasks in parallel.",
+      "price": "39.90",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://buy.stripe.com/14AdR20nS0S74oZ0vx5J602",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "39.90",
+        "priceCurrency": "USD",
+        "billingIncrement": 1,
+        "billingDuration": "P1M",
+        "unitText": "month"
+      }
+    },
+    {
+      "@type": "Offer",
+      "name": "Runix AI 10X",
+      "description": "10x agent credits. Everything in 5X, plus agent multi-tasking, Goal mode and one-click agent deploy.",
+      "price": "69.90",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://buy.stripe.com/4gMfZafiM1Wb4oZcef5J603",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "69.90",
+        "priceCurrency": "USD",
+        "billingIncrement": 1,
+        "billingDuration": "P1M",
+        "unitText": "month"
+      }
+    },
+    {
+      "@type": "Offer",
+      "name": "Runix AI 30X",
+      "description": "30x agent credits. Everything in 10X, plus up to 1M tokens of context, the highest concurrency and top priority queue.",
+      "price": "199.90",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://buy.stripe.com/8x25kw8Uo9oD9Jjfqr5J604",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "199.90",
+        "priceCurrency": "USD",
+        "billingIncrement": 1,
+        "billingDuration": "P1M",
+        "unitText": "month"
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://runixcloud.io/" },
+    { "@type": "ListItem", "position": 2, "name": "Plans", "item": "https://runixcloud.io/plans" }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -67,6 +159,11 @@
 
 <section class="section" id="plans">
   <div class="container">
+    <div class="section-head center">
+      <h2>Choose a plan</h2>
+      <p>Every plan includes the same tools; the difference is how many agent credits you get
+         and how much runs in parallel.</p>
+    </div>
     <div class="plans plans-4">
       <div class="plan" id="plan-basic">
         <h3>Runix AI Basic</h3>

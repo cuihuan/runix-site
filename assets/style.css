@@ -326,6 +326,19 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 }
 .topup-equiv b { color: var(--ink); }
 .topup-equiv-note { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+/* Stripe Buy Button block. Mirrors .topup-equiv so the card reads as one
+   surface. Stripe renders its button inside an iframe it sizes itself, so this
+   only sets the surround; do not try to style stripe-buy-button internals. */
+.topup-pay {
+  margin-top: 22px; padding: 20px 22px; border-radius: 16px;
+  background: var(--bg-alt); border: 1px solid var(--line);
+}
+.topup-pay[hidden] { display: none; }
+.topup-pay-head {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cyan-text); margin-bottom: 12px;
+}
+.topup-pay-note { margin-top: 12px; font-size: 13px; color: var(--ink-3); }
 .topup-cta { margin-top: 22px; }
 .topup-foot { margin-top: 12px; text-align: center; font-size: 13px; color: var(--ink-3); }
 

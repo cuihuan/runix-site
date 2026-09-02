@@ -55,6 +55,33 @@
     statementDescriptor: null,    // what shows on a customer's card statement — set once a processor is live
     defaultCurrency: "USD",
 
+    // Stripe Buy Button — Stripe-hosted checkout embedded in the top-up card.
+    //
+    // buyButtonId stays null until a button exists whose Price is ONE-TIME.
+    // The first button created for this site was a $98/month subscription, and
+    // /pricing states in three places that there is no subscription and no
+    // monthly fee; shipping it would have contradicted the page's own billing
+    // terms, which is the kind of inconsistency a customer quotes back during a
+    // dispute. Nothing renders while this is null — same rule as every other
+    // unconfirmed field here.
+    //
+    // The Price this points at must be $1.00/unit with adjustable quantity, not
+    // a fixed amount: the page offers $10/$20/$50/$200 and a free-form box, so a
+    // fixed-amount button would charge something other than what the visitor
+    // picked. $1.00/unit is also exactly what the gateway's own integration
+    // requires (STRIPE-ROLLOUT.md §4.6 — quota = quantity × QuotaPerUnit), so
+    // one Price serves both and there is no second object to keep in step.
+    //
+    // publishableKey is Stripe's publishable (pk_) key, the class Stripe
+    // documents as intended for client-side markup. Committing it here is the
+    // documented usage, unlike an sk_ secret key, which must not appear in this
+    // repository or in any page it serves.
+    stripe: {
+      publishableKey: "pk_live_51U2k7U3NBFXLsdrEVMDZdbW1o4DTYEGcvGCzz12vhrdjWNHtZOYKytU1u6LbJ9CRGG5eVF7qARknLca32CcKWgO100wlqnLwLz",
+      buyButtonId: null,
+      minUnits: 10
+    },
+
     // --- Site ---
     domain: "runixcloud.io",
     siteUrl: "https://runixcloud.io",
@@ -108,6 +135,66 @@
     document.addEventListener("DOMContentLoaded", inject);
   } else {
     inject();
+  }
+})();
+
+/* ---------------------------------------------------------------------------
+ * Stripe Buy Button.
+ *
+ * Renders only when RUNIX.stripe.buyButtonId is set. When it is null this
+ * removes the container from the DOM instead of leaving it empty, so an
+ * unconfigured button does not leave a heading behind for a payment method that
+ * is not connected — the same rule the config injector applies to unconfirmed
+ * identity fields.
+ *
+ * The third-party script is requested only on a page that has the container AND
+ * a configured id, so pages without checkout make no request to js.stripe.com.
+ *
+ * CSP: script-src / frame-src / connect-src / img-src / form-action in _headers
+ * already list the Stripe and Link origins this needs, including
+ * merchant-ui-api.stripe.com, which the button calls for its own configuration
+ * before it will render anything.
+ * ------------------------------------------------------------------------- */
+(function () {
+  var SCRIPT_SRC = "https://js.stripe.com/v3/buy-button.js";
+
+  function render() {
+    var hosts = document.querySelectorAll("[data-stripe-buy-button]");
+    if (!hosts.length) return;
+
+    var cfg = (window.RUNIX && window.RUNIX.stripe) || {};
+    if (!cfg.buyButtonId || !cfg.publishableKey) {
+      hosts.forEach(function (host) {
+        if (host.parentNode) host.parentNode.removeChild(host);
+      });
+      return;
+    }
+
+    if (!document.querySelector('script[src="' + SCRIPT_SRC + '"]')) {
+      var s = document.createElement("script");
+      s.src = SCRIPT_SRC;
+      s.async = true;
+      document.head.appendChild(s);
+    }
+
+    hosts.forEach(function (host) {
+      var btn = document.createElement("stripe-buy-button");
+      btn.setAttribute("buy-button-id", cfg.buyButtonId);
+      btn.setAttribute("publishable-key", cfg.publishableKey);
+      // Carries a value back on the Checkout Session as client_reference_id.
+      // Left unset here because this static page has no account context to put
+      // in it; the gateway sets its own order number on the sessions it creates.
+      var ref = host.getAttribute("data-client-reference-id");
+      if (ref) btn.setAttribute("client-reference-id", ref);
+      host.appendChild(btn);
+      host.removeAttribute("hidden");
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", render);
+  } else {
+    render();
   }
 })();
 

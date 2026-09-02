@@ -186,6 +186,15 @@
            Every charge is itemized in your console.</p>
       </div>
 
+      <!-- Rendered by assets/site-config.js only when RUNIX.stripe.buyButtonId
+           is set; removed from the DOM otherwise, so nothing here appears until
+           a one-time Price is connected. -->
+      <div class="topup-pay" data-stripe-buy-button hidden>
+        <p class="topup-pay-head">Pay by card</p>
+        <p class="topup-pay-note">Checkout is hosted by Stripe &mdash; card details are entered on
+          their page, not ours. Your balance is applied to your account within one business day of
+          payment; you will get a receipt from Stripe immediately.</p>
+      </div>
       <a class="btn btn-grad btn-block topup-cta" href="/about#contact">Request access to top up</a>
       <p class="topup-foot">Paying means you accept the <a href="/terms">Terms of Service</a>.
         Need an invoice, wire transfer or a volume rate?

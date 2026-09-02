@@ -19,7 +19,24 @@
   # input, no auth and no query-parameter reflection — there is no injection
   # vector for the directive to defend. The directives that do earn their
   # keep here are object-src, base-uri and form-action.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+  #
+  # Stripe domains (2026-09-02). Without these an embedded Stripe Buy Button
+  # or Checkout redirect silently does not render: script-src blocks
+  # buy-button.js, and frame-src was previously unset so it inherited
+  # default-src 'self' and blocked the button's iframe. Sourced from Stripe's
+  # integration security guide, taking the union of its Stripe.js, Checkout
+  # and Link directive lists — Checkout shows Link by default, so omitting
+  # the link.com entries breaks the payment page for returning customers.
+  #
+  # merchant-ui-api.stripe.com is NOT in Stripe's published list. The Buy
+  # Button fetches its own configuration from there before rendering; found by
+  # calling it directly with the publishable key and getting the button's price
+  # back. Omitting it means the button loads and then renders nothing.
+  #
+  # form-action gains one exact host rather than a wildcard. This directive is
+  # one of the three that actually earn their keep here, so it is widened by a
+  # single origin that the checkout redirect needs and nothing more.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://js.stripe.com https://*.js.stripe.com https://checkout.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.stripe.com https://*.link.com; font-src 'self'; frame-src 'self' https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://link.com https://*.link.com; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://api.stripe.com https://checkout.stripe.com https://merchant-ui-api.stripe.com https://link.com https://*.link.com; base-uri 'self'; form-action 'self' https://checkout.stripe.com; object-src 'none'; upgrade-insecure-requests
   # 180 days, no includeSubDomains and no preload. includeSubDomains would
   # cover api. and console., which are not this project's to commit on
   # someone else's behalf; preload is irreversible in practice.

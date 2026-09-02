@@ -119,7 +119,7 @@ def main() -> int:
     declared = parse_headers(ROOT / "_headers")
     # One representative URL per pattern; a pattern with no sample is reported
     # rather than skipped, so a new pattern cannot slip through unverified.
-    samples = {"/*": "/pricing", "/assets/*": "/assets/style.css", "/feed.xml": "/feed.xml"}
+    samples = {"/*": "/plans", "/assets/*": "/assets/style.css", "/feed.xml": "/feed.xml"}
 
     for pattern, names in declared.items():
         if not names:

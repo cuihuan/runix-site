@@ -136,7 +136,7 @@ for path, heading in FAQ_PAGES:
         print(f"  ! {path}: no '{heading}' section found")
 
 # --- breadcrumbs the other product pages already have ----------------------
-for path, name in (("pricing.html", "Pricing"), ("code-plans.html", "Coding plans")):
+for path, name in (("plans.html", "Pricing"), ("code-plans.html", "Coding plans")):
     if inject(path, crumbs(name, SITE + "/" + path[:-5])):
         added.append(f"{path} BreadcrumbList")
 

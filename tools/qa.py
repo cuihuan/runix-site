@@ -537,7 +537,7 @@ for page in PAGES + ["llms.txt"]:
 _NAMED_PAGES = {
     "the Security page": "/security",
     "the reliability page": "/reliability",
-    "the pricing page": "/pricing",
+    "the pricing page": "/plans",
     "the access page": "/access",
 }
 for page in PAGES:

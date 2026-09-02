@@ -123,7 +123,7 @@ def kb(n):
     return f"{n / 1024:.0f}KB"
 
 
-pages = sys.argv[1:] or ["index.html", "router.html", "pricing.html",
+pages = sys.argv[1:] or ["index.html", "router.html", "plans.html",
                          "docs/router.html", "blog/model-failover.html", "about.html"]
 httpd = serve()
 time.sleep(0.6)

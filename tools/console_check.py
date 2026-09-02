@@ -25,7 +25,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PORT = 8917
-PAGES = ["index.html", "router.html", "pricing.html", "blog/index.html",
+PAGES = ["index.html", "router.html", "plans.html", "blog/index.html",
          "blog/llm-observability.html", "docs/router.html", "404.html"]
 
 # Collect errors from the page itself, and from anything that fails to load.

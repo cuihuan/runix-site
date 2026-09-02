@@ -92,7 +92,20 @@ rsync -a \
   `# Check tools write temp pages into the site root and clean them up in a
    # finally block -- which SIGKILL skips. A killed visual_qa left a
    # zero-byte _vqa.html here tonight. qa.py catches it and aborts the
-   # deploy, which is the real guard; this is the second line.` \
+   # deploy, which is the real guard; this is the second line.
+   #
+   # 2026-09-02: the two --include lines are load-bearing. _headers and
+   # _redirects are the only two filenames Cloudflare Pages reads for response
+   # headers and redirects, and both begin with an underscore, so the broad
+   # exclude below was dropping them from every deploy. Verified against the
+   # live site: no Content-Security-Policy, no HSTS, no X-Frame-Options, no
+   # Referrer-Policy, no Permissions-Policy, no immutable cache on /assets, and
+   # all four redirects in _redirects returning 404 instead of 301 -- /gateway
+   # among them, which is where the product lived before it was renamed to
+   # /router, so old inbound links were landing on a 404.
+   #
+   # rsync takes the first matching rule, so these must stay above the exclude.` \
+  --include '_headers' --include '_redirects' \
   --exclude '_*' \
   "$SRC/" "$STAGE/"
 echo "    $(find "$STAGE" -type f | wc -l | tr -d ' ') files"

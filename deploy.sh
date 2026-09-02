@@ -128,6 +128,17 @@ echo "==> Verify from outside"
 # not having it.
 python3 "$SRC/tools/verify_live.py" || fail=1
 
+# Paths returning 200 says nothing about headers or redirects, and for a long
+# time both were absent while every gate here stayed green: the rsync exclude
+# above dropped _headers and _redirects from the bundle, so the site served no
+# CSP, no HSTS, no X-Frame-Options, no Referrer-Policy, no Permissions-Policy,
+# no immutable cache on /assets, and answered 404 on all four redirects. This
+# reads both files and checks each claim against the live origin, so the same
+# class of silence cannot pass unnoticed again. Its negative control is
+# `--base https://example.com --attempts 1`, which reproduces exactly that
+# failure list.
+python3 "$SRC/tools/verify_headers.py" || fail=1
+
 # A 200 only proves something is served. Compare what is served with what was
 # built — and retry, because the edge takes up to a minute to catch up and a
 # check run immediately after upload reports the previous build.

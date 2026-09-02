@@ -34,13 +34,40 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# One browser launch per page per width (50 pages x 3 widths = 150 launches).
+# Going through Chrome.app costs three things at that rate:
+#   1. every launch registers with the macOS app system -- which is what "the
+#      system keeps starting Chrome" actually is
+#   2. every launch spawns a chrome_crashpad_handler, and that churn crashes:
+#      24 chrome_crashpad_handler crash reports inside one minute, measured
+#   3. it is 5.8x slower -- 2.34s vs 0.40s per launch, so 351s vs 61s over 150
+# chrome-headless-shell is the dedicated headless binary: no .app bundle, so
+# nothing registers. Both were verified to emit byte-identical --dump-dom
+# output. Fall back to Chrome.app when it is absent, with behaviour unchanged.
+def _find_browser():
+    import glob
+    for p in sorted(glob.glob(os.path.expanduser(
+            "~/.cache/puppeteer/chrome-headless-shell/*/chrome-headless-shell-*/chrome-headless-shell")),
+            reverse=True):
+        if os.access(p, os.X_OK):
+            return p, False          # headless-shell is headless already; no --headless
+    return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", True
+
+CHROME, _NEEDS_HEADLESS_FLAG = _find_browser()
+# Turn off crash reporting and the first-run flow: the reporter is the source
+# of (2) above, and it is useless for a one-shot render either way.
+_BROWSER_FLAGS = ([ "--headless" ] if _NEEDS_HEADLESS_FLAG else []) + [
+    "--disable-gpu", "--hide-scrollbars",
+    "--disable-crash-reporter", "--disable-breakpad",
+    "--no-first-run", "--no-default-browser-check",
+    "--disable-background-networking", "--disable-sync", "--disable-extensions",
+]
 PORT = 8901
 WIDTHS = [(375, "phone"), (768, "tablet"), (1440, "desktop")]
 
 PROBE = r"""
 <script>window.addEventListener('load',function(){setTimeout(function(){
-  var out = {overflow:null, wide:[], tiny:[], small_targets:[], covered:[], vw:0,
+  var out = {overflow:null, wide:[], tiny:[], small_targets:[], tight_targets:[], covered:[], vw:0,
   // How many elements each selector-based detector actually looked at. A
   // detector that examines nothing can never report anything, and reads as
   // coverage -- see tools/gate_coverage.py for the same idea in qa.py.
@@ -90,6 +117,52 @@ PROBE = r"""
 
   // WCAG 2.2 2.5.8 minimum target size, applied to real controls rather than
   // inline prose links (which the spec exempts).
+  // WCAG 2.5.8 sets a minimum size; two targets that meet it and touch are
+  // still a mis-tap on a phone. Links inside a sentence are excluded -- the same
+  // exemption the size check uses, and the reason matters: measuring without it
+  // reported eight "problems" that were all prose links wrapping onto
+  // consecutive lines, which is just text.
+  // "Inline in a sentence" is not a tag list. A first version excluded links
+  // inside p and li, and reported the two links in a .callout -- which wraps its
+  // sentence in a span -- as touching controls. Walk to the actual block-level
+  // ancestor and ask whether it holds text besides this link.
+  function inlineInProse(e) {
+    var b = e.parentElement;
+    while (b && b !== document.body) {
+      var d = getComputedStyle(b).display;
+      if (d === 'block' || d === 'flex' || d === 'grid' || d === 'list-item') break;
+      b = b.parentElement;
+    }
+    if (!b) return false;
+    // "Inline in a sentence" means the block holds words that are not inside a
+    // link or a button. Comparing the block's whole text to the link's was
+    // wrong twice: it excluded a .callout sentence correctly but by accident,
+    // and it excluded a row of buttons -- whose container text is just the
+    // buttons' labels concatenated -- which is exactly what this should catch.
+    var clone = b.cloneNode(true);
+    Array.prototype.slice.call(clone.querySelectorAll('a, button')).forEach(function(x){
+      x.parentNode.removeChild(x);
+    });
+    return clone.textContent.replace(/[\s·|,.;:—–-]+/g, '') !== '';
+  }
+  var discrete = Array.prototype.slice.call(document.querySelectorAll('a[href], button')).filter(function(e){
+    if (inlineInProse(e)) return false;
+    var r = e.getBoundingClientRect();
+    return r.width > 0 && r.height > 0;
+  });
+  for (var di = 0; di < discrete.length; di++) {
+    for (var dj = di + 1; dj < discrete.length; dj++) {
+      var da = discrete[di].getBoundingClientRect(), db = discrete[dj].getBoundingClientRect();
+      if (discrete[di].contains(discrete[dj]) || discrete[dj].contains(discrete[di])) continue;
+      var ddx = Math.max(0, Math.max(da.left, db.left) - Math.min(da.right, db.right));
+      var ddy = Math.max(0, Math.max(da.top, db.top) - Math.min(da.bottom, db.bottom));
+      if (ddx > 0 && ddy > 0) continue;
+      if (Math.max(ddx, ddy) < 8 && out.tight_targets.length < 4)
+        out.tight_targets.push(Math.round(Math.max(ddx, ddy)) + 'px between ' +
+          label(discrete[di]) + ' and ' + label(discrete[dj]));
+    }
+  }
+
   var controls = document.querySelectorAll('.btn, .nav-links a, button, .copy-btn');
       out.seen.controls += controls.length;
   for (var j = 0; j < controls.length; j++) {
@@ -248,7 +321,7 @@ def probe(path, width):
         f'  }},100);}});</script></body></html>')
     try:
         out = subprocess.run(
-            [CHROME, "--headless", "--disable-gpu", "--hide-scrollbars",
+            [CHROME] + _BROWSER_FLAGS + [
              f"--window-size={max(width + 60, 620)},1000",
              "--virtual-time-budget=6000", "--dump-dom",
              f"http://127.0.0.1:{PORT}/{outer}"],
@@ -287,6 +360,8 @@ try:
                 problems.append(f"{page} @{name}: text under 12px — {t}")
             for s in r["small_targets"]:
                 problems.append(f"{page} @{name}: target under 24x24 — {s}")
+            for t in r.get("tight_targets") or []:
+                problems.append(f"{page} @{name}: tap targets touching — {t}")
             for d in r.get("dimlinks", []):
                 problems.append(f"{page} @{name}: link not distinguishable — {d}")
             for c in r.get("contrast", []):

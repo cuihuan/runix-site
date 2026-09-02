@@ -31,6 +31,21 @@ Products at different stages. The statuses below are literal.
   (export, multi-platform distribution, promotional assets). Not generally available.
   https://runixcloud.io/comic
 
+## AI for Science
+
+Not a product. Published work showing how Runix prepares data on records where a bad
+merge changes the answer rather than raising a parse error.
+
+- [AI4S for Programmers](https://ai4s.runixcloud.io/en/): a free two-day course on
+  antibody and protein data for programmers with no biology background — sequence and
+  structure formats, the three competing antibody numbering schemes, entity normalisation
+  against UniProt, cross-source validation, and four failure modes reproduced end to end
+  (word-boundary false positives, alias hijacking, epitopes reported but never computed,
+  and quality checks that assert instead of measure). Python required. Content is
+  CC BY-SA 4.0, code is MIT. Taught in Chinese with an English overview. Scope is
+  biological data only: not materials, climate or astronomy, and it does not cover
+  model training.
+
 ## Documentation
 
 - [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
@@ -59,7 +74,7 @@ Products at different stages. The statuses below are literal.
 - [FAQ](https://runixcloud.io/faq): access, billing, data handling, contracting, certifications.
 - [Access](https://runixcloud.io/access): how keys are issued and what intake involves.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
-- [Home](https://runixcloud.io/): the product line, how the router is integrated, company facts.
+- [Home](https://runixcloud.io/): the product line, the AI for Science work, how the router is integrated, company facts.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the six pipeline stages and what an engagement looks like.
 - [Runix Code](https://runixcloud.io/code): codebase-aware assistance, agentic workflows, team controls, and the waitlist.

@@ -42,10 +42,33 @@
   /* Same hues as --indigo/--cyan: the light theme needs stops that stay legible
      as text on white, which the brighter dark-theme gradient did not. */
   --grad: linear-gradient(100deg, #4a5bd6, #0b96b8);
+  /* Corner radii. --radius stays the default card/panel value; the rest name
+     the sizes already in use so a new rule picks a step instead of a number.
+     No value changes here -- 50% and the compound shorthands stay literal. */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
   --radius: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
   --maxw: 1120px;
   --mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
   --shadow: 0 14px 44px rgba(15, 23, 42, 0.10);
+
+  /* Type scale. The page had grown 13 distinct sizes between 12 and 22px --
+     12/12.5/13/13.5/14/14.5/15/15.5/16/16.5/17/18/19/20/21/22 -- which is a
+     half-pixel apart in places: invisible to a reader, but a coin flip every
+     time a new rule needs a size. These eight steps replace all of them. Sizes
+     above 22px are one-offs (hero, section heads) and stay literal. */
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-base: 14px;
+  --fs-md: 15px;
+  --fs-lg: 16px;
+  --fs-xl: 17px;
+  --fs-2xl: 19px;
+  --fs-3xl: 21px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -54,7 +77,7 @@ body {
   color: var(--ink);
   background: var(--bg);
   line-height: 1.7;
-  font-size: 16px;
+  font-size: var(--fs-lg);
   -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-decoration: none; transition: all 0.18s; }
@@ -73,10 +96,10 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 
 .badge {
   display: inline-flex; align-items: center; gap: 8px;
-  font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--indigo); background: rgba(107, 149, 255, 0.10);
   border: 1px solid rgba(107, 149, 255, 0.24);
-  padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+  padding: 6px 14px; border-radius: var(--radius-pill); margin-bottom: 20px;
 }
 .grad-text {
   background: var(--grad);
@@ -95,18 +118,26 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
   display: flex; align-items: center; gap: 36px;
   height: 68px; max-width: var(--maxw); margin: 0 auto; padding: 0 24px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: var(--fs-2xl); letter-spacing: -0.02em; }
 .brand .mark {
   width: 30px; height: 30px; flex: none; display: inline-block;
   background: url("logo.svg?v=3") center / contain no-repeat;
   font-size: 0; color: transparent; /* hide the fallback letter */
 }
 .nav-links { display: flex; gap: 30px; align-items: center; margin-left: auto; }
-.nav-links a { color: var(--ink-2); font-size: 14.5px; font-weight: 500; }
+/* min-height, not font-size, is what keeps these on the right side of WCAG
+   2.5.8. They used to clear 24px only because the type was 14.5px and the line
+   box happened to land at 24.x; moving to the 14px step dropped them to 23.x
+   and every nav link on every page failed at once. A target size that depends
+   on a half-pixel of type is not a target size -- state it. */
+.nav-links a {
+  color: var(--ink-2); font-size: var(--fs-base); font-weight: 500;
+  display: flex; align-items: center; min-height: 24px;
+}
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-cta {
   background: var(--ink); color: var(--on-accent) !important; padding: 9px 20px;
-  border-radius: 10px; font-weight: 600;
+  border-radius: var(--radius-sm); font-weight: 600;
 }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(107, 149, 255, 0.25); }
 .nav-toggle { display: none; margin-left: auto; background: none; border: none; color: var(--ink); cursor: pointer; padding: 6px; align-items: center; }
@@ -121,11 +152,11 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 }
 .hero .container { position: relative; }
 .hero h1 { font-size: 58px; font-weight: 800; max-width: 780px; }
-.hero .sub { margin-top: 22px; font-size: 19px; color: var(--ink-2); max-width: 620px; }
+.hero .sub { margin-top: 22px; font-size: var(--fs-2xl); color: var(--ink-2); max-width: 620px; }
 .hero .actions { margin-top: 38px; display: flex; gap: 14px; flex-wrap: wrap; }
 .btn {
-  display: inline-block; padding: 13px 28px; border-radius: 12px;
-  font-size: 15.5px; font-weight: 600; transition: all 0.18s; border: 1px solid transparent;
+  display: inline-block; padding: 13px 28px; border-radius: var(--radius-md);
+  font-size: var(--fs-md); font-weight: 600; transition: all 0.18s; border: 1px solid transparent;
 }
 .btn-primary { background: var(--ink); color: var(--on-accent); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22); }
@@ -145,14 +176,14 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
   padding: 12px 18px; border-bottom: 1px solid var(--line);
 }
 .code-card .dot { width: 11px; height: 11px; border-radius: 50%; background: #2a3441; }
-.code-card .bar span { margin-left: 10px; color: #8b95a1; font-size: 12.5px; font-family: "SF Mono", Menlo, monospace; }
+.code-card .bar span { margin-left: 10px; color: #8b95a1; font-size: var(--fs-xs); font-family: "SF Mono", Menlo, monospace; }
 .code-card pre {
   /* 18px matches .bar above, so the first character of the code lines up
      with the filename. They were 24 and 18 -- which read as a slip, and
      also left the sample 5px too narrow for the real endpoint URL. */
   padding: 22px 18px; overflow-x: auto;
   font-family: "SF Mono", Menlo, Consolas, monospace;
-  font-size: 12.5px; line-height: 1.9; color: #c9d1d9;
+  font-size: var(--fs-xs); line-height: 1.9; color: #c9d1d9;
 }
 .code-card .c { color: #78828f; } .code-card .k { color: #79b8ff; } .code-card .s { color: #7ee2a8; }
 
@@ -164,7 +195,7 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 }
 .strip .cell { text-align: center; }
 .strip b { display: block; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
-.strip span { color: var(--ink-3); font-size: 13px; }
+.strip span { color: var(--ink-3); font-size: var(--fs-sm); }
 
 /* ---------- Sections ---------- */
 .section { padding: 96px 0; }
@@ -172,7 +203,7 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 .section-head { max-width: 640px; margin-bottom: 56px; }
 .section-head.center { text-align: center; margin-left: auto; margin-right: auto; }
 .section-head h2 { font-size: 38px; font-weight: 800; }
-.section-head p { margin-top: 14px; color: var(--ink-2); font-size: 16.5px; }
+.section-head p { margin-top: 14px; color: var(--ink-2); font-size: var(--fs-lg); }
 
 /* ---------- Product cards ---------- */
 .grid { display: grid; gap: 22px; }
@@ -184,12 +215,12 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--line-2); }
 .card .icon {
-  width: 44px; height: 44px; border-radius: 12px; margin-bottom: 20px;
+  width: 44px; height: 44px; border-radius: var(--radius-md); margin-bottom: 20px;
   background: linear-gradient(135deg, rgba(107, 149, 255, 0.16), rgba(34, 211, 238, 0.14));
   display: flex; align-items: center; justify-content: center;
 }
 .card .icon svg { width: 22px; height: 22px; stroke: var(--indigo); }
-.card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+.card h3 { font-size: var(--fs-2xl); font-weight: 700; margin-bottom: 10px; }
 /* Links in body copy.
    Third attempt at this selector, and the first that is not a list of places a
    link might live. Enumerating containers missed <li>, then .facts, then three
@@ -235,9 +266,9 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .card a:not(.btn):focus-visible, .feature a:not(.btn):focus-visible,
 .pillar a:not(.btn):focus-visible { text-decoration: underline; }
 .card p a:hover, .section-head p a:hover, .feature p a:hover { text-decoration: underline; }
-.card p { color: var(--ink-2); font-size: 14.5px; }
+.card p { color: var(--ink-2); font-size: var(--fs-base); }
 .card ul { list-style: none; margin-top: 16px; }
-.card ul li { padding: 7px 0 7px 24px; position: relative; color: var(--ink-2); font-size: 14px; }
+.card ul li { padding: 7px 0 7px 24px; position: relative; color: var(--ink-2); font-size: var(--fs-base); }
 /* One tick mark, used everywhere except .feature, which keeps the circled
    variant as its deliberate emphasis. */
 .card ul li::before, .plan ul li::before, .pillar ul li::before {
@@ -262,7 +293,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 /* ---------- Pricing ---------- */
 .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
 .plan {
-  background: var(--bg); border: 1px solid var(--line); border-radius: 20px; padding: 34px 30px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 34px 30px;
   transition: all 0.2s; position: relative;
 }
 .plan:hover { box-shadow: var(--shadow); }
@@ -270,23 +301,23 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   linear-gradient(var(--bg), var(--bg)) padding-box, var(--grad) border-box; }
 .plan .flag {
   position: absolute; top: -13px; left: 28px; background: var(--grad); color: var(--on-accent);
-  font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 999px;
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: var(--radius-pill);
 }
-.plan h3 { font-size: 17px; font-weight: 700; }
+.plan h3 { font-size: var(--fs-xl); font-weight: 700; }
 .plan .price { font-size: 34px; font-weight: 800; margin: 14px 0 2px; letter-spacing: -0.03em; }
-.plan .price small { font-size: 13.5px; font-weight: 500; color: var(--ink-3); }
-.plan .for { color: var(--ink-3); font-size: 13.5px; }
+.plan .price small { font-size: var(--fs-sm); font-weight: 500; color: var(--ink-3); }
+.plan .for { color: var(--ink-3); font-size: var(--fs-sm); }
 /* The two lines under a price that turn it into a rate rather than a number:
    what the money buys, and what that works out to per unit. Shared by
    /pricing and /code-plans, which is why they are not page-level rules. */
-.plan .credits { margin: 12px 0 4px; font-size: 15px; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.plan .credits { margin: 12px 0 4px; font-size: var(--fs-md); color: var(--ink); font-weight: 600; white-space: nowrap; }
 .plan .credits b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .plan .save { display: block; width: fit-content; margin: 8px 0 0; font: 700 12px/1 var(--mono); letter-spacing: .04em;
-  color: var(--on-accent); background: var(--grad); padding: 4px 10px; border-radius: 999px; }
-.plan .rate { color: var(--ink-3); font-size: 12.5px; margin: 2px 0 0; }
+  color: var(--on-accent); background: var(--grad); padding: 4px 10px; border-radius: var(--radius-pill); }
+.plan .rate { color: var(--ink-3); font-size: var(--fs-xs); margin: 2px 0 0; }
 .plan ul { list-style: none; margin: 22px 0 0; }
-.plan ul li { padding: 8px 0 8px 24px; position: relative; color: var(--ink-2); font-size: 14px; border-bottom: 1px solid var(--line); }
+.plan ul li { padding: 8px 0 8px 24px; position: relative; color: var(--ink-2); font-size: var(--fs-base); border-bottom: 1px solid var(--line); }
 /* Cards stretch to the tallest in the row, so the CTA is pinned to the bottom
    instead of floating wherever that card's feature list happens to end. */
 .plan { display: flex; flex-direction: column; }
@@ -300,7 +331,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 /* ---------- CTA band ---------- */
 .cta-band {
   position: relative; overflow: hidden; text-align: center;
-  background: var(--bg-alt); color: var(--ink); border: 1px solid var(--line); border-radius: 24px; padding: 78px 28px;
+  background: var(--bg-alt); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-xl); padding: 78px 28px;
 }
 .cta-band::before {
   content: ""; position: absolute; inset: 0;
@@ -318,17 +349,17 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .page-hero h1 { font-size: 42px; font-weight: 800; overflow-wrap: break-word; }
 .page-hero p { color: var(--ink-2); margin-top: 12px; max-width: 620px; }
 .article { max-width: 820px; margin: 0 auto; padding: 56px 24px 96px; }
-.article h2 { font-size: 22px; font-weight: 700; margin: 38px 0 12px; }
-.article h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
-.article p, .article li { color: var(--ink-2); font-size: 15.5px; }
+.article h2 { font-size: var(--fs-3xl); font-weight: 700; margin: 38px 0 12px; }
+.article h3 { font-size: var(--fs-xl); font-weight: 600; margin: 24px 0 8px; }
+.article p, .article li { color: var(--ink-2); font-size: var(--fs-md); }
 .article p { margin-bottom: 15px; }
 .article h2 + p, .article h3 + p { margin-top: 0; }
 .article ul, .article ol { margin: 10px 0 10px 22px; }
 .article li { margin-bottom: 7px; }
-.article table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14.5px; }
+.article table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: var(--fs-base); }
 .article th, .article td { border: 1px solid var(--line); padding: 11px 14px; text-align: left; color: var(--ink-2); }
 .article th { background: var(--bg-alt); color: var(--ink); font-weight: 600; }
-.article .updated { color: var(--ink-3); font-size: 14px; margin-bottom: 26px; }
+.article .updated { color: var(--ink-3); font-size: var(--fs-base); margin-bottom: 26px; }
 .article .notice {
   background: rgba(107, 149, 255, 0.08); border-left: 3px solid var(--indigo);
   border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 20px 0;
@@ -338,10 +369,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 
 /* ---------- Contact ---------- */
 .contact-card {
-  background: var(--bg); border: 1px solid var(--line); border-radius: 20px; padding: 40px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 40px;
   box-shadow: var(--shadow);
 }
-.contact-card .row { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.contact-card .row { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: var(--fs-md); }
 .contact-card .row:last-child { border-bottom: none; }
 .contact-card .row > * { min-width: 0; overflow-wrap: anywhere; }
 .contact-card .k { color: var(--ink-3); min-width: 110px; }
@@ -350,19 +381,19 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--line); background: var(--bg-alt); padding: 60px 0 32px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
-.site-footer h4, .site-footer .footer-heading { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
-.site-footer a { display: block; color: var(--ink-2); font-size: 14px; margin-bottom: 10px; }
+.site-footer h4, .site-footer .footer-heading { font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
+.site-footer a { display: block; color: var(--ink-2); font-size: var(--fs-base); margin-bottom: 10px; }
 .site-footer a:hover { color: var(--ink); }
 /* the link rule above outranks .brand, which would break the lockup onto two lines */
 .site-footer .brand {
   display: flex; align-items: center; gap: 10px;
-  color: var(--ink); font-size: 19px; margin-bottom: 0;
+  color: var(--ink); font-size: var(--fs-2xl); margin-bottom: 0;
 }
-.site-footer .desc { color: var(--ink-2); font-size: 13.5px; max-width: 300px; margin-top: 14px; }
+.site-footer .desc { color: var(--ink-2); font-size: var(--fs-sm); max-width: 300px; margin-top: 14px; }
 .footer-bottom {
   border-top: 1px solid var(--line); margin-top: 44px; padding-top: 24px;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-  color: var(--ink-3); font-size: 13px;
+  color: var(--ink-3); font-size: var(--fs-sm);
   /* two literal email links wrap on phones; without this their tap targets
      stack 7px apart and visual_qa (rightly) blocks the deploy */
   line-height: 2;
@@ -375,7 +406,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
    rather than as the legal footer it is. */
 .footer-identity {
   border-top: 1px solid var(--line); margin-top: 44px; padding-top: 24px;
-  font-style: normal; color: var(--ink-3); font-size: 13px; line-height: 2;
+  font-style: normal; color: var(--ink-3); font-size: var(--fs-sm); line-height: 2;
 }
 .footer-identity strong { color: var(--ink-2); font-weight: 600; }
 .footer-identity a { display: inline; margin: 0; color: var(--ink-2); }
@@ -383,38 +414,46 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .footer-identity + .footer-bottom { border-top: none; margin-top: 6px; padding-top: 0; }
 
 /* ---------- Blog ---------- */
-.post-meta { display: flex; gap: 10px; align-items: center; color: var(--ink-3); font-size: 13.5px; margin-bottom: 14px; flex-wrap: wrap; }
+.post-meta { display: flex; gap: 10px; align-items: center; color: var(--ink-3); font-size: var(--fs-sm); margin-bottom: 14px; flex-wrap: wrap; }
 .post-meta .cat {
-  font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-  color: var(--indigo); background: rgba(107, 149, 255, 0.12); padding: 3px 10px; border-radius: 999px;
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--indigo); background: rgba(107, 149, 255, 0.12); padding: 3px 10px; border-radius: var(--radius-pill);
 }
 .blog-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
-.blog-list .card h3 { font-size: 20px; }
+.blog-list .card h3 { font-size: var(--fs-3xl); }
 .blog-list .card h3 a:hover { color: var(--indigo); }
 .blog-list .card .excerpt { margin-top: 8px; }
-.blog-list .card .read-more { display: inline-block; margin-top: 16px; font-size: 14px; font-weight: 600; color: var(--indigo); }
+.blog-list .card .read-more { display: inline-block; margin-top: 16px; font-size: var(--fs-base); font-weight: 600; color: var(--indigo); }
 .article .post-meta { margin-bottom: 0; }
 .article blockquote {
   border-left: 3px solid var(--indigo); background: var(--bg-alt);
   padding: 14px 20px; margin: 18px 0; border-radius: 0 10px 10px 0; color: var(--ink-2);
 }
 .article code {
-  font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em;
-  background: var(--bg-alt); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px;
+  /* 0.9em keeps inline code a touch smaller than the prose around it, but a
+     relative size inherits every rounding decision its parent makes: when the
+     code block above moved from 13.5px to the 13px step, 0.9em landed at
+     11.7px and fifteen pages went under the 12px floor at once. State the
+     floor rather than hoping the multiplication clears it. */
+  font-family: "SF Mono", Menlo, Consolas, monospace; font-size: max(12px, 0.9em);
+  background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-xs); padding: 1px 6px;
 }
 .article pre {
-  background: #05080f; color: #c9d1d9; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px;
+  background: #05080f; color: #c9d1d9; border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px 20px;
   overflow-x: auto; font-family: "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13.5px; line-height: 1.8; margin: 18px 0;
+  font-size: var(--fs-sm); line-height: 1.8; margin: 18px 0;
 }
-.article pre code { background: none; border: none; padding: 0; color: inherit; }
+/* Inside a block, code is the block -- it should not be shrunk a second time by
+   the inline rule above. This was always wrong; it only became visible when the
+   0.9em landed under the 12px floor. */
+.article pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
 
 /* ---------- Careers ---------- */
 .job { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .job .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .job .tag {
-  font-size: 12px; font-weight: 600; color: var(--ink-2); background: var(--bg-alt);
-  border: 1px solid var(--line); padding: 3px 12px; border-radius: 999px;
+  font-size: var(--fs-xs); font-weight: 600; color: var(--ink-2); background: var(--bg-alt);
+  border: 1px solid var(--line); padding: 3px 12px; border-radius: var(--radius-pill);
 }
 
 /* ---------- Responsive ---------- */
@@ -461,11 +500,11 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 }
 .pillar::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad); }
 .pillar:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--line-2); }
-.pillar .k { font-size: 12px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--indigo); }
-.pillar h3 { font-size: 21px; font-weight: 800; margin: 10px 0 8px; }
-.pillar > p { color: var(--ink-2); font-size: 14.5px; }
+.pillar .k { font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--indigo); }
+.pillar h3 { font-size: var(--fs-3xl); font-weight: 800; margin: 10px 0 8px; }
+.pillar > p { color: var(--ink-2); font-size: var(--fs-base); }
 .pillar ul { list-style: none; margin-top: 18px; }
-.pillar ul li { position: relative; padding: 10px 0 10px 26px; color: var(--ink); font-size: 14px; border-top: 1px solid var(--line); }
+.pillar ul li { position: relative; padding: 10px 0 10px 26px; color: var(--ink); font-size: var(--fs-base); border-top: 1px solid var(--line); }
 .pillar ul li:first-child { border-top: none; }
 .pillar ul li::before { top: 10px; }
 .pillar ul li b { font-weight: 600; }
@@ -477,18 +516,18 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   padding: 30px 28px; text-align: center; transition: all 0.2s;
 }
 .path:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.path .pico { width: 46px; height: 46px; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(107, 149, 255, 0.16), rgba(34, 211, 238, 0.14)); }
+.path .pico { width: 46px; height: 46px; border-radius: var(--radius-md); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(107, 149, 255, 0.16), rgba(34, 211, 238, 0.14)); }
 .path .pico svg { width: 23px; height: 23px; stroke: var(--indigo); }
-.path h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.path p { color: var(--ink-2); font-size: 14px; margin-bottom: 18px; }
+.path h3 { font-size: var(--fs-2xl); font-weight: 700; margin-bottom: 8px; }
+.path p { color: var(--ink-2); font-size: var(--fs-base); margin-bottom: 18px; }
 .path .btn { width: 100%; }
 
 /* ---------- Integration steps ---------- */
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: st; }
 .stepc { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 26px; }
-.stepc .n { width: 34px; height: 34px; border-radius: 10px; background: var(--grad); color: var(--on-accent); font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-.stepc h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; }
-.stepc p { color: var(--ink-2); font-size: 14px; }
+.stepc .n { width: 34px; height: 34px; border-radius: var(--radius-sm); background: var(--grad); color: var(--on-accent); font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.stepc h3 { font-size: var(--fs-lg); font-weight: 700; margin-bottom: 6px; }
+.stepc p { color: var(--ink-2); font-size: var(--fs-base); }
 
 /* accessibility: skip link + visible focus */
 .skip-link {
@@ -497,22 +536,22 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 }
 .skip-link:focus { left: 0; }
 a:focus-visible, button:focus-visible, .btn:focus-visible {
-  outline: 2px solid var(--indigo); outline-offset: 2px; border-radius: 6px;
+  outline: 2px solid var(--indigo); outline-offset: 2px; border-radius: var(--radius-xs);
 }
 .footer-grid-4 { grid-template-columns: 2fr 1fr 1fr 1.2fr; }
-.card-meta { margin-top: 14px; color: var(--ink-3); font-size: 12.5px; }
-.card .read-more { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--indigo); }
+.card-meta { margin-top: 14px; color: var(--ink-3); font-size: var(--fs-xs); }
+.card .read-more { display: inline-block; margin-top: 14px; font-size: var(--fs-base); font-weight: 600; color: var(--indigo); }
 .card .read-more:hover { text-decoration: underline; }
 
 .pillars.two { grid-template-columns: repeat(2, 1fr); }
-.pillar .lead-line { color: var(--ink-2); font-size: 15px; margin-top: 4px; }
+.pillar .lead-line { color: var(--ink-2); font-size: var(--fs-md); margin-top: 4px; }
 
 /* provider chips */
 .prov-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
 .prov-row span {
-  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  font-size: var(--fs-sm); font-weight: 600; color: var(--ink-2);
   background: var(--bg-alt); border: 1px solid var(--line);
-  padding: 7px 14px; border-radius: 999px;
+  padding: 7px 14px; border-radius: var(--radius-pill);
 }
 .prov-row .best { color: var(--indigo); border-color: rgba(107, 149, 255, 0.35); background: rgba(107, 149, 255, 0.10); }
 
@@ -520,7 +559,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .callout {
   display: flex; gap: 14px; align-items: flex-start;
   background: rgba(107, 149, 255, 0.07); border: 1px solid rgba(107, 149, 255, 0.22);
-  border-radius: var(--radius); padding: 18px 22px; margin-top: 22px; color: var(--ink-2); font-size: 14.5px;
+  border-radius: var(--radius); padding: 18px 22px; margin-top: 22px; color: var(--ink-2); font-size: var(--fs-base);
 }
 .callout svg { width: 22px; height: 22px; stroke: var(--indigo); flex: none; margin-top: 1px; }
 
@@ -528,7 +567,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .hero-split { display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 54px; align-items: center; }
 .hero-split > * { min-width: 0; }
 .hero-split h1 { font-size: 52px; max-width: none; }
-.hero-split .sub { font-size: 18px; }
+.hero-split .sub { font-size: var(--fs-2xl); }
 .hero-split .code-card { margin-top: 0; max-width: none; border-radius: var(--radius) var(--radius) 0 0; }
 .hero-metrics {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
@@ -536,26 +575,26 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   border-radius: 0 0 var(--radius) var(--radius); overflow: hidden;
 }
 .hero-metrics div { background: #05080f; padding: 13px 16px; }
-.hero-metrics b { display: block; font-family: var(--mono); font-size: 16px; color: #e9edf6; }
-.hero-metrics span { font-size: 12px; color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
+.hero-metrics b { display: block; font-family: var(--mono); font-size: var(--fs-lg); color: #e9edf6; }
+.hero-metrics span { font-size: var(--fs-xs); color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
 
 /* works-with row */
 .compat { display: flex; gap: 14px 26px; flex-wrap: wrap; align-items: center;
-  font-family: var(--mono); font-size: 13px; color: var(--ink-3); padding: 18px 24px;
+  font-family: var(--mono); font-size: var(--fs-sm); color: var(--ink-3); padding: 18px 24px;
   max-width: var(--maxw); margin: 0 auto; }
-.compat b { color: var(--ink-2); font-weight: 500; font-size: 13px; letter-spacing: 0.02em; }
+.compat b { color: var(--ink-2); font-weight: 500; font-size: var(--fs-sm); letter-spacing: 0.02em; }
 
 /* ---------- Company facts (what procurement asks for) ---------- */
 .facts { border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt); overflow: hidden; }
-.facts .facts-head { font-size: 16px; font-weight: 700; padding: 18px 24px; border-bottom: 1px solid var(--line); }
+.facts .facts-head { font-size: var(--fs-lg); font-weight: 700; padding: 18px 24px; border-bottom: 1px solid var(--line); }
 /* Grid, not wrapping flex: a long value has to wrap inside its own column
    rather than dropping underneath the label and breaking the row rhythm. */
-.facts .frow { display: grid; grid-template-columns: 148px 1fr; gap: 4px 18px; padding: 13px 24px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.facts .frow { display: grid; grid-template-columns: 148px 1fr; gap: 4px 18px; padding: 13px 24px; border-bottom: 1px solid var(--line); font-size: var(--fs-base); }
 .facts .frow:last-child { border-bottom: none; }
 .facts .frow > * { min-width: 0; overflow-wrap: anywhere; }
 .facts .k { color: var(--ink-3); min-width: 148px; }
 .facts .v { color: var(--ink); font-weight: 500; }
-.facts .v small { display: block; color: var(--ink-3); font-weight: 400; font-size: 13px; }
+.facts .v small { display: block; color: var(--ink-3); font-weight: 400; font-size: var(--fs-sm); }
 
 @media (max-width: 920px) {
   .pillars, .pillars.two, .paths, .steps { grid-template-columns: 1fr; }
@@ -580,11 +619,11 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   background: var(--bg-alt); }
 .layer-tag { font: 600 12px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink-3); margin-bottom: 12px; }
-.layer-body h3 { font-size: 21px; font-weight: 800; margin-bottom: 8px; }
-.layer-body p { color: var(--ink-2); font-size: 15px; max-width: 68ch; }
+.layer-body h3 { font-size: var(--fs-3xl); font-weight: 800; margin-bottom: 8px; }
+.layer-body p { color: var(--ink-2); font-size: var(--fs-md); max-width: 68ch; }
 .layer .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
 .layer .chips a, .layer .chips span {
-  font-size: 13.5px; padding: 7px 14px; border-radius: 999px;
+  font-size: var(--fs-sm); padding: 7px 14px; border-radius: var(--radius-pill);
   border: 1px solid var(--line-2); background: #fff; color: var(--ink-2); }
 .layer .chips a { color: var(--indigo); font-weight: 600; }
 .layer .chips a:hover { border-color: var(--indigo); background: rgba(107,149,255,0.10); }
@@ -611,7 +650,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius);
 }
 .article .related h2 {
-  font-size: 13px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
   color: var(--ink-3); margin: 0 0 14px;
 }
 .article .related ul { list-style: none; margin: 0; }
@@ -624,7 +663,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .copy-btn {
   margin-left: auto; font: 600 12px/1 var(--mono); letter-spacing: .02em;
   color: #8b95a1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
-  padding: 5px 11px; border-radius: 999px; cursor: pointer; transition: all .15s;
+  padding: 5px 11px; border-radius: var(--radius-pill); cursor: pointer; transition: all .15s;
 }
 .copy-btn:hover { color: #e9edf6; background: rgba(255,255,255,.12); }
 .copy-btn.done { color: #7ee2a8; border-color: rgba(126,226,168,.4); }
@@ -642,13 +681,13 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   padding: 40px 24px 0;
 }
 .toc-title {
-  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--muted); margin: 0 0 12px;
 }
 .doc-toc ul { list-style: none; margin: 0; padding: 0; }
 .doc-toc li { margin: 0 0 8px; }
 .doc-toc a {
-  color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.45;
+  color: var(--muted); text-decoration: none; font-size: var(--fs-base); line-height: 1.45;
   display: block; border-left: 2px solid var(--line); padding: 2px 0 2px 12px;
 }
 .doc-toc a:hover { color: var(--ink); border-left-color: var(--indigo); }
@@ -656,7 +695,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   border-top: 1px solid var(--line); margin-top: 56px; padding-top: 32px;
 }
 .doc-next .toc-title {
-  font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+  font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--muted); margin: 0 0 16px;
 }
 .doc-next ul {
@@ -691,10 +730,10 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .diagram-svg .d-node rect { fill: var(--bg); stroke: var(--line-2); stroke-width: 1.25; }
 .diagram-svg .d-gw rect { fill: var(--bg-alt); stroke: var(--indigo); }
 .diagram-svg .d-title {
-  font-weight: 700; font-size: 15px; fill: var(--ink); text-anchor: middle;
+  font-weight: 700; font-size: var(--fs-md); fill: var(--ink); text-anchor: middle;
 }
 .diagram-svg .d-sub {
-  font-weight: 400; font-size: 13px; fill: var(--ink-3); text-anchor: middle;
+  font-weight: 400; font-size: var(--fs-sm); fill: var(--ink-3); text-anchor: middle;
 }
 .diagram-svg .d-left { text-anchor: start; }
 .diagram-svg .d-chip rect { fill: var(--bg); stroke: var(--line-2); stroke-width: 1; }
@@ -727,7 +766,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .diagram-steps b { color: var(--ink); font-weight: 600; }
 
 .diagram figcaption {
-  margin-top: 16px; color: var(--ink-3); font-size: 14.5px; line-height: 1.6;
+  margin-top: 16px; color: var(--ink-3); font-size: var(--fs-base); line-height: 1.6;
   text-align: center; max-width: 640px; margin-inline: auto;
 }
 
@@ -789,7 +828,7 @@ main > .section:first-child { padding-top: 64px; }
    !important. Moved here so the responsive rule below can actually win. */
 .model-note {
   text-align: center; margin-top: 24px;
-  color: var(--ink-3); font-size: 14px;
+  color: var(--ink-3); font-size: var(--fs-base);
 }
 
 /* ---------- Centred body copy is a phone-width readability problem ---------- */
@@ -861,11 +900,11 @@ main > .section:first-child { padding-top: 64px; }
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
-  font-size: 15px;
+  font-size: var(--fs-md);
 }
 .layer-prod a { color: var(--indigo); font-weight: 700; }
 .layer-prod a:hover { color: var(--cyan-text); text-decoration: underline; }
-.layer-side { color: var(--ink-3); font-size: 13.5px; }
+.layer-side { color: var(--ink-3); font-size: var(--fs-sm); }
 /* Status reads as a fact, not a badge to be proud of: "in development" must
    not look like a feature. Only the shipping one gets colour. */
 .layer-state {
@@ -873,7 +912,7 @@ main > .section:first-child { padding-top: 64px; }
   letter-spacing: 0.07em;
   text-transform: uppercase;
   padding: 5px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line-2);
   color: var(--ink-3);
 }
@@ -896,7 +935,7 @@ main > .section:first-child { padding-top: 64px; }
 
 @media (max-width: 920px) {
   .layer { grid-template-columns: 44px 1fr; }
-  .layer-num { font-size: 20px; }
+  .layer-num { font-size: var(--fs-3xl); }
 }
 @media (max-width: 560px) {
   /* The number column costs a third of the width on a phone, so it goes

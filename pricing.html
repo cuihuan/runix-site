@@ -127,59 +127,71 @@
   <div class="container">
     <span class="badge">Pricing</span>
     <h1>Straightforward, usage-based pricing</h1>
-    <p>Evaluation credits are issued on request; after that you pay for what you use. Subscriptions, prepaid balance, and enterprise agreements are available. Every charge is itemized.</p>
+    <p>No plans and no monthly fee. You hold a prepaid balance and it is drawn down by what you actually use, itemized per request. Top up when you need to; credit does not expire.</p>
   </div>
 </div>
-<section class="section">
+<section class="section" id="top-up">
   <div class="container">
-    <div class="section-head center"><h2>Ways to buy</h2></div>
-      <div class="plans">
-      <div class="plan">
-        <h3>Evaluation</h3>
-        <div class="price">Free<small> credits</small></div>
-        <div class="for">Try the router before you pay</div>
-        <p class="credits">Issued <b>on request</b>, no card</p>
-        <p class="rate">Same endpoint and models as a paid account</p>
-        <ul>
-          <li>Free evaluation credits on request</li>
-          <li>Full router functionality</li>
-          <li>No card required to start evaluating</li>
-          <li>Community &amp; email support</li>
-        </ul>
-        <a class="btn btn-ghost btn-block" href="/about#contact">Request access</a>
-      </div>
-      <div class="plan featured">
-        <span class="flag">Most common</span>
-        <h3>Pay as you go</h3>
-        <div class="price">$0.01<small> /credit</small></div>
-        <div class="for">For products running in production</div>
-        <p class="credits"><b>$50</b> tops up 5,000 credits</p>
-        <p class="rate">No monthly fee · no commitment · top up any time</p>
-        <ul>
-          <li>One credit rate across every model and tool</li>
-          <li>Prepaid balance, drawn down as you use it</li>
-          <li>Per-key limits and usage tracking</li>
-          <li>Itemized statements</li>
-          <li>Priority support available</li>
-        </ul>
-        <a class="btn btn-grad btn-block" href="/about#contact">Request access</a>
-      </div>
-      <div class="plan">
-        <h3>Enterprise</h3>
-        <div class="price">Custom</div>
-        <div class="for">For teams with procurement needs</div>
-        <p class="credits">Discounted <b>credit rate</b>, by volume</p>
-        <p class="rate">Quoted against your own models and traffic, in writing</p>
-        <ul>
-          <li>Volume &amp; committed-use agreements</li>
-          <li>Custom data pipelines and solutions</li>
-          <li>Formal invoicing &amp; procurement support</li>
-          <li>Enterprise agreements and DPAs on request</li>
-        </ul>
-        <!--email_off--><a class="btn btn-ghost btn-block" href="mailto:sales@runixcloud.io?subject=Enterprise%20pricing">Talk to sales</a><!--/email_off-->
-      </div>
+    <div class="section-head center">
+      <h2>Top up your balance</h2>
+      <p>Pick an amount or enter your own &mdash; there is nothing to subscribe to and nothing to cancel later. Self-serve card checkout is being switched on now; until it is, <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Top%20up">email billing</a><!--/email_off--> and we set the balance up within one business day.</p>
     </div>
-    <p class="model-note">Everything meters in credits at <strong>$0.01 each</strong>, billed in <span data-cfg="defaultCurrency">USD</span>. How many credits a request costs depends on the model and the size of the request — every charge is itemized in your console, and volume rates are quoted in writing. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Pricing">Ask for a quote</a><!--/email_off--> if you want the numbers against your own traffic first.</p>
+
+    <div class="topup">
+      <div class="topup-grid" role="radiogroup" aria-label="Top-up amount">
+        <button type="button" class="topup-opt" role="radio" aria-checked="false"
+                data-usd="10" data-credits="1,000" data-list="12.50">
+          <span class="topup-name">Starter</span>
+          <span class="topup-usd">$10</span>
+          <span class="topup-sub">1,000 credits</span>
+        </button>
+        <button type="button" class="topup-opt" role="radio" aria-checked="false"
+                data-usd="20" data-credits="2,000" data-list="25.00">
+          <span class="topup-name">Basic</span>
+          <span class="topup-usd">$20</span>
+          <span class="topup-sub">2,000 credits</span>
+        </button>
+        <button type="button" class="topup-opt is-selected" role="radio" aria-checked="true"
+                data-usd="50" data-credits="5,000" data-list="62.50">
+          <span class="topup-flag">Popular</span>
+          <span class="topup-name">Standard</span>
+          <span class="topup-usd">$50</span>
+          <span class="topup-sub">5,000 credits</span>
+        </button>
+        <button type="button" class="topup-opt" role="radio" aria-checked="false"
+                data-usd="200" data-credits="20,000" data-list="250.00">
+          <span class="topup-name">Pro</span>
+          <span class="topup-usd">$200</span>
+          <span class="topup-sub">20,000 credits</span>
+        </button>
+      </div>
+
+      <label class="topup-custom" for="topup-amount">
+        <span>Or enter a custom amount <small>(minimum $10)</small></span>
+        <span class="topup-input"><i>$</i><input id="topup-amount" type="number" min="10" step="1"
+               inputmode="numeric" placeholder="Amount in USD" autocomplete="off"></span>
+      </label>
+
+      <div class="topup-equiv">
+        <p class="topup-equiv-head">What the balance is worth</p>
+        <p><b data-topup="credits">5,000</b> credits, drawn down at <b>0.8&times;</b> published vendor
+           list prices &mdash; about <b data-topup="list">$62.50</b> of list-price usage.</p>
+        <p class="topup-equiv-note">How far it goes depends on the model and the size of each request;
+           a long-context frontier call costs more credits than a short one on a lighter model.
+           Every charge is itemized in your console.</p>
+      </div>
+
+      <a class="btn btn-grad btn-block topup-cta" href="/about#contact">Request access to top up</a>
+      <p class="topup-foot">Paying means you accept the <a href="/terms">Terms of Service</a>.
+        Need an invoice, wire transfer or a volume rate?
+        <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Invoice%20or%20volume%20pricing">Talk to sales</a><!--/email_off-->.</p>
+    </div>
+
+    <p class="model-note">Everything meters in credits at <strong>$0.01 each</strong>, billed in
+      <span data-cfg="defaultCurrency">USD</span>. Balance is prepaid, never expires, and carries no
+      monthly fee. Committed volume earns a lower rate, quoted in writing.
+      <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Pricing">Ask for a quote</a><!--/email_off-->
+      if you want the numbers against your own traffic first.</p>
   </div>
 </section>
 
@@ -187,7 +199,7 @@
   <div class="container">
     <div class="section-head center">
       <h2>Pricing by product</h2>
-      <p>The plans above cover Runix Router. Here is how each product in the line-up is priced — honestly, including the ones whose pricing is not set yet.</p>
+      <p>The balance above covers Runix Router. Here is how each product in the line-up is priced — honestly, including the ones whose pricing is not set yet.</p>
     </div>
     <div class="grid cols-2">
       <div class="card">
@@ -240,7 +252,7 @@
     </div>
     <div class="steps">
       <div class="stepc"><div class="n" aria-hidden="true">1</div><h3>Request access</h3><p>Email us or use the contact form — accounts are set up within one business day, free, no card. Once in, you issue and revoke API keys yourself, and evaluation credits are available before paying anything.</p></div>
-      <div class="stepc"><div class="n" aria-hidden="true">2</div><h3>Choose an amount and pay</h3><p>Top up your prepaid balance at $0.01 per credit. The total, including any tax that applies in your billing country, is shown before you confirm — and the credits are usable within a minute. See the <a href="/delivery">Delivery Policy</a>.</p></div>
+      <div class="stepc"><div class="n" aria-hidden="true">2</div><h3>Choose an amount and pay</h3><p>Top up from <strong>$10</strong>, at $0.01 per credit. The total, including any tax that applies in your billing country, is shown before you confirm &mdash; and the credit is usable within a minute. See the <a href="/delivery">Delivery Policy</a>.</p></div>
       <div class="stepc"><div class="n" aria-hidden="true">3</div><h3>Point your code at Runix</h3><p>Change one base URL to <code>api.router.runixcloud.io</code>. Each request draws down credits and lands on an itemized statement you can reconcile against your own logs.</p></div>
     </div>
     <p class="model-note">Everything is billed in <span data-cfg="defaultCurrency">USD</span> by <span data-cfg="legalCompanyName">Runix AI Inc</span>, and every receipt and invoice is issued in that name. Card and bank transfer are available for invoiced accounts today; self-serve card checkout is being enabled now, and until it is live <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Set%20up%20billing">email billing</a><!--/email_off--> and we set your account up within one business day.</p>
@@ -259,7 +271,7 @@
     <div class="grid cols-3">
       <div class="card">
         <h3>Billing models</h3>
-        <p><strong>Usage-based:</strong> billed on measured usage (e.g. tokens/requests) for the models you call. <strong>Subscription:</strong> optional fixed monthly plans. <strong>Prepaid balance:</strong> add credits up front and draw down as you use. <strong>Enterprise/custom:</strong> by agreement.</p>
+        <p><strong>Prepaid balance:</strong> you add credit up front and it is drawn down by measured usage (tokens/requests) on the models you call. That is the only self-serve model &mdash; there is no subscription and no monthly fee. <strong>Enterprise/custom:</strong> volume rates and invoicing by agreement.</p>
       </div>
       <div class="card">
         <h3>Currency &amp; tax</h3>
@@ -267,19 +279,19 @@
       </div>
       <div class="card">
         <h3>Prepaid credits</h3>
-        <p>Prepaid balance is drawn down as you use the Services during your <strong>service period</strong> (the term covered by your plan or agreement). Unused balance is refundable per the <a href="/refund">Refund Policy</a>; consumed usage is not.</p>
+        <p>Balance is drawn down as you use the Services and does not expire. Unused balance is refundable per the <a href="/refund">Refund Policy</a>; usage already consumed is not.</p>
       </div>
       <div class="card">
-        <h3>Renewal &amp; auto-recharge</h3>
-        <p>Subscriptions renew each period unless cancelled. Optional auto-recharge (topping up a prepaid balance) is off unless you turn it on, and can be turned off at any time.</p>
+        <h3>Auto-recharge</h3>
+        <p>Nothing renews on its own &mdash; there is no subscription to cancel. Optional auto-recharge (topping the balance back up when it runs low) is off unless you switch it on, and can be switched off at any time.</p>
       </div>
       <div class="card">
         <h3>Overage</h3>
-        <p>If you exceed a plan limit, additional usage is billed at your usage-based rate, or paused, depending on your configuration. We'll make the behavior clear before you rely on it.</p>
+        <p>There is no plan limit to exceed. When the balance reaches zero, requests are refused rather than silently billed on. Per-key spending limits are yours to set, and we'll make the behaviour clear before you rely on it.</p>
       </div>
       <div class="card">
         <h3>Cancel &amp; refunds</h3>
-        <p>Cancel anytime — access continues to the end of the paid period. See the <a href="/cancellation">Cancellation Policy</a> and <a href="/refund">Refund Policy</a> for exactly what happens to access, renewals, and balance.</p>
+        <p>Stop whenever you like &mdash; with no subscription there is nothing to cancel, and any unused balance is handled per the <a href="/refund">Refund Policy</a>. The <a href="/cancellation">Cancellation Policy</a> covers closing an account and what happens to the balance in it.</p>
       </div>
       <div class="card">
         <h3>Invoices &amp; receipts</h3>
@@ -359,5 +371,43 @@
   </div>
 </footer>
 
+<script>
+/* Top-up selector. The page ships with Standard pre-selected and every number
+   already rendered in the HTML, so the amounts stay readable with JS disabled —
+   the payment-provider review requires the pricing to be visible without it. */
+(function () {
+  var wrap = document.querySelector('.topup');
+  if (!wrap) return;
+  var opts = wrap.querySelectorAll('.topup-opt');
+  var input = wrap.querySelector('#topup-amount');
+  var outCredits = wrap.querySelector('[data-topup="credits"]');
+  var outList = wrap.querySelector('[data-topup="list"]');
+  var MIN = 10, CREDITS_PER_USD = 100, LIST_MULTIPLE = 1.25; /* 1 / 0.8 */
+
+  function render(usd) {
+    if (!(usd >= MIN)) return;
+    outCredits.textContent = (usd * CREDITS_PER_USD).toLocaleString('en-US');
+    outList.textContent = '$' + (usd * LIST_MULTIPLE).toLocaleString('en-US',
+      { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function select(btn) {
+    opts.forEach(function (o) {
+      o.classList.toggle('is-selected', o === btn);
+      o.setAttribute('aria-checked', String(o === btn));
+    });
+    if (btn) { input.value = ''; render(parseFloat(btn.dataset.usd)); }
+  }
+
+  opts.forEach(function (btn) {
+    btn.addEventListener('click', function () { select(btn); });
+  });
+
+  input.addEventListener('input', function () {
+    var v = parseFloat(input.value);
+    if (v >= MIN) { select(null); render(v); }
+  });
+})();
+</script>
 </body>
 </html>

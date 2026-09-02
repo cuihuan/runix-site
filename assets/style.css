@@ -274,6 +274,65 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   padding: 4px 12px; border-radius: 999px;
 }
 .plan h3 { font-size: 17px; font-weight: 700; }
+
+/* ---- Top-up picker (pricing) ------------------------------------------
+   Same surface treatment as .plan so the page reads as one system: --bg on
+   --line, 20px radius, gradient border for the selected state. Chosen over a
+   third card variant because a top-up is one choice repeated, not four
+   products. */
+.topup { max-width: 760px; margin: 0 auto; }
+.topup-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.topup-opt {
+  position: relative; text-align: left; cursor: pointer; font: inherit; color: inherit;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 20px;
+  padding: 22px 24px; display: grid; gap: 2px; transition: all 0.2s;
+}
+.topup-opt:hover { border-color: var(--line-2); box-shadow: var(--shadow); }
+.topup-opt:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+.topup-opt.is-selected {
+  border: 2px solid transparent; padding: 21px 23px;
+  background: linear-gradient(var(--bg), var(--bg)) padding-box, var(--grad) border-box;
+}
+.topup-name { font-size: 14px; font-weight: 700; color: var(--ink-2); letter-spacing: 0.02em; }
+.topup-usd { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+.topup-sub { font-size: 13px; color: var(--ink-3); }
+.topup-flag {
+  position: absolute; top: -13px; left: 22px; background: var(--grad); color: var(--on-accent);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px;
+}
+.topup-custom {
+  display: grid; gap: 10px; margin-top: 22px; font-size: 14px; color: var(--ink-2);
+}
+.topup-custom small { color: var(--ink-3); }
+.topup-input {
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line-2); border-radius: 12px; padding: 0 14px; background: var(--bg);
+}
+.topup-input:focus-within { border-color: var(--indigo); }
+.topup-input i { font-style: normal; color: var(--ink-3); font-weight: 600; }
+.topup-input input {
+  flex: 1; border: 0; outline: 0; background: transparent; font: inherit; color: var(--ink);
+  padding: 13px 0;
+}
+.topup-equiv {
+  margin-top: 22px; padding: 20px 22px; border-radius: 16px;
+  background: var(--bg-alt); border: 1px solid var(--line); font-size: 14px; color: var(--ink-2);
+}
+.topup-equiv-head {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cyan-text); margin-bottom: 8px;
+}
+.topup-equiv b { color: var(--ink); }
+.topup-equiv-note { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+.topup-cta { margin-top: 22px; }
+.topup-foot { margin-top: 12px; text-align: center; font-size: 13px; color: var(--ink-3); }
+
+@media (max-width: 640px) {
+  .topup-grid { grid-template-columns: 1fr; }
+  .topup-usd { font-size: 26px; }
+}
+
 .plan .price { font-size: 34px; font-weight: 800; margin: 14px 0 2px; letter-spacing: -0.03em; }
 .plan .price small { font-size: 13.5px; font-weight: 500; color: var(--ink-3); }
 .plan .for { color: var(--ink-3); font-size: 13.5px; }

@@ -25,36 +25,54 @@ PAGE = "pricing.html"
 SITE = "https://runixcloud.io"
 
 OFFERS = [
+    # The three tiers this file used to describe were removed from the page when
+    # the plans went away: what is sold is prepaid balance, bought in whatever
+    # amount you like. Structured data has to say the same thing the page says --
+    # card acquirers read it, and so do the assistants people ask instead of
+    # opening the page.
     {
         "@type": "Offer",
-        "name": "Evaluation",
-        "description": "Free evaluation credits, issued on request. Same endpoint and models as a paid account, no card required.",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/LimitedAvailability",
-        "url": f"{SITE}/pricing",
-    },
-    {
-        "@type": "Offer",
-        "name": "Pay as you go",
-        "description": "Prepaid balance drawn down by measured usage. One credit rate across every model and tool, no monthly fee and no commitment; $50 tops up 5,000 credits.",
+        "name": "Prepaid balance",
+        "description": (
+            "Prepaid credit drawn down by measured usage, with no plan and no monthly fee. "
+            "Balance is spent at 0.8x published vendor list prices, so $50 covers about "
+            "$62.50 of list-price usage. Top up from $10; credit does not expire."
+        ),
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": f"{SITE}/pricing",
+        "url": f"{SITE}/pricing#top-up",
+        "eligibleQuantity": {
+            "@type": "QuantitativeValue",
+            "minValue": 10,
+            "unitText": "USD",
+        },
         "priceSpecification": {
             "@type": "UnitPriceSpecification",
             "price": "0.01",
             "priceCurrency": "USD",
             "unitText": "credit",
-            "description": "Every request meters in credits at $0.01 each, billed in USD. How many credits a request costs depends on the model and the size of the request.",
+            "description": (
+                "Every request meters in credits at $0.01 each, billed in USD. How many "
+                "credits a request costs depends on the model and the size of the request."
+            ),
         },
+    },
+    {
+        # Kept without a price: evaluation credit is issued on request, not sold.
+        "@type": "Offer",
+        "name": "Evaluation credit",
+        "description": "Free evaluation credit, issued on request. Same endpoint and models as a paid account, no card required.",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/LimitedAvailability",
+        "url": f"{SITE}/about#contact",
     },
     {
         # No price: the rate is discounted by volume and quoted in writing, so
         # there is no published figure to put here.
         "@type": "Offer",
-        "name": "Enterprise",
-        "description": "Discounted credit rate by volume, quoted in writing against your own models and traffic. Volume and committed-use agreements, custom data pipelines, formal invoicing and DPAs on request.",
+        "name": "Volume agreement",
+        "description": "Discounted credit rate by volume, quoted in writing against your own models and traffic. Committed-use agreements, formal invoicing and DPAs on request.",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
         "url": f"{SITE}/about#contact",

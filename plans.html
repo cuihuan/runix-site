@@ -12,8 +12,8 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Runix AI Plans — Monthly Subscriptions | Runix</title>
-<meta name="description" content="Runix AI monthly plans: Basic, 5X, 10X and 30X. Pay by card — Visa, Mastercard, American Express and UnionPay accepted. Billed monthly, cancel any time.">
+<title>Pricing — Runix AI Plans | Runix</title>
+<meta name="description" content="Runix AI pricing: four monthly plans differing by agent credits — Basic, 5X, 10X and 30X. Card checkout hosted by Stripe.">
 <link rel="canonical" href="https://runixcloud.io/plans">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
@@ -137,8 +137,7 @@
     <div class="nav-links">
       <a href="/#platform">Platform</a>
       <a href="/#products">Products</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/plans">Plans</a>
+      <a href="/plans" class="active">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about">Company</a>
       <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
@@ -150,112 +149,123 @@
 
 <div class="page-hero center">
   <div class="container">
-    <span class="badge">Plans</span>
-    <h1>Runix AI plans</h1>
-    <p>Four monthly plans, from a single seat to the heaviest agent workloads. Pay by card &mdash; checkout is
-       hosted by Stripe, so card details are entered on their page, not ours.</p>
+    <span class="badge">Pricing</span>
+    <h1>Four plans.<span class="line">One difference that matters.</span></h1>
+    <p>Every plan gives you the same tools. What changes is how much your agents can do
+       before the month runs out &mdash; and how much of it runs at once.</p>
   </div>
 </div>
 
 <section class="section" id="plans">
   <div class="container">
     <div class="section-head center">
-      <h2>Choose a plan</h2>
-      <p>Every plan includes the same tools; the difference is how many agent credits you get
-         and how much runs in parallel.</p>
+      <h2>Choose a tier</h2>
+      <p>Pick by capacity. Every tier below carries the same feature set.</p>
     </div>
     <div class="plans plans-4">
       <div class="plan" id="plan-basic">
-        <h3>Runix AI Basic</h3>
-        <div class="price">$9.90<small> /month</small></div>
-        <div class="for">Billed monthly &middot; cancel any time</div>
-        <p class="credits"><b>Base agent credits</b></p>
         
-        <ul>
-          <li>Work with Docs, Sheets and Slides</li>
-          <li>Deep Research</li>
-          <li>Website deploy</li>
-          <li>Code Plan included</li>
-          <li>Research preview: dashboard widgets, scheduled tasks, 15+ plugins</li>
-        </ul>
-        <a class="btn btn-grad btn-block" href="https://buy.stripe.com/7sY9AM0nS58ncVvcef5J601">Subscribe &mdash; $9.90/mo</a>
+        <h3>Basic</h3>
+        <div class="price"><span class="cur">$</span>9.90<small>/mo</small></div>
+        <p class="plan-rate">&asymp; $9.90 per 1&times; of credits</p>
+        <div class="mult"><b>1&times;</b><span>agent credits</span></div>
+        <p class="plan-diff">Everything you need to run agents on real work — the starting allowance.</p>
+        <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/7sY9AM0nS58ncVvcef5J601">Subscribe to Basic</a>
       </div>
       <div class="plan" id="plan-5x">
-        <h3>Runix AI 5X</h3>
-        <div class="price">$39.90<small> /month</small></div>
-        <div class="for">Billed monthly &middot; cancel any time</div>
-        <p class="credits"><b>5&times; agent credits</b></p>
-        <p class="rate">Everything in Basic, plus <b>Swarm</b> &mdash; multiple agents running subtasks in parallel</p>
-        <ul>
-          <li>Work with Docs, Sheets and Slides</li>
-          <li>Deep Research</li>
-          <li>Website deploy</li>
-          <li>Code Plan included</li>
-          <li>Research preview: dashboard widgets, scheduled tasks, 15+ plugins</li>
-        </ul>
-        <a class="btn btn-grad btn-block" href="https://buy.stripe.com/14AdR20nS0S74oZ0vx5J602">Subscribe &mdash; $39.90/mo</a>
+        
+        <h3>5X</h3>
+        <div class="price"><span class="cur">$</span>39.90<small>/mo</small></div>
+        <p class="plan-rate">&asymp; $7.98 per 1&times; of credits</p>
+        <div class="mult"><b>5&times;</b><span>agent credits</span></div>
+        <p class="plan-diff">Adds <b>Swarm</b> — several agents splitting one job and running the subtasks in parallel.</p>
+        <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/14AdR20nS0S74oZ0vx5J602">Subscribe to 5X</a>
       </div>
-      <div class="plan" id="plan-10x">
-        <h3>Runix AI 10X</h3>
-        <div class="price">$69.90<small> /month</small></div>
-        <div class="for">Billed monthly &middot; cancel any time</div>
-        <p class="credits"><b>10&times; agent credits</b></p>
-        <p class="rate">Everything in 5X, plus agent multi-tasking, <b>Goal mode</b> (agents work autonomously until the task is complete) and one-click agent deploy</p>
-        <ul>
-          <li>Work with Docs, Sheets and Slides</li>
-          <li>Deep Research</li>
-          <li>Website deploy</li>
-          <li>Code Plan included</li>
-          <li>Research preview: dashboard widgets, scheduled tasks, 15+ plugins</li>
-        </ul>
-        <a class="btn btn-grad btn-block" href="https://buy.stripe.com/4gMfZafiM1Wb4oZcef5J603">Subscribe &mdash; $69.90/mo</a>
+      <div class="plan featured" id="plan-10x">
+        <span class="flag">Adds Goal mode</span>
+        <h3>10X</h3>
+        <div class="price"><span class="cur">$</span>69.90<small>/mo</small></div>
+        <p class="plan-rate">&asymp; $6.99 per 1&times; of credits</p>
+        <div class="mult"><b>10&times;</b><span>agent credits</span></div>
+        <p class="plan-diff">Adds <b>Goal mode</b> — agents keep working autonomously until the task is done — plus multi-tasking and one-click deploy.</p>
+        <a class="btn btn-grad btn-block" href="https://buy.stripe.com/4gMfZafiM1Wb4oZcef5J603">Subscribe to 10X</a>
       </div>
       <div class="plan" id="plan-30x">
-        <h3>Runix AI 30X</h3>
-        <div class="price">$199.90<small> /month</small></div>
-        <div class="for">Billed monthly &middot; cancel any time</div>
-        <p class="credits"><b>30&times; agent credits</b></p>
-        <p class="rate">Everything in 10X, plus up to <b>1M tokens of context</b>, the highest concurrency and top priority queue</p>
-        <ul>
-          <li>Work with Docs, Sheets and Slides</li>
-          <li>Deep Research</li>
-          <li>Website deploy</li>
-          <li>Code Plan included</li>
-          <li>Research preview: dashboard widgets, scheduled tasks, 15+ plugins</li>
-        </ul>
-        <a class="btn btn-grad btn-block" href="https://buy.stripe.com/8x25kw8Uo9oD9Jjfqr5J604">Subscribe &mdash; $199.90/mo</a>
+        <span class="flag">Lowest rate</span>
+        <h3>30X</h3>
+        <div class="price"><span class="cur">$</span>199.90<small>/mo</small></div>
+        <p class="plan-rate">&asymp; $6.66 per 1&times; of credits</p>
+        <div class="mult"><b>30&times;</b><span>agent credits</span></div>
+        <p class="plan-diff">Adds <b>1M tokens of context</b>, the highest concurrency and top priority in the queue.</p>
+        <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/8x25kw8Uo9oD9Jjfqr5J604">Subscribe to 30X</a>
       </div>
     </div>
-
-    <p class="model-note">Prices are in <span data-cfg="defaultCurrency">USD</span> and billed monthly by
-      <span data-cfg="legalCompanyName">Runix AI Inc</span>. Stripe may present the amount in your local
-      currency at checkout &mdash; the amount shown on the Stripe page is the amount charged.
-      Cards accepted include Visa, Mastercard, American Express and <b>UnionPay</b>.
-      Subscribing means you accept the <a href="/terms">Terms of Service</a>;
-      cancellation is covered by the <a href="/cancellation">Cancellation Policy</a> and refunds by the
-      <a href="/refund">Refund Policy</a>.</p>
+    <p class="model-note">Billed monthly in <span data-cfg="defaultCurrency">USD</span> by
+      <span data-cfg="legalCompanyName">Runix AI Inc</span>, cancel any time. Checkout is hosted by
+      Stripe &mdash; card details are entered on their page, never ours. Visa, Mastercard,
+      American Express and <b>UnionPay</b> accepted. Stripe may show the amount in your local
+      currency; the figure on the Stripe page is the figure charged.</p>
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="included">
+  <div class="container">
+    <div class="section-head center">
+      <h2>In every plan</h2>
+      <p>None of this is gated behind a higher tier. Pick a tier for capacity, not for features.</p>
+    </div>
+    <div class="incs">
+        <div class="inc"><h3>Docs, Sheets &amp; Slides</h3><p>Agents read and write real documents, not just chat.</p></div>
+        <div class="inc"><h3>Deep Research</h3><p>Multi-step research runs that cite what they used.</p></div>
+        <div class="inc"><h3>Website deploy</h3><p>Publish what an agent builds, database support included.</p></div>
+        <div class="inc"><h3>Code Plan</h3><p>The coding agent is bundled with every tier.</p></div>
+        <div class="inc"><h3>Research preview</h3><p>Dashboard widgets, scheduled tasks that push results, 15+ plugins.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="after">
   <div class="container">
     <div class="section-head center">
       <h2>After you pay</h2>
-      <p>Your plan is activated on your Runix account by our team, and we confirm by email within one
-         business day of payment. If you have not heard from us, or you need it sooner, reply to the
-         Stripe receipt or email <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Plan%20activation">billing@runixcloud.io</a><!--/email_off-->
-         and we will sort it out.</p>
+      <p>Your plan is activated on your Runix account by our team and confirmed by email within one
+         business day. Stripe emails a receipt immediately &mdash; if you have not heard from us, or
+         you need it sooner, reply to that receipt or write to
+         <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Plan%20activation">billing@runixcloud.io</a><!--/email_off-->.</p>
     </div>
     <div class="grid cols-3">
-      <div class="card"><h3>Billing</h3><p>Charged monthly to the card you enter at checkout. Stripe emails
-        a receipt for every charge. Manage or cancel the subscription from the link in that receipt, or ask
-        us and we will do it.</p></div>
-      <div class="card"><h3>Cancel any time</h3><p>Cancelling stops the next renewal; the plan stays active
-        until the end of the period you have already paid for. See the
-        <a href="/cancellation">Cancellation Policy</a>.</p></div>
-      <div class="card"><h3>Need something else?</h3><p>Prepaid balance without a plan is on the
-        <a href="/pricing">pricing page</a>. For volume, invoicing or a written agreement,
-        <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Volume%20plan">talk to sales</a><!--/email_off-->.</p></div>
+      <div class="card">
+        <h3>Billing &amp; receipts</h3>
+        <p>Charged monthly to the card you enter at checkout. Every charge comes with an itemized
+           receipt from Stripe. Enterprise customers can be invoiced on their own cycle, suitable
+           for procurement.</p>
+      </div>
+      <div class="card">
+        <h3>Currency &amp; tax</h3>
+        <p>Prices are set in USD. Applicable sales tax or VAT is calculated at checkout or on your
+           invoice where required. Nothing is charged beyond what your statement shows.</p>
+      </div>
+      <div class="card">
+        <h3>Cancel any time</h3>
+        <p>Cancelling stops the next renewal; the plan stays active until the end of the period you
+           have already paid for. See the <a href="/cancellation">Cancellation Policy</a>, and the
+           <a href="/refund">Refund Policy</a> for refunds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="quote">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Bigger than 30X?</h2>
+      <p>Tell us the workload &mdash; expected volume, models, concurrency &mdash; and we will quote
+         a committed-use rate in writing, with formal invoicing and a DPA if you need them.</p>
+      <p style="margin-top:22px">
+        <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Volume%20pricing">Get a quote</a><!--/email_off-->
+        &nbsp;
+        <a class="btn btn-ghost" href="/docs/router">Read the docs</a>
+      </p>
     </div>
   </div>
 </section>
@@ -276,7 +286,7 @@
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
-        <a href="/pricing">Pricing</a>
+        <a href="/plans" class="active">Pricing</a>
       </div>
       <div>
         <p class="footer-heading">Company</p>

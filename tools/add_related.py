@@ -22,7 +22,7 @@ os.chdir(ROOT)
 PRODUCT = {
     "/router": "Runix Router: one OpenAI-compatible endpoint across providers",
     "/reliability": "What happens when a provider fails",
-    "/pricing": "How Runix pricing works",
+    "/plans": "How Runix pricing works",
     "/pipeline": "Runix Pipeline: managed data preparation",
     "/comic": "Runix Comic: script to screen",
     "/security": "How Runix handles data, in plain language",
@@ -33,16 +33,16 @@ RELATED = {
     "what-is-an-llm-gateway": (["llm-router-vs-llm-gateway", "llm-gateway-guide", "build-vs-buy-llm-gateway"], "/router"),
     "llm-gateway-guide": (["what-is-an-llm-gateway", "build-vs-buy-llm-gateway", "openrouter-alternatives"], "/router"),
     "llm-router-vs-llm-gateway": (["what-is-an-llm-gateway", "llm-gateway-guide", "model-failover"], "/router"),
-    "build-vs-buy-llm-gateway": (["what-is-an-llm-gateway", "llm-gateway-guide", "llm-observability"], "/pricing"),
+    "build-vs-buy-llm-gateway": (["what-is-an-llm-gateway", "llm-gateway-guide", "llm-observability"], "/plans"),
     "openrouter-alternatives": (["llm-gateway-guide", "build-vs-buy-llm-gateway", "llm-cost-control"], "/router"),
     # reliability
     "model-failover": (["streaming-llm-failover", "llm-rate-limits", "what-is-an-llm-gateway"], "/reliability"),
     "streaming-llm-failover": (["model-failover", "llm-rate-limits", "llm-gateway-guide"], "/reliability"),
     "llm-rate-limits": (["model-failover", "llm-cost-control", "llm-observability"], "/reliability"),
     # cost
-    "llm-cost-control": (["prompt-caching-explained", "llm-cost-attribution", "llm-rate-limits"], "/pricing"),
-    "llm-cost-attribution": (["llm-cost-control", "llm-observability", "llm-api-key-management"], "/pricing"),
-    "prompt-caching-explained": (["llm-cost-control", "llm-cost-attribution", "llm-gateway-guide"], "/pricing"),
+    "llm-cost-control": (["prompt-caching-explained", "llm-cost-attribution", "llm-rate-limits"], "/plans"),
+    "llm-cost-attribution": (["llm-cost-control", "llm-observability", "llm-api-key-management"], "/plans"),
+    "prompt-caching-explained": (["llm-cost-control", "llm-cost-attribution", "llm-gateway-guide"], "/plans"),
     # tenancy — one pool, several consumers, and what stops one taking all of it
     "per-key-llm-quotas": (["llm-cost-attribution", "llm-retry-budget", "llm-api-key-management"], "/router"),
     # compliance
@@ -71,7 +71,7 @@ RELATED = {
     # company
     "introducing-runix": (["what-is-an-llm-gateway", "llm-gateway-guide", "model-failover"], "/router"),
     # billing mechanics
-    "why-your-llm-bill-doesnt-match-the-price-list": (["llm-cost-attribution", "prompt-caching-explained", "llm-cost-control"], "/pricing"),
+    "why-your-llm-bill-doesnt-match-the-price-list": (["llm-cost-attribution", "prompt-caching-explained", "llm-cost-control"], "/plans"),
     "llm-retry-budget": (["how-long-should-an-llm-request-wait", "model-failover", "llm-rate-limits"], "/reliability"),
     "llm-gateway-security-review": (["where-your-prompts-actually-go", "llm-api-key-management", "ai-vendor-data-questions"], "/security"),
 }

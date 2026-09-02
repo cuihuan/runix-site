@@ -979,18 +979,54 @@ main > .section:first-child { padding-top: 64px; }
 }
 
 
-/* ---------- Four-across plan grid (/plans) ----------
-   .plans is three columns. /plans has four tiers, and .plans-4 was already
-   being written in the markup on code-plans.html without ever existing here,
-   so those cards were laid out three-across with the fourth wrapping. Declared
-   after .plans because both are single-class selectors and the later rule wins.
+/* ---------- /plans ------------------------------------------------------
+   Four tiers that share every feature and differ only in capacity. The first
+   version repeated the same five bullets in all four cards, which made them
+   long, identical to scan, and hid the one number that actually decides the
+   choice. So the card leads with the multiplier, states the single thing that
+   tier adds, and the shared list moves out into its own band below.
 
-   .btn-block was in the same state: used on several pages, defined nowhere, so
-   buttons meant to fill their card were sitting at intrinsic width. */
+   .plans is three columns and .plans-4 was being written on code-plans.html
+   without ever being defined, so those cards wrapped. .btn-block was in the
+   same state on several pages. Both are defined here; declared after .plans
+   because both are single-class selectors and the later rule wins. */
 .plans-4 { grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.plans-4 .plan { padding: 28px 22px; }
-.plans-4 .price { font-size: 30px; }
-@media (max-width: 1080px) { .plans-4 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px)  { .plans-4 { grid-template-columns: 1fr; } }
+.plans-4 .plan { padding: 32px 26px 28px; display: flex; flex-direction: column; }
+
+/* Price stays legible but yields the stage to the multiplier: the dollar
+   figure is what you pay, the multiplier is what you get. */
+.plans-4 .price { font-size: 32px; margin: 10px 0 0; }
+.plans-4 .price .cur { font-size: 20px; font-weight: 700; vertical-align: 6px; margin-right: 1px; color: var(--ink-2); }
+.plans-4 .price small { font-size: 14px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
+
+/* The honest comparison. Dividing price by multiplier is the only claim on
+   this page that ranks the tiers, and it is arithmetic rather than marketing. */
+.plan-rate { font-size: 12.5px; color: var(--ink-3); margin: 4px 0 0; }
+
+.mult {
+  margin: 20px 0 14px; padding: 16px 0 14px;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.mult b {
+  font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.mult span { font-size: 13px; color: var(--ink-3); font-weight: 500; }
+
+.plan-diff { font-size: 13.5px; color: var(--ink-2); line-height: 1.65; flex: 1 0 auto; margin-bottom: 22px; }
+.plan-diff b { color: var(--ink); }
 
 .btn-block { display: block; width: 100%; text-align: center; }
+.plans-4 .btn { padding: 12px 20px; font-size: 15px; }
+
+/* Shared features, stated once. Auto-fit rather than a fixed count so the row
+   reflows without a breakpoint per screen size. */
+.incs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 20px; }
+.inc { padding: 22px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); }
+.inc h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; }
+.inc p { font-size: 13.5px; color: var(--ink-3); line-height: 1.6; }
+
+@media (max-width: 1080px) { .plans-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .plans-4 { grid-template-columns: 1fr; } }

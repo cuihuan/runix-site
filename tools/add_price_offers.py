@@ -21,7 +21,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-PAGE = "pricing.html"
+PAGE = "plans.html"
 SITE = "https://runixcloud.io"
 
 OFFERS = [
@@ -40,7 +40,7 @@ OFFERS = [
         ),
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": f"{SITE}/pricing#top-up",
+        "url": f"{SITE}/plans",
         "eligibleQuantity": {
             "@type": "QuantitativeValue",
             "minValue": 10,
@@ -97,7 +97,7 @@ def main():
 
     doc = LD_BLOCK.sub(fix, doc, count=1)
     if '"offers"' not in doc:
-        print("  !! no Service node on the pricing page to attach offers to")
+        print("  !! no Service node on the plans page to attach offers to")
         return 1
     if doc != before:
         pathlib.Path(PAGE).write_text(doc)

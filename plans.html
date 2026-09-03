@@ -13,11 +13,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pricing — Runix AI Plans | Runix</title>
-<meta name="description" content="Runix AI pricing: four monthly plans differing by agent credits — Basic, 5X, 10X and 30X. Card checkout hosted by Stripe.">
+<meta name="description" content="Runix AI pricing: four monthly plans — Basic, 5X, 10X, 30X — plus one-time top-ups from $10, credits worth twice what you pay. Stripe or Airwallex checkout.">
 <link rel="canonical" href="https://runixcloud.io/plans">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
-<meta property="og:description" content="Basic, 5X, 10X and 30X. Pay by card, billed monthly, cancel any time.">
+<meta property="og:description" content="Basic, 5X, 10X and 30X, billed monthly and cancellable any time — or top up once and keep the credits.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/plans">
 <meta property="og:site_name" content="Runix">
@@ -28,11 +28,11 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/plans.png?v=2acbfee7">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=32">
-<script src="assets/site-config.js?v=13" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=33">
+<script src="assets/site-config.js?v=14" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
-<meta name="twitter:description" content="Basic, 5X, 10X and 30X. Pay by card, billed monthly, cancel any time.">
+<meta name="twitter:description" content="Basic, 5X, 10X and 30X, billed monthly and cancellable any time — or top up once and keep the credits.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
 <script type="application/ld+json">
 {
@@ -40,7 +40,7 @@
   "@type": "Service",
   "name": "Runix AI plans",
   "serviceType": "AI agent subscription plans",
-  "description": "Four monthly Runix AI plans - Basic, 5X, 10X and 30X - differing by agent credits and parallelism. Card checkout hosted by Stripe; Visa, Mastercard, American Express and UnionPay accepted.",
+  "description": "Four monthly Runix AI plans - Basic, 5X, 10X and 30X - differing by agent credits and parallelism, alongside one-time prepaid top-ups from $10 whose credits are worth twice the amount paid. Checkout is hosted by Stripe or Airwallex; card, Apple Pay, Google Pay and Cash App Pay are available depending on the provider chosen.",
   "url": "https://runixcloud.io/plans",
   "provider": { "@id": "https://runixcloud.io/#org" },
   "areaServed": "Worldwide",
@@ -318,27 +318,40 @@
         <label for="topup-amount">Or enter another amount</label>
         <div class="topup-input">
           <i>$</i>
+          <!-- No aria-label here: it would override the visible label above,
+               leaving the spoken name and the printed one with no word in
+               common. The label element is the accessible name. -->
           <input id="topup-amount" type="number" inputmode="numeric" min="10" max="10000" step="1"
-                 placeholder="1000" aria-label="Top-up amount in US dollars">
+                 placeholder="1000" aria-describedby="topup-amount-error">
         </div>
         <small>Anything from $10 to $10,000. Need more in one go? <a href="about#contact">Talk to us</a>.</small>
+        <small class="topup-amount-error" id="topup-amount-error" role="alert"></small>
       </div>
 
       <div class="topup-equiv">
         <div class="topup-equiv-head">What lands in your account</div>
         <p>Paying <b data-topup="paid">$1,000</b> puts <b data-topup="credits">$2,000</b> of credits in
-          your account &mdash; credits are worth twice what you pay, at every amount. They do not
-          expire, and nothing is charged again.</p>
-        <p class="topup-equiv-note">The amount is entered on the checkout page, not here. This picker
-          only works out what you get before you go.</p>
+          your account &mdash; credits are worth twice what you pay, at every amount. Nothing is charged
+          again, and unused balance stays refundable during your service period
+          (<a href="/refund">Refund Policy</a>).</p>
+        <p class="topup-equiv-note">Credits follow <strong>what you actually pay</strong>. If you change
+          the amount at checkout, the credits change with it &mdash; the figure above is this picker's
+          arithmetic, not a commitment to a number you did not pay.</p>
       </div>
 
       <div class="topup-pay">
         <div class="topup-pay-head">Choose how to pay</div>
         <div class="paygrid">
-          <a class="payopt" href="https://buy.stripe.com/7sY5kw7QkdET1cNguv5J609">
-            <span class="payopt-name">Card</span>
-            <span class="payopt-sub">Visa, Mastercard, Amex, China UnionPay</span>
+          <!-- A Stripe payment link cannot be pre-filled from the URL: adding
+               ?amount= was tested against the live link and the page still
+               opened at its configured default. So this option has to tell the
+               shopper they will be setting the amount themselves, or the number
+               they picked above quietly becomes a different charge.
+               Methods listed are the ones the live checkout actually offers. -->
+          <a class="payopt" href="https://buy.stripe.com/7sY5kw7QkdET1cNguv5J609"
+             aria-label="Pay with Stripe — you set the amount on their page">
+            <span class="payopt-name">Card, Apple Pay or Cash App Pay</span>
+            <span class="payopt-sub"><strong>Set the amount on Stripe's page</strong> &mdash; it opens at its own default</span>
             <span class="payopt-by">Checkout by Stripe</span>
           </a>
           <!-- Airwallex goes through hosted checkout, which needs an intent
@@ -354,23 +367,31 @@
                Airwallex's usual selling point; do not put them back here
                without re-checking that API. -->
           <button type="button" class="payopt" id="pay-airwallex" disabled
+                  aria-label="Pay with Airwallex — opens with your chosen amount"
                   data-endpoint="/api/airwallex/intent">
-            <span class="payopt-name">Card, Apple Pay or Google Pay</span>
-            <span class="payopt-sub">Visa, Mastercard, Afterpay, Klarna</span>
+            <span class="payopt-name">Card, Google Pay or Afterpay</span>
+            <span class="payopt-sub"><strong>Opens with your amount already set</strong> &mdash; nothing to retype</span>
             <span class="payopt-by" id="pay-airwallex-by">Checkout by Airwallex</span>
           </button>
         </div>
-        <p class="topup-pay-note">Both open the provider's own hosted checkout &mdash; card details
-          are entered there, never on this site. The amount is entered at checkout too.</p>
+        <!-- The Airwallex button carries an aria-label, which replaces its inner
+             text for assistive tech — so the progress and failure messages the
+             script writes into .payopt-by would otherwise be silent. They are
+             mirrored here instead, where role="status" announces them. -->
+        <p class="visually-hidden" id="pay-airwallex-status" role="status"></p>
+        <p class="topup-pay-note">Both open the provider's own hosted checkout, so card details are
+          entered on their page rather than this one. The difference is the amount: Airwallex receives
+          the figure you picked, Stripe opens at its own default for you to change. Whichever you use,
+          <strong>the credits are twice the amount that actually gets charged</strong>.</p>
       </div>
       <p class="topup-foot">One-time payment &mdash; no subscription, no renewal.</p>
     </div>
 
     <p class="model-note">Charged by <span data-cfg="legalCompanyName">Runix AI Inc</span> in
-      <span data-cfg="defaultCurrency">USD</span>, or in CNY where the payment method settles that
-      way. Checkout is hosted by the payment provider &mdash; card details are entered on their page,
-      never ours. A top-up is a one-time payment and sets up no recurring charge; see
-      <a href="refund">Refunds</a> for how it is handled.</p>
+      <span data-cfg="defaultCurrency">USD</span>. Checkout is hosted by the payment provider &mdash;
+      card details are entered on their page, never ours. A top-up is a one-time payment and sets up no
+      recurring charge; the balance is added to your account by a person, normally within one business
+      day. See <a href="refund">Refunds</a> for how it is handled.</p>
   </div>
 </section>
 
@@ -532,45 +553,128 @@
   var input = wrap.querySelector('#topup-amount');
   var outPaid = wrap.querySelector('[data-topup="paid"]');
   var outCredits = wrap.querySelector('[data-topup="credits"]');
-  /* Credits are worth 2x the amount paid. MIN/MAX mirror the limits configured
-     on the Stripe payment link ($10–$10,000, confirmed 2026-09-03) — they are a
-     hint here, not the enforcement: a payment link cannot be pre-filled from the
-     URL, so the amount is whatever the buyer types at checkout. If the limits
-     move on Stripe, move them here too or the page starts promising a range it
-     does not take. */
+  /* Credits are worth 2x what is charged. MIN/MAX are a display hint only — the
+     enforcement that matters lives in functions/api/airwallex/intent.js for the
+     Airwallex path, and in the Stripe dashboard for the Stripe one. The same
+     three numbers also appear in RUNIX.stripe.minUnits (assets/site-config.js?v=14);
+     moving one means moving all of them. */
   var MIN = 10, MAX = 10000, MULTIPLE = 2;
 
   function money(n) {
     return '$' + Number(n).toLocaleString('en-US');
   }
 
-  /* The amount the Airwallex button will send. Kept in step with render() so
-     the two cannot disagree; the server validates it again regardless, since
-     anything reaching it from a browser is editable. */
-  var chosen = MIN;
+  var amtErr = wrap.querySelector('#topup-amount-error');
+  /* role="alert" announces it; aria-invalid marks the field itself, so the
+     error is reachable both by hearing it and by landing on the input. */
+  function amountError(msg) {
+    if (amtErr) amtErr.textContent = msg || '';
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  }
+
+  /* The amount is DERIVED FROM THE DOM at the moment it is needed, never kept
+     in a second variable. A cached copy used to be seeded from MIN while the
+     markup shipped the $1,000 tile selected, so an untouched picker sent an
+     intent for $10 against a page quoting $1,000. Seeding that copy from the
+     selected tile instead would still drift: a browser restoring the custom
+     input on reload sets input.value without firing an 'input' event, so the
+     cache and the field disagree again. One reader, no cache, no drift.
+     The server re-validates whatever this returns — it is a browser value. */
+  function currentAmount() {
+    var raw = input.value.trim();
+    var typed = parseFloat(raw);
+    if (raw !== '' && isFinite(typed) && typed >= MIN && typed <= MAX) return typed;
+    if (raw !== '') return null;            // typed something, but not valid
+    var sel = wrap.querySelector('.topup-opt.is-selected');
+    return sel ? parseFloat(sel.dataset.usd) : null;
+  }
 
   function render(usd) {
     if (!(usd >= MIN && usd <= MAX)) return;
-    chosen = usd;
     outPaid.textContent = money(usd);
     outCredits.textContent = money(usd * MULTIPLE);
   }
 
   function select(btn) {
     opts.forEach(function (o) {
-      o.classList.toggle('is-selected', o === btn);
-      o.setAttribute('aria-checked', String(o === btn));
+      var on = o === btn;
+      o.classList.toggle('is-selected', on);
+      o.setAttribute('aria-checked', String(on));
+      /* Roving tabindex: a radiogroup is one stop in the tab order, and the
+         arrow keys move within it. Four separate stops made a keyboard user
+         tab through every tier to reach the pay buttons. */
+      o.tabIndex = on ? 0 : -1;
     });
-    if (btn) { input.value = ''; render(parseFloat(btn.dataset.usd)); }
+    if (btn) { input.value = ''; amountError(''); render(parseFloat(btn.dataset.usd)); }
+  }
+
+  /* Bring the summary into line with whatever the browser restored into the
+     custom input on load. A reload or autofill sets input.value without firing
+     'input', which would otherwise leave the panel quoting the selected tile
+     while currentAmount() returns the restored number. */
+  (function alignOnLoad() {
+    var a = currentAmount();
+    if (a !== null) render(a);
+    if (input.value.trim() !== '' && a === null) {
+      outPaid.textContent = '—';
+      outCredits.textContent = '—';
+      amountError('Enter an amount between ' + money(MIN) + ' and ' + money(MAX));
+    }
+    /* Selected tile owns the single tab stop from the start. */
+    opts.forEach(function (o) { o.tabIndex = o.classList.contains('is-selected') ? 0 : -1; });
+  })();
+
+  /* Arrow-key navigation, which role="radiogroup" promises and the markup did
+     not deliver. Both axes are wired because the tiles are a two-column grid
+     that becomes one column on a phone. */
+  var grid = wrap.querySelector('.topup-grid');
+  if (grid) {
+    grid.addEventListener('keydown', function (e) {
+      var list = Array.prototype.slice.call(opts);
+      var i = list.indexOf(document.activeElement);
+      if (i < 0) return;
+      var next = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % list.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + list.length) % list.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = list.length - 1;
+      if (next === null) return;
+      e.preventDefault();
+      select(list[next]);
+      list[next].focus();
+    });
   }
 
   opts.forEach(function (btn) {
     btn.addEventListener('click', function () { select(btn); });
   });
 
+  /* An out-of-range or half-typed custom amount used to be dropped silently,
+     which left the summary and the pay button on the previously chosen figure —
+     the shopper sees one number and is charged another. Now the stale value is
+     cleared along with the display, so there is nothing to pay until the input
+     is valid again. */
   input.addEventListener('input', function () {
-    var v = parseFloat(input.value);
-    if (v >= MIN && v <= MAX) { select(null); render(v); }
+    var raw = input.value.trim();
+    var v = parseFloat(raw);
+    var ok = raw !== '' && isFinite(v) && v >= MIN && v <= MAX;
+    if (ok) {
+      select(null);
+      render(v);
+      amountError('');
+    } else if (raw === '') {
+      /* Cleared the box: fall back to whatever tile is selected, which is what
+         currentAmount() will also read, so the summary matches what would be
+         charged. */
+      amountError('');
+      var sel = wrap.querySelector('.topup-opt.is-selected');
+      if (sel) render(parseFloat(sel.dataset.usd));
+    } else {
+      select(null);
+      outPaid.textContent = '—';
+      outCredits.textContent = '—';
+      amountError('Enter an amount between ' + money(MIN) + ' and ' + money(MAX));
+    }
   });
 
   /* ---- Airwallex hosted checkout -------------------------------------
@@ -583,9 +687,18 @@
   if (awx) {
     var awxBy = document.getElementById('pay-airwallex-by');
     var SDK = 'https://checkout.airwallex.com/assets/elements.bundle.min.js';
+    var IDLE = 'Checkout by Airwallex';
     var busy = false;
 
-    var say = function (msg) { if (awxBy) awxBy.textContent = msg; };
+    var awxStatus = document.getElementById('pay-airwallex-status');
+    /* Written twice on purpose: .payopt-by is what a sighted visitor reads, and
+       the role="status" node is what a screen reader announces. The button's
+       aria-label hides its own contents, so one without the other leaves a
+       group of users with no feedback at all. */
+    var say = function (msg) {
+      if (awxBy) awxBy.textContent = msg;
+      if (awxStatus) awxStatus.textContent = msg;
+    };
 
     var loadSdk = function () {
       if (window.Airwallex) return Promise.resolve();
@@ -600,8 +713,21 @@
 
     awx.disabled = false; // scripting is on, so the button can do its job
 
+    /* Coming back from the provider restores this page from the bfcache with
+       every variable exactly as it was left — including busy=true, which made
+       the button permanently dead after a Back navigation. Reset on restore. */
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) { busy = false; say(IDLE); }
+    });
+
     awx.addEventListener('click', function () {
       if (busy) return;
+      var amount = currentAmount();
+      if (!(amount >= MIN && amount <= MAX)) {
+        amountError('Enter an amount between ' + money(MIN) + ' and ' + money(MAX));
+        input.focus();
+        return;
+      }
       busy = true;
       say('Opening checkout…');
 
@@ -610,7 +736,7 @@
           return fetch(awx.dataset.endpoint, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ amount: chosen })
+            body: JSON.stringify({ amount: amount })
           });
         })
         .then(function (r) {

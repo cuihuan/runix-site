@@ -20,8 +20,15 @@
  * here, server-side, before an intent is ever minted.
  */
 
+/* MIN_USD mirrors RUNIX.stripe.minUnits in assets/site-config.js and the floor
+   configured on the Stripe payment link. Three copies of one business rule; the
+   test asserts this one, and moving it means moving all three. */
 export const MIN_USD = 10;
 export const MAX_USD = 10000;
+/* Credits are worth this multiple of what is paid. Stated on /plans as "twice
+   what you pay"; carried into metadata so whoever grants the balance by hand
+   does not have to recompute it. */
+export const CREDIT_MULTIPLE = 2;
 const CURRENCY = 'USD';
 const API = 'https://api.airwallex.com';
 
@@ -68,6 +75,14 @@ export function parseAmount(raw) {
   return Math.round(n * 100) / 100;
 }
 
+/** Airwallex rejects a non-HTTPS return_url, and `wrangler pages dev` serves
+ *  over http, so local runs fall back to the production origin rather than
+ *  failing the create outright. */
+function returnBase(request) {
+  const origin = new URL(request.url).origin;
+  return origin.startsWith('https://') ? origin : 'https://runixcloud.io';
+}
+
 async function accessToken(env) {
   const r = await fetch(`${API}/api/v1/authentication/login`, {
     method: 'POST',
@@ -107,10 +122,13 @@ export async function onRequestPost({ request, env }) {
 
   try {
     const token = await accessToken(env);
-    // request_id makes the create idempotent from Airwallex's side if the
-    // network retries; merchant_order_id is what shows up in reconciliation,
-    // which is how credits actually get granted today (manually, against the
-    // Airwallex ledger) — so it has to be something a human can match up.
+    // A fresh request_id per invocation. Airwallex dedupes retries that reuse
+    // one, but nothing here reuses it, so this is NOT end-to-end idempotency:
+    // two clicks mint two intents. That is survivable because an unpaid intent
+    // costs nothing and expires, and because only one of them can be paid.
+    // Real idempotency needs a durable key tied to a cart or an order record,
+    // which arrives with the webhook work — see payments/README.md.
+    // merchant_order_id is what a human matches against when granting credits.
     const requestId = crypto.randomUUID();
     const r = await fetch(`${API}/api/v1/pa/payment_intents/create`, {
       method: 'POST',
@@ -123,7 +141,20 @@ export async function onRequestPost({ request, env }) {
         amount,
         currency: CURRENCY,
         merchant_order_id: `topup-${Date.now()}-${requestId.slice(0, 8)}`,
-        descriptor: 'Runix credits',
+        // Airwallex sends the browser here itself once the payment resolves, so
+        // the landing does not depend on the SDK's callback surviving. It must
+        // be HTTPS, which the local dev origin is not — hence the fallback.
+        // A `descriptor` was sent here previously and silently ignored: the API
+        // echoed back the account name ("Runix AI Inc") instead, so it is gone.
+        return_url: `${returnBase(request)}/thanks?kind=topup&via=airwallex`,
+        // Granting credits is a manual step today. This carries everything the
+        // person doing it needs, straight in the provider's own ledger view.
+        metadata: {
+          kind: 'topup',
+          paid_usd: String(amount),
+          credits_usd: String(amount * CREDIT_MULTIPLE),
+          source: 'plans',
+        },
       }),
     });
     const d = await r.json();

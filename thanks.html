@@ -14,33 +14,33 @@
 <meta name="robots" content="noindex,follow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Payment received — Runix AI</title>
-<meta name="description" content="Your Runix AI subscription payment has been received. We activate the plan by hand and confirm by email within one business day.">
+<meta name="description" content="Your Runix AI payment has been received — a monthly plan or a prepaid top-up. We switch it on by hand and confirm by email within one business day.">
 <link rel="canonical" href="https://runixcloud.io/thanks">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="Payment received — Runix AI">
-<meta property="og:description" content="Payment received. Your plan is activated by hand and confirmed by email within one business day.">
+<meta property="og:description" content="Payment received. We switch it on by hand and confirm by email within one business day.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/thanks">
 <meta property="og:site_name" content="Runix">
-<meta property="og:image" content="https://runixcloud.io/assets/og/thanks.png?v=8a9bf354">
+<meta property="og:image" content="https://runixcloud.io/assets/og/thanks.png?v=2f0c63c4">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og/thanks.png?v=8a9bf354">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/thanks.png?v=2f0c63c4">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=30">
-<script src="assets/site-config.js?v=13" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=33">
+<script src="assets/site-config.js?v=14" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Payment received — Runix AI">
-<meta name="twitter:description" content="Payment received. Your plan is activated by hand and confirmed by email within one business day.">
+<meta name="twitter:description" content="Payment received. We switch it on by hand and confirm by email within one business day.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Payment received",
-  "description": "Confirmation that a Runix AI subscription payment has been received, and what happens between that payment and the plan going live.",
+  "description": "Confirmation that a Runix AI payment has been received — a monthly plan or a prepaid top-up — and what happens between that payment and it going live.",
   "url": "https://runixcloud.io/thanks",
   "isPartOf": { "@id": "https://runixcloud.io/#org" }
 }
@@ -81,9 +81,10 @@
   <div class="container">
     <div>
       <div class="eyebrow">Payment received</div>
-      <h1>Thanks. <em>Your plan is being set up.</em></h1>
-      <p class="sub">Stripe has taken the payment and emailed you a receipt. The plan itself is switched
-         on for your Runix account by a person, not a script &mdash; so there is one short step left.</p>
+      <h1>Thanks. <em data-t="head">We have your payment.</em></h1>
+      <p class="sub"><span data-t="provider">The payment provider</span> has taken the payment and
+         emailed you a receipt. <span data-t="what">What you bought</span> is switched on for your Runix
+         account by a person, not a script &mdash; so there is one short step left.</p>
       <div class="cta">
         <a class="btn btn-ghost" href="/plans">Back to plans</a>
         <a class="btn btn-ghost" href="/docs/">Read the docs</a>
@@ -103,35 +104,35 @@
     <div class="prun">
       <div class="pstep">
         <div class="pstep-n">01</div>
-        <h3>Stripe receipt</h3>
-        <p>Already sent, to the address you entered at checkout. It carries the amount, the plan and a
-           link you can use to manage the card on file. Keep it &mdash; replying to it reaches us.</p>
+        <h3><span data-t="receipt">Payment receipt</span></h3>
+        <p>Already sent, to the address you entered at checkout. It carries the amount and what it was
+           for. Keep it &mdash; replying to it reaches us.</p>
       </div>
       <div class="pstep">
         <div class="pstep-n">02</div>
-        <h3>Activation email from us</h3>
-        <p>Within one business day. This is the one that means the plan is live on your account. If it
-           has not arrived by then, write to
+        <h3>Confirmation email from us</h3>
+        <p>Within one business day. This is the one that means <span data-t="live">it is live</span> on
+           your account. If it has not arrived by then, write to
            <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Plan%20activation">billing@runixcloud.io</a><!--/email_off-->
            and we will sort it out the same day.</p>
       </div>
       <div class="pstep">
         <div class="pstep-n">03</div>
         <h3>Start running agents</h3>
-        <p>The integration guide is in the <a href="/docs/">docs</a>. If you were already using Runix on
-           a smaller plan, nothing changes except the capacity &mdash; the same keys keep working.</p>
+        <p>The integration guide is in the <a href="/docs/">docs</a>. If you were already using Runix,
+           nothing changes except the capacity &mdash; the same keys keep working.</p>
       </div>
     </div>
 
     <div class="incs">
       <div class="inc">
-        <h3>Paid the wrong tier?</h3>
-        <p>Write to billing before the activation email lands and we will switch it without charging you
-           twice.</p>
+        <h3><span data-t="wrong">Paid the wrong amount?</span></h3>
+        <p>Write to <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Payment%20correction">billing</a><!--/email_off-->
+           before the confirmation email lands and we will put it right without charging you twice.</p>
       </div>
       <div class="inc">
         <h3>Need an invoice?</h3>
-        <p>Stripe's receipt covers most cases. For a formal invoice on your own billing cycle, tell
+        <p>The checkout receipt covers most cases. For a formal invoice on your own billing cycle, tell
            <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Invoicing">sales</a><!--/email_off-->
            what your finance team needs.</p>
       </div>
@@ -143,6 +144,50 @@
     </div>
   </div>
 </section>
+
+<script>
+/* This page is reached from two different purchases (a monthly plan, a prepaid
+   top-up) through two different providers (Stripe, Airwallex). The markup ships
+   wording that is true for all four, then narrows it when the return URL says
+   which one it was — so a visitor with scripting off still reads something
+   accurate rather than a page about a plan they did not buy.
+
+   Airwallex return_url is set server-side in functions/api/airwallex/intent.js
+   and carries both parameters. Stripe's return URL is configured in the Stripe
+   dashboard; if it ever gains ?kind=topup this page will narrow for it too. */
+(function () {
+  var q = new URLSearchParams(window.location.search);
+  var kind = q.get('kind');          // 'topup' | 'plan' | null
+  var via = q.get('via');            // 'airwallex' | 'stripe' | null
+
+  var PROVIDER = { airwallex: 'Airwallex', stripe: 'Stripe' };
+  var COPY = {
+    topup: {
+      head: 'Your credits are on the way.',
+      what: 'The balance',
+      live: 'the balance is on your account',
+      receipt: 'Payment receipt',
+      wrong: 'Topped up the wrong amount?'
+    },
+    plan: {
+      head: 'Your plan is being set up.',
+      what: 'The plan',
+      live: 'the plan is live',
+      receipt: 'Payment receipt',
+      wrong: 'Paid the wrong tier?'
+    }
+  };
+
+  var set = function (key, text) {
+    var el = document.querySelector('[data-t="' + key + '"]');
+    if (el && text) el.textContent = text;
+  };
+
+  var copy = COPY[kind];
+  if (copy) Object.keys(copy).forEach(function (k) { set(k, copy[k]); });
+  if (PROVIDER[via]) set('provider', PROVIDER[via]);
+})();
+</script>
 
 </main>
 
@@ -197,43 +242,5 @@
   </div>
 </footer>
 
-<script>
-/* Top-up selector. The page ships with Standard pre-selected and every number
-   already rendered in the HTML, so the amounts stay readable with JS disabled —
-   the payment-provider review requires the pricing to be visible without it. */
-(function () {
-  var wrap = document.querySelector('.topup');
-  if (!wrap) return;
-  var opts = wrap.querySelectorAll('.topup-opt');
-  var input = wrap.querySelector('#topup-amount');
-  var outCredits = wrap.querySelector('[data-topup="credits"]');
-  var outList = wrap.querySelector('[data-topup="list"]');
-  var MIN = 10, CREDITS_PER_USD = 100, LIST_MULTIPLE = 1.25; /* 1 / 0.8 */
-
-  function render(usd) {
-    if (!(usd >= MIN)) return;
-    outCredits.textContent = (usd * CREDITS_PER_USD).toLocaleString('en-US');
-    outList.textContent = '$' + (usd * LIST_MULTIPLE).toLocaleString('en-US',
-      { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function select(btn) {
-    opts.forEach(function (o) {
-      o.classList.toggle('is-selected', o === btn);
-      o.setAttribute('aria-checked', String(o === btn));
-    });
-    if (btn) { input.value = ''; render(parseFloat(btn.dataset.usd)); }
-  }
-
-  opts.forEach(function (btn) {
-    btn.addEventListener('click', function () { select(btn); });
-  });
-
-  input.addEventListener('input', function () {
-    var v = parseFloat(input.value);
-    if (v >= MIN) { select(null); render(v); }
-  });
-})();
-</script>
 </body>
 </html>

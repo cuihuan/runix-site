@@ -306,6 +306,11 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   display: grid; gap: 10px; margin-top: 22px; font-size: 14px; color: var(--ink-2);
 }
 .topup-custom small { color: var(--ink-3); font-size: 12px; }
+/* Validation message for the custom amount. Empty until something is wrong, so
+   it takes no space in the normal case. Colour is the site's danger ink at a
+   size visual_qa will accept (>=12px). */
+.topup-amount-error:empty { display: none; }
+.topup-amount-error { color: #b3261e; font-size: 12px; font-weight: 600; }
 .topup-input {
   display: flex; align-items: center; gap: 8px;
   border: 1px solid var(--line-2); border-radius: 12px; padding: 0 14px; background: var(--bg);
@@ -350,7 +355,21 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   display: grid; gap: 3px; padding: 16px 18px; border-radius: 14px;
   background: var(--bg); border: 1px solid var(--line-2); color: inherit;
   text-decoration: none; transition: all 0.2s;
+  /* One tile is a link and the other is a button. Without this the button falls
+     back to the UA's form font — Arial 13.3px next to Inter 16px — and the two
+     halves of one control group stop looking like one control group.
+     text-align matters for the same reason: buttons centre by default. */
+  font: inherit; text-align: left;
 }
+/* Scripting off, or the provider unreachable: the tile must not look clickable.
+   Left visible rather than hidden so the option is still discoverable, and the
+   text colours are untouched so it stays above the AA threshold visual_qa
+   enforces — dimming with opacity would drag every label under it. */
+.payopt:disabled {
+  cursor: not-allowed; border-style: dashed; background: var(--bg-alt);
+  box-shadow: none;
+}
+.payopt:disabled:hover { border-color: var(--line-2); box-shadow: none; }
 .payopt:hover { border-color: var(--indigo); box-shadow: var(--shadow); }
 .payopt:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
 .payopt-name { font-size: 15px; font-weight: 700; color: var(--ink); }

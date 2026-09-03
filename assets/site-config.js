@@ -92,7 +92,12 @@
     // pretending a self-serve flow is live.
     features: {
       selfServeSignup: false,     // no account system yet -> "Get started" = contact/apply
-      hostedCheckout:  false,     // no live payment processor connected yet
+      // Two live hosted checkouts ship on /plans: a Stripe payment link, and
+      // Airwallex via functions/api/airwallex/intent.js. Left true so nothing
+      // downstream reroutes a working checkout to a contact form. Note the
+      // Stripe Buy Button below is a separate, still-unconfigured path — this
+      // flag describes whether a checkout exists, not which mechanism.
+      hostedCheckout:  true,
       apiConsole:      false,     // no dashboard yet
       docs:            false,     // developer docs not published yet
       statusPage:      false      // status page not published yet

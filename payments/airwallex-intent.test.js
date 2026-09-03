@@ -12,7 +12,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseAmount, MIN_USD, MAX_USD } from "../functions/api/airwallex/intent.js";
+import { parseAmount, MIN_USD, MAX_USD, CREDIT_MULTIPLE } from "../functions/api/airwallex/intent.js";
 
 test("accepts amounts inside the configured range", () => {
   assert.equal(parseAmount(10), 10);
@@ -53,6 +53,26 @@ test("rejects shapes that are not a plain decimal amount", () => {
   assert.equal(parseAmount([]), null);
   assert.equal(parseAmount(NaN), null);
   assert.equal(parseAmount(Infinity), null);
+});
+
+test("returns MAJOR units — the 100x trap that would double-charge or under-charge", () => {
+  // Airwallex takes major units; Stripe takes minor. Anyone "helpfully"
+  // converting to cents to match the other provider turns $10 into 1000, which
+  // Airwallex reads as one thousand dollars. This is the assertion that fails
+  // if that conversion ever gets added, in either direction.
+  assert.equal(parseAmount(10), 10);
+  assert.notEqual(parseAmount(10), 1000);
+  assert.equal(parseAmount(MAX_USD), 10000);
+  assert.notEqual(parseAmount(MAX_USD), 1000000);
+  // A sub-dollar value must stay sub-dollar, not become a dollar figure.
+  assert.equal(parseAmount(MIN_USD), 10);
+});
+
+test("credit rate matches what /plans states in words", () => {
+  // "credits are worth twice what you pay" appears in the copy, in the equiv
+  // box arithmetic, and in the metadata sent for manual reconciliation.
+  assert.equal(CREDIT_MULTIPLE, 2);
+  assert.equal(parseAmount(250) * CREDIT_MULTIPLE, 500);
 });
 
 test("bounds are the ones the /plans copy promises", () => {

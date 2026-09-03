@@ -309,8 +309,17 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 /* Validation message for the custom amount. Empty until something is wrong, so
    it takes no space in the normal case. Colour is the site's danger ink at a
    size visual_qa will accept (>=12px). */
-.topup-amount-error:empty { display: none; }
-.topup-amount-error { color: #b3261e; font-size: 12px; font-weight: 600; }
+/* Selector carries the element too: .topup-custom small sets 12px and would
+   otherwise win on specificity, which is exactly what happened the first time. */
+.topup-custom small.topup-amount-error:empty { display: none; }
+.topup-custom small.topup-amount-error { color: #b3261e; font-size: 13px; font-weight: 600; }
+/* The message alone was a 12px line sitting directly under another 12px line of
+   grey helper text, which is easy to miss while typing. The field itself now
+   carries the state too, so the feedback is where the eyes already are.
+   :has() lets the wrapper react to its own input; browsers without it still get
+   the message and the input's own red border. */
+.topup-input:has(input[aria-invalid="true"]) { border-color: #b3261e; }
+.topup-input input[aria-invalid="true"] { color: #b3261e; }
 .topup-input {
   display: flex; align-items: center; gap: 8px;
   border: 1px solid var(--line-2); border-radius: 12px; padding: 0 14px; background: var(--bg);
@@ -358,9 +367,23 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   /* One tile is a link and the other is a button. Without this the button falls
      back to the UA's form font — Arial 13.3px next to Inter 16px — and the two
      halves of one control group stop looking like one control group.
-     text-align matters for the same reason: buttons centre by default. */
-  font: inherit; text-align: left;
+     text-align matters for the same reason: buttons centre by default.
+     cursor likewise: an <a> is a pointer for free, a <button> is not, and the
+     tile that did not change the cursor read as "not clickable" — reported as
+     "hovering does nothing, clicking does nothing" when it was in fact live. */
+  font: inherit; text-align: left; cursor: pointer;
 }
+/* Pressed state. The tile is large, so without this a click on a slow network
+   looks like nothing happened at all. */
+.payopt:active { transform: translateY(1px); border-color: var(--indigo); }
+/* Working: the checkout SDK is loading or the intent is being minted. Both take
+   a visible moment, and a 12px line of grey text changing at the bottom of the
+   card was not enough to tell anyone their click registered. */
+.payopt.is-busy {
+  border-color: var(--indigo); background: var(--bg-alt); cursor: progress;
+  box-shadow: var(--shadow);
+}
+.payopt.is-busy .payopt-by { color: var(--indigo); font-weight: 700; }
 /* Scripting off, or the provider unreachable: the tile must not look clickable.
    Left visible rather than hidden so the option is still discoverable, and the
    text colours are untouched so it stays above the AA threshold visual_qa

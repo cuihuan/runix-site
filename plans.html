@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/plans.png?v=2acbfee7">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=33">
+<link rel="stylesheet" href="assets/style.css?v=34">
 <script src="assets/site-config.js?v=14" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
@@ -568,6 +568,13 @@
     return '$' + Number(n).toLocaleString('en-US');
   }
 
+  /* Captured before anything can clear it. Typing an invalid amount calls
+     select(null), which strips is-selected from every tile; clearing the box
+     afterwards then left NOTHING selected, so currentAmount() returned null and
+     the pay button refused every click without saying why. This is the tile the
+     picker falls back to whenever the custom box is empty. */
+  var defaultTile = wrap.querySelector('.topup-opt.is-selected') || opts[0];
+
   var amtErr = wrap.querySelector('#topup-amount-error');
   /* role="alert" announces it; aria-invalid marks the field itself, so the
      error is reachable both by hearing it and by landing on the input. */
@@ -589,7 +596,7 @@
     var typed = parseFloat(raw);
     if (raw !== '' && isFinite(typed) && typed >= MIN && typed <= MAX) return typed;
     if (raw !== '') return null;            // typed something, but not valid
-    var sel = wrap.querySelector('.topup-opt.is-selected');
+    var sel = wrap.querySelector('.topup-opt.is-selected') || defaultTile;
     return sel ? parseFloat(sel.dataset.usd) : null;
   }
 
@@ -667,12 +674,12 @@
       render(v);
       amountError('');
     } else if (raw === '') {
-      /* Cleared the box: fall back to whatever tile is selected, which is what
-         currentAmount() will also read, so the summary matches what would be
-         charged. */
+      /* Cleared the box: put a tile back in the selected state rather than
+         leaving nothing chosen. Leaving it empty is what stranded the pay
+         button before — and it also looked wrong, with four tiles and no
+         highlight while the summary still showed a figure. */
       amountError('');
-      var sel = wrap.querySelector('.topup-opt.is-selected');
-      if (sel) render(parseFloat(sel.dataset.usd));
+      select(wrap.querySelector('.topup-opt.is-selected') || defaultTile);
     } else {
       select(null);
       outPaid.textContent = '—';
@@ -703,6 +710,10 @@
       if (awxBy) awxBy.textContent = msg;
       if (awxStatus) awxStatus.textContent = msg;
     };
+    /* The whole tile changes, not just its footnote. A click that only alters a
+       12px grey line while a third-party SDK downloads reads as no click at
+       all — which is exactly how this was reported. */
+    var working = function (on) { awx.classList.toggle('is-busy', !!on); };
 
     var loadSdk = function () {
       if (window.Airwallex) return Promise.resolve();
@@ -721,7 +732,7 @@
        every variable exactly as it was left — including busy=true, which made
        the button permanently dead after a Back navigation. Reset on restore. */
     window.addEventListener('pageshow', function (e) {
-      if (e.persisted) { busy = false; say(IDLE); }
+      if (e.persisted) { busy = false; working(false); say(IDLE); }
     });
 
     awx.addEventListener('click', function () {
@@ -733,6 +744,7 @@
         return;
       }
       busy = true;
+      working(true);
       say('Opening checkout…');
 
       loadSdk()
@@ -764,6 +776,7 @@
         })
         .catch(function (e) {
           busy = false;
+          working(false);
           // Say which way it failed: an unreachable provider and a rejected
           // amount need different things from the visitor.
           say(e && e.message === 'invalid_amount'

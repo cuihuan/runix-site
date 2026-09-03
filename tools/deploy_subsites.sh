@@ -11,6 +11,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
+# Same reason as deploy.sh: a Pages-scoped token cannot enumerate accounts,
+# so wrangler needs the id handed to it. Not a credential.
+export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-30005bd01771d6fc41408e2c5df43ffd}"
 : "${CLOUDFLARE_API_TOKEN:?set CLOUDFLARE_API_TOKEN first}"
 OUT="$(mktemp -d)"
 trap 'rm -rf "$OUT"' EXIT

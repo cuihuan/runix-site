@@ -14,6 +14,13 @@ SRC="$(cd "$(dirname "$0")" && pwd)"
 STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
 
+# A Pages-scoped token cannot list accounts, so wrangler fails with "Failed to
+# automatically retrieve account IDs" before it ever tries to deploy. The id is
+# not a credential -- it identifies the account, it does not authorise anything
+# -- so it belongs in the script, while the token stays in the Keychain.
+# tools/deploy_subsites.sh and the ai4s deploy script already do this.
+export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-30005bd01771d6fc41408e2c5df43ffd}"
+
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   echo "CLOUDFLARE_API_TOKEN is not set. Create a scoped token with Pages:Edit and re-run." >&2
   exit 1

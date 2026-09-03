@@ -292,26 +292,25 @@
 
     <div class="topup">
       <div class="topup-grid" role="radiogroup" aria-label="Top-up amount">
-        <button type="button" class="topup-opt is-selected" role="radio" aria-checked="true" data-usd="199">
-          <span class="topup-flag">2&times; credits</span>
-          <span class="topup-name">Top-up</span>
-          <span class="topup-usd">$199</span>
-          <span class="topup-sub">$398 of credits</span>
+        <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="10">
+          <span class="topup-name">Try it</span>
+          <span class="topup-usd">$10</span>
+          <span class="topup-sub">$20 of credits</span>
         </button>
-        <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="399">
+        <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="100">
           <span class="topup-name">Top-up</span>
-          <span class="topup-usd">$399</span>
-          <span class="topup-sub">$798 of credits</span>
+          <span class="topup-usd">$100</span>
+          <span class="topup-sub">$200 of credits</span>
         </button>
-        <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="999">
+        <button type="button" class="topup-opt is-selected" role="radio" aria-checked="true" data-usd="1000">
           <span class="topup-name">Top-up</span>
-          <span class="topup-usd">$999</span>
-          <span class="topup-sub">$1,998 of credits</span>
+          <span class="topup-usd">$1,000</span>
+          <span class="topup-sub">$2,000 of credits</span>
         </button>
-        <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="1999">
+        <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="5000">
           <span class="topup-name">Top-up</span>
-          <span class="topup-usd">$1,999</span>
-          <span class="topup-sub">$3,998 of credits</span>
+          <span class="topup-usd">$5,000</span>
+          <span class="topup-sub">$10,000 of credits</span>
         </button>
       </div>
 
@@ -319,17 +318,17 @@
         <label for="topup-amount">Or enter another amount</label>
         <div class="topup-input">
           <i>$</i>
-          <input id="topup-amount" type="number" inputmode="numeric" min="199" step="1"
-                 placeholder="199" aria-label="Top-up amount in US dollars">
+          <input id="topup-amount" type="number" inputmode="numeric" min="10" max="10000" step="1"
+                 placeholder="1000" aria-label="Top-up amount in US dollars">
         </div>
-        <small>Minimum $199. Larger amounts are accepted &mdash; enter whatever you need.</small>
+        <small>Anything from $10 to $10,000. Need more in one go? <a href="about#contact">Talk to us</a>.</small>
       </div>
 
       <div class="topup-equiv">
         <div class="topup-equiv-head">What lands in your account</div>
-        <p>Paying <b data-topup="paid">$199</b> puts <b data-topup="credits">$398</b> of credits in
-          your account &mdash; credits are worth twice what you pay. They do not expire, and nothing
-          is charged again.</p>
+        <p>Paying <b data-topup="paid">$1,000</b> puts <b data-topup="credits">$2,000</b> of credits in
+          your account &mdash; credits are worth twice what you pay, at every amount. They do not
+          expire, and nothing is charged again.</p>
         <p class="topup-equiv-note">The amount is entered on the Stripe checkout page, not here.
           This picker only works out what you get before you go.</p>
       </div>
@@ -503,18 +502,20 @@
   var input = wrap.querySelector('#topup-amount');
   var outPaid = wrap.querySelector('[data-topup="paid"]');
   var outCredits = wrap.querySelector('[data-topup="credits"]');
-  /* Credits are worth 2x the amount paid. MIN mirrors the minimum configured on
-     the Stripe payment link — it is a hint here, not the enforcement: a payment
-     link cannot be pre-filled from the URL, so the amount is whatever the buyer
-     types at checkout. Change one and change the other. */
-  var MIN = 199, MULTIPLE = 2;
+  /* Credits are worth 2x the amount paid. MIN/MAX mirror the limits configured
+     on the Stripe payment link ($10–$10,000, confirmed 2026-09-03) — they are a
+     hint here, not the enforcement: a payment link cannot be pre-filled from the
+     URL, so the amount is whatever the buyer types at checkout. If the limits
+     move on Stripe, move them here too or the page starts promising a range it
+     does not take. */
+  var MIN = 10, MAX = 10000, MULTIPLE = 2;
 
   function money(n) {
     return '$' + Number(n).toLocaleString('en-US');
   }
 
   function render(usd) {
-    if (!(usd >= MIN)) return;
+    if (!(usd >= MIN && usd <= MAX)) return;
     outPaid.textContent = money(usd);
     outCredits.textContent = money(usd * MULTIPLE);
   }
@@ -533,7 +534,7 @@
 
   input.addEventListener('input', function () {
     var v = parseFloat(input.value);
-    if (v >= MIN) { select(null); render(v); }
+    if (v >= MIN && v <= MAX) { select(null); render(v); }
   });
 })();
 </script>

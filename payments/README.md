@@ -1,8 +1,15 @@
-# Runix commerce & payment layer (reserved)
+# Runix commerce & payment layer
 
-This folder is the **provider-agnostic commerce layer** for Runix. Today the
-website is a **static site with no runtime backend**, so this folder contains
-only what is safe to have without a server:
+> **2026-09-03: there is now a live payment backend.** `functions/api/airwallex/intent.js`
+> is a Cloudflare Pages Function that mints real Airwallex payment intents against the
+> production account. The paragraph below said no such thing existed; it was true when
+> written and is kept only so the change is visible. See **Live integrations** at the
+> bottom for what actually runs, where its credentials live, and what the accounts can
+> and cannot do.
+
+This folder is the **provider-agnostic commerce layer** for Runix. It was written when the
+website was a **static site with no runtime backend**, so it contains what is safe to hold
+without a server:
 
 - **Types & interface boundaries** (`types.js`) — the internal objects Runix
   owns, and the `PaymentProvider` interface every provider adapter implements.
@@ -57,3 +64,65 @@ own compliance review — not folded into this standard merchant flow.
 ```
 npm test        # runs node --test over payments/
 ```
+
+---
+
+## Live integrations (as of 2026-09-03)
+
+Two checkouts run on `/plans`, and they are **not interchangeable**. Both grant credits
+**manually** today — no webhook is wired on either side.
+
+### Stripe — subscriptions + one top-up link
+- Four payment links carry the monthly plans; a fifth is the top-up. All are plain `<a href>`,
+  so this is the only path that survives with **JavaScript disabled**.
+- Accepts **UnionPay**, Visa, Mastercard, Diners Club, Cash App Pay, Apple Pay, Link
+  (read off the live checkout at 4x zoom, not assumed).
+- **Known defect:** the top-up link opens at its own configured default ($200) and a payment
+  link **cannot** be pre-filled from the URL — `?amount=` was tested and ignored. Credits are
+  therefore granted against **what was actually charged**, which is what the page copy promises.
+  Fixing it properly needs either four fixed-amount links, or a secret key and Checkout Session.
+- `assets/site-config.js` holds a **publishable** `pk_live_` key and a complete Stripe Buy Button
+  integration that has never rendered (`buyButtonId` is null, awaiting a ONE-TIME price).
+  No `sk_` secret key exists anywhere in this project.
+
+### Airwallex — top-up only
+- `functions/api/airwallex/intent.js` mints an intent server-side; the browser then loads the
+  SDK from `checkout.airwallex.com` and calls `redirectToCheckout`. **Requires JavaScript.**
+- Amount is carried accurately end to end, unlike the Stripe link.
+- **Amounts are MAJOR units** (`10` = ten dollars), the opposite of Stripe. Pinned by
+  `payments/airwallex-intent.test.js`; injecting a `* 100` makes 5 tests fail.
+
+#### Account capability, measured against the live API — not assumed
+| | Status |
+|---|---|
+| Card schemes | **Visa and Mastercard only** — no Amex, no UnionPay, no JCB, no Discover |
+| Wallets / BNPL | Apple Pay, Google Pay, Afterpay, Klarna (US only) |
+| Alipay / WeChat Pay | **Not enabled** — checked across four parameter combinations |
+| Payment Links product | **Not enabled** — `configuration_error` on every currency and body shape |
+| Payment Intents | Works (201) |
+
+Amex is available from Airwallex but needs a separate application (KYB + card scheme request);
+the published rollout named AU/HK/SG/UK, and this is a US entity, so it needs confirming.
+
+**This is why Airwallex cannot replace Stripe here:** it has no UnionPay, and Runix sells to
+Chinese companies operating abroad. It also has no billing engine for the four subscriptions.
+
+#### Credentials
+Never in this repo. Two places only:
+- **Cloudflare Pages secrets** on project `runix-site`: `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY`
+  (both show as "Value Encrypted"). This is what the Function reads.
+- **macOS Keychain** on Cuihuan's machine, service `runix-airwallex`, accounts
+  `airwallex-prod` (API key), `airwallex-prod-clientid`, `airwallex-prod-acctid` —
+  used by local tooling and `wrangler pages dev`.
+
+Rotating the key means updating **both**. The key in use is named `dev_for_ai` in the Airwallex
+dashboard and was pasted in plaintext during setup, so it should be rotated.
+
+⚠️ Airwallex offers IP allow-listing on API keys. **Do not enable it**: Cloudflare Workers egress
+from arbitrary global addresses, so an allow-list would silently kill every checkout.
+
+#### Still open
+- No webhook either side → credits are granted by hand; `webhook.js` here is written and tested
+  but not wired. Until it is, there is no order record binding a payment to an account.
+- The intent endpoint is unauthenticated with no rate limit; the same-origin check is the only gate.
+- `deploy.sh` verification does not exercise the Function at all.

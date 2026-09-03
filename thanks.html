@@ -29,8 +29,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/thanks.png?v=8a9bf354">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=31">
-<script src="assets/site-config.js?v=13" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=35">
+<script src="assets/site-config.js?v=14" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Payment received — Runix AI">
 <meta name="twitter:description" content="Payment received. Your plan is activated by hand and confirmed by email within one business day.">
@@ -160,7 +160,8 @@
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
-        <a href="/plans" class="active">Pricing</a>
+        <a href="https://ai4s.runixcloud.io/en/" target="_blank" rel="noopener">AI for Science</a>
+        <a href="/plans">Pricing</a>
       </div>
       <div>
         <p class="footer-heading">Company</p>
@@ -197,43 +198,5 @@
   </div>
 </footer>
 
-<script>
-/* Top-up selector. The page ships with Standard pre-selected and every number
-   already rendered in the HTML, so the amounts stay readable with JS disabled —
-   the payment-provider review requires the pricing to be visible without it. */
-(function () {
-  var wrap = document.querySelector('.topup');
-  if (!wrap) return;
-  var opts = wrap.querySelectorAll('.topup-opt');
-  var input = wrap.querySelector('#topup-amount');
-  var outCredits = wrap.querySelector('[data-topup="credits"]');
-  var outList = wrap.querySelector('[data-topup="list"]');
-  var MIN = 10, CREDITS_PER_USD = 100, LIST_MULTIPLE = 1.25; /* 1 / 0.8 */
-
-  function render(usd) {
-    if (!(usd >= MIN)) return;
-    outCredits.textContent = (usd * CREDITS_PER_USD).toLocaleString('en-US');
-    outList.textContent = '$' + (usd * LIST_MULTIPLE).toLocaleString('en-US',
-      { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function select(btn) {
-    opts.forEach(function (o) {
-      o.classList.toggle('is-selected', o === btn);
-      o.setAttribute('aria-checked', String(o === btn));
-    });
-    if (btn) { input.value = ''; render(parseFloat(btn.dataset.usd)); }
-  }
-
-  opts.forEach(function (btn) {
-    btn.addEventListener('click', function () { select(btn); });
-  });
-
-  input.addEventListener('input', function () {
-    var v = parseFloat(input.value);
-    if (v >= MIN) { select(null); render(v); }
-  });
-})();
-</script>
 </body>
 </html>

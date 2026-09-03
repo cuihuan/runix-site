@@ -26,7 +26,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 FIGURE = """
-<section class="section section-alt">
+<section class="section">
   <div class="container">
     <div class="section-head center">
       <h2>What a provider's bad hour looks like from your side</h2>

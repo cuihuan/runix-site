@@ -137,6 +137,16 @@ try "a link whose name is a paragraph" \
     index.html ' aria-label="Explore Runix Router"' '' \
     "accessible name is"
 
+# A var() with no fallback pointing at a property that was never defined is
+# invalid at computed-value time: the rule silently does not apply, and an
+# inherited property takes the parent's value instead. --muted sat like that for
+# months, rendering the docs contents rail at full body ink and turning its
+# :hover into a no-op. Nothing else in the toolchain sees it -- the CSS parses,
+# the browser logs nothing, and the rendered result is a legal colour.
+try "a custom property used but never defined" \
+    assets/style.css 'color: var(--ink-3); font-weight: 400;' 'color: var(--never-defined-token); font-weight: 400;' \
+    "never defined"
+
 QA_SAVE=$QA
 QA="python3 tools/nojs_check.py"
 try "no-script nav fallback removed" \
@@ -145,6 +155,8 @@ try "no-script nav fallback removed" \
 try "no-script fallback that reveals nothing" \
     index.html '.nav-links{display:flex!important' '.nav-links{display:none!important' \
     "nav link(s) visible"
+
+
 QA=$QA_SAVE
 
 echo

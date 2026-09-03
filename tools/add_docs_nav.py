@@ -120,62 +120,23 @@ for path in sorted(glob.glob("docs/*.html")):
 print(f"  docs nav: updated {len(changed)} page(s): {', '.join(changed) or 'none'}")
 
 # The h2 ids are only useful if a jump actually lands on the heading. The header
-# is sticky at 68px, so without scroll-margin every anchor on the site — 264 of
-# them, including every glossary term — scrolls its target under the header.
+# is sticky at 68px, so without scroll-margin every anchor on the site scrolls
+# its target under the header.
+#
+# This block used to append scroll-margin-top and the whole .doc-toc/.doc-next
+# rule set to style.css on first run. That path has been dead since the first
+# run succeeded -- the guard is permanently true -- and the copy it carried had
+# drifted badly: it still spelled sizes as 12px/14px/13px after style.css moved
+# to the type-scale tokens, and it was the second home of the var(--muted)
+# reference that was never defined anywhere. A dead second copy of live CSS is
+# worse than no copy, so it is gone: assets/style.css is the source of truth for
+# these rules. What remains is the check, because silently rendering the docs
+# pages without their contents rail is a worse failure than stopping.
 css = open("assets/style.css").read()
-if "scroll-margin-top" not in css:
-    css += """
-/* Sticky header is 68px; without this every in-page anchor lands with its
-   heading hidden underneath it. */
-:where(h1, h2, h3, h4, [id]) { scroll-margin-top: 88px; }
-
-/* Documentation: contents rail + sibling nav */
-.doc-wrap { max-width: 820px; margin: 0 auto; }
-.doc-wrap .article { margin: 0; }
-.doc-toc {
-  padding: 40px 24px 0;
-}
-.toc-title {
-  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--muted); margin: 0 0 12px;
-}
-.doc-toc ul { list-style: none; margin: 0; padding: 0; }
-.doc-toc li { margin: 0 0 8px; }
-.doc-toc a {
-  color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.45;
-  display: block; border-left: 2px solid var(--line); padding: 2px 0 2px 12px;
-}
-.doc-toc a:hover { color: var(--ink); border-left-color: var(--indigo); }
-.doc-next {
-  border-top: 1px solid var(--line); margin-top: 56px; padding-top: 32px;
-}
-.doc-next .toc-title {
-  font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--muted); margin: 0 0 16px;
-}
-.doc-next ul {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-.doc-next a { color: var(--indigo); text-decoration: none; font-weight: 500; }
-.doc-next a:hover { text-decoration: underline; }
-
-@media (min-width: 1200px) {
-  .doc-wrap {
-    /* Same container token as the header and hero, so the contents rail lines
-       up with the logo and the h1 instead of sitting 20px to their left.
-       212 + 40 + 820 exactly fills the 1072px content box. */
-    max-width: var(--maxw);
-    display: grid; grid-template-columns: 212px minmax(0, 820px); gap: 40px;
-    padding: 0 24px;
-  }
-  .doc-toc {
-    position: sticky; top: 92px; align-self: start;
-    padding: 56px 0 0; max-height: calc(100vh - 120px); overflow-y: auto;
-  }
-}
-"""
-    open("assets/style.css", "w").write(css)
-    print("  style.css: added scroll-margin-top and the docs rail")
-else:
-    print("  style.css: already carries the docs rail")
+missing = [sel for sel in ("scroll-margin-top", ".doc-toc", ".doc-next") if sel not in css]
+if missing:
+    raise SystemExit(
+        "assets/style.css no longer defines: " + ", ".join(missing) + "\n"
+        "These rules are maintained in style.css, not generated here. Restore them."
+    )
+print("  style.css: docs rail present")

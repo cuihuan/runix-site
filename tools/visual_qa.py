@@ -63,7 +63,11 @@ _BROWSER_FLAGS = ([ "--headless" ] if _NEEDS_HEADLESS_FLAG else []) + [
     "--disable-background-networking", "--disable-sync", "--disable-extensions",
 ]
 PORT = 8901
-WIDTHS = [(375, "phone"), (768, "tablet"), (1440, "desktop")]
+# 1024 is not decoration. code-plans.html carried a page-level rule that beat
+# the stylesheet's 1080px breakpoint, so its plan grid stayed at four columns
+# from 920px to 1080px -- a band these three widths step straight over. The
+# laptop width is where a max-width:1080px rule either works or does not.
+WIDTHS = [(375, "phone"), (768, "tablet"), (1024, "laptop"), (1440, "desktop")]
 
 PROBE = r"""
 <script>window.addEventListener('load',function(){setTimeout(function(){

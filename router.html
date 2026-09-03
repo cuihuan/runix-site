@@ -28,8 +28,8 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/router.png?v=0dfaa9fa">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=24">
-<script src="assets/site-config.js?v=12" defer></script>
+<link rel="stylesheet" href="assets/style.css?v=35">
+<script src="assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -125,7 +125,7 @@
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
       <a href="/#platform">Platform</a>
-      <a href="/#products" class="active">Products</a>
+      <a href="/#products" class="active" aria-current="page">Products</a>
       <a href="/plans">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about">Company</a>
@@ -227,7 +227,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   </div>
 </section>
 
-<section class="section section-alt">
+<section class="section">
   <div class="container">
     <div class="section-head center">
       <h2>What a provider's bad hour looks like from your side</h2>
@@ -327,7 +327,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
     </div>
     <div class="grid cols-2">
       <div class="card"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
-      <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage.</p></div>
+      <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage. <a href="/reliability">How failover behaves in detail</a>.</p></div>
       <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
       <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
       <div class="card"><h3>How do I get access?</h3><p>Access is invite-only: <a href="/about#contact">tell us what you are building</a> and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on <a href="/access">Access</a>.</p></div>

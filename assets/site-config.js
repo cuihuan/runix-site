@@ -164,11 +164,42 @@
    three statements, and the single thing standing between this site and a
    Content-Security-Policy without 'unsafe-inline'. Delegated from the document
    so it does not depend on when this file loads relative to the markup. */
+function closeNav(links) {
+  links.classList.remove("open");
+  var toggle = document.querySelector(".nav-toggle");
+  if (toggle) toggle.setAttribute("aria-expanded", "false");
+}
+
 document.addEventListener("click", function (event) {
-  var toggle = event.target.closest && event.target.closest(".nav-toggle");
-  if (!toggle) return;
+  if (!event.target.closest) return;
   var links = document.querySelector(".nav-links");
   if (!links) return;
-  var open = links.classList.toggle("open");
-  toggle.setAttribute("aria-expanded", open ? "true" : "false");
+
+  var toggle = event.target.closest(".nav-toggle");
+  if (toggle) {
+    var open = links.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    return;
+  }
+
+  if (!links.classList.contains("open")) return;
+
+  // Opening the menu was the only thing this handler did, which left three ways
+  // to be stuck behind it on a phone: following an in-page anchor scrolled the
+  // page while the menu stayed over the target, tapping the page outside the
+  // menu did nothing, and there was no keyboard way out at all.
+  if (event.target.closest(".nav-links a") || !event.target.closest(".nav-links")) {
+    closeNav(links);
+  }
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key !== "Escape" && event.key !== "Esc") return;
+  var links = document.querySelector(".nav-links");
+  if (!links || !links.classList.contains("open")) return;
+  closeNav(links);
+  // Focus goes back to the control that opened the menu, or it would be left
+  // on an element that is now hidden.
+  var toggle = document.querySelector(".nav-toggle");
+  if (toggle) toggle.focus();
 });

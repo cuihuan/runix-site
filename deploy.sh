@@ -92,8 +92,16 @@ rsync -a \
   `# Check tools write temp pages into the site root and clean them up in a
    # finally block -- which SIGKILL skips. A killed visual_qa left a
    # zero-byte _vqa.html here tonight. qa.py catches it and aborts the
-   # deploy, which is the real guard; this is the second line.` \
-  --exclude '_*' \
+   # deploy, which is the real guard; this is the second line.
+   #
+   # Match the temp files by name, not by leading underscore. '_*' also
+   # excluded _headers and _redirects -- the two files Cloudflare Pages reads
+   # to apply headers and redirects. Pages takes them from the deployed output
+   # every time, so a deploy without them silently drops the whole security
+   # header set, the year-long asset cache, the feed content-type and every
+   # 301. The live site still has them only because it was last deployed
+   # before this exclude was written.` \
+  --exclude '_vqa*' \
   "$SRC/" "$STAGE/"
 echo "    $(find "$STAGE" -type f | wc -l | tr -d ' ') files"
 

@@ -70,7 +70,7 @@ WHAT_IT_IS = """<section class="section">
 
 """
 
-NOT_CLAIMED = """<section class="section section-alt">
+NOT_CLAIMED = """<section class="section alt">
   <div class="container">
     <div class="section-head center">
       <h2>What we do not claim</h2>

@@ -392,13 +392,32 @@ for page in PAGES:
         if label in GENERIC and len(by_text) > 1:
             notes.append(f"{page}: non-descriptive link text “{label}”")
 
+# --- a custom property that is used must exist -----------------------------
+_css = open(os.path.join("assets", "style.css")).read()
+# var(--name) with no fallback is invalid at computed-value time when --name is
+# undefined, so the declaration does not error and does not apply: an inherited
+# property silently takes its parent's value instead. --muted was referenced by
+# four rules and defined nowhere for months; the docs contents rail rendered at
+# full body ink and its :hover rule became a no-op, because the resting colour
+# already computed to what the hover set. Nothing catches that -- not the CSS
+# parser, not a browser console, not a rendering check, because the result is a
+# legal colour. A fallback (var(--x, #ccc)) is a deliberate choice and passes.
+_css_vars_defined = set(re.findall(r"^\s*(--[a-z0-9-]+)\s*:", _css, re.M))
+_css_vars_bare = set()
+for _m in re.finditer(r"var\(\s*(--[a-z0-9-]+)\s*(,)?", _css):
+    if not _m.group(2):
+        _css_vars_bare.add(_m.group(1))
+for _var in sorted(_css_vars_bare - _css_vars_defined):
+    fail("assets/style.css",
+         f"{_var} is used without a fallback and never defined — "
+         f"those rules silently do not apply")
+
 # --- a ruled list does not rule off its last row ---------------------------
 # A border-bottom on every row of a repeated element leaves a hairline under
 # the final one, separating content from nothing. The site already drops it on
 # .contact-card .row and .facts .frow; the pricing plans were the one list that
 # did not, and it read as an unfinished card. This makes the convention a rule
 # rather than something three selectors happen to agree on.
-_css = open(os.path.join("assets", "style.css")).read()
 _css_flat = re.sub(r"/\*.*?\*/", " ", _css, flags=re.S)
 for _sel, _body in re.findall(r"([^{}]+)\{([^}]*)\}", _css_flat):
     _sel = " ".join(_sel.split())

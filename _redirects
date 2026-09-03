@@ -10,10 +10,8 @@
 /forge / 301
 /forge.html / 301
 
-# /pricing was replaced by /plans (subscription tiers, Stripe payment links).
-# The pricing.html file stays in the tree because four tools reference it by
-# name (add_price_offers, center_product_heroes, build_subsites, console_check);
-# this rule is what makes the old URL land on the new page, as production
-# has been doing since before the page was ever committed.
-/pricing /plans 301
-/pricing.html /plans 301
+# /pricing is the Router pricing page and the nav's Pricing target. /plans and
+# /code-plans price Runix Code and are reached from the product pages, the
+# Stripe receipt and /thanks -- not from the nav. A 301 from /pricing onto
+# /plans sent every Router buyer, and five blog posts anchored "How Runix
+# pricing works", to a coding-agent subscription page instead.

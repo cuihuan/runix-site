@@ -19,9 +19,13 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 2
 fi
 
+# open_self_serve_signup is deliberately absent: it is not a builder but one half
+# of a pair of switches (with close_signup_invite_only), so running it changes the
+# site by design. Registration was closed on 2026-08-20 and the console reports
+# register_enabled=false, so running it would also be wrong, not merely noisy.
 BUILDERS="add_closing_ctas add_docs_nav add_router_diagram center_product_heroes
           expand_about fix_orphans wrap_tables sync_schema add_related add_glossary
-          open_self_serve_signup credits_on_request numbered_product_system"
+          credits_on_request numbered_product_system"
 
 fail=0
 for t in $BUILDERS; do

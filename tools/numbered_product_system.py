@@ -54,9 +54,12 @@ CONSOLE = "https://console.router.runixcloud.io"
 # what happens to a page whose active item is being removed (/pricing,
 # /security, /blog): it simply ends up with no active item, which is correct,
 # because that page is no longer represented in the nav.
+# Kept in step with the live nav. Pricing was added back after /plans went up;
+# leaving it out here made this tool strip it from all 59 pages on every run.
 NAV_KEEP = [
     ("/#platform", "Platform"),
     ("/#products", "Products"),
+    ("/plans", "Pricing"),
     ("/docs/", "Docs"),
     ("/about", "Company"),
 ]
@@ -84,6 +87,11 @@ def active_for(path):
         return "/about"
     if p in ("router.html", "pipeline.html", "code.html", "comic.html"):
         return "/#products"
+    # /plans is the nav's Pricing target, and /pricing is a 301 onto it, so both
+    # are "you are here" for that item. Added when the checkout pages came back
+    # into the repo; without it this tool stripped their active state on sight.
+    if p in ("plans.html", "pricing.html"):
+        return "/plans"
     return None
 
 
@@ -92,12 +100,18 @@ def build_nav(path):
     active = active_for(path)
     out = []
     for href, label in NAV_KEEP:
-        cls = ' class="active"' if href == active else ""
+        # aria-current is what makes "you are here" available to a screen
+        # reader; class="active" alone is a colour change. Emitting only the
+        # class would strip it from every page on the next run.
+        cls = ' class="active" aria-current="page"' if href == active else ""
         out.append(f'      <a href="{href}"{cls}>{label}</a>')
     out.append(f'      <a class="nav-signin" href="{CONSOLE}"'
                f' target="_blank" rel="noopener">Sign in</a>')
-    out.append(f'      <a class="nav-cta" href="{CONSOLE}/register"'
-               f' target="_blank" rel="noopener">Get API key</a>')
+    # Self-serve registration was closed on 2026-08-20 (see
+    # close_signup_invite_only.py); the console reports register_enabled=false.
+    # Pointing the primary CTA at /register would send every visitor to a
+    # disabled form.
+    out.append('      <a class="nav-cta" href="/about#contact">Request access</a>')
     return "\n" + "\n".join(out)
 
 # --------------------------------------------- #platform: four numbered layers
@@ -136,7 +150,14 @@ PLATFORM_NEW_STACK = "\n".join([
          "endpoint is not enough.",
          '<a href="#pipeline">Runix Pipeline</a> '
          '<span class="layer-side">Fine-tuning · Dedicated deployment · '
-         'Frontier &amp; open models</span>'),
+         'Frontier &amp; open models</span>'
+         # The AI for Science work is the same layer-02 discipline on records
+         # where a bad merge changes the answer; it belongs in this band rather
+         # than as a fifth product. Emitted here so a rebuild does not drop it.
+         '</p>\n          <p class="layer-prod">'
+         '<a href="#science">AI for Science</a> '
+         '<span class="layer-side">The same data work, on antibody and protein '
+         'records — where a bad merge is a wrong answer, not a typo</span>'),
     band("03", "Build &amp; create", "Applications &amp; agents",
          "Where the work actually gets done — code that ships under review "
          "gates, and episodes that reach an audience.",

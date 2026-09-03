@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/plans.png?v=2acbfee7">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=31">
+<link rel="stylesheet" href="assets/style.css?v=32">
 <script src="assets/site-config.js?v=13" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
@@ -341,19 +341,24 @@
             <span class="payopt-sub">Visa, Mastercard, Amex, China UnionPay</span>
             <span class="payopt-by">Checkout by Stripe</span>
           </a>
-          <!-- Airwallex: turn this span into a link, same classes, once the
-               payment link exists. Left unlinked rather than pointed at a
-               placeholder so nobody clicks through to a 404 and so the link
-               check stays meaningful. Airwallex earns its place by taking
-               Alipay and WeChat Pay, which Stripe does not offer us; that
-               difference is the only reason to show two options at all.
-               Note: no tag literals in comments here, the QA pass is
-               regex-based and reads them as real markup. -->
-          <span class="payopt is-pending">
-            <span class="payopt-name">Alipay or WeChat Pay</span>
-            <span class="payopt-sub">Cards too, charged in USD or CNY</span>
-            <span class="payopt-by">Airwallex &mdash; available shortly</span>
-          </span>
+          <!-- Airwallex goes through hosted checkout, which needs an intent
+               minted server-side, so this is a button that calls
+               /api/airwallex/intent rather than a plain link. It ships disabled
+               and the script enables it: with scripting off there is no way to
+               reach the provider, and an enabled button that does nothing is
+               worse than one that says it is unavailable. Stripe stays a link
+               precisely so one of the two always works.
+               Methods listed are the ones the account actually has — checked
+               against the live payment_method_types API, not assumed. Alipay
+               and WeChat Pay are NOT enabled on this account despite being
+               Airwallex's usual selling point; do not put them back here
+               without re-checking that API. -->
+          <button type="button" class="payopt" id="pay-airwallex" disabled
+                  data-endpoint="/api/airwallex/intent">
+            <span class="payopt-name">Card, Apple Pay or Google Pay</span>
+            <span class="payopt-sub">Visa, Mastercard, Afterpay, Klarna</span>
+            <span class="payopt-by" id="pay-airwallex-by">Checkout by Airwallex</span>
+          </button>
         </div>
         <p class="topup-pay-note">Both open the provider's own hosted checkout &mdash; card details
           are entered there, never on this site. The amount is entered at checkout too.</p>
@@ -539,8 +544,14 @@
     return '$' + Number(n).toLocaleString('en-US');
   }
 
+  /* The amount the Airwallex button will send. Kept in step with render() so
+     the two cannot disagree; the server validates it again regardless, since
+     anything reaching it from a browser is editable. */
+  var chosen = MIN;
+
   function render(usd) {
     if (!(usd >= MIN && usd <= MAX)) return;
+    chosen = usd;
     outPaid.textContent = money(usd);
     outCredits.textContent = money(usd * MULTIPLE);
   }
@@ -561,6 +572,76 @@
     var v = parseFloat(input.value);
     if (v >= MIN && v <= MAX) { select(null); render(v); }
   });
+
+  /* ---- Airwallex hosted checkout -------------------------------------
+     Stripe is a link because a payment link carries its own amount. Airwallex
+     has no such link on this account, so the flow is: ask our own endpoint for
+     an intent, then hand the intent to Airwallex's SDK, which navigates to
+     their hosted page. The SDK is fetched on click rather than in <head> so
+     that visitors who never pay do not download it. */
+  var awx = document.getElementById('pay-airwallex');
+  if (awx) {
+    var awxBy = document.getElementById('pay-airwallex-by');
+    var SDK = 'https://checkout.airwallex.com/assets/elements.bundle.min.js';
+    var busy = false;
+
+    var say = function (msg) { if (awxBy) awxBy.textContent = msg; };
+
+    var loadSdk = function () {
+      if (window.Airwallex) return Promise.resolve();
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = SDK;
+        s.onload = resolve;
+        s.onerror = function () { reject(new Error('sdk')); };
+        document.head.appendChild(s);
+      });
+    };
+
+    awx.disabled = false; // scripting is on, so the button can do its job
+
+    awx.addEventListener('click', function () {
+      if (busy) return;
+      busy = true;
+      say('Opening checkout…');
+
+      loadSdk()
+        .then(function () {
+          return fetch(awx.dataset.endpoint, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ amount: chosen })
+          });
+        })
+        .then(function (r) {
+          return r.json().then(function (d) {
+            if (!r.ok) throw new Error(d && d.error || 'http_' + r.status);
+            return d;
+          });
+        })
+        .then(function (d) {
+          window.Airwallex.init({ env: 'prod', origin: window.location.origin });
+          window.Airwallex.redirectToCheckout({
+            env: 'prod',
+            mode: 'payment',
+            intent_id: d.intent_id,
+            client_secret: d.client_secret,
+            currency: d.currency,
+            successUrl: window.location.origin + '/thanks',
+            failUrl: window.location.origin + '/plans',
+            locale: 'en'
+          });
+        })
+        .catch(function (e) {
+          busy = false;
+          // Say which way it failed: an unreachable provider and a rejected
+          // amount need different things from the visitor.
+          say(e && e.message === 'invalid_amount'
+            ? 'Amount must be $10–$10,000'
+            : 'Could not open checkout — try card, or email us');
+        });
+    });
+  }
 })();
 </script>
 </body>

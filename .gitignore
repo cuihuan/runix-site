@@ -1,2 +1,5 @@
 .DS_Store
 __pycache__/
+
+# wrangler pages dev local state (deploy.sh already rsync-excludes it)
+.wrangler/

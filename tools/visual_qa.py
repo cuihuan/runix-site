@@ -271,7 +271,13 @@ PROBE = r"""
   var hdr = document.querySelector('.site-header');
   if (hdr) {
     var hh = hdr.getBoundingClientRect().height;
-    var targets = document.querySelectorAll('h1[id], h2[id], h3[id]');
+    // Every [id], not just headings with one. This site hangs its anchors on
+    // <section id>, so a heading-only selector matched nothing on every page --
+    // which the seen-counter correctly reported as a detector that cannot
+    // report. Matches the CSS rule that grants the offset
+    // (:where(h1,h2,h3,h4,[id]) { scroll-margin-top }), so the check now covers
+    // exactly the elements the stylesheet claims to have handled.
+    var targets = document.querySelectorAll('[id]');
         out.seen.anchors += targets.length;
     for (var k = 0; k < targets.length; k++) {
       var sm = parseFloat(getComputedStyle(targets[k]).scrollMarginTop) || 0;

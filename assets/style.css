@@ -339,6 +339,28 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   color: var(--cyan-text); margin-bottom: 12px;
 }
 .topup-pay-note { margin-top: 12px; font-size: 13px; color: var(--ink-3); }
+/* Payment-method choice. Two links, not a JS-driven radio with one shared
+   button: the amount is typed on the provider's own page either way, so there
+   is no state on this page worth keeping, and a plain link still works with
+   scripting off — which the payment-provider review requires of the pricing.
+   The two are visually equal because neither is the recommended one; they
+   differ by which methods they accept, and that is what the copy says. */
+.paygrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.payopt {
+  display: grid; gap: 3px; padding: 16px 18px; border-radius: 14px;
+  background: var(--bg); border: 1px solid var(--line-2); color: inherit;
+  text-decoration: none; transition: all 0.2s;
+}
+.payopt:hover { border-color: var(--indigo); box-shadow: var(--shadow); }
+.payopt:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+.payopt-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.payopt-sub { font-size: 13px; color: var(--ink-2); }
+.payopt-by { font-size: 12px; color: var(--ink-3); }
+/* Not yet linked. Dashed border and the alt surface, but the same text colours:
+   dimming it with opacity would drag every label under the AA threshold that
+   visual_qa enforces, and an unavailable option still has to be readable. */
+.payopt.is-pending { border-style: dashed; background: var(--bg-alt); }
+@media (max-width: 640px) { .paygrid { grid-template-columns: 1fr; } }
 .topup-cta { margin-top: 22px; }
 .topup-foot { margin-top: 12px; text-align: center; font-size: 13px; color: var(--ink-3); }
 

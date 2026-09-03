@@ -293,7 +293,7 @@
     <div class="topup">
       <div class="topup-grid" role="radiogroup" aria-label="Top-up amount">
         <button type="button" class="topup-opt" role="radio" aria-checked="false" data-usd="10">
-          <span class="topup-name">Try it</span>
+          <span class="topup-name">Top-up</span>
           <span class="topup-usd">$10</span>
           <span class="topup-sub">$20 of credits</span>
         </button>
@@ -329,18 +329,43 @@
         <p>Paying <b data-topup="paid">$1,000</b> puts <b data-topup="credits">$2,000</b> of credits in
           your account &mdash; credits are worth twice what you pay, at every amount. They do not
           expire, and nothing is charged again.</p>
-        <p class="topup-equiv-note">The amount is entered on the Stripe checkout page, not here.
-          This picker only works out what you get before you go.</p>
+        <p class="topup-equiv-note">The amount is entered on the checkout page, not here. This picker
+          only works out what you get before you go.</p>
       </div>
 
-      <a class="btn btn-grad btn-block topup-cta" href="https://buy.stripe.com/7sY5kw7QkdET1cNguv5J609">Top up at Stripe</a>
+      <div class="topup-pay">
+        <div class="topup-pay-head">Choose how to pay</div>
+        <div class="paygrid">
+          <a class="payopt" href="https://buy.stripe.com/7sY5kw7QkdET1cNguv5J609">
+            <span class="payopt-name">Card</span>
+            <span class="payopt-sub">Visa, Mastercard, Amex, China UnionPay</span>
+            <span class="payopt-by">Checkout by Stripe</span>
+          </a>
+          <!-- Airwallex: turn this span into a link, same classes, once the
+               payment link exists. Left unlinked rather than pointed at a
+               placeholder so nobody clicks through to a 404 and so the link
+               check stays meaningful. Airwallex earns its place by taking
+               Alipay and WeChat Pay, which Stripe does not offer us; that
+               difference is the only reason to show two options at all.
+               Note: no tag literals in comments here, the QA pass is
+               regex-based and reads them as real markup. -->
+          <span class="payopt is-pending">
+            <span class="payopt-name">Alipay or WeChat Pay</span>
+            <span class="payopt-sub">Cards too, charged in USD or CNY</span>
+            <span class="payopt-by">Airwallex &mdash; available shortly</span>
+          </span>
+        </div>
+        <p class="topup-pay-note">Both open the provider's own hosted checkout &mdash; card details
+          are entered there, never on this site. The amount is entered at checkout too.</p>
+      </div>
       <p class="topup-foot">One-time payment &mdash; no subscription, no renewal.</p>
     </div>
 
-    <p class="model-note">Charged in <span data-cfg="defaultCurrency">USD</span> by
-      <span data-cfg="legalCompanyName">Runix AI Inc</span>. Checkout is hosted by Stripe &mdash; card
-      details are entered on their page, never ours. A top-up is a one-time payment and sets up no
-      recurring charge; see <a href="refund">Refunds</a> for how it is handled.</p>
+    <p class="model-note">Charged by <span data-cfg="legalCompanyName">Runix AI Inc</span> in
+      <span data-cfg="defaultCurrency">USD</span>, or in CNY where the payment method settles that
+      way. Checkout is hosted by the payment provider &mdash; card details are entered on their page,
+      never ours. A top-up is a one-time payment and sets up no recurring charge; see
+      <a href="refund">Refunds</a> for how it is handled.</p>
   </div>
 </section>
 

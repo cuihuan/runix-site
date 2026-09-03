@@ -42,7 +42,7 @@ CSS = """
 
 /* The hero already separates itself with a rule and a colour change; the first
    section does not need a full section's worth of padding on top of that. */
-main > .section:first-child { padding-top: 64px; }
+.page-hero + .section { padding-top: 64px; }
 /* The hero glow was positioned for left-aligned text; centred heroes need it
    centred too, or the page lights up on one side of its own headline. */
 .page-hero.center {

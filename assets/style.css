@@ -106,6 +106,8 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 /* A headline broken across lines without gluing the words together
    when the text is extracted. */
 .line { display: block; }
+/* Glue a short token that must not break (a hyphenated compound, a link label). */
+.nowrap { white-space: nowrap; }
 
 .badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -165,7 +167,7 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
 }
 .hero .container { position: relative; }
 .hero h1 { font-size: 58px; font-weight: 800; max-width: 780px; }
-.hero .sub { margin-top: 22px; font-size: var(--fs-2xl); color: var(--ink-2); max-width: 620px; }
+.hero .sub { margin-top: 22px; font-size: var(--fs-2xl); color: var(--ink-2); max-width: 620px; text-wrap: pretty; }
 .hero .actions { margin-top: 38px; display: flex; gap: 14px; flex-wrap: wrap; }
 .btn {
   display: inline-block; padding: 13px 28px; border-radius: var(--radius-md);
@@ -189,7 +191,7 @@ h1, h2, h3, .section-head h2 { text-wrap: balance; }
   padding: 12px 18px; border-bottom: 1px solid var(--line-on-dark);
 }
 .code-card .dot { width: 11px; height: 11px; border-radius: 50%; background: #2a3441; }
-.code-card .bar span { margin-left: 10px; color: #8b95a1; font-size: var(--fs-xs); font-family: "SF Mono", Menlo, monospace; }
+.code-card .bar span:not(.dot) { margin-left: 10px; color: #8b95a1; font-size: var(--fs-xs); font-family: "SF Mono", Menlo, monospace; }
 .code-card pre {
   /* 18px matches .bar above, so the first character of the code lines up
      with the filename. They were 24 and 18 -- which read as a slip, and
@@ -293,6 +295,12 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
    or a code card -- content, not decoration. When the card runs taller than the
    prose beside it, centring pushed the prose down and left a gap above it. */
 .feature { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding: 40px 0; }
+/* .feature only ever sits directly inside .section > .container, so its own 40px
+   stacked on the section's 96px: the band's content started 136px in while every
+   neighbouring section sat at 96px. Drop the padding on the edges that touch the
+   section; the inner 40px still separates it from a .section-head above (about). */
+.section > .container > .feature:first-child { padding-top: 0; }
+.section > .container > .feature:last-child { padding-bottom: 0; }
 .feature > * { min-width: 0; }
 .feature h3 { font-size: 28px; font-weight: 800; margin-bottom: 14px; }
 .feature p { color: var(--ink-2); }
@@ -315,11 +323,18 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .plan:hover { box-shadow: var(--shadow); }
 .plan.featured { border: 2px solid transparent; background:
   linear-gradient(var(--bg), var(--bg)) padding-box, var(--grad) border-box; }
+/* The 2px border would shift everything inside 1px right and down against the 1px
+   neighbours; take it out of the padding, as .topup-opt.is-selected does. */
+.plan.featured { padding: 33px 29px; }
 .plan .flag {
-  position: absolute; top: -13px; left: 28px; background: var(--grad); color: var(--on-accent);
+  /* Centre the pill on the border. `top` is measured from the padding box, so a
+     fixed -13px hung it ~2px low on the 2px featured border and ~1.7px low on 1px. */
+  position: absolute; top: -1px; left: 28px; transform: translateY(-50%);
+  background: var(--grad); color: var(--on-accent);
   font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 4px 12px; border-radius: var(--radius-pill);
 }
+.plan.featured .flag { left: 27px; }
 .plan h3 { font-size: var(--fs-xl); font-weight: 700; }
 
 /* ---- Top-up picker (pricing) ------------------------------------------
@@ -404,7 +419,11 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .plan .credits b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .plan .save { display: block; width: fit-content; margin: 8px 0 0; font: 700 12px/1 var(--mono); letter-spacing: .04em;
   color: var(--on-accent); background: var(--grad); padding: 4px 10px; border-radius: var(--radius-pill); }
-.plan .rate { color: var(--ink-3); font-size: var(--fs-xs); margin: 2px 0 0; }
+.plan .rate { color: var(--ink-3); font-size: var(--fs-xs); margin: 2px 0 0; text-wrap: balance; }
+/* /pricing's three rate lines wrap to one, two and two lines, so the feature lists
+   under them started a line apart. Reserve two lines (12px x 1.7 x 2) above the
+   single-column breakpoint; /plans and /code-plans use .plans-4 and stay one-line. */
+@media (min-width: 921px) { .plans:not(.plans-4) .plan .rate { min-height: 3.4em; } }
 .plan ul { list-style: none; margin: 22px 0 0; }
 .plan ul li { padding: 8px 0 8px 24px; position: relative; color: var(--ink-2); font-size: var(--fs-base); border-bottom: 1px solid var(--line); }
 /* Cards stretch to the tallest in the row, so the CTA is pinned to the bottom
@@ -441,6 +460,9 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .article h2 { font-size: var(--fs-3xl); font-weight: 700; margin: 38px 0 12px; }
 .article h3 { font-size: var(--fs-xl); font-weight: 600; margin: 24px 0 8px; }
 .article p, .article li { color: var(--ink-2); font-size: var(--fs-md); }
+/* A closing see-also paragraph straight after the last FAQ answer read as part of
+   that answer (15px p gap vs the 24px each question gets). */
+.article .outro { margin-top: 32px; }
 .article p { margin-bottom: 15px; }
 .article h2 + p, .article h3 + p { margin-top: 0; }
 .article ul, .article ol { margin: 10px 0 10px 22px; }
@@ -461,7 +483,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 40px;
   box-shadow: var(--shadow);
 }
-.contact-card .row { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: var(--fs-md); }
+/* Grid, not wrapping flex: a long value (the address) has to wrap inside its own
+   column rather than dropping under the label -- the same reason .facts uses grid. */
+.contact-card .row { display: grid; grid-template-columns: 110px 1fr; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: var(--fs-md); }
+@media (max-width: 560px) { .contact-card .row { grid-template-columns: 1fr; } }
 .contact-card .row:last-child { border-bottom: none; }
 .contact-card .row > * { min-width: 0; overflow-wrap: anywhere; }
 .contact-card .k { color: var(--ink-3); min-width: 110px; }
@@ -488,6 +513,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   line-height: 2;
 }
 .footer-bottom a { display: inline; margin-left: 18px; color: var(--ink-2); }
+/* The middot between the two addresses had 18px on its right (the link's margin)
+   and one space on its left, so it read as attached to the support address. */
+.footer-bottom span[aria-hidden] { margin-left: 14px; }
+.footer-bottom span[aria-hidden] + a { margin-left: 14px; }
 /* Who you are actually contracting with: name, registration, and a reachable
    address, phone and email. Card acquirers check for it on every page, so it
    is rendered into the static markup by tools/render_identity.py rather than
@@ -633,6 +662,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .card .read-more:hover { text-decoration: underline; }
 
 .pillars.two { grid-template-columns: repeat(2, 1fr); }
+/* When one heading in a row fits a line and its neighbours take two, the lead-lines
+   under them land on different baselines; reserve two lines while the row is a row. */
+@media (min-width: 921px) { .pillars-even .pillar h3 { min-height: 2.4em; } }
 .pillar .lead-line { color: var(--ink-2); font-size: var(--fs-md); margin-top: 4px; }
 
 /* provider chips */
@@ -651,6 +683,10 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   border-radius: var(--radius); padding: 18px 22px; margin-top: 22px; color: var(--ink-2); font-size: var(--fs-base);
 }
 .callout svg { width: 22px; height: 22px; stroke: var(--indigo); flex: none; margin-top: 1px; }
+/* Under a pillar grid the band shares the cards' outer edges, so its icon should
+   sit on the cards' 30px text column too, not 8px outside it. Blog/docs callouts
+   never follow .pillars and keep the 22px. */
+.pillars + .callout { padding-inline: 30px; }
 
 /* ---------- Split hero: copy beside a live-looking request ---------- */
 .hero-split { display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 54px; align-items: center; }
@@ -663,7 +699,8 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   background: var(--line-on-dark); border: 1px solid var(--line-on-dark); border-top: none;
   border-radius: 0 0 var(--radius) var(--radius); overflow: hidden;
 }
-.hero-metrics div { background: #05080f; padding: 13px 16px; }
+/* 18px matches .code-card .bar and pre above, so the labels share the code's left edge. */
+.hero-metrics div { background: #05080f; padding: 13px 18px; }
 .hero-metrics b { display: block; font-family: var(--mono); font-size: var(--fs-lg); color: #e9edf6; }
 .hero-metrics span { font-size: var(--fs-xs); color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
 
@@ -874,8 +911,21 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 .page-hero.center .actions { justify-content: center; }
 
 /* The hero already separates itself with a rule and a colour change; the first
-   section does not need a full section's worth of padding on top of that. */
-main > .section:first-child { padding-top: 64px; }
+   section does not need a full section's worth of padding on top of that.
+   The hero is main's first child on every page, so this has to be a sibling
+   selector -- the old `main > .section:first-child` matched nothing. */
+.page-hero + .section { padding-top: 64px; }
+
+/* Where an article is followed by a CTA section (access, reliability) the article's
+   96px bottom padding and the section's 96px top stacked to 207px against 94px
+   above the article. */
+.article + .section { padding-top: 0; }
+
+/* A hero above an article is left-aligned like the article, but on the 1120px
+   container while the article sits in its own 820px box -- two columns 150px out
+   of register. Docs pages keep the wide hero: their TOC rail is meant to line up
+   with the h1. */
+.page-hero:has(+ .article) .container { max-width: 820px; }
 
 /* The hero glow was positioned for left-aligned text; centred heroes need it
    centred too, or the page lights up on one side of its own headline. */
@@ -884,6 +934,7 @@ main > .section:first-child { padding-top: 64px; }
 }
 /* Stops the lede stranding a single word on its own last line. */
 .page-hero p { text-wrap: pretty; }
+.section-head p { text-wrap: pretty; }
 
 /* Wide tables scroll inside their own region rather than pushing the page
    sideways. tabindex makes the region keyboard-scrollable. */
@@ -916,9 +967,15 @@ main > .section:first-child { padding-top: 64px; }
    query could not left-align it -- an inline style beats any selector without
    !important. Moved here so the responsive rule below can actually win. */
 .model-note {
-  text-align: center; margin-top: 24px;
+  text-align: center; margin-top: 24px; max-width: 680px; margin-inline: auto;
   color: var(--ink-3); font-size: var(--fs-base);
 }
+/* A note straight under a section head (pipeline's course caveat) should match the
+   deck's measure and sit 24px under it like every other note sits under its block;
+   the head's 56px bottom margin otherwise sets the gap. Zeroing that margin, rather
+   than pulling the note up, keeps the 24px at the phone breakpoint too. */
+.section-head:has(+ .model-note) { margin-bottom: 0; }
+.section-head + .model-note { max-width: 640px; margin-inline: auto; }
 
 /* ---------- Centred body copy is a phone-width readability problem ---------- */
 /* Centred text is fine for a line or two -- a label, a short deck. Past that the
@@ -967,7 +1024,7 @@ main > .section:first-child { padding-top: 64px; }
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   color: var(--line-2);
-  padding-top: 2px;
+  padding-top: 0; margin-top: -2px; /* cap line on the eyebrow's cap line */
 }
 /* 01 is the only layer a visitor can buy today, so it is the one that gets
    the brand weight -- the same treatment the old .layer-mid gave the Router. */
@@ -1024,13 +1081,13 @@ main > .section:first-child { padding-top: 64px; }
 
 @media (max-width: 920px) {
   .layer { grid-template-columns: 44px 1fr; }
-  .layer-num { font-size: var(--fs-3xl); }
+  .layer-num { font-size: var(--fs-3xl); margin-top: 0; }
 }
 @media (max-width: 560px) {
   /* The number column costs a third of the width on a phone, so it goes
      above the tag instead of beside it. */
   .layer { grid-template-columns: 1fr; }
-  .layer-num { padding-top: 0; margin-bottom: 6px; }
+  .layer-num { padding-top: 0; margin-top: 0; margin-bottom: 6px; }
 }
 
 
@@ -1057,7 +1114,7 @@ main > .section:first-child { padding-top: 64px; }
 .plan-hero .container > * { min-width: 0; }
 .plan-hero h1 { font-size: clamp(38px, 5vw, 58px); font-weight: 800; line-height: 1.05; margin: 18px 0 22px; }
 .plan-hero h1 em { font-style: normal; color: var(--cyan-text); }
-.plan-hero .sub { color: var(--ink-2); font-size: var(--fs-xl); max-width: 46ch; }
+.plan-hero .sub { color: var(--ink-2); font-size: var(--fs-xl); max-width: 46ch; text-wrap: pretty; }
 .plan-hero .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .plan-hero .note { font-family: var(--mono); font-size: var(--fs-xs); color: var(--ink-3); margin-top: 18px; letter-spacing: .02em; }
 @media (max-width: 940px) { .plan-hero { padding: 60px 0 52px; } .plan-hero .container { grid-template-columns: 1fr; gap: 40px; } }
@@ -1073,7 +1130,7 @@ main > .section:first-child { padding-top: 64px; }
    12px either — the site's floor, and the check enforces it. */
 .term { background: #0b1018; border: 1px solid var(--line-on-dark); border-radius: var(--radius-sm); overflow: hidden;
         box-shadow: 0 18px 44px -28px rgba(11,16,24,.55); }
-.term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 15px;
+.term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 18px; /* 18px matches .term pre, so the dots share the code's left edge */
             border-bottom: 1px solid rgba(255,255,255,.07);
             font-family: var(--mono); font-size: var(--fs-xs); color: #7d8a99; letter-spacing: .05em; }
 .term-bar i { width: 8px; height: 8px; border-radius: 50%; background: #2c3846; flex: none; }
@@ -1087,6 +1144,9 @@ main > .section:first-child { padding-top: 64px; }
 .psec { padding: 78px 0; }
 .psec-head { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
 .psec-head h2 { font-size: clamp(26px, 3vw, 34px); font-weight: 700; }
+/* Below ~690px the longer eyebrows wrap into a stack while short ones stay inline,
+   so heads on one page took two shapes; stack all of them. */
+@media (max-width: 700px) { .psec-head { flex-direction: column; align-items: flex-start; gap: 8px; } }
 .prule { border: 0; border-top: 1px solid var(--line); margin: 0; }
 
 /* Numbered run sequence. Named .prun, not .steps: .steps already exists above
@@ -1116,10 +1176,13 @@ main > .section:first-child { padding-top: 64px; }
 /* Cards: the multiplier still leads, but with room around it. */
 .plans-4 { grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .plans-4 .plan { padding: 34px 26px 30px; display: flex; flex-direction: column; }
+.plans-4 .plan.featured { padding: 33px 25px 29px; }
 .plans-4 .price { font-size: 33px; margin: 12px 0 0; }
 .plans-4 .price .cur { font-size: var(--fs-3xl); font-weight: 700; vertical-align: 6px; margin-right: 1px; color: var(--ink-2); }
 .plans-4 .price small { font-size: var(--fs-base); font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
-.plan-for { color: var(--ink-3); font-size: var(--fs-sm); min-height: 40px; margin-top: 4px; }
+/* Two lines at line-height 1.7; a fixed 40px was 4px short, so cards with a two-line
+   blurb pushed their price row 4px lower than their neighbours. */
+.plan-for { color: var(--ink-3); font-size: var(--fs-sm); min-height: 3.4em; margin-top: 4px; }
 .plan-rate { font-size: var(--fs-xs); color: var(--ink-3); margin: 6px 0 0; font-family: var(--mono); }
 .mult { margin: 24px 0 18px; padding: 18px 0 16px;
         border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
@@ -1183,13 +1246,13 @@ main > .section:first-child { padding-top: 64px; }
    sections (.psec drops 78px -> 56px at this width); the site's original
    sections never got the same treatment.
 
-   The first-child rule has to be repeated here. `main > .section:first-child`
-   is (0,2,1) and a bare `.section` in a media query is (0,1,0) -- media queries
+   The hero-sibling rule has to be repeated here. `.page-hero + .section`
+   is (0,2,0) and a bare `.section` in a media query is (0,1,0) -- media queries
    add no specificity -- so without the second line the opening section would
    keep its 64px top while every other section dropped to 56px, making it the
    tallest one on the page. */
 @media (max-width: 640px) {
   .section { padding: 56px 0; }
-  main > .section:first-child { padding-top: 40px; }
+  .page-hero + .section { padding-top: 40px; }
   .section-head { margin-bottom: 40px; }
 }

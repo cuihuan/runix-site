@@ -77,7 +77,8 @@ def esc(s):
 
 
 def tel_link(phone):
-    return '<a href="tel:%s">%s</a>' % (re.sub(r"[^+\d]", "", phone), esc(phone))
+    # Non-breaking spaces: the number split "+1 (308)" / "689-0770" at 1024px.
+    return '<a href="tel:%s">%s</a>' % (re.sub(r"[^+\d]", "", phone), esc(phone).replace(" ", "&nbsp;"))
 
 
 def mail_link(addr):
@@ -103,7 +104,10 @@ def render_footer(cfg):
         parts.append(mail_link(cfg["supportEmail"]))
     if not parts:
         return ""
-    return '    <address class="footer-identity">%s</address>\n' % " &middot; ".join(parts)
+    # Each separator is glued to the token after it, so a line can end on a value
+    # but never on a stranded middot (it travelled with the email at 1440, with
+    # "United States" at 375).
+    return '    <address class="footer-identity">%s</address>\n' % " &middot;&nbsp;".join(parts)
 
 
 def render_contact(cfg):

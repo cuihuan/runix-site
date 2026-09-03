@@ -11,6 +11,7 @@ id nobody kept. Absolute hrefs are resolved against the site root the way the
 host serves them, including extensionless clean URLs.
 """
 import glob
+import io
 import json
 import os
 import re
@@ -20,8 +21,19 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 PAGES = sorted([_p for _p in glob.glob("*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("docs/*.html") if not os.path.basename(_p).startswith("_")] + [_p for _p in glob.glob("blog/*.html") if not os.path.basename(_p).startswith("_")])
-# 404 is deliberately noindex and outside the nav/sitemap conventions.
-INDEXABLE = [p for p in PAGES if os.path.basename(p) != "404.html"]
+# A page that declares noindex is, by its own statement, not a sitemap entry.
+# This used to be spelled "except 404.html" because 404 was the only such page;
+# /thanks (a payment confirmation) is the second, and hardcoding a second
+# filename would just defer the same problem. Read the declaration instead of
+# maintaining a list.
+def _declares_noindex(path):
+    try:
+        head = io.open(path, encoding="utf-8").read(4000)
+    except OSError:
+        return False
+    return re.search(r'<meta[^>]+name=["\']robots["\'][^>]+noindex', head, re.I) is not None
+
+INDEXABLE = [p for p in PAGES if not _declares_noindex(p)]
 # Drafts are not deployed and not in the sitemap, but a draft with a broken
 # schema block or a dead internal link only announces itself at publish time,
 # which is the worst moment to find out. They get the structural checks.

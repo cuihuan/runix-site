@@ -9,3 +9,11 @@
 /gateway.html /router 301
 /forge / 301
 /forge.html / 301
+
+# /pricing was replaced by /plans (subscription tiers, Stripe payment links).
+# The pricing.html file stays in the tree because four tools reference it by
+# name (add_price_offers, center_product_heroes, build_subsites, console_check);
+# this rule is what makes the old URL land on the new page, as production
+# has been doing since before the page was ever committed.
+/pricing /plans 301
+/pricing.html /plans 301

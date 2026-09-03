@@ -71,7 +71,7 @@ python3 "$SRC/tools/qa.py" || { echo "qa.py failed — not deploying." >&2; exit
 # shared-stylesheet regression shows up first. Run the full sweep by hand
 # (python3 tools/visual_qa.py) after a change to tokens or layout.
 if [ -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]; then
-  python3 "$SRC/tools/visual_qa.py" index.html pricing.html about.html \
+  python3 "$SRC/tools/visual_qa.py" index.html plans.html pricing.html about.html \
     docs/router.html blog/model-failover.html terms.html \
     || { echo "visual_qa.py failed — not deploying." >&2; exit 1; }
   # Homepage only: enough to catch a gross regression (an image without

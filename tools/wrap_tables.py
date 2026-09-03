@@ -37,7 +37,13 @@ for path in sorted(glob.glob("blog/*.html") + glob.glob("docs/*.html") + glob.gl
     html = open(path).read()
     if "<table" not in html:
         continue
-    if "table-scroll" in html:
+    # A table already sitting in a labelled scroll region does not need another
+    # one around it: two nested scrollers, two tab stops, and a screen reader
+    # announcing the same region twice. Matching on role="region" rather than on
+    # the .table-scroll class keeps this true for any such container -- /plans
+    # wraps its comparison table in .dsheet, which declares its own overflow-x,
+    # tabindex and label.
+    if "table-scroll" in html or re.search(r'role="region"[^>]*>\s*<table', html):
         skipped += 1
         continue
     count = len(re.findall(r"<table\b.*?</table>", html, flags=re.S))

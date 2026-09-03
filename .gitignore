@@ -5,3 +5,6 @@ __pycache__/
 # wrangler writes a deploy cache here (account id + project name, no secrets).
 # It changes on every deploy and is already excluded from the upload.
 .wrangler/
+
+# visual_qa.py render scratch files (deploy.sh excludes them too)
+_vqa*

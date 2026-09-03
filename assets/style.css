@@ -289,7 +289,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 }
 
 /* ---------- Feature rows ---------- */
-.feature { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 40px 0; }
+/* Top-aligned, not centred: every right column is a facts card, a contact card
+   or a code card -- content, not decoration. When the card runs taller than the
+   prose beside it, centring pushed the prose down and left a gap above it. */
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding: 40px 0; }
 .feature > * { min-width: 0; }
 .feature h3 { font-size: 28px; font-weight: 800; margin-bottom: 14px; }
 .feature p { color: var(--ink-2); }

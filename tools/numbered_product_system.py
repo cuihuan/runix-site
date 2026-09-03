@@ -59,7 +59,7 @@ CONSOLE = "https://console.router.runixcloud.io"
 NAV_KEEP = [
     ("/#platform", "Platform"),
     ("/#products", "Products"),
-    ("/plans", "Pricing"),
+    ("/pricing", "Pricing"),
     ("/docs/", "Docs"),
     ("/about", "Company"),
 ]
@@ -91,7 +91,7 @@ def active_for(path):
     # are "you are here" for that item. Added when the checkout pages came back
     # into the repo; without it this tool stripped their active state on sight.
     if p in ("plans.html", "pricing.html"):
-        return "/plans"
+        return "/pricing"
     return None
 
 
@@ -156,8 +156,7 @@ PLATFORM_NEW_STACK = "\n".join([
          # than as a fifth product. Emitted here so a rebuild does not drop it.
          '</p>\n          <p class="layer-prod">'
          '<a href="#science">AI for Science</a> '
-         '<span class="layer-side">The same data work, on antibody and protein '
-         'records — where a bad merge is a wrong answer, not a typo</span>'),
+         '<span class="layer-side">Antibody &amp; protein records · the same stages, harder data</span>'),
     band("03", "Build &amp; create", "Applications &amp; agents",
          "Where the work actually gets done — code that ships under review "
          "gates, and episodes that reach an audience.",
@@ -312,7 +311,9 @@ def main():
     problems = []
 
     # ---- nav across every page that carries one
-    pages = sorted(p for p in pathlib.Path(".").rglob("*.html"))
+    # Skip _-prefixed files: visual_qa.py writes _vqa*.html render scratch
+    # while it runs, and rewriting those mid-run made this pass non-idempotent.
+    pages = sorted(p for p in pathlib.Path(".").rglob("*.html") if not p.name.startswith("_"))
     changed = carriers = 0
     for p in pages:
         t = p.read_text(encoding="utf-8")

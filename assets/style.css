@@ -235,6 +235,11 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 }
 .card .icon svg { width: 24px; height: 24px; stroke: var(--indigo); }
 .card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; padding-left: 38px; min-height: 26px; }
+/* A job description is the longest prose on the site outside the blog, and its
+   card spans the full container: measured on the deployed /careers at 1010px,
+   122 characters a line. The card keeps its width -- it holds a title row and
+   a meta row that want the room -- and the copy inside it is held to 72ch. */
+.card > p, .card > ul { max-width: 66ch; }
 /* Links in body copy.
    Third attempt at this selector, and the first that is not a list of places a
    link might live. Enumerating containers missed <li>, then .facts, then three

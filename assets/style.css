@@ -214,7 +214,7 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 /* The deck under a section heading rendered 640px / 85 characters a line at
    16.5px. The heading keeps the full 640px -- it is short and wants the room
    for a balanced two-line break -- and the deck is held to 585px / 78. */
-.section-head p { margin-top: 14px; color: var(--ink-2); font-size: 16.5px; max-width: 585px; }
+.section-head p { margin-top: 14px; color: var(--ink-2); font-size: 16.5px; max-width: 560px; }
 .section-head.center p { margin-left: auto; margin-right: auto; }
 
 /* ---------- Product cards ---------- */
@@ -528,7 +528,13 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 .page-hero { padding: 72px 0 52px; border-bottom: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(91, 140, 255, 0.09), rgba(91, 140, 255, 0) 82%); }
 .page-hero h1 { font-size: 42px; font-weight: 800; overflow-wrap: break-word; }
-.page-hero p { color: var(--ink-2); margin-top: 12px; max-width: 620px; }
+/* 620px rendered 88 characters a line, counted off the line boxes on the
+   deployed page. 550px lands at 78. */
+.page-hero p { color: var(--ink-2); margin-top: 12px; max-width: 550px; }
+/* Bare paragraphs sitting straight in a .container inherit no measure at all
+   and ran to 96 characters on /comic. Scoped to :not([class]) so the notes
+   that carry their own class and centring (.model-note and friends) keep it. */
+.container > p:not([class]) { max-width: 550px; }
 /* Sized by counting rendered line boxes, not by ch. The ch unit is the width
    of "0", which in a narrow face like Archivo is about a fifth wider than the
    average lowercase letter, so sizing by ch under-counts real prose: 680px
@@ -1009,7 +1015,11 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 /* A page's hero follows the alignment of its own body: centred on the product
    and pricing pages, left on anything you read as an article. */
 .page-hero.center { text-align: center; }
-.page-hero.center p { margin-inline: auto; max-width: 680px; }
+/* 680px rendered 96 characters a line on /comic, counted off the line boxes.
+   Centred text is harder to track back across than left-aligned, not easier,
+   so the centred variant wants the same measure as the rest -- not a wider
+   one. 550px lands at 78. */
+.page-hero.center p { margin-inline: auto; max-width: 550px; }
 .page-hero.center .actions { justify-content: center; }
 
 /* The hero already separates itself with a rule and a colour change; the first

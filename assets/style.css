@@ -520,7 +520,12 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   background: linear-gradient(180deg, rgba(91, 140, 255, 0.09), rgba(91, 140, 255, 0) 82%); }
 .page-hero h1 { font-size: 42px; font-weight: 800; overflow-wrap: break-word; }
 .page-hero p { color: var(--ink-2); margin-top: 12px; max-width: 620px; }
-.article { max-width: 820px; margin: 0 auto; padding: 56px 24px 96px; }
+/* 820px put the legal pages and the blog at ~100 characters a line, measured
+   on the deployed page: the eye loses the start of the next line on text
+   people are already reluctant to read. 680px lands at ~75ch, the top of the
+   comfortable range, and still clears the 560px minimum the widest table
+   inside an article needs. */
+.article { max-width: 680px; margin: 0 auto; padding: 56px 24px 96px; }
 .article h2 { font-size: 22px; font-weight: 700; margin: 38px 0 12px; }
 .article h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
 .article p, .article li { color: var(--ink-2); font-size: 15.5px; }

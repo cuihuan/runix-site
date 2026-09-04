@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/docs-router.png?v=f0424fb2">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -127,7 +127,7 @@
 
 <article class="article">
 
-<p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="/router">early access</a> — keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
+<p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="/router">early access</a>: keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
 
 <h2 id="quickstart">1. Quickstart</h2>
 <p>Set your client's base URL to <code>https://api.router.runixcloud.io/v1</code> and use the key issued during onboarding. Everything else about your existing integration stays the same.</p>
@@ -150,44 +150,44 @@ resp = client.chat.completions.create(
     model="auto",
     messages=[{"role": "user", "content": "Hello"}],
 )</code></pre>
-<p>The same base-URL swap works for any tool that speaks the OpenAI API — LangChain, LlamaIndex, the Vercel AI SDK, or plain HTTP.</p>
+<p>The same base-URL swap works for any tool that speaks the OpenAI API: LangChain, LlamaIndex, the Vercel AI SDK, or plain HTTP.</p>
 
 <h2 id="model-selection">2. Model selection</h2>
 <p>Two ways to choose what serves a request:</p>
 <ul>
 <li><strong>Pin a model id</strong> — pass a specific model id in the <code>model</code> field and Router dispatches to that model, applying failover only within the providers that serve it.</li>
-<li><strong>Route automatically</strong> — pass <code>"model": "auto"</code> and Router selects by cost, health and your account's configuration. Routing preferences are set per key during onboarding; tell us your priorities (cheapest acceptable, latency-first, provider allowlists) and they are applied server-side.</li>
-<li><strong>Discover what a key can call</strong> — <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
+<li><strong>Route automatically</strong>: pass <code>"model": "auto"</code> and Router selects by cost, health and your account's configuration. Routing preferences are set per key during onboarding; tell us your priorities (cheapest acceptable, latency-first, provider allowlists) and they are applied server-side.</li>
+<li><strong>Discover what a key can call</strong>, <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
 </ul>
-<p>Model ids are the vendors’ own. Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-4-6</code>), and other vendors’ models keep their catalogue names — there is no Runix-specific alias table to maintain, so an id copied from a vendor’s announcement works as-is. The authoritative list for your key is always <code>GET /v1/models</code>.</p>
+<p>Model ids are the vendors’ own. Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-4-6</code>), and other vendors’ models keep their catalogue names: there is no Runix-specific alias table to maintain, so an id copied from a vendor’s announcement works as-is. The authoritative list for your key is always <code>GET /v1/models</code>.</p>
 
 <h2 id="streaming">3. Streaming</h2>
-<p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed — including tool-call deltas — so the first token is forwarded as soon as the provider emits it rather than after the response completes. That is a statement about the mechanism, not a performance claim: measure time to first token against the provider directly and you will see what the router costs you.</p>
+<p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed, including tool-call deltas, so the first token is forwarded as soon as the provider emits it rather than after the response completes. That is a statement about the mechanism, not a performance claim: measure time to first token against the provider directly and you will see what the router costs you.</p>
 
 <h2 id="failover-semantics">4. Failover semantics</h2>
 <p>What happens when an upstream provider degrades is the part worth reading twice:</p>
 <ul>
 <li><strong>Errors, rate limits and timeouts</strong> trip a circuit breaker; the request is re-issued to a healthy alternative under a retry budget, so one provider's bad hour does not become your outage.</li>
-<li><strong>Mid-stream failures</strong> are re-issued as well — see <a href="/blog/streaming-llm-failover">how streaming failover works</a> for the mechanics and the edge cases.</li>
+<li><strong>Mid-stream failures</strong> are re-issued as well: see <a href="/blog/streaming-llm-failover">how streaming failover works</a> for the mechanics and the edge cases.</li>
 <li><strong>A degrading provider</strong> is taken out of rotation before it drags your latency, and returns when health checks pass.</li>
 </ul>
-<p>For the background on failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>; why retries should be a spend budget rather than a count — and which errors deserve one at all — is covered in <a href="/blog/llm-retry-budget">Retry budgets for LLM APIs</a>.</p>
+<p>For the background on failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>; why retries should be a spend budget rather than a count (and which errors deserve one at all) is covered in <a href="/blog/llm-retry-budget">Retry budgets for LLM APIs</a>.</p>
 
 <h2 id="limits-usage-and-cost">5. Limits, usage and cost</h2>
 <ul>
-<li><strong>List-price metering</strong> — requests are metered per token at the upstream
+<li><strong>List-price metering</strong> (requests are metered per token at the upstream
     vendors’ published rates, with input, output, cached-read and cache-write tokens priced
-    separately — the same structure the vendors themselves publish. We audit the rate table
+    separately) the same structure the vendors themselves publish. We audit the rate table
     against the vendors’ own pricing pages; the mechanics of why token bills diverge from
-    price lists — and how to check one by hand — are in
+    price lists, and how to check one by hand, are in
     <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">Why your LLM bill doesn’t
     match the price list</a>.</li>
-<li><strong>Usage on every response</strong> — the <code>usage</code> object carries the full
+<li><strong>Usage on every response</strong>: the <code>usage</code> object carries the full
     token breakdown, cached tokens included, so any single request can be reconciled against
     the rate card without asking us. Billing is usage-based in USD with itemised statements;
     see <a href="/plans">Pricing</a> for how quotes work.</li>
-<li><strong>Per-key quotas</strong> — each key carries limits and quotas set during onboarding, revocable and adjustable without a redeploy.</li>
-<li><strong>Attribution</strong> — issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="/blog/llm-cost-attribution">LLM cost attribution</a>.</li>
+<li><strong>Per-key quotas</strong>: each key carries limits and quotas set during onboarding, revocable and adjustable without a redeploy.</li>
+<li><strong>Attribution</strong>: issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="/blog/llm-cost-attribution">LLM cost attribution</a>.</li>
 </ul>
 
 <h2 id="errors-and-request-ids">6. Errors and request ids</h2>
@@ -211,7 +211,7 @@ resp = client.chat.completions.create(
   }
 }</code></pre>
 <p>Two things worth knowing before you write error handling. First, branch on the HTTP status
-rather than on <code>error.type</code> — the status is what the OpenAI SDKs already map to
+rather than on <code>error.type</code>: the status is what the OpenAI SDKs already map to
 their own exception classes, and it is the part that will not surprise you. Second, the
 request id lives inside <code>message</code>, not in a field of its own; quote it when you
 contact us and we can trace that exact call.</p>
@@ -221,7 +221,7 @@ when a limit or an upstream failure is involved, the router applies the failover
 section 4 before an error reaches you.</p>
 
 <h2 id="data-handling">7. Data handling</h2>
-<p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>
+<p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>
 <p>If you are evaluating us — or any gateway — <a href="/blog/llm-gateway-security-review">the security review an LLM gateway should survive</a> is the list of questions we think you should ask, including of Runix.</p>
 
 <h2 id="getting-a-key">8. Getting a key</h2>

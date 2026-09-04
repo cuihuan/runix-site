@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-build-vs-buy-llm-gateway.png?v=c4f076d3">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -115,16 +115,16 @@
 
 <article class="article">
 
-<p>Building a basic LLM gateway takes about a weekend: a request forwarder, a key store, a couple of provider adapters, some logging. That version works, and it is genuinely the right answer for a lot of teams. The disagreement is never about the weekend — it is about the eighteen months after it.</p>
+<p>Building a basic LLM gateway takes about a weekend: a request forwarder, a key store, a couple of provider adapters, some logging. That version works, and it is genuinely the right answer for a lot of teams. The disagreement is never about the weekend: it is about the eighteen months after it.</p>
 
 <h2>What the weekend version does not include</h2>
 <p>In rough order of when teams discover them:</p>
 <ul>
-<li><strong>Retry budgets.</strong> Not retries — anyone writes retries. The budget that stops retries amplifying a provider brownout into your outage, which almost nobody adds before their first one.</li>
+<li><strong>Retry budgets.</strong> Not retries: anyone writes retries. The budget that stops retries amplifying a provider brownout into your outage, which almost nobody adds before their first one.</li>
 <li><strong>Streaming failover semantics.</strong> Deciding what happens when a stream dies at token 200, and implementing it without emitting duplicate text. Covered in <a href="/blog/streaming-llm-failover">streaming and failover</a>.</li>
 <li><strong>Silent degradation detection.</strong> Providers return 200 with truncated or malformed output. Catching this needs response-body distributions, not status codes.</li>
 <li><strong>Token accounting that reconciles.</strong> Including cached-input fields, the usage frame at the end of a stream, and rate-at-time-of-call so history does not rewrite itself.</li>
-<li><strong>Rate-limit shaping.</strong> Queues, class-based priority, header telemetry — see <a href="/blog/llm-rate-limits">rate limits</a>.</li>
+<li><strong>Rate-limit shaping.</strong> Queues, class-based priority, header telemetry: see <a href="/blog/llm-rate-limits">rate limits</a>.</li>
 <li><strong>Provider drift.</strong> New models, changed parameters, deprecated endpoints, subtly different tool-call semantics. This is not a project; it is a subscription paid in engineering time.</li>
 </ul>
 <p>None of these are hard problems individually. Collectively they are a product, and the honest question is whether it is <em>your</em> product.</p>
@@ -137,7 +137,7 @@
 <li><strong>Regulatory or contractual isolation.</strong> If traffic cannot leave your perimeter, the decision is made for you. Some managed vendors offer in-perimeter deployment; if not, build.</li>
 <li><strong>You are the product.</strong> If routing quality is your differentiation, do not outsource your differentiation.</li>
 <li><strong>Scale where margin matters.</strong> At sufficient volume a percentage fee exceeds a team's cost. That crossover is much further out than most teams estimate, but it is real.</li>
-<li><strong>One provider, one team, modest volume.</strong> Then you do not need a gateway at all — you need a library, and that is a genuinely smaller thing.</li>
+<li><strong>One provider, one team, modest volume.</strong> Then you do not need a gateway at all: you need a library, and that is a genuinely smaller thing.</li>
 </ul>
 
 <h2>When buying is clearly right</h2>

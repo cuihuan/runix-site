@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/why-your-llm-bill-doesnt-match-the-price-list">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -121,17 +121,16 @@ rate tables against five vendors' published price lists, line by line, and then 
 result by billing a single live request and recomputing it by hand. The differences we found
 along the way fall into five mechanics, none of which appear in the headline price.</p>
 
-<h2>1. Cached tokens have their own prices — two of them</h2>
+<h2>1. Cached tokens have their own prices: two of them</h2>
 
 <p>Every major provider now prices cached prompt tokens separately, and the multipliers are
-not standardized. Reading a cached prefix typically costs about a tenth of the input rate —
-OpenAI lists cached input at 10% of the normal price, Anthropic at 0.1&times;, and some
+not standardized. Reading a cached prefix typically costs about a tenth of the input rate: OpenAI lists cached input at 10% of the normal price, Anthropic at 0.1&times;, and some
 vendors go far lower still. Writing the cache is where they diverge: Anthropic charges a
 25% premium on cache writes (more for a longer-lived cache), MiniMax similarly lists a write
 price a quarter above input, while OpenAI charges nothing at all to create the cache.</p>
 
-<p>That asymmetry means the same traffic pattern — a long, stable system prompt reused across
-requests — produces structurally different bills per provider. It also means a billing layer
+<p>That asymmetry means the same traffic pattern (a long, stable system prompt reused across
+requests) produces structurally different bills per provider. It also means a billing layer
 that applies one provider's multipliers to another's models is wrong in a way nobody notices:
 the request succeeds, the ledger has numbers in it, and the numbers are quietly 25% off on
 every cache write, or ten times too high on every cache read a missing entry falls back to
@@ -145,13 +144,13 @@ on exactly the workloads caching was supposed to make cheap.</p>
 <h2>2. The prompt you sent is not the prompt you paid for</h2>
 
 <p>Tools and agents inject context. System prompts, tool schemas, harness instructions,
-memory files — all of it is input tokens at full price. The starkest example from our own
+memory files: all of it is input tokens at full price. The starkest example from our own
 ledger: a two-word request ("Say OK") sent through a coding-assistant proxy arrived at the
 model as <strong>4,099 prompt tokens</strong>, because the upstream injects its agent
 scaffolding into every conversation. The reply was one token. More than 99.9% of that
 request's cost was context the caller never wrote.</p>
 
-<p>This is not misbehaviour — the scaffolding is what makes the tool work — but it changes
+<p>This is not misbehaviour, the scaffolding is what makes the tool work, but it changes
 which price matters. For agentic traffic, the input rate and the cache-read rate dominate
 everything else, because the injected prefix is large, repeated, and (if the provider and
 client cooperate) cacheable. A model with a cheap output price and no cache discount can
@@ -160,7 +159,7 @@ cost more in an agent loop than a nominally pricier model with 0.1&times; cache 
 <h2>3. Tokenizers change between model generations</h2>
 
 <p>Prices are quoted per million tokens, but the tokenizer decides how many tokens your text
-is — and vendors revise tokenizers between model families. A recent Sonnet-generation change,
+is, and vendors revise tokenizers between model families. A recent Sonnet-generation change,
 for example, tokenizes the same text to roughly 30% more tokens than its predecessor, which
 shifts every token-denominated number: measured context usage, <code>max_tokens</code>
 budgets, and the effective price of identical traffic, all without a price-list change.</p>

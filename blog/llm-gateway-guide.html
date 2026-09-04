@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/llm-gateway-guide">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -130,25 +130,25 @@
     "messages": [{"role": "user", "content": "Summarize this ticket."}]
   }'</code></pre>
 
-<p>The word "compatible" hides a lot, though. Test the edges, not the happy path. Streaming is where compatibility claims break first: verify that SSE chunk framing, <code>finish_reason</code> values, and the final usage block match what your client library expects. Tool calling is the second failure point — check that parallel tool calls, streamed tool-call argument deltas, and <code>tool_choice</code> options survive translation across providers. A gateway that silently drops a tool-call delta will corrupt your agent loop in ways that are miserable to debug.</p>
+<p>The word "compatible" hides a lot, though. Test the edges, not the happy path. Streaming is where compatibility claims break first: verify that SSE chunk framing, <code>finish_reason</code> values, and the final usage block match what your client library expects. Tool calling is the second failure point: check that parallel tool calls, streamed tool-call argument deltas, and <code>tool_choice</code> options survive translation across providers. A gateway that silently drops a tool-call delta will corrupt your agent loop in ways that are miserable to debug.</p>
 
 <h2>2. Routing and failover</h2>
 <p>Failover is the headline feature, so ask exactly how it works. Static retry-on-error is table stakes. What you want is health-based routing: the gateway should track per-provider error rates and latency, stop sending traffic to a degraded upstream before your users notice, and recover automatically when the upstream does.</p>
 
-<p>Two questions expose weak implementations. First: what happens when a provider fails <strong>mid-stream</strong>? Retrying a request that already emitted tokens to the client is not straightforward — a good gateway either restarts the request on a secondary provider before any tokens are flushed, or clearly documents that mid-stream failures surface as errors. Vague answers here mean untested code. Second: can you define fallback chains per model, so that an outage on your primary provider degrades to an equivalent model rather than a hard failure?</p>
+<p>Two questions expose weak implementations. First: what happens when a provider fails <strong>mid-stream</strong>? Retrying a request that already emitted tokens to the client is not straightforward: a good gateway either restarts the request on a secondary provider before any tokens are flushed, or clearly documents that mid-stream failures surface as errors. Vague answers here mean untested code. Second: can you define fallback chains per model, so that an outage on your primary provider degrades to an equivalent model rather than a hard failure?</p>
 
 <h2>3. Rate limiting and quotas</h2>
-<p>Once multiple services share one gateway, one runaway batch job can starve your production traffic. You need per-key limits on both requests per minute (RPM) and tokens per minute (TPM) — token limits matter more, since a single request can carry a 100k-token context.</p>
+<p>Once multiple services share one gateway, one runaway batch job can starve your production traffic. You need per-key limits on both requests per minute (RPM) and tokens per minute (TPM): token limits matter more, since a single request can carry a 100k-token context.</p>
 
 <p>Look for fair queuing rather than plain rejection. When aggregate demand exceeds upstream capacity, the gateway should queue and interleave requests across keys instead of letting whichever client retries most aggressively win. Also check that limit changes take effect without a deploy; you will be adjusting these weekly at first.</p>
 
 <h2>4. Cost tracking</h2>
 <p>LLM spend is unusual: it is highly variable, driven by prompt engineering decisions made far from the billing owner, and often split across providers with different pricing. The gateway is the only component that sees every request, so it is the natural place to answer "who spent what."</p>
 
-<p>The minimum bar is token-level attribution: every request logged with input tokens, output tokens, cached tokens (if the provider discounts them), the model used, and the key or team that made the call. On top of that you want budgets — hard or soft caps per key or per project — and alerts that fire at thresholds like 80% of budget, not after the money is gone. If the gateway can only tell you total spend per day, you will be exporting logs to a spreadsheet within a month.</p>
+<p>The minimum bar is token-level attribution: every request logged with input tokens, output tokens, cached tokens (if the provider discounts them), the model used, and the key or team that made the call. On top of that you want budgets, hard or soft caps per key or per project, and alerts that fire at thresholds like 80% of budget, not after the money is gone. If the gateway can only tell you total spend per day, you will be exporting logs to a spreadsheet within a month.</p>
 
 <h2>5. Observability</h2>
-<p>When a user reports "the AI feature is slow," you need to answer three questions fast: which provider, which model, and is it us or them. That requires request-level logs with timing breakdowns (queue time, upstream time to first token, total duration), latency percentiles per model and provider — p50 tells you nothing about tail pain, so insist on p95 and p99 — and a real error taxonomy.</p>
+<p>When a user reports "the AI feature is slow," you need to answer three questions fast: which provider, which model, and is it us or them. That requires request-level logs with timing breakdowns (queue time, upstream time to first token, total duration), latency percentiles per model and provider (p50 tells you nothing about tail pain, so insist on p95 and p99) and a real error taxonomy.</p>
 
 <p>Error taxonomy deserves emphasis. "HTTP 500" is not a diagnosis. A useful gateway distinguishes upstream rate limits, upstream timeouts, content filter refusals, malformed requests, and its own internal errors, because each has a different fix. Bonus points for exportable traces so you can join gateway data with your existing APM.</p>
 

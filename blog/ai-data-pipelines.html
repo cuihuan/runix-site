@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/ai-data-pipelines">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -117,7 +117,7 @@
 <p>Most AI projects do not fail at the model. They fail at the data. The gap between "we have a folder of PDFs and a database dump" and "we have a clean, deduplicated, schema-validated dataset a model can actually use" is where the real engineering happens. This post walks through the stages we consider non-negotiable in a production data pipeline, and the tradeoffs at each one.</p>
 
 <h2>Ingestion: get everything into one boring format</h2>
-<p>The goal of ingestion is not fidelity, it is uniformity. Every downstream stage gets simpler if the output of ingestion is a single normalized record format — typically JSONL with a body field, a source identifier, a content hash, and fetch metadata.</p>
+<p>The goal of ingestion is not fidelity, it is uniformity. Every downstream stage gets simpler if the output of ingestion is a single normalized record format, typically JSONL with a body field, a source identifier, a content hash, and fetch metadata.</p>
 <p>Encodings are the first trap. Never trust declared charsets; detect them (chardet-style libraries are fine) and transcode everything to UTF-8 at the boundary. A single mojibake document that slips through will surface as a confusing bug three stages later.</p>
 <p>For parsing, the 80/20 rule dominates. For PDFs, a plain text-layer extractor handles the large majority of digitally-born documents; reserve OCR and layout-aware models for the scanned or multi-column minority, because they are one to two orders of magnitude more expensive per page. For HTML, a readability-style main-content extractor gets you most of the way; write custom selectors only for the handful of high-value sites that resist generic extraction. Do not build the perfect universal parser first. Build the cheap one, measure what it fails on, then pay for the hard cases selectively.</p>
 

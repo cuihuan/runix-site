@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/llm-gateway-security-review">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -118,14 +118,14 @@
 <p>An LLM gateway holds a position of unusual trust: every prompt your company sends
 passes through it, and the provider keys it holds can spend your money and read your traffic.
 That is true whether the gateway is a product you bought or a service you wrote in a week.
-This is the review we think any gateway should survive — phrased as questions, because the
+This is the review we think any gateway should survive: phrased as questions, because the
 point is that you can ask them of anyone, including us.</p>
 
 <h2>1. Who holds the provider keys, and how?</h2>
 
 <p>The whole premise of a gateway is key consolidation: your teams hold gateway keys, the
 gateway holds the provider keys. The questions that follow are mechanical. Where do provider
-keys live at rest — an encrypted store, or a config file? Who can read them — which staff,
+keys live at rest: an encrypted store, or a config file? Who can read them: which staff,
 which processes, which logs? Can a gateway key holder ever extract a provider key through
 any API surface, error message or debug endpoint? The last one deserves an actual test, not
 an assurance: trigger errors and read what comes back.</p>
@@ -140,7 +140,7 @@ bought to solve.</p>
 
 <h2>3. What is logged, and does the operator need it?</h2>
 
-<p>There is a spectrum. Billing needs token counts, model ids, timestamps, key ids — pure
+<p>There is a spectrum. Billing needs token counts, model ids, timestamps, key ids: pure
 metadata. Debugging sometimes wants request bodies. Those are different retention classes
 and a review should get a straight answer per class: are prompt and completion
 <em>bodies</em> stored at all, for how long, and can body logging be disabled for your
@@ -153,7 +153,7 @@ been answered yet.</p>
 <p>Whatever is stored, the follow-ups are the same: what is the retention period, is it
 enforced by machinery (a TTL, a partition drop) or by intention (someone means to delete it),
 and what happens on your deletion request? Ask specifically about backups and about trace or
-debug captures made during incident response — the ad-hoc copies are the ones that outlive
+debug captures made during incident response: the ad-hoc copies are the ones that outlive
 every policy.</p>
 
 <h2>5. What separates you from the operator's other tenants?</h2>

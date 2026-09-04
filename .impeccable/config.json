@@ -1,0 +1,62 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "delivery.html"
+        ],
+        "createdAt": "2026-09-04T07:22:24.489Z",
+        "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "privacy.html"
+        ],
+        "createdAt": "2026-09-04T07:22:25.618Z",
+        "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "plans.html"
+        ],
+        "createdAt": "2026-09-04T07:22:26.251Z",
+        "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "blog/ai-data-pipelines.html"
+        ],
+        "createdAt": "2026-09-04T07:22:26.879Z",
+        "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "blog/model-deprecation-without-a-redeploy.html"
+        ],
+        "createdAt": "2026-09-04T07:22:27.598Z",
+        "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "blog/llm-gateway-guide.html"
+        ],
+        "createdAt": "2026-09-04T07:22:28.434Z",
+        "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      }
+    ]
+  }
+}

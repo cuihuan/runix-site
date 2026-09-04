@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-llm-rate-limits.png?v=be813122">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -121,15 +121,15 @@
 <p>Most providers enforce some combination of:</p>
 <ul>
 <li><strong>Requests per minute (RPM)</strong> — the familiar one.</li>
-<li><strong>Tokens per minute (TPM)</strong> — where it gets interesting, because your token consumption depends on user input length, which you do not control.</li>
-<li><strong>Concurrency</strong> — how many requests may be in flight simultaneously, which interacts badly with long generations.</li>
+<li><strong>Tokens per minute (TPM)</strong>: where it gets interesting, because your token consumption depends on user input length, which you do not control.</li>
+<li><strong>Concurrency</strong>: how many requests may be in flight simultaneously, which interacts badly with long generations.</li>
 </ul>
 <p>A workload can sit comfortably under its RPM ceiling and still get throttled all day because a handful of long-context requests exhausted TPM. Teams that monitor only request counts see 429s that appear to come from nowhere.</p>
 <p>Worse, TPM accounting usually includes the tokens you are <em>about to</em> generate, estimated from <code>max_tokens</code>. Setting <code>max_tokens</code> to a comfortable 4096 "just in case" on every request can reserve far more budget than you use, and throttle you well below your real consumption. Sizing <code>max_tokens</code> to the actual task is one of the cheapest throughput wins available.</p>
 
 <h2>Bursts, not averages, cause 429s</h2>
-<p>Limits are typically enforced over short windows against a token bucket. An average of 60% utilisation over a minute tells you nothing if your traffic arrives in three-second spikes — a cron job, a batch import, a retry storm from your own client. The bucket empties, and everything queued behind it fails.</p>
-<p>The fix is a shaper on your side: a queue with a controlled drain rate so bursts are absorbed rather than forwarded. It costs a little latency at peak and removes a whole class of errors. Note that the queue only helps if it has a bound and a policy for what happens when it is full — an unbounded queue converts a rate-limit problem into a memory and latency problem.</p>
+<p>Limits are typically enforced over short windows against a token bucket. An average of 60% utilisation over a minute tells you nothing if your traffic arrives in three-second spikes: a cron job, a batch import, a retry storm from your own client. The bucket empties, and everything queued behind it fails.</p>
+<p>The fix is a shaper on your side: a queue with a controlled drain rate so bursts are absorbed rather than forwarded. It costs a little latency at peak and removes a whole class of errors. Note that the queue only helps if it has a bound and a policy for what happens when it is full: an unbounded queue converts a rate-limit problem into a memory and latency problem.</p>
 
 <h2>Read the headers before you guess</h2>
 <p>Most providers return remaining-quota and reset headers alongside 429s, and many return them on successful responses too. That is a live signal of how close you are to the ceiling, available before anything breaks. Two things worth doing with it:</p>
@@ -143,7 +143,7 @@
 <p>Pair it with a <strong>retry budget</strong>: retries may consume no more than some fraction of your request volume in a window, say 10%. When the budget is exhausted, fail fast. Nothing else prevents a partial rate-limit event from amplifying into a full outage, and almost nobody implements it until after their first one.</p>
 
 <h2>Not all requests deserve the same treatment</h2>
-<p>A user waiting on a chat response and a nightly batch summarisation should not compete for the same quota on equal terms. Once you have a queue, class-based scheduling is nearly free: interactive traffic gets priority and a short timeout, batch traffic gets the leftovers and a long one. Under pressure, the batch job slows down and the product stays responsive — which is the outcome you would have chosen manually anyway.</p>
+<p>A user waiting on a chat response and a nightly batch summarisation should not compete for the same quota on equal terms. Once you have a queue, class-based scheduling is nearly free: interactive traffic gets priority and a short timeout, batch traffic gets the leftovers and a long one. Under pressure, the batch job slows down and the product stays responsive: which is the outcome you would have chosen manually anyway.</p>
 
 <h2>Spreading load across providers</h2>
 <p>Rate limits are per provider, per account. Two accounts with the same provider double your ceiling; a second provider does the same and adds independence from the first one's outages. This is where a gateway earns its place: the routing, the per-key budgets and the shaping all belong in one component rather than in every service that calls a model. It is also where teams discover that failover and rate limiting are the same problem viewed from two angles — both are about deciding where a request should go when the obvious target is not available.</p>

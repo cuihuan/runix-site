@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/plans.png?v=2acbfee7">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=34">
+<link rel="stylesheet" href="assets/style.css?v=35">
 <script src="assets/site-config.js?v=14" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
@@ -150,7 +150,6 @@
 <section class="plan-hero">
   <div class="container">
     <div>
-      <div class="eyebrow">Runix AI &middot; Code Plans</div>
       <h1>An agent that ships the fix, <em>not a suggestion.</em></h1>
       <p class="sub">Runix reads the repo, writes a plan you can read, edits across files, runs your suite
          until it passes, and opens the PR. Four plans, one difference between them: how much it runs at once.</p>
@@ -187,28 +186,23 @@
 <section class="psec" id="run">
   <div class="container">
     <div class="psec-head">
-      <div class="eyebrow">One run, four stages</div>
       <h2>What happens when you press enter</h2>
     </div>
     <div class="prun">
       <div class="pstep">
-        <div class="pstep-n">01</div>
-        <h3>Plan</h3>
+        <h3><span class="pstep-n">01</span>Plan</h3>
         <p>Runix maps the files in scope before it changes any of them, then writes the step list in plain language. You approve a plan you can read, not a black box.</p>
       </div>
       <div class="pstep">
-        <div class="pstep-n">02</div>
-        <h3>Edit</h3>
+        <h3><span class="pstep-n">02</span>Edit</h3>
         <p>Multi-file edits with the diff in front of you. Every hunk is attributed to a step, so you can drop one change without unwinding the whole run.</p>
       </div>
       <div class="pstep">
-        <div class="pstep-n">03</div>
-        <h3>Verify</h3>
+        <h3><span class="pstep-n">03</span>Verify</h3>
         <p>It runs your suite rather than summarising it. A failure feeds back into the plan and the agent tries again instead of handing you a broken branch.</p>
       </div>
       <div class="pstep">
-        <div class="pstep-n">04</div>
-        <h3>Ship</h3>
+        <h3><span class="pstep-n">04</span>Ship</h3>
         <p>Branch name, commit message and PR body drafted from the plan and the diff, in the conventions the repository already uses.</p>
       </div>
     </div>
@@ -228,7 +222,6 @@
 <section class="psec" id="plans">
   <div class="container">
     <div class="psec-head">
-      <div class="eyebrow">Plans</div>
       <h2>Pick the throughput, not the feature list</h2>
     </div>
     <div class="plans plans-4">
@@ -249,7 +242,7 @@
           <div class="price"><span class="cur">$</span>39.90<small>/mo</small></div>
           <p class="plan-rate">&asymp; $7.98 per 1&times; of credits</p>
           <div class="mult"><b>5&times;</b><span>agent credits</span></div>
-          <p class="plan-diff">Adds <b>Swarm</b> &mdash; several agents splitting one job and running the subtasks in parallel.</p>
+          <p class="plan-diff">Adds <b>Swarm</b>: several agents splitting one job and running the subtasks in parallel.</p>
           <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/8x2dR2gmQasH08Jdij5J606">Subscribe to 5X</a>
         </div>
         <div class="plan featured" id="plan-10x">
@@ -259,7 +252,7 @@
           <div class="price"><span class="cur">$</span>69.90<small>/mo</small></div>
           <p class="plan-rate">&asymp; $6.99 per 1&times; of credits</p>
           <div class="mult"><b>10&times;</b><span>agent credits</span></div>
-          <p class="plan-diff">Adds <b>Goal mode</b> &mdash; agents keep working until the task is done &mdash; plus multi-tasking and one-click deploy.</p>
+          <p class="plan-diff">Adds <b>Goal mode</b>, agents keep working until the task is done, plus multi-tasking and one-click deploy.</p>
           <a class="btn btn-grad btn-block" href="https://buy.stripe.com/eVqbIU9YsgR58Ff2DF5J607">Subscribe to 10X</a>
         </div>
         <div class="plan" id="plan-30x">
@@ -274,7 +267,7 @@
         </div>
     </div>
     <p class="model-note">Billed monthly in <span data-cfg="defaultCurrency">USD</span> by
-      <span data-cfg="legalCompanyName">Runix AI Inc</span>. Checkout is hosted by Stripe &mdash; card
+      <span data-cfg="legalCompanyName">Runix AI Inc</span>. Checkout is hosted by Stripe: card
       details are entered on their page, never ours. Visa, Mastercard, American Express and
       <b>China UnionPay</b> accepted; Stripe may show the amount in your local currency, and the figure
       on the Stripe page is the figure charged.</p>
@@ -286,7 +279,6 @@
 <section class="psec" id="topup">
   <div class="container">
     <div class="psec-head">
-      <div class="eyebrow">Top-up</div>
       <h2>Or pay once, and keep what you buy</h2>
     </div>
 
@@ -331,11 +323,11 @@
       <div class="topup-equiv">
         <div class="topup-equiv-head">What lands in your account</div>
         <p>Paying <b data-topup="paid">$1,000</b> puts <b data-topup="credits">$2,000</b> of credits in
-          your account &mdash; credits are worth twice what you pay, at every amount. Nothing is charged
+          your account: credits are worth twice what you pay, at every amount. Nothing is charged
           again, and unused balance stays refundable during your service period
           (<a href="/refund">Refund Policy</a>).</p>
         <p class="topup-equiv-note">Credits follow <strong>what you actually pay</strong>. If you change
-          the amount at checkout, the credits change with it &mdash; the figure above is this picker's
+          the amount at checkout, the credits change with it: the figure above is this picker's
           arithmetic, not a commitment to a number you did not pay.</p>
       </div>
 
@@ -355,7 +347,7 @@
           <a class="payopt" href="https://buy.stripe.com/7sY5kw7QkdET1cNguv5J609"
              aria-label="Pay with Stripe — accepts UnionPay; you set the amount on their page">
             <span class="payopt-name">UnionPay, Visa, Mastercard, Apple Pay</span>
-            <span class="payopt-sub"><strong>Set the amount on Stripe's page</strong> &mdash; it opens at its own default</span>
+            <span class="payopt-sub"><strong>Set the amount on Stripe's page</strong> (it opens at its own default</span>
             <span class="payopt-by">Checkout by Stripe</span>
           </a>
           <!-- Airwallex goes through hosted checkout, which needs an intent
@@ -374,7 +366,7 @@
                   aria-label="Pay with Airwallex — opens with your chosen amount"
                   data-endpoint="/api/airwallex/intent">
             <span class="payopt-name">Card, Google Pay or Afterpay</span>
-            <span class="payopt-sub"><strong>Opens with your amount already set</strong> &mdash; nothing to retype</span>
+            <span class="payopt-sub"><strong>Opens with your amount already set</strong>) nothing to retype</span>
             <span class="payopt-by" id="pay-airwallex-by">Checkout by Airwallex</span>
           </button>
         </div>
@@ -388,12 +380,11 @@
           the figure you picked, Stripe opens at its own default for you to change. Whichever you use,
           <strong>the credits are twice the amount that actually gets charged</strong>.</p>
       </div>
-      <p class="topup-foot">One-time payment &mdash; no subscription, no renewal.</p>
+      <p class="topup-foot">One-time payment: no subscription, no renewal.</p>
     </div>
 
     <p class="model-note">Charged by <span data-cfg="legalCompanyName">Runix AI Inc</span> in
-      <span data-cfg="defaultCurrency">USD</span>. Checkout is hosted by the payment provider &mdash;
-      card details are entered on their page, never ours. A top-up is a one-time payment and sets up no
+      <span data-cfg="defaultCurrency">USD</span>. Checkout is hosted by the payment provider: card details are entered on their page, never ours. A top-up is a one-time payment and sets up no
       recurring charge; the balance is added to your account by a person, normally within one business
       day. See <a href="refund">Refunds</a> for how it is handled.</p>
   </div>
@@ -404,7 +395,6 @@
 <section class="psec" id="specs">
   <div class="container">
     <div class="psec-head">
-      <div class="eyebrow">Datasheet</div>
       <h2>The differences, side by side</h2>
     </div>
     <!-- Every cell below is taken from the product description a buyer sees on
@@ -449,7 +439,6 @@
 <section class="psec" id="faq">
   <div class="container">
     <div class="psec-head">
-      <div class="eyebrow">FAQ</div>
       <h2>Before you subscribe</h2>
     </div>
     <div class="qas">
@@ -471,7 +460,7 @@
       </div>
       <div class="qa">
         <h3>Can I move between plans?</h3>
-        <p>Yes &mdash; write to billing and we switch you over, prorating what you have already paid for the month.</p>
+        <p>Yes: write to billing and we switch you over, prorating what you have already paid for the month.</p>
       </div>
       <div class="qa">
         <h3>Do I get an invoice?</h3>

@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/migrating-to-an-llm-gateway-without-downtime">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -116,8 +116,7 @@
 
 <article class="article">
 <p>Putting a gateway in front of live model traffic is a routing change on the hot
-path of a product that is already earning money. The usual migration playbook applies —
-shadow, ramp, keep the rollback one config change away — but LLM traffic breaks three of its
+path of a product that is already earning money. The usual migration playbook applies (shadow, ramp, keep the rollback one config change away) but LLM traffic breaks three of its
 assumptions, and those are where migrations go wrong.</p>
 
 <p>This is the sequence that works, and what to watch at each step.</p>
@@ -125,13 +124,13 @@ assumptions, and those are where migrations go wrong.</p>
 <h2>Before you start: make the endpoint a variable</h2>
 
 <p>If the base URL is a string literal in your services, everything below requires a deploy,
-which means your rollback also requires a deploy — and a rollback you cannot perform in
+which means your rollback also requires a deploy, and a rollback you cannot perform in
 seconds is not a rollback. Move the base URL and the key into configuration you can change
 without shipping code, and confirm you can change it and see the effect. That check is the
 whole migration in miniature; if it does not work, nothing after this matters.</p>
 
 <p>The same indirection is what lets you change model ids later without a redeploy, which is
-a separate problem with the same solution — covered in
+a separate problem with the same solution: covered in
 <a href="/blog/model-deprecation-without-a-redeploy">a post of its own</a>.</p>
 
 <h2>Step 1: shadow, and compare what you can</h2>

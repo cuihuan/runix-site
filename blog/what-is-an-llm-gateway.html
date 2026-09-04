@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-what-is-an-llm-gateway.png?v=51630042">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -116,7 +116,7 @@
 <article class="article">
 
 <p>An <strong>LLM gateway</strong> is a service that sits between your application and the model providers you call, so that requests, credentials, limits and cost accounting are handled in one place instead of in every service that happens to talk to a model.</p>
-<p>That is the whole definition. The rest of this post is about what follows from it — because the interesting part is not what a gateway <em>is</em>, it is which problems disappear once you have one and which ones stubbornly do not.</p>
+<p>That is the whole definition. The rest of this post is about what follows from it, because the interesting part is not what a gateway <em>is</em>, it is which problems disappear once you have one and which ones stubbornly do not.</p>
 
 <h2>What a gateway actually does</h2>
 <p>Four responsibilities show up in every serious implementation:</p>
@@ -131,7 +131,7 @@
 <p>Three things get confused with gateways often enough to be worth separating.</p>
 <p><strong>It is not a model.</strong> A gateway does not make answers better. If a model is wrong for your task, routing it through anything will not fix that.</p>
 <p><strong>It is not an agent framework.</strong> Orchestration, tool loops, memory and planning live in your application or in a framework you choose. A gateway that starts making those decisions for you becomes a dependency you cannot debug.</p>
-<p><strong>It is not a cache by default.</strong> Caching LLM responses is legitimate for some workloads and dangerous for others — see <a href="/blog/llm-cost-control">our post on cost control</a> for where the line sits. Gateways can offer caching; conflating the two leads to surprising correctness bugs.</p>
+<p><strong>It is not a cache by default.</strong> Caching LLM responses is legitimate for some workloads and dangerous for others: see <a href="/blog/llm-cost-control">our post on cost control</a> for where the line sits. Gateways can offer caching; conflating the two leads to surprising correctness bugs.</p>
 
 <h2>Proxy, gateway, router: the words people use</h2>
 <p>The vocabulary in this category is loose, and vendors use it inconsistently. A rough map:</p>

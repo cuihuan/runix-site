@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-llm-router-vs-llm-gateway.png?v=b6f2f856">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -115,28 +115,28 @@
 
 <article class="article">
 
-<p>Shop for LLM infrastructure and you will meet both names — <strong>LLM router</strong> and <strong>LLM gateway</strong> — often describing what looks like the same product. The names are not interchangeable, but they are not rival categories either: they emphasise two halves of one job. This post pins down what each half actually does, where they overlap, and why the distinction should not drive your buying decision — capabilities should.</p>
+<p>Shop for LLM infrastructure and you will meet both names, <strong>LLM router</strong> and <strong>LLM gateway</strong>, often describing what looks like the same product. The names are not interchangeable, but they are not rival categories either: they emphasise two halves of one job. This post pins down what each half actually does, where they overlap, and why the distinction should not drive your buying decision: capabilities should.</p>
 
 <h2>What "router" emphasises: the decision</h2>
 <p>Routing is the <em>choice</em> half of the job. Given a request, something has to decide which provider and which model serves it, and what happens when that choice goes wrong:</p>
 <ul>
 <li><strong>Model selection</strong> — send the request to a pinned model, or choose one by configuration: cost tier, capability class, provider preference.</li>
-<li><strong>Health-aware dispatch</strong> — a provider that is <a href="/blog/llm-rate-limits">rate-limiting</a>, timing out or degrading gets taken out of rotation before it hurts your latency.</li>
-<li><strong>Failover</strong> — when a request fails mid-flight, it is re-issued to a healthy alternative under a retry budget, ideally <a href="/blog/streaming-llm-failover">without breaking a stream</a> already in progress.</li>
-<li><strong>Cost-aware policies</strong> — route cheap traffic to cheap models and reserve expensive ones for requests that need them, which is usually the biggest <a href="/blog/llm-cost-control">cost lever</a> after prompt design.</li>
+<li><strong>Health-aware dispatch</strong>: a provider that is <a href="/blog/llm-rate-limits">rate-limiting</a>, timing out or degrading gets taken out of rotation before it hurts your latency.</li>
+<li><strong>Failover</strong>: when a request fails mid-flight, it is re-issued to a healthy alternative under a retry budget, ideally <a href="/blog/streaming-llm-failover">without breaking a stream</a> already in progress.</li>
+<li><strong>Cost-aware policies</strong>: route cheap traffic to cheap models and reserve expensive ones for requests that need them, which is usually the biggest <a href="/blog/llm-cost-control">cost lever</a> after prompt design.</li>
 </ul>
 
 <h2>What "gateway" emphasises: the checkpoint</h2>
 <p>Gateway is the <em>control</em> half: one place where all model traffic enters, so policy can be applied once instead of in every codebase. We covered the full definition in <a href="/blog/what-is-an-llm-gateway">What is an LLM gateway</a>; the short list:</p>
 <ul>
 <li><strong>Key custody</strong> — provider credentials live in one audited place, not in <a href="/blog/llm-api-key-management">a dozen .env files</a>.</li>
-<li><strong>Quotas and limits</strong> — per-key, per-team ceilings enforced before requests reach a provider.</li>
-<li><strong>Attribution</strong> — <a href="/blog/llm-cost-attribution">who spent what</a>, per request, per key, per team.</li>
-<li><strong>Data terms</strong> — a single point where retention, masking and compliance posture can be stated and enforced.</li>
+<li><strong>Quotas and limits</strong>, per-key, per-team ceilings enforced before requests reach a provider.</li>
+<li><strong>Attribution</strong>: <a href="/blog/llm-cost-attribution">who spent what</a>, per request, per key, per team.</li>
+<li><strong>Data terms</strong>: a single point where retention, masking and compliance posture can be stated and enforced.</li>
 </ul>
 
 <h2>The honest answer: mature products do both</h2>
-<p>A router that holds no keys and enforces no quotas pushes the governance problem back into your codebase. A gateway that cannot fail over is <a href="/blog/model-failover">a single point of disappointment</a> in front of unreliable upstreams. That is why every serious product in this space — whatever it calls itself — converges on the same capability set, and why the name on the tin tells you about positioning, not features. The practical consequence for buyers: <a href="/blog/llm-gateway-guide">evaluate on the capability list</a>, not the noun. Ask how failover behaves mid-stream, where keys live, how cost is attributed, and what the data terms say — the answers separate products far better than their category labels do. We keep a worked comparison in <a href="/blog/openrouter-alternatives">our OpenRouter alternatives guide</a>.</p>
+<p>A router that holds no keys and enforces no quotas pushes the governance problem back into your codebase. A gateway that cannot fail over is <a href="/blog/model-failover">a single point of disappointment</a> in front of unreliable upstreams. That is why every serious product in this space, whatever it calls itself, converges on the same capability set, and why the name on the tin tells you about positioning, not features. The practical consequence for buyers: <a href="/blog/llm-gateway-guide">evaluate on the capability list</a>, not the noun. Ask how failover behaves mid-stream, where keys live, how cost is attributed, and what the data terms say — the answers separate products far better than their category labels do. We keep a worked comparison in <a href="/blog/openrouter-alternatives">our OpenRouter alternatives guide</a>.</p>
 
 <h2>Why our product is called Runix Router</h2>
 <p><a href="/router">Runix Router</a> does both halves — key custody, quotas and attribution on the control side; model selection, health-aware dispatch and mid-request failover on the decision side. We put <em>Router</em> on the label because the decision half is where the engineering effort concentrates and where products differ most in practice: anyone can store a key; keeping a stream alive through a provider's bad hour is the part that earns the name. If you are choosing infrastructure right now, the checklist above is the evaluation we would want to be held to — <a href="/about#contact">ask us those questions</a> and we will answer concretely, in writing.</p>

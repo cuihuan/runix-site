@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/llm-feature-pre-launch-checklist">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -125,14 +125,13 @@ to retrofit once traffic is on it.</p>
 <h2>Money</h2>
 
 <p><strong>1. A ceiling that stops spending, not one that emails you.</strong> Budget alerts
-tell you after the money is gone. What you want is a limit that refuses requests — per key,
-per team, or per feature — and you want to have seen it trigger at least once in staging.
+tell you after the money is gone. What you want is a limit that refuses requests (per key,
+per team, or per feature) and you want to have seen it trigger at least once in staging.
 Which means deliberately blowing a small budget before launch rather than hoping.</p>
 
 <p><strong>2. Attribution decided before, not reconstructed after.</strong> If you cannot
 answer "what did this feature cost last month" without a spreadsheet, the boundary was not in
-the credential. Issue a separate key per boundary you will be asked about —
-<a href="/blog/llm-cost-attribution">the reasoning is here</a> — because retrofitting
+the credential. Issue a separate key per boundary you will be asked about, <a href="/blog/llm-cost-attribution">the reasoning is here</a>, because retrofitting
 attribution means reconstructing it from logs and arguing about the result.</p>
 
 <p><strong>3. Know what a retry costs.</strong> Every retry is a second full-price request.
@@ -141,19 +140,19 @@ nobody is watching the bill.</p>
 
 <h2>Failure</h2>
 
-<p><strong>4. A timeout chain, written on one line.</strong> Four numbers — connect, first
-byte, inter-token, total — that decrease as you move inward from the user.
+<p><strong>4. A timeout chain, written on one line.</strong> Four numbers (connect, first
+byte, inter-token, total) that decrease as you move inward from the user.
 <a href="/blog/how-long-should-an-llm-request-wait">Ordered the other way</a>, your outer
 layer gives up while the inner one is still generating and you pay for output nobody
 received.</p>
 
-<p><strong>5. A failover target and a retry budget.</strong> Not "retry three times" — a cap
+<p><strong>5. A failover target and a retry budget.</strong> Not "retry three times": a cap
 on what share of your traffic may be retries, so a provider's bad hour cannot become a
 self-inflicted load spike. <a href="/blog/model-failover">The failure taxonomy is here</a>.</p>
 
 <p><strong>6. A decision about streaming failure.</strong> If you stream, work out now what
 happens when a stream dies at token 200. Restart? Show partial? Fail? Whatever it is, decide
-it before it happens — <a href="/blog/streaming-llm-failover">the edge cases are worse than
+it before it happens: <a href="/blog/streaming-llm-failover">the edge cases are worse than
 they look</a>.</p>
 
 <p><strong>7. A degraded mode that is not an error page.</strong> A smaller model, a cached

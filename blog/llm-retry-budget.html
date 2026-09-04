@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/llm-retry-budget">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -115,13 +115,12 @@
 </div>
 
 <article class="article">
-<p>Every HTTP client library has a retry knob, and for most APIs the default —
-three attempts with exponential backoff — is fine, because most API calls are cheap and
+<p>Every HTTP client library has a retry knob, and for most APIs the default (three attempts with exponential backoff) is fine, because most API calls are cheap and
 idempotent. LLM calls are neither. A retried request re-sends the full prompt at full input
 price, re-generates output you may already have paid for once, and lands on a provider at
 the exact moment it is least able to serve it. The right mental model is not "how many times
 should I retry" but "how much am I willing to spend on requests that have already failed
-once" — a budget, not a count.</p>
+once": a budget, not a count.</p>
 
 <h2>Why retry counts go wrong for model traffic</h2>
 
@@ -151,9 +150,9 @@ most valuable part of the whole exercise:</p>
 <li><strong>Retry, with backoff:</strong> 429 with a <code>retry-after</code> hint (honour
     the hint, not your own schedule), 500/502/503, connection resets, and timeouts where
     nothing was received. These are transient by definition.</li>
-<li><strong>Do not retry:</strong> 400 (the request is malformed — it will be malformed
+<li><strong>Do not retry:</strong> 400 (the request is malformed (it will be malformed
     again), 401/403 (credentials will not heal), 404 on a model id (it is gone; see
-    deprecations), and content-policy refusals (deterministic on the same input — a retry is
+    deprecations), and content-policy refusals (deterministic on the same input) a retry is
     a second bill for the same no).</li>
 <li><strong>Retry somewhere else:</strong> persistent 429s and overload responses on one
     provider while your error budget drains are not a retry problem, they are a routing
@@ -188,7 +187,7 @@ client, the retry policy.</p>
 
 <p>However you implement it, make retries visible in cost attribution. A request that
 succeeded on attempt three should carry the cost of all three attempts, including the partial
-output of any stream that died — otherwise your per-feature cost numbers silently exclude
+output of any stream that died: otherwise your per-feature cost numbers silently exclude
 exactly the traffic that is most expensive per successful answer. When an incident review
 asks "what did that outage cost us", the difference between billed tokens and
 tokens-per-successful-request is the answer, and you can only compute it if the ledger kept

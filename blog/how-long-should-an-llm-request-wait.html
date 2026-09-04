@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/how-long-should-an-llm-request-wait">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -120,7 +120,7 @@ assumes a request that either answers in under a second or has failed. Model tra
 that assumption: a legitimate response can take a minute, a failed one can hang for the same
 minute, and the two are indistinguishable until one of them ends.</p>
 
-<p>Getting this wrong produces the most confusing class of incident there is — the one where
+<p>Getting this wrong produces the most confusing class of incident there is: the one where
 your dashboard says the provider is fine, the provider's status page says the provider is
 fine, and your users are staring at spinners.</p>
 
@@ -130,22 +130,22 @@ fine, and your users are staring at spinners.</p>
 most of the trouble.</p>
 
 <ul>
-<li><strong>Connect timeout</strong> — how long to wait for a TCP and TLS handshake. This
+<li><strong>Connect timeout</strong>: how long to wait for a TCP and TLS handshake. This
     should be short, a couple of seconds at most. A slow handshake means a network or DNS
     problem, and waiting longer never fixes it.</li>
-<li><strong>Time to first byte</strong> — how long to wait for the response to <em>start</em>.
+<li><strong>Time to first byte</strong>: how long to wait for the response to <em>start</em>.
     On a streaming request this is the one that matters, and it is the only one that
     distinguishes "the model is thinking" from "nothing is coming".</li>
-<li><strong>Inter-token (or read) timeout</strong> — once a stream has started, how long a gap
+<li><strong>Inter-token (or read) timeout</strong>: once a stream has started, how long a gap
     between chunks is acceptable before you give up. Almost nobody sets this, and it is what
     catches a stream that dies mid-flight without closing.</li>
-<li><strong>Total request timeout</strong> — the ceiling on the whole thing. This is the one
+<li><strong>Total request timeout</strong>: the ceiling on the whole thing. This is the one
     everybody sets and the one that should usually be the loosest.</li>
 </ul>
 
 <p>Most client libraries expose a single number and apply it as the total. That single number
 is then set low enough to catch hangs, which means it also kills legitimate long generations,
-which shows up as sporadic failures on exactly your most valuable requests — the long,
+which shows up as sporadic failures on exactly your most valuable requests: the long,
 complex ones.</p>
 
 <h2>Streaming changes which number matters</h2>
@@ -155,7 +155,7 @@ all you have and it has to accommodate your longest legitimate response.</p>
 
 <p>On a streamed request you can. First byte tells you the request was accepted and generation
 started; the inter-token gap tells you it is still alive. That means you can set a tight
-first-byte timeout — a few seconds — and a tight inter-token gap, while allowing the total to
+first-byte timeout, a few seconds, and a tight inter-token gap, while allowing the total to
 run long. A response that takes ninety seconds but produces tokens steadily is healthy. A
 response that produces nothing for ten seconds is not, and you no longer have to wait ninety
 seconds to find out.</p>
@@ -167,7 +167,7 @@ show tokens as they arrive: you get a failure signal you cannot otherwise have.<
 
 <p>A request typically crosses several hops, each with its own timeout: browser, your API,
 your gateway, the provider. The rule that keeps this sane is that <strong>timeouts must
-decrease as you move outward from the user</strong> — the outermost timeout is the longest,
+decrease as you move outward from the user</strong>: the outermost timeout is the longest,
 each inner one shorter.</p>
 
 <p>When they are ordered the other way, the outer layer gives up while the inner one is still
@@ -191,7 +191,7 @@ of a first that is still running.</p>
 <h2>What a timeout should do</h2>
 
 <p>Not "retry immediately with identical parameters". A timeout means something is slow, and
-the most common reason is load — so an immediate identical retry adds load to a system that is
+the most common reason is load, so an immediate identical retry adds load to a system that is
 already struggling. That is how a slow provider becomes a down one.</p>
 
 <p>Better, in order of preference:</p>

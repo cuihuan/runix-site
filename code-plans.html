@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/code-plans.png?v=38ebf966">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=33">
+<link rel="stylesheet" href="assets/style.css?v=35">
 <script src="assets/site-config.js?v=14" defer></script>
 <style>
   /* 4 equal-height cards with the CTA pinned to the bottom, so nothing spills
@@ -38,11 +38,14 @@
   .plans-4 .plan { display: flex; flex-direction: column; }
   .plans-4 .plan ul { flex: 1 0 auto; }
   .plans-4 .plan .btn-block { margin-top: 20px; }
-  /* .plan .credits / .save / .rate now live in assets/style.css?v=33 — /pricing uses them too. */
+  /* .plan .credits / .save / .rate now live in assets/style.css?v=35 — /pricing uses them too. */
   .windows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .window { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; background: var(--bg-alt); }
-  .window .w-k { font: 700 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-text); }
-  .window h3 { font-size: 20px; margin: 10px 0 8px; }
+  /* The window (5 hours / a week / a month) now reads under its heading as the
+     datum it is, instead of introducing the heading as a tracked-caps kicker.
+     It stays uppercase — it is a three-word label, not body copy. */
+  .window .w-k { display: block; font: 700 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-text); margin: 8px 0 10px; }
+  .window h3 { font-size: 20px; margin: 0; }
   .window p { color: var(--ink-2); font-size: 14.5px; }
   @media (max-width: 780px) { .windows { grid-template-columns: 1fr; } }
 </style>
@@ -146,10 +149,10 @@
 
 <div class="page-hero center">
   <div class="container">
-    <span class="badge">Runix Code · In development</span>
     <h1><span class="line">Coding plans for</span>
 <span class="line">your whole team</span></h1>
-    <p>Buy seats. Each seat gets a monthly credit allowance that covers every model and tool at one rate — with 5-hour, weekly and monthly caps that keep spend predictable and stop a runaway agent from burning the month in an afternoon.</p>
+    <span class="badge">Runix Code · In development</span>
+    <p>Buy seats. Each seat gets a monthly credit allowance that covers every model and tool at one rate, with 5-hour, weekly and monthly caps that keep spend predictable and stop a runaway agent from burning the month in an afternoon.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
       <a class="btn btn-primary" href="#plans">See the plans</a>
       <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20Code%20plans">Talk to sales</a><!--/email_off-->
@@ -161,7 +164,7 @@
   <div class="container">
     <div class="section-head center">
       <h2>One credit, every model</h2>
-      <p>No tokens to reason about, no per-model price lists. Everything your team runs — frontier models, lighter models, and search / fetch / data tools — is metered in a single credit. You buy seats; seats carry credits; credits do the rest.</p>
+      <p>No tokens to reason about, no per-model price lists. Everything your team runs (frontier models, lighter models, and search / fetch / data tools) is metered in a single credit. You buy seats; seats carry credits; credits do the rest.</p>
     </div>
     <div class="grid cols-3">
       <div class="card">
@@ -172,7 +175,7 @@
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
         <h3>Predictable by design</h3>
-        <p>Rolling 5-hour, weekly and monthly caps per seat. Usage paces itself across the month — no bill shock, no one seat eating the pool.</p>
+        <p>Rolling 5-hour, weekly and monthly caps per seat. Usage paces itself across the month: no bill shock, no one seat eating the pool.</p>
       </div>
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18M9 21V9M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg></div>
@@ -263,18 +266,18 @@
     </div>
     <div class="windows">
       <div class="window">
-        <span class="w-k">Rolling 5 hours</span>
         <h3>Burst control</h3>
+        <span class="w-k">Rolling 5 hours</span>
         <p>Caps a short spike — an agent stuck in a loop hits the 5-hour ceiling and pauses, instead of draining the pool in one sitting. Resets continuously.</p>
       </div>
       <div class="window">
-        <span class="w-k">Per week</span>
         <h3>Pacing</h3>
+        <span class="w-k">Per week</span>
         <p>Keeps a single heavy week from consuming the whole month, so usage spreads evenly and every seat gets a fair share of the team's credits.</p>
       </div>
       <div class="window">
-        <span class="w-k">Per month</span>
         <h3>The allowance</h3>
+        <span class="w-k">Per month</span>
         <p>The seat's total for the billing period. Reaching it pauses that seat until renewal; top up the team pool any time if you need more headroom.</p>
       </div>
     </div>
@@ -286,8 +289,8 @@
   <div class="container">
     <div class="feature">
       <div>
-        <span class="badge">For small teams buying 30–50 seats</span>
         <h3>Bought in bulk, controlled centrally</h3>
+        <span class="badge">For small teams buying 30–50 seats</span>
         <p>Recharge one team credit pool, hand out seats, and set the rules once. Everything a small business needs to put an AI coding agent in front of a whole team without losing control of the bill.</p>
         <ul>
           <li>Pooled credits shared across all seats</li>

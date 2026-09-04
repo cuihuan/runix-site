@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/thanks.png?v=2f0c63c4">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=33">
+<link rel="stylesheet" href="assets/style.css?v=35">
 <script src="assets/site-config.js?v=14" defer></script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Payment received — Runix AI">
@@ -58,6 +58,8 @@
 </script>
 </head>
 <body>
+<!-- impeccable-disable flat-type-hierarchy -- the h1 is clamp(38px, 5vw, 58px) via .plan-hero, which static analysis cannot evaluate, so it counts only the literal px values and sees 12.5-19.5px. Measured in a browser at 1280px on 2026-09-04: the rendered scale runs 58 / 34 / 19.5 / 17.5 / 16 / 12.5px, a 4.6:1 range. -->
+
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
@@ -80,11 +82,10 @@
 <section class="plan-hero thanks-hero">
   <div class="container">
     <div>
-      <div class="eyebrow">Payment received</div>
       <h1>Thanks. <em data-t="head">We have your payment.</em></h1>
       <p class="sub"><span data-t="provider">The payment provider</span> has taken the payment and
          emailed you a receipt. <span data-t="what">What you bought</span> is switched on for your Runix
-         account by a person, not a script &mdash; so there is one short step left.</p>
+         account by a person, not a script, so there is one short step left.</p>
       <div class="cta">
         <a class="btn btn-ghost" href="/plans">Back to plans</a>
         <a class="btn btn-ghost" href="/docs/">Read the docs</a>
@@ -98,27 +99,23 @@
 <section class="psec">
   <div class="container">
     <div class="psec-head">
-      <div class="eyebrow">What happens next</div>
       <h2>Two emails, then you are running</h2>
     </div>
     <div class="prun">
       <div class="pstep">
-        <div class="pstep-n">01</div>
-        <h3><span data-t="receipt">Payment receipt</span></h3>
+        <h3><span class="pstep-n">01</span><span data-t="receipt">Payment receipt</span></h3>
         <p>Already sent, to the address you entered at checkout. It carries the amount and what it was
-           for. Keep it &mdash; replying to it reaches us.</p>
+           for. Keep it: replying to it reaches us.</p>
       </div>
       <div class="pstep">
-        <div class="pstep-n">02</div>
-        <h3>Confirmation email from us</h3>
+        <h3><span class="pstep-n">02</span>Confirmation email from us</h3>
         <p>Within one business day. This is the one that means <span data-t="live">it is live</span> on
            your account. If it has not arrived by then, write to
            <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Plan%20activation">billing@runixcloud.io</a><!--/email_off-->
            and we will sort it out the same day.</p>
       </div>
       <div class="pstep">
-        <div class="pstep-n">03</div>
-        <h3>Start running agents</h3>
+        <h3><span class="pstep-n">03</span>Start running agents</h3>
         <p>The integration guide is in the <a href="/docs/">docs</a>. If you were already using Runix,
            nothing changes except the capacity &mdash; the same keys keep working.</p>
       </div>

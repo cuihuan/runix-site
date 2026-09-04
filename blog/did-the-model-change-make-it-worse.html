@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/did-the-model-change-make-it-worse">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -121,8 +121,8 @@ The answers are just... worse, in a way nobody can point at for another three we
 time nobody remembers the change.</p>
 
 <p>This is not a hypothetical problem to plan for. Providers retire model versions on their
-own schedule — <a href="/blog/model-deprecation-without-a-redeploy">two months' notice is
-normal</a> — so you will be moved off a model that works, on a date somebody else chose. The
+own schedule, <a href="/blog/model-deprecation-without-a-redeploy">two months' notice is
+normal</a>, so you will be moved off a model that works, on a date somebody else chose. The
 question is not whether to change models. It is how you will know if the change hurt.</p>
 
 <h2>Why the obvious approach does not work</h2>
@@ -132,8 +132,8 @@ for a specific reason: identical inputs do not produce identical outputs, so a d
 responses shows differences on every single request. You end up reading them by hand,
 concluding "seems fine", and shipping on a sample of thirty.</p>
 
-<p>Human review is not useless — it is the only thing that catches a subtly wrong tone or a
-misread instruction — but it does not scale and it cannot run continuously. It belongs at the
+<p>Human review is not useless, it is the only thing that catches a subtly wrong tone or a
+misread instruction, but it does not scale and it cannot run continuously. It belongs at the
 end, on the cases the automated signals flag, not at the start on a random sample.</p>
 
 <h2>Four signals that do not require reading the output</h2>
@@ -144,10 +144,10 @@ anything.</p>
 <p><strong>1. Structured-output parse rate.</strong> If any route asks for JSON, the fraction
 of responses that parse is a direct quality measurement with no judgement in it. A model that
 is slightly worse at instruction-following shows up here first and unambiguously. If you have
-one signal, have this one — and if no route currently asks for structured output, consider
+one signal, have this one, and if no route currently asks for structured output, consider
 adding a small one that does purely as a canary.</p>
 
-<p><strong>2. Output length distribution, per route.</strong> Not the average — the shape.
+<p><strong>2. Output length distribution, per route.</strong> Not the average: the shape.
 A replacement model that is more verbose, more terse, or more prone to truncation moves the
 distribution in a way an average hides. Watch particularly for a wall at the top of the
 histogram: that is <code>finish_reason: length</code>, and it means answers are being cut off
@@ -193,7 +193,7 @@ If your volume is low, hold the split for longer rather than reading a small sam
 
 <ol>
 <li><strong>Confirm it is the model.</strong> Check whether the same signal moved on routes
-    that did not change. If it moved everywhere, something else did — a prompt template, a
+    that did not change. If it moved everywhere, something else did: a prompt template, a
     context change, a seasonal shift in what users are asking.</li>
 <li><strong>Pull the affected requests and read them.</strong> This is where human review
     earns its cost, because you now have twenty specific cases rather than a random

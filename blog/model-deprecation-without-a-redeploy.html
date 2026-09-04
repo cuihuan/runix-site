@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/model-deprecation-without-a-redeploy">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -118,7 +118,7 @@
 <p>On 5 August 2026, <code>claude-opus-4-1-20250805</code> reached its retirement date on
 the Claude API. Anthropic's own wording for what happens next is unambiguous:
 <q>Requests to retired models will fail.</q> If that string is a literal somewhere in your
-application, the fix is a code change, a review, a build and a deploy — and the deadline
+application, the fix is a code change, a review, a build and a deploy, and the deadline
 was set by someone else, two months earlier.</p>
 
 <p>This is not an Anthropic problem. It is the normal operating model of every major
@@ -186,7 +186,7 @@ with slack behind it.</p>
 
 <h2>The "latest" alias is not the escape hatch</h2>
 
-<p>The obvious response to a dated model id is to stop writing dated model ids — point at
+<p>The obvious response to a dated model id is to stop writing dated model ids: point at
 <code>-latest</code> and let the provider handle it. This fails in three separate ways, and
 each one is documented by the provider itself.</p>
 
@@ -195,7 +195,7 @@ ids. From OpenAI's own deprecation list: <code>chatgpt-4o-latest</code> announce
 2025 and shut down 17 February 2026; <code>codex-mini-latest</code> announced 17 November 2025,
 shut down 12 February 2026; <code>gpt-5-chat-latest</code> and <code>gpt-5.1-chat-latest</code>
 announced 22 April 2026 and shut down 23 July 2026. Pointing at an alias does not buy you a
-stable target — and note that OpenAI classes chat variants as <em>specialised</em>, so they
+stable target, and note that OpenAI classes chat variants as <em>specialised</em>, so they
 carry the 3-month floor rather than the 6-month one.</p>
 
 <p><strong>An alias that works moves under you.</strong> Google is explicit that a
@@ -217,7 +217,7 @@ you which one you have.</p>
 <h2>The same model dies on different days depending on where you call it</h2>
 
 <p>This is the one that catches teams who thought they had done the work. The provider's
-retirement date is not the retirement date — the retirement date belongs to the endpoint.</p>
+retirement date is not the retirement date: the retirement date belongs to the endpoint.</p>
 
 <p>Anthropic states that its dates <q>apply to Anthropic-operated platforms</q> and that
 <q>partner-operated platforms (Amazon Bedrock and Google Cloud) set their own retirement
@@ -232,8 +232,8 @@ an EOL of 8 January 2027. Same weights, five extra months, depending only on whi
 your code points at. The reverse also happens: <code>claude-sonnet-4-20250514</code> was
 retired by Anthropic on 15 June 2026 and has a Bedrock EOL of 14 October 2026.</p>
 
-<p>If you run multi-provider — and the reason most teams put a gateway in front of their
-traffic is that they do — then "when does this model die" has more than one answer, and the
+<p>If you run multi-provider, and the reason most teams put a gateway in front of their
+traffic is that they do, then "when does this model die" has more than one answer, and the
 answer you need is the one for the path the request actually takes.</p>
 
 <h2>One platform will move you. Read what it moves.</h2>
@@ -257,8 +257,7 @@ on a rolling region-by-region basis. Its documented example is gpt-4o version
 
 <p>There is also a trap for anyone who tries to monitor this programmatically. Microsoft warns
 that <q>the API uses different terminology than the docs and portal</q>: a model the
-documentation calls <strong>Deprecated</strong> — still serving, closed to new customers —
-reports <code>lifecycleStatus: "Deprecating"</code>, while the API value
+documentation calls <strong>Deprecated</strong> (still serving, closed to new customers) reports <code>lifecycleStatus: "Deprecating"</code>, while the API value
 <code>"Deprecated"</code> means the model is <em>retired</em> and returns <code>410 Gone</code>.
 A monitoring script that greps for <code>Deprecated</code> reads the opposite of what its
 author intended.</p>

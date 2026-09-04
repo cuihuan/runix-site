@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-how-to-make-a-comic-drama-with-ai.png?v=4a4ffc69">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -115,25 +115,25 @@
 
 <article class="article">
 
-<p>A comic drama — a serialised story told in drawn panels with motion, voice and music, usually cut vertically for phones — is one of the fastest-growing formats in short video. AI has made each individual step of producing one dramatically cheaper. What it has not yet done is make the <em>whole</em> job easy: most AI comic tools generate pictures, and pictures are roughly a third of the work. This post walks the full production line, stage by stage, and is honest about where today's tools stop.</p>
+<p>A comic drama (a serialised story told in drawn panels with motion, voice and music, usually cut vertically for phones) is one of the fastest-growing formats in short video. AI has made each individual step of producing one dramatically cheaper. What it has not yet done is make the <em>whole</em> job easy: most AI comic tools generate pictures, and pictures are roughly a third of the work. This post walks the full production line, stage by stage, and is honest about where today's tools stop.</p>
 
 <h2>The shape of the job</h2>
-<p>A finished episode is the output of three distinct jobs: <strong>writing one</strong> (script, characters, boards), <strong>drawing one</strong> (panels, motion, sound), and <strong>running a channel</strong> (formats, thumbnails, uploads, metadata). Teams that treat these as one continuous pipeline ship on a weekly cadence. Teams that treat them as three separate tool stacks lose most of their time in the seams — exporting from one tool, re-importing into the next, and fixing what broke in between.</p>
+<p>A finished episode is the output of three distinct jobs: <strong>writing one</strong> (script, characters, boards), <strong>drawing one</strong> (panels, motion, sound), and <strong>running a channel</strong> (formats, thumbnails, uploads, metadata). Teams that treat these as one continuous pipeline ship on a weekly cadence. Teams that treat them as three separate tool stacks lose most of their time in the seams: exporting from one tool, re-importing into the next, and fixing what broke in between.</p>
 
 <h2>Stage 1 — Pre-production: story before pixels</h2>
 <p>Everything downstream inherits the quality of this stage, and it is also where large language models are genuinely strong today. Three artefacts matter:</p>
 <ul>
 <li><strong>Script and episode plan.</strong> A season outline broken into episodes, each with a hook in the first seconds and a cut-point at the end. LLMs are good at restructuring a draft into this shape; they are less good at inventing a story worth telling, so start from your own premise.</li>
-<li><strong>Character sheets.</strong> A canonical description and reference set per character — face, build, costume, palette. This is the single most important artefact in the pipeline, because every consistency problem in stage 2 traces back to a vague character sheet.</li>
+<li><strong>Character sheets.</strong> A canonical description and reference set per character: face, build, costume, palette. This is the single most important artefact in the pipeline, because every consistency problem in stage 2 traces back to a vague character sheet.</li>
 <li><strong>Storyboards.</strong> A shot list before rendering: who is in frame, from what angle, feeling what. Boards are cheap to change; rendered panels are not. Skipping boards to "save time" is the most common false economy in AI comics.</li>
 </ul>
 
 <h2>Stage 2 — Production: panels, motion, voice</h2>
 <p>This is the stage most AI comic generators cover, and the stage where they struggle in a specific, predictable way: <strong>consistency</strong>. Getting one good image is easy. Getting the same character, in the same style, across two hundred panels and twelve episodes is the hard problem. Working methods that help: generate from the character sheet rather than from scratch each time, fix a style reference for the whole episode rather than per panel, and review panels in board order so drift is caught early rather than in the edit.</p>
-<p>Motion is what separates a comic drama from a webtoon: camera pans and zooms across panels, timed transitions, and occasional in-panel effects. The craft is restraint — motion should carry the eye through the story, not show off. Voice and sound follow the same logic: cast one synthetic voice per character and keep it for the season, keep music under dialogue, and generate subtitles from the script you already have rather than transcribing your own audio. Under the hood, all of this leans on several different models — text, image, speech — which is the same multi-provider reality that <a href="/router">API-side teams</a> deal with, wearing a different costume.</p>
+<p>Motion is what separates a comic drama from a webtoon: camera pans and zooms across panels, timed transitions, and occasional in-panel effects. The craft is restraint: motion should carry the eye through the story, not show off. Voice and sound follow the same logic: cast one synthetic voice per character and keep it for the season, keep music under dialogue, and generate subtitles from the script you already have rather than transcribing your own audio. Under the hood, all of this leans on several different models (text, image, speech) which is the same multi-provider reality that <a href="/router">API-side teams</a> deal with, wearing a different costume.</p>
 
 <h2>Stage 3 — Publishing: shipped, then seen</h2>
-<p>An episode is not done when the render finishes. It still needs export in the formats each platform wants (vertical cuts for short-video feeds, full episodes elsewhere), a cover image worth tapping, a title and description per platform, and the upload itself. None of this is creatively interesting, all of it decides whether anyone sees the work, and almost none of it is covered by image-generation tools — it is usually a spreadsheet and an evening per episode. Treat promo assets as part of the episode: cut the trailer from the strongest three shots while the project is still open, not as a separate job next day.</p>
+<p>An episode is not done when the render finishes. It still needs export in the formats each platform wants (vertical cuts for short-video feeds, full episodes elsewhere), a cover image worth tapping, a title and description per platform, and the upload itself. None of this is creatively interesting, all of it decides whether anyone sees the work, and almost none of it is covered by image-generation tools: it is usually a spreadsheet and an evening per episode. Treat promo assets as part of the episode: cut the trailer from the strongest three shots while the project is still open, not as a separate job next day.</p>
 
 <h2>Where the tools still fall short</h2>
 <p>Being specific about the gaps, because anyone selling "one click to finished series" is skipping them: character consistency degrades across long runs and needs human review; style drifts between episodes generated weeks apart; and the pipeline is fragmented, so state lives in export files between tools. The fix for the last one is structural, not a better model — the same lesson data teams learned about <a href="/blog/ai-data-pipelines">pipelines generally</a>: the value is in the joins, not the stages.</p>

@@ -28,7 +28,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/router.png?v=0dfaa9fa">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=33">
+<link rel="stylesheet" href="assets/style.css?v=35">
 <script src="assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -62,7 +62,7 @@
       "name": "What happens when a provider fails?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage."
+        "text": "Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget, so one provider's bad hour does not become your outage."
       }
     },
     {
@@ -70,7 +70,7 @@
       "name": "Is my prompt content used for training?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See Privacy ."
+        "text": "No. Content is processed to serve your request, not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. See Privacy ."
       }
     },
     {
@@ -137,9 +137,9 @@
 <main id="main">
 <div class="page-hero center">
   <div class="container">
-    <span class="badge">Runix Router · Early access</span>
     <h1><span class="line">One compliant endpoint</span>
 <span class="line">for every model</span></h1>
+    <span class="badge">Runix Router · Early access</span>
     <p>The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request — behind one OpenAI-compatible API.</p>
     <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
       <a class="btn btn-primary" href="/about#contact">Request access</a>
@@ -156,7 +156,6 @@
     </div>
     <div class="pillars">
       <div class="pillar">
-        <span class="k">Security</span>
         <h3>Keys stop leaking out of .env files</h3>
         <p class="lead-line">Provider credentials live in the gateway, not in a dozen repositories and CI secrets.</p>
         <ul>
@@ -167,7 +166,6 @@
         </ul>
       </div>
       <div class="pillar">
-        <span class="k">Compliance</span>
         <h3>Something procurement can sign</h3>
         <p class="lead-line">A registered US company to contract with, and terms written down before you ask.</p>
         <ul>
@@ -178,7 +176,6 @@
         </ul>
       </div>
       <div class="pillar">
-        <span class="k">Performance</span>
         <h3>A bad provider hour is not your outage</h3>
         <p class="lead-line">The gateway is on the hot path, so it is built to get out of the way and to recover without you.</p>
         <ul>
@@ -200,7 +197,6 @@
   <div class="container">
     <div class="feature">
       <div>
-        <span class="badge">Integration</span>
         <h3>A base URL, not a migration</h3>
         <p>If your code already calls an OpenAI-compatible API, the change is configuration. The SDKs, the streaming, the tool-call shape and the error semantics you already handle stay where they are.</p>
         <ul>
@@ -315,7 +311,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
         <li><b>The provider returns</b> to rotation when health checks pass. Nothing in your application changed.</li>
       </ol>
 
-      <figcaption>Your code never learns any of this happened. The base URL it holds does not change, and no redeploy is involved — which is the point of putting a gateway on the hot path at all.</figcaption>
+      <figcaption>Your code never learns any of this happened. The base URL it holds does not change, and no redeploy is involved: which is the point of putting a gateway on the hot path at all.</figcaption>
     </figure>
   </div>
 </section>
@@ -327,8 +323,8 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
     </div>
     <div class="grid cols-2">
       <div class="card"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
-      <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget — so one provider's bad hour does not become your outage.</p></div>
-      <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata — usage counts, latency, error codes — is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
+      <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget, so one provider's bad hour does not become your outage.</p></div>
+      <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
       <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
       <div class="card"><h3>How do I get access?</h3><p>Access is invite-only: <a href="/about#contact">tell us what you are building</a> and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on <a href="/access">Access</a>.</p></div>
     </div>
@@ -339,7 +335,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   <div class="container">
     <div class="cta-band">
       <h2>Put the gateway in front of your traffic</h2>
-      <p>Tell us the models you call and roughly how much — we come back with an access plan and a quote within one business day.</p>
+      <p>Tell us the models you call and roughly how much: we come back with an access plan and a quote within one business day.</p>
       <a class="btn btn-grad" href="/about#contact">Request access</a>
     </div>
   </div>
@@ -352,7 +348,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
-        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+        <p class="desc">AI, made effortless: Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>

@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/what-openai-compatible-actually-means">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -117,7 +117,7 @@
 <article class="article">
 <p>Almost every gateway, proxy and inference host now claims to be OpenAI-compatible,
 and the claim is usually true in the sense that matters least: you can point an OpenAI SDK at
-it and get a completion back. What varies — and what costs you a day when it varies — is
+it and get a completion back. What varies, and what costs you a day when it varies, is
 everything after the happy path.</p>
 
 <p>This is a list of the specific things "compatible" does not tell you, and a short set of
@@ -128,7 +128,7 @@ migrate anything, including against us.</p>
 
 <p>The OpenAI API is not one endpoint. Compatibility almost always means
 <code>POST /chat/completions</code>, sometimes embeddings, and much more rarely anything
-else — files, batch, moderation, or the newer Responses surface. That is a reasonable place
+else: files, batch, moderation, or the newer Responses surface. That is a reasonable place
 to stop; the problem is that the claim does not say where it stopped.</p>
 
 <p><strong>Test it:</strong> call <code>GET /v1/models</code> first. If it 404s while chat
@@ -151,7 +151,7 @@ requests with the same seed should produce more similar output than two without 
 prose.</p>
 
 <p>An implementation that rejects a parameter it does not support is being more honest than
-one that accepts it — a 400 is information; a 200 is a wrong answer you will not notice.</p>
+one that accepts it: a 400 is information; a 200 is a wrong answer you will not notice.</p>
 
 <h2>3. Whether you get usage back</h2>
 
@@ -159,7 +159,7 @@ one that accepts it — a 400 is information; a 200 is a wrong answer you will n
 <code>choices</code>, <code>created</code>, <code>model</code> and <code>object</code>
 (<a href="https://developers.openai.com/api/docs/api-reference/chat/create">reference</a>). If <code>usage</code> is missing or zeroed, you cannot
 attribute cost per request, which means you cannot attribute it per team or per feature
-either — you are back to reconciling one bill against a guess.</p>
+either: you are back to reconciling one bill against a guess.</p>
 
 <p>Streaming is where this most often breaks. Usage is not in the stream by default: you ask
 for it with <code>stream_options</code> and its <code>include_usage</code> field, and the
@@ -180,7 +180,7 @@ missing, so a client waits for a close that never comes; chunks are buffered som
 middle so the whole response arrives at once — technically streaming, functionally not; or
 an error mid-stream arrives as a broken frame rather than as anything a client can parse.</p>
 
-<p><strong>Test it:</strong> use <code>curl -N</code> — without it curl buffers and you will
+<p><strong>Test it:</strong> use <code>curl -N</code>, without it curl buffers and you will
 measure your own client. Watch whether tokens arrive progressively, and that the last line
 is the terminator. Then make it fail: request a model that does not exist, or send an
 oversized prompt, and see what a mid-stream failure actually looks like on the wire.</p>
@@ -207,7 +207,7 @@ OpenAI-standard string. That is exactly the point: if your retry logic branches 
 
 <p><strong>Test it:</strong> send a request with no key, with a bad key, to a path that does
 not exist, and with a model id that does not exist. Four requests, four status codes. Write
-them down — that table is your error handling.</p>
+them down: that table is your error handling.</p>
 
 <h2>6. Whether the request id survives</h2>
 
@@ -233,13 +233,13 @@ get.</p>
 <h2>The twenty-minute version</h2>
 
 <ol>
-<li><code>GET /v1/models</code> — how wide is the surface?</li>
-<li>Same prompt at temperature 0 and 2, several times — is the parameter reaching anything?</li>
-<li>Non-streamed request — is <code>usage</code> present and non-zero?</li>
+<li><code>GET /v1/models</code>: how wide is the surface?</li>
+<li>Same prompt at temperature 0 and 2, several times: is the parameter reaching anything?</li>
+<li>Non-streamed request: is <code>usage</code> present and non-zero?</li>
 <li>Streamed request with <code>stream_options.include_usage</code> — does the usage chunk arrive before <code>[DONE]</code>?</li>
 <li><code>curl -N</code> — do tokens actually arrive progressively?</li>
-<li>No key / bad key / bad path / bad model — four status codes, written down.</li>
-<li>Trigger an error — is there a request id you can quote?</li>
+<li>No key / bad key / bad path / bad model: four status codes, written down.</li>
+<li>Trigger an error: is there a request id you can quote?</li>
 <li>Two tools, then <code>tool_choice</code> — is tool calling whole?</li>
 </ol>
 

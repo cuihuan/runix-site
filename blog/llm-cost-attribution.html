@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-llm-cost-attribution.png?v=71272b6b">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -121,7 +121,7 @@
 <p>The usual attempt is to take application logs, join them against provider usage exports, and allocate. It fails for boring, structural reasons.</p>
 <ul>
 <li><strong>Timing.</strong> Provider usage is aggregated on their clock in their timezone; your logs are on yours. Requests near a boundary land in different buckets and the totals never quite match.</li>
-<li><strong>Retries.</strong> A retried request bills as two calls upstream but appears as one operation in your application log — if the retry happened inside an SDK, it may not appear at all.</li>
+<li><strong>Retries.</strong> A retried request bills as two calls upstream but appears as one operation in your application log: if the retry happened inside an SDK, it may not appear at all.</li>
 <li><strong>Streaming.</strong> A stream that the client abandoned still consumed tokens. Your log likely records a cancelled request; the invoice records the tokens generated before the cancel.</li>
 <li><strong>Shared keys.</strong> Once two services use one key, the provider cannot separate them and neither can you.</li>
 </ul>
@@ -131,8 +131,8 @@
 <p>The workable model is to decide the dimensions before the request leaves your infrastructure, and to record them on the same record that carries the token counts:</p>
 <ul>
 <li><strong>Key</strong> — the credential used. This should be per service or per team, never shared.</li>
-<li><strong>Tenant or customer</strong> — if you resell, this is the dimension your own margins depend on.</li>
-<li><strong>Feature</strong> — the product surface that triggered the call, passed as a header or tag. "Summariser", "support-autoreply", "eval-run".</li>
+<li><strong>Tenant or customer</strong>: if you resell, this is the dimension your own margins depend on.</li>
+<li><strong>Feature</strong>: the product surface that triggered the call, passed as a header or tag. "Summariser", "support-autoreply", "eval-run".</li>
 <li><strong>Environment</strong> — production, staging, and the eval harness someone left running over the weekend.</li>
 </ul>
 <p>Three of those four cost nothing to add and are impossible to add later.</p>

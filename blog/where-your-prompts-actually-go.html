@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/where-your-prompts-actually-go">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -117,7 +117,7 @@
 <article class="article">
 <p>The first question in an enterprise security review is some version of "where does
 our text go". It sounds simple. Most teams answer it with the name of one provider, and most
-of those answers are incomplete — not because anyone is hiding anything, but because nobody
+of those answers are incomplete, not because anyone is hiding anything, but because nobody
 traced the path.</p>
 
 <p>This is how to trace it, and what each hop obliges you to be able to say.</p>
@@ -128,7 +128,7 @@ traced the path.</p>
 suggests:</p>
 
 <ol>
-<li><strong>Your application.</strong> Where the prompt is assembled — and where it may be
+<li><strong>Your application.</strong> Where the prompt is assembled, and where it may be
     logged before anything else sees it.</li>
 <li><strong>Your logs and error tracking.</strong> The hop teams forget. An exception handler
     that serialises the request body has just copied a prompt into whatever SaaS receives your
@@ -143,7 +143,7 @@ suggests:</p>
 </ol>
 
 <p>A complete answer names every hop, says what is retained at each, and says for how long.
-If you cannot fill that table today, that is the finding — not the review.</p>
+If you cannot fill that table today, that is the finding, not the review.</p>
 
 <h2>Trace it, do not diagram it</h2>
 

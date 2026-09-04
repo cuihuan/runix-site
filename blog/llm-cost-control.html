@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://runixcloud.io/blog/llm-cost-control">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=33">
+<link rel="stylesheet" href="../assets/style.css?v=35">
 <script src="../assets/site-config.js?v=14" defer></script>
 <script type="application/ld+json">
 {
@@ -118,29 +118,29 @@
 
 <h2>Token economics 101</h2>
 <p>Every request has two meters running: input tokens (everything you send) and output tokens (everything the model generates). They are priced differently, and the asymmetry matters. Output tokens typically cost 3–5x more than input tokens, because generation is sequential and compute-heavy while input processing is parallelizable.</p>
-<p>That asymmetry leads people to obsess over output length, but for most products the input side dominates in volume. A typical chat or agent request might carry 8,000 input tokens — system prompt, tool definitions, retrieved context, conversation history — to produce 300 output tokens. Even at a 4x output multiplier, input is still 85 percent of the cost of that request.</p>
+<p>That asymmetry leads people to obsess over output length, but for most products the input side dominates in volume. A typical chat or agent request might carry 8,000 input tokens (system prompt, tool definitions, retrieved context, conversation history) to produce 300 output tokens. Even at a 4x output multiplier, input is still 85 percent of the cost of that request.</p>
 <p>The biggest single line item is usually the system prompt, because it is paid on <strong>every</strong> request. A 3,000-token system prompt served a million times a day is three billion input tokens per day before a single user word is processed. When you review prompts, review them like you review hot-path code: every paragraph in the stable prefix is a recurring cost, not a one-time one.</p>
 
 <h2>Prompt caching</h2>
-<p>Most major providers now offer prompt caching: if the beginning of your request is byte-identical to a recent request, the provider reuses the precomputed attention state for that prefix instead of reprocessing it, and charges a fraction of the normal input price — typically anywhere from 10 to 50 percent of the normal price depending on the provider, sometimes with a small write surcharge on the first request.</p>
+<p>Most major providers now offer prompt caching: if the beginning of your request is byte-identical to a recent request, the provider reuses the precomputed attention state for that prefix instead of reprocessing it, and charges a fraction of the normal input price, typically anywhere from 10 to 50 percent of the normal price depending on the provider, sometimes with a small write surcharge on the first request.</p>
 <p>The key mechanic is that caching is <strong>prefix-based</strong>. The provider matches from the first token forward and stops at the first difference. That dictates how you should structure prompts:</p>
 <ol>
-  <li><strong>Stable content first.</strong> System prompt, tool schemas, few-shot examples — anything identical across requests goes at the top, in a fixed order.</li>
+  <li><strong>Stable content first.</strong> System prompt, tool schemas, few-shot examples: anything identical across requests goes at the top, in a fixed order.</li>
   <li><strong>Semi-stable content next.</strong> Per-user or per-session context that changes occasionally.</li>
   <li><strong>Volatile content last.</strong> The current user message, timestamps, request IDs, retrieved documents.</li>
 </ol>
-<p>The classic cache-killer is a dynamic value near the top of the prompt. A timestamp, a random session ID, or a "today's date" line in the first hundred tokens invalidates the entire cache for everything after it. Move it to the end, or drop it. Also watch serialization order: if your tool definitions come from an unordered map, they may serialize in a different order per process and silently destroy your hit rate. In our experience running production LLM traffic, reordering alone — with no prompt content changes at all — can take cache hit rates from under 20 percent to over 90 percent.</p>
+<p>The classic cache-killer is a dynamic value near the top of the prompt. A timestamp, a random session ID, or a "today's date" line in the first hundred tokens invalidates the entire cache for everything after it. Move it to the end, or drop it. Also watch serialization order: if your tool definitions come from an unordered map, they may serialize in a different order per process and silently destroy your hit rate. In our experience running production LLM traffic, reordering alone (with no prompt content changes at all) can take cache hit rates from under 20 percent to over 90 percent.</p>
 
 <h2>Model routing for cost</h2>
 <p>Flagship models are priced 10–60x above small models from the same provider. Using a frontier model to classify a support ticket into five categories is like renting a GPU cluster to run <code>grep</code>. Right-sizing means mapping each task to the cheapest model that meets its quality bar, measured on your own eval set rather than leaderboard vibes.</p>
-<p>A step beyond static assignment is the <strong>cascade pattern</strong>: send the request to a cheap model first, and escalate to a stronger model only when needed. The escalation trigger can be explicit (the small model outputs a low confidence score or an "unsure" token), structural (its output fails schema validation), or downstream (the user hits retry). If the cheap model handles 80 percent of traffic and the expensive model costs 20x more, the cascade cuts spend by roughly 75 percent versus routing everything to the flagship — and the p50 latency usually improves too.</p>
+<p>A step beyond static assignment is the <strong>cascade pattern</strong>: send the request to a cheap model first, and escalate to a stronger model only when needed. The escalation trigger can be explicit (the small model outputs a low confidence score or an "unsure" token), structural (its output fails schema validation), or downstream (the user hits retry). If the cheap model handles 80 percent of traffic and the expensive model costs 20x more, the cascade cuts spend by roughly 75 percent versus routing everything to the flagship, and the p50 latency usually improves too.</p>
 <p>Cascades add a failure mode worth naming: if your escalation check is too loose, you pay for both calls on most requests and save nothing. Instrument the escalation rate as a first-class metric. Running this through a gateway that speaks one API across 20+ models makes the experiment cheap, because rerouting is a config change instead of a code change.</p>
 
 <h2>Budgets and alerts</h2>
 <p>Cost control without enforcement is a dashboard, not a control. You want budgets at two granularities:</p>
 <ul>
   <li><strong>Per-key budgets</strong> cap what a single API key can spend per day or month. Every service, environment, and external integration should have its own key. A leaked or looping key then has a bounded blast radius.</li>
-  <li><strong>Per-feature budgets</strong> cap a product surface — "AI summaries may spend $200/day" — independent of which keys serve it.</li>
+  <li><strong>Per-feature budgets</strong> cap a product surface, "AI summaries may spend $200/day", independent of which keys serve it.</li>
 </ul>
 <p>Distinguish soft alerts from kill switches, and use both. A soft alert at 70–80 percent of budget pages a human while there is still time to react. A hard kill switch at 100 percent stops traffic outright. Kill switches feel drastic, but the alternative is discovering a retry loop via the invoice. The practical compromise for user-facing features is graceful degradation at the limit: route to the cheapest viable model, shrink context, or disable the feature with an honest error, rather than failing silently. Whatever you choose, the budget check must be enforced at the gateway or middleware layer — client-side checks do not survive bugs, and bugs are exactly what budgets exist to contain.</p>
 

@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=33">
+<link rel="stylesheet" href="assets/style.css?v=35">
 <script src="assets/site-config.js?v=14" defer></script>
 <title>LLM Gateway Glossary: Key Terms Defined | Runix</title>
 <meta name="description" content="Failover, retry budgets, prompt caching, virtual keys: the terms that come up when evaluating an LLM gateway, defined with how to verify each.">
@@ -193,7 +193,6 @@
 
 <div class="page-hero">
   <div class="container">
-    <span class="badge">Glossary</span>
     <h1>LLM infrastructure, term by term</h1>
     <p>Definitions you can quote, a way to verify each one yourself, and the mistake that is easy to make.</p>
   </div>
@@ -223,13 +222,13 @@
 
 <h2 id="llm-gateway">LLM gateway</h2>
 <p>A service that sits between your application and one or more model providers, presenting a single API while handling routing, retries, key custody, quotas and usage accounting.</p>
-<p><strong>How you would check it.</strong> Point a client at it and remove a provider key from your application — if the request still works and the spend still shows up attributed correctly, the gateway is doing its job.</p>
+<p><strong>How you would check it.</strong> Point a client at it and remove a provider key from your application: if the request still works and the spend still shows up attributed correctly, the gateway is doing its job.</p>
 <p><strong>Where people go wrong.</strong> Treating it as a proxy. A proxy forwards; a gateway takes responsibility for what happens when the thing it forwards to misbehaves.</p>
 <p class="g-more"><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></p>
 
 <h2 id="llm-router">LLM router</h2>
 <p>The part that decides which model or provider serves a given request, by cost, health, capability or explicit policy.</p>
-<p><strong>How you would check it.</strong> Send the same request twice under different routing policies and compare which upstream served it — the response metadata should tell you.</p>
+<p><strong>How you would check it.</strong> Send the same request twice under different routing policies and compare which upstream served it: the response metadata should tell you.</p>
 <p><strong>Where people go wrong.</strong> Assuming routing means cheapest. Routing on health matters more the day a provider degrades.</p>
 <p class="g-more"><a href="/blog/llm-router-vs-llm-gateway">LLM Router vs LLM Gateway: What's the Difference?</a></p>
 
@@ -242,7 +241,7 @@
 <h2 id="retry-budget">Retry budget</h2>
 <p>A cap on how much of your traffic may be retries, so that a widespread failure cannot turn into self-inflicted load amplification.</p>
 <p><strong>How you would check it.</strong> Express it as a percentage of window traffic and alert when the retry share approaches it.</p>
-<p><strong>Where people go wrong.</strong> Setting per-request retry counts without a global budget — three retries each sounds modest until every request needs them at once.</p>
+<p><strong>Where people go wrong.</strong> Setting per-request retry counts without a global budget: three retries each sounds modest until every request needs them at once.</p>
 <p class="g-more"><a href="/blog/model-failover">Designing for Model Failover: Lessons from Production LLM Traffic</a></p>
 
 <h2 id="circuit-breaker">Circuit breaker</h2>

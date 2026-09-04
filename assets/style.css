@@ -211,7 +211,11 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 .section-head { max-width: 640px; margin-bottom: 56px; }
 .section-head.center { text-align: center; margin-left: auto; margin-right: auto; }
 .section-head h2 { font-size: 38px; font-weight: 800; }
-.section-head p { margin-top: 14px; color: var(--ink-2); font-size: 16.5px; }
+/* The deck under a section heading rendered 640px / 85 characters a line at
+   16.5px. The heading keeps the full 640px -- it is short and wants the room
+   for a balanced two-line break -- and the deck is held to 585px / 78. */
+.section-head p { margin-top: 14px; color: var(--ink-2); font-size: 16.5px; max-width: 585px; }
+.section-head.center p { margin-left: auto; margin-right: auto; }
 
 /* ---------- Product cards ---------- */
 .grid { display: grid; gap: 22px; }
@@ -239,7 +243,7 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
    card spans the full container: measured on the deployed /careers at 1010px,
    122 characters a line. The card keeps its width -- it holds a title row and
    a meta row that want the room -- and the copy inside it is held to 72ch. */
-.card > p, .card > ul { max-width: 66ch; }
+.card > p, .card > ul { max-width: 60ch; }  /* 498px, 78 characters a line */
 /* Links in body copy.
    Third attempt at this selector, and the first that is not a list of places a
    link might live. Enumerating containers missed <li>, then .facts, then three
@@ -525,12 +529,23 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   background: linear-gradient(180deg, rgba(91, 140, 255, 0.09), rgba(91, 140, 255, 0) 82%); }
 .page-hero h1 { font-size: 42px; font-weight: 800; overflow-wrap: break-word; }
 .page-hero p { color: var(--ink-2); margin-top: 12px; max-width: 620px; }
-/* 820px put the legal pages and the blog at ~100 characters a line, measured
-   on the deployed page: the eye loses the start of the next line on text
-   people are already reluctant to read. 680px lands at ~75ch, the top of the
-   comfortable range, and still clears the 560px minimum the widest table
-   inside an article needs. */
-.article { max-width: 680px; margin: 0 auto; padding: 56px 24px 96px; }
+/* Sized by counting rendered line boxes, not by ch. The ch unit is the width
+   of "0", which in a narrow face like Archivo is about a fifth wider than the
+   average lowercase letter, so sizing by ch under-counts real prose: 680px
+   measured "75ch" and rendered 91 characters a line. 590px gives 542px of
+   copy and 78 characters, and still clears the 560px the widest table inside
+   an article needs (that table scrolls in its own frame). */
+.article { max-width: var(--maxw); margin: 0 auto; padding: 56px 24px 96px; }
+/* The measure lives on the children, not on the column. Centring a 590px
+   column under a hero whose title starts at the container's left edge left a
+   265px step between the headline and the first line of body copy — the page
+   read as two documents. Now the title and the copy share a left edge, and
+   the things that genuinely want width (tables, code, figures) keep it. */
+.article > * { max-width: 542px; }
+.article > .table-scroll,
+.article > pre,
+.article > figure,
+.article > .diagram { max-width: 100%; }
 .article h2 { font-size: 22px; font-weight: 700; margin: 38px 0 12px; }
 .article h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
 .article p, .article li { color: var(--ink-2); font-size: 15.5px; }

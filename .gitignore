@@ -4,9 +4,10 @@ __pycache__/
 # wrangler pages dev local state (deploy.sh already rsync-excludes it)
 .wrangler/
 
-# visual_qa.py writes these two scratch files next to the pages it renders and
-# deploy.sh runs it on every deploy, so they reappear in `git status` every
-# time. They are build scratch, not source; qa.py already skips anything
-# starting with an underscore.
-_vqa.html
-_vqa_frame.html
+# The pre-deploy checks each render a scratch page beside the real ones --
+# _vqa, _nojs, _console, _perf, __code_overflow_probe -- and deploy.sh runs
+# them every time, so they reappeared in `git status` after every deploy.
+# Build scratch, not source; qa.py already skips anything starting with an
+# underscore, and deploy.sh rsync-excludes them.
+_*.html
+__*.html

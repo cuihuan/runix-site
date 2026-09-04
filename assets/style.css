@@ -379,6 +379,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   margin-top: 22px; padding: 20px 22px; border-radius: 16px;
   background: var(--bg-alt); border: 1px solid var(--line); font-size: 14px; color: var(--ink-2);
 }
+/* The measure is held on the copy, not on the card: shrinking the card would
+   pull it out of line with the payment block beside it. 714px at 14px is 89
+   characters a line, measured on the live page. */
+.topup-equiv p { max-width: 68ch; }
 .topup-equiv-head {
   font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--cyan-text); margin-bottom: 8px;
@@ -987,11 +991,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
    section does not need a full section's worth of padding on top of that. */
 main > .section:first-child { padding-top: 64px; }
 
-/* The hero glow was positioned for left-aligned text; centred heroes need it
-   centred too, or the page lights up on one side of its own headline. */
-.page-hero.center {
-  background: radial-gradient(760px 320px at 50% 0%, rgba(91, 140, 255, 0.14), transparent 65%);
-}
+/* This used to re-centre the radial glow for centred heroes. The glow itself is
+   gone (see .page-hero), and a flat band has no side to be on, so the centred
+   variant no longer needs a background of its own. */
 /* Stops the lede stranding a single word on its own last line. */
 .page-hero p { text-wrap: pretty; }
 

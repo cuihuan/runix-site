@@ -497,7 +497,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
     radial-gradient(560px 280px at 78% 0%, rgba(34, 211, 238, 0.10), transparent 66%);
 }
 .cta-band h2 { position: relative; font-size: 36px; font-weight: 800; }
-.cta-band p { position: relative; color: var(--ink-2); margin-top: 12px; }
+/* Measured on the live page at 1280px: 1014px, 111 characters a line. It is
+   one centred sentence under a heading, so it was running the full band width
+   for no reason. 60ch is the measure the rest of the page's body copy uses. */
+.cta-band p { position: relative; color: var(--ink-2); margin-top: 12px; max-width: 60ch; margin-left: auto; margin-right: auto; }
 .cta-band .btn { position: relative; margin-top: 32px; }
 
 /* ---------- Page hero / legal ---------- */
@@ -1022,9 +1025,13 @@ main > .section:first-child { padding-top: 64px; }
 /* .model-note carried its styling inline on every page, which is why a media
    query could not left-align it -- an inline style beats any selector without
    !important. Moved here so the responsive rule below can actually win. */
+/* Measured on the live page at 1280px: 1072px wide, 133 characters a line --
+   the widest measure on the site, on a centred one-line note where the ragged
+   left edge makes a long line worse, not better. */
 .model-note {
   text-align: center; margin-top: 24px;
   color: var(--ink-3); font-size: 14px;
+  max-width: 72ch; margin-left: auto; margin-right: auto;
 }
 
 /* ---------- Centred body copy is a phone-width readability problem ---------- */

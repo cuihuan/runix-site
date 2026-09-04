@@ -229,7 +229,7 @@ def main():
     # every card in Helvetica without saying so. Read the actual file, and
     # refuse to render rather than ship fifty cards in the wrong typeface.
     import base64
-    fb = pathlib.Path("assets/fonts/inter-latin.woff2")
+    fb = pathlib.Path("assets/fonts/archivo-latin.woff2")
     if not fb.exists():
         print(f"  {fb} missing -- refusing to render cards in a fallback face")
         return 1

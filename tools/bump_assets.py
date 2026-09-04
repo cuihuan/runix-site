@@ -28,7 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 TRACKED = ["style.css", "site-config.js", "favicon.svg", "logo.svg", "og-cover.png",
-           "fonts/inter-latin.woff2", "fonts/inter-latin-ext.woff2"]
+           "fonts/archivo-latin.woff2", "fonts/archivo-latin-ext.woff2"]
 MANIFEST = os.path.join("tools", "assets.json")
 
 if_changed = "--if-changed" in sys.argv

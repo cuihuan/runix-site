@@ -548,10 +548,15 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
    read as two documents. Now the title and the copy share a left edge, and
    the things that genuinely want width (tables, code, figures) keep it. */
 .article > * { max-width: 542px; }
+/* Wider than the prose measure, but not unbounded: letting the table have the
+   full 1120px container put 124 characters on one line inside a cell,
+   measured on /delivery. 780px is enough for the widest comparison table on
+   the site (its own min-width is 560px) and keeps a cell's longest line near
+   the prose measure. */
 .article > .table-scroll,
 .article > pre,
 .article > figure,
-.article > .diagram { max-width: 100%; }
+.article > .diagram { max-width: 780px; }
 .article h2 { font-size: 22px; font-weight: 700; margin: 38px 0 12px; }
 .article h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
 .article p, .article li { color: var(--ink-2); font-size: 15.5px; }

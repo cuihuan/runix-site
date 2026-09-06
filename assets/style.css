@@ -525,9 +525,9 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
    smudge in the top-left rather than as lighting. A flat tinted band that
    resolves into paper grounds the hero without pretending to have a light
    source. */
-.page-hero { padding: 72px 0 52px; border-bottom: 1px solid var(--line);
+.page-hero { padding: 96px 0 72px; border-bottom: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(91, 140, 255, 0.09), rgba(91, 140, 255, 0) 82%); }
-.page-hero h1 { font-size: 42px; font-weight: 800; overflow-wrap: break-word; }
+.page-hero h1 { font-size: 46px; font-weight: 700; letter-spacing: -0.03em; overflow-wrap: break-word; }
 /* 620px rendered 88 characters a line, counted off the line boxes on the
    deployed page. 550px lands at 78. */
 .page-hero p { color: var(--ink-2); margin-top: 12px; max-width: 550px; }

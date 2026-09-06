@@ -511,7 +511,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
     radial-gradient(560px 280px at 22% 100%, rgba(79, 108, 255, 0.12), transparent 66%),
     radial-gradient(560px 280px at 78% 0%, rgba(34, 211, 238, 0.10), transparent 66%);
 }
-.cta-band h2 { position: relative; font-size: 36px; font-weight: 800; }
+.cta-band h2 { position: relative; font-size: 38px; font-weight: 700; letter-spacing: -0.025em; }
 /* Measured on the live page at 1280px: 1014px, 111 characters a line. It is
    one centred sentence under a heading, so it was running the full band width
    for no reason. 60ch is the measure the rest of the page's body copy uses. */
@@ -1217,7 +1217,7 @@ main > .section:first-child { padding-top: 64px; }
    26px past the viewport at 375px — the text column widened with it, which is
    why the overflow reported against the headline rather than the terminal. */
 .plan-hero .container > * { min-width: 0; }
-.plan-hero h1 { font-size: clamp(38px, 5vw, 58px); font-weight: 800; line-height: 1.05; margin: 18px 0 22px; }
+.plan-hero h1 { font-size: clamp(40px, 5vw, 60px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin: 18px 0 24px; }
 .plan-hero h1 em { font-style: normal; color: var(--cyan-text); }
 .plan-hero .sub { color: var(--ink-2); font-size: 17.5px; max-width: 46ch; }
 .plan-hero .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }

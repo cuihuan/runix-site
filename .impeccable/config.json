@@ -56,7 +56,26 @@
         ],
         "createdAt": "2026-09-04T07:22:28.434Z",
         "reason": "Bordered table scroll-frame. A table's inset is its cell padding (11px 14px here; the one visible caption carries 12px 14px 10px, added 2026-09-04), not padding on the frame — putting a gutter between a rounded frame and a table's own header band reads as unfinished. Verified in a browser 2026-09-04. Scoped to the six pages that contain a .table-scroll or .dsheet so a genuine cramped container elsewhere still reports."
+      },
+      {
+        "rule": "repeated-container-text",
+        "value": "Live",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-05T00:00:00.000Z",
+        "reason": "Five provider feeders on the single-line diagram each carry their own state word; that repetition is the panel legend, not duplicated copy. Verified in a browser 2026-09-05: only one 'Carrying' flag is visible at a time (the other four are visibility:hidden and swap with the state control), and the five 'Live' words are five independent lamps. Re-check if the diagram ever stops being per-feeder."
+      },
+      {
+        "rule": "repeated-container-text",
+        "value": "Carrying",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-05T00:00:00.000Z",
+        "reason": "Five provider feeders on the single-line diagram each carry their own state word; that repetition is the panel legend, not duplicated copy. Verified in a browser 2026-09-05: only one 'Carrying' flag is visible at a time (the other four are visibility:hidden and swap with the state control), and the five 'Live' words are five independent lamps. Re-check if the diagram ever stops being per-feeder."
       }
     ]
-  }
+  },
+  "buildPath": "code"
 }

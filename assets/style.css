@@ -148,6 +148,7 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 .nav-links a {
   color: var(--ink-2); font-size: 12.5px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.09em;
+  display: inline-flex; align-items: center; min-height: 26px;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); box-shadow: 0 2px 0 var(--signal); }
 .nav-cta {
@@ -658,7 +659,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
    paper — under AA by a tenth, on 99 spans across 33 posts. #5b636f is the
    same neutral one step down and measures 5.26:1 there. Measured, not
    eyeballed: the gap only opens up on the tinted surface. */
-.post-meta { display: flex; gap: 10px; align-items: center; color: #5b636f; font-size: 13.5px; margin-bottom: 14px; flex-wrap: wrap; }
+.post-meta { display: flex; gap: 10px; align-items: center; color: var(--ink-3); font-size: 13.5px; margin-bottom: 14px; flex-wrap: wrap; }
 .post-meta .cat {
   font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
   /* --indigo on its own 12% tint is 4.39:1. The tint is the point of the
@@ -1602,7 +1603,7 @@ main > .section:first-child { padding-top: 64px; }
 .code-card .dot { display: none; }
 .code-card .bar span {
   margin-left: 0; color: #b9bfb4;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
   font-family: inherit;
 }
 
@@ -1651,3 +1652,14 @@ table, .plan-price, .index-plate, .mimic-feeders { font-variant-numeric: tabular
   margin: 20px 0 0; font-size: 14px; max-width: 68ch;
 }
 .hero.panel > .container:last-child { padding-bottom: 76px; }
+
+
+/* Every link the deploy gate measures as a pointer target clears 24px. The
+   uppercase register made the type smaller, and the box followed it down. */
+.nav-signin, .site-footer a, footer a, .nav-links a, .doc-next a, .read-more {
+  display: inline-flex; align-items: center; min-height: 26px;
+}
+/* The panel's engraved labels sit at the 12px floor the deploy gate enforces,
+   not the 11px the design detector allows. */
+.mimic-title, .mimic-steps-label, .mimic-steps label,
+.mimic-feeders .state, .mimic-feeders .route { font-size: 12px; }

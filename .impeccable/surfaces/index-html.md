@@ -9,7 +9,7 @@ related_targets: ["router.html","plans.html","about.html","reliability.html"]
 
 THESIS: A gateway is switchgear. This surface is the mimic panel that shows the live route, not a landing page describing routing. It refuses the category's dark-neon developer hero and its white-minimal opposite.
 
-OWN-WORLD: Control-room enamel panel. Warm grey enamel ground, engraved black single-line diagram bars at true weight, lamp colour strictly as state (green live, amber degraded, red out), engraved lozenge labels, tabular plates, hairline bezels. No rounded cards, no gradient, no glow, no glass.
+OWN-WORLD: Control-room enamel panel. Sage-grey machine enamel ground (#d6d9d0 — real panel enamel reads green-grey, and it moves the surface away from the warm-cream rendition every model reaches for), engraved black single-line diagram bars at true weight, lamp colour strictly as state (green live, amber degraded, red out), engraved lozenge labels, tabular plates, hairline bezels. No rounded cards, no gradient, no glow, no glass.
 
 STORY: The visitor traces their own traffic through one endpoint to five official providers, sees what happens when one fails, learns credentials live in the panel, and requests access.
 

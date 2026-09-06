@@ -125,7 +125,7 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
    word through a stop that measures 3.4:1 at the cyan end. One solid indigo
    at 5.59:1 carries the same emphasis and survives selection, high-contrast
    mode, and print, none of which render clipped backgrounds. */
-.grad-text { color: var(--indigo); }
+.grad-text { color: var(--ink); }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -164,14 +164,6 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; padding: 110px 0 90px; overflow: hidden; }
-.hero::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  /* The panel's own face: a flat enamel ground, a hairline of light along the
-     top rail, and the machined edge below it. */
-  background: var(--enamel);
-  border-bottom: var(--bar) solid var(--engrave);
-  box-shadow: var(--bevel);
-}
 .hero .container { position: relative; }
 .hero h1 { font-size: 58px; font-weight: 800; max-width: 780px; }
 .hero .sub { margin-top: 18px; font-size: 17.5px; color: var(--ink-2); max-width: 620px; }
@@ -701,7 +693,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   background: var(--bg-alt); border: 1px solid var(--line); border-radius: 0; padding: 1px 6px;
 }
 .article pre {
-  background: #05080f; color: #c9d1d9; border: 1px solid var(--line); border-radius: 0; padding: 18px 20px;
+  background: var(--engrave); color: #d5d9cf; border: 1px solid var(--line); border-radius: 0; padding: 18px 20px;
   overflow-x: auto; font-family: "SF Mono", Menlo, Consolas, monospace;
   font-size: 13.5px; line-height: 1.8; margin: 18px 0;
 }
@@ -845,7 +837,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   background: var(--line); border: 1px solid var(--line-2); border-top: none;
   border-radius: 0 0 var(--radius) var(--radius); overflow: hidden;
 }
-.hero-metrics div { background: #05080f; padding: 13px 16px; }
+.hero-metrics div { background: var(--engrave); padding: 13px 16px; }
 .hero-metrics b { display: block; font-family: var(--mono); font-size: 16px; color: #e9edf6; }
 .hero-metrics span { font-size: 12px; color: #8b95a9; letter-spacing: 0.05em; text-transform: uppercase; }
 
@@ -1405,15 +1397,25 @@ main > .section:first-child { padding-top: 64px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--engrave); }
 
 /* ---- The hero rail ------------------------------------------------------ */
-.hero.panel { padding: 44px 0 0; }
-.hero.panel .rail { max-width: 680px; }
+.hero.panel { padding: 0 0 0; }
+/* The top rail: the headline is cut into the panel's own face, closed by the
+   machined edge the board hangs from. */
+.panel-rail {
+  position: relative;
+  background: var(--enamel-hi);
+  border-bottom: var(--bar) solid var(--engrave);
+  box-shadow: var(--bevel);
+  padding: 40px 0 30px;
+}
+.hero.panel .rail { max-width: 720px; }
 .hero.panel h1 { font-size: clamp(38px, 5vw, 54px); font-weight: 800; letter-spacing: -0.035em; }
 .hero.panel .sub { max-width: 60ch; }
 .hero.panel .actions { margin-top: 26px; }
 
 /* ---- The board ---------------------------------------------------------- */
+.mimic-wrap .container { max-width: 1360px; }
 .mimic-wrap {
-  margin-top: 34px;
+  margin-top: 0;
   background: var(--enamel-lo);
   border-top: var(--bar) solid var(--engrave);
   border-bottom: var(--bar) solid var(--engrave);
@@ -1448,10 +1450,15 @@ main > .section:first-child { padding-top: 64px; }
   display: flex; flex-wrap: wrap; gap: 10px; padding-top: 18px;
 }
 .btn-switch {
+  background: var(--engrave); color: var(--on-accent);
+  border: var(--bar) solid var(--engrave); box-shadow: var(--bevel);
+}
+.btn-switch:hover { background: #24282b; box-shadow: var(--bevel-in); }
+.btn-switch-2 {
   background: var(--enamel-hi); color: var(--ink);
   border: var(--bar) solid var(--engrave); box-shadow: var(--bevel);
 }
-.btn-switch:hover { background: var(--enamel); box-shadow: var(--bevel-in); }
+.btn-switch-2:hover { background: var(--enamel); box-shadow: var(--bevel-in); }
 .rail-lead { font-size: 17px; }
 .board-lead { margin: 26px 0 0; max-width: 68ch; font-size: 15px; }
 .mimic-caller, .mimic-bar {
@@ -1619,9 +1626,9 @@ table, .plan-price, .index-plate, .mimic-feeders { font-variant-numeric: tabular
   .mimic-caller { text-align: left; }
   .mimic-feeders { padding: 0 0 0 26px; margin-top: 30px; position: relative; }
   .mimic-feeders::before { top: -30px; bottom: 14px; left: 26px; }
-  .mimic-feeders li { grid-template-columns: 12px 1fr auto; row-gap: 2px; padding-left: 18px; }
+  .mimic-feeders li { grid-template-columns: 12px 1fr auto; row-gap: 2px; padding-left: 18px; min-height: 62px; align-content: start; }
   .mimic-feeders li::before { left: -8px; width: 18px; top: 20px; display: block; }
-  .mimic-feeders .route { grid-column: 2 / -1; justify-self: start; }
+  .mimic-feeders .route { grid-column: 2 / -1; justify-self: start; visibility: hidden; }
   .mimic-actions { padding-top: 22px; }
   .mimic-steps { display: grid; grid-template-columns: 1fr; }
   .mimic-steps label { border-right-width: 1px; border-bottom-width: 0; }

@@ -89,6 +89,13 @@ rsync -a \
   --exclude 'payments' --exclude 'package.json' --exclude 'package-lock.json' \
   --exclude 'README.md' --exclude 'deploy.sh' --exclude '.DS_Store' --exclude '.gitignore' \
   --exclude 'scheduled' --exclude 'tools' \
+  `# 2026-09-06: the list named README.md specifically, so every other repo
+   # document shipped. Verified against the live site that day: /PRODUCT.md,
+   # /PRICING-FRAMEWORK-GAP.md, /.impeccable/config.json and
+   # /.impeccable/surfaces/index-html.md all returned 200 to anyone who asked.
+   # Repo docs are internal — product constraints, pricing gaps and design
+   # strategy — and none of them is a page. Exclude the class, not the file.` \
+  --exclude '*.md' --exclude '.impeccable' \
   `# Check tools write temp pages into the site root and clean them up in a
    # finally block -- which SIGKILL skips. A killed visual_qa left a
    # zero-byte _vqa.html here tonight. qa.py catches it and aborts the

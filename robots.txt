@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /
 Disallow: /cdn-cgi/
+# Repository documents are not pages. The deploy stage excluded README.md by
+# name until 2026-09-06, so PRODUCT.md, PRICING-FRAMEWORK-GAP.md and
+# .impeccable/ were briefly reachable; they are excluded by class now, and
+# these two lines keep crawlers off the copies the CDN still holds.
+Disallow: /*.md$
+Disallow: /.impeccable/
 
 # Assistants that cite sources are welcome here — there is a summary written
 # for them at /llms.txt, and the blog is the part worth quoting.

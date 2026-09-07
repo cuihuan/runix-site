@@ -243,7 +243,6 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
    cards — the only ones carrying a layer label above the title — it landed on
    that label and sat on top of its first letter. The label clears it the same
    way the title does. */
-.card-layer { padding-left: 38px; min-height: 26px; line-height: 26px; }
 .card:has(.card-layer) h3 { min-height: 0; }
 /* A job description is the longest prose on the site outside the blog, and its
    card spans the full container: measured on the deployed /careers at 1010px,
@@ -1182,7 +1181,14 @@ main > .section:first-child { padding-top: 64px; }
 /* The card stamp is the other half of the join. Monospace and muted so it
    reads as an index, not as a label competing with the product name. */
 .card-layer {
-  font: 700 12px/1.35 var(--mono);
+  /* The icon is positioned against the top of the card, where the title used
+     to start; the four product cards put this label there instead, so it has
+     to clear the icon the same way the title does. Kept in one rule: the
+     `font` shorthand below resets line-height, which silently undid an
+     earlier attempt that set it in a separate block above. */
+  padding-left: 38px;
+  min-height: 26px;
+  font: 700 12px/26px var(--mono);
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--ink-3);

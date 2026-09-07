@@ -239,6 +239,12 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 }
 .card .icon svg { width: 24px; height: 24px; stroke: var(--indigo); }
 .card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; padding-left: 38px; min-height: 26px; }
+/* The icon is positioned against the top of the card, so on the four product
+   cards — the only ones carrying a layer label above the title — it landed on
+   that label and sat on top of its first letter. The label clears it the same
+   way the title does. */
+.card-layer { padding-left: 38px; min-height: 26px; line-height: 26px; }
+.card:has(.card-layer) h3 { min-height: 0; }
 /* A job description is the longest prose on the site outside the blog, and its
    card spans the full container: measured on the deployed /careers at 1010px,
    122 characters a line. The card keeps its width -- it holds a title row and

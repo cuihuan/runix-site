@@ -1833,3 +1833,13 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .stats > div + div { border-top: 1px solid var(--line); }
   .stats dt { font-size: 38px; }
 }
+
+/* The honest version of a logo wall: the tools and platforms the products
+   work with, which is checkable, instead of customers, which we do not list.
+   Router speaks the OpenAI API; FS mounts through FUSE, an HDFS-compatible
+   client and a CSI driver, over S3-compatible storage. */
+.compat-band { border-top: 1px solid var(--line); padding: 30px 0 34px; }
+.compat-label { text-align: center; font: 600 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.compat-list { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px; }
+.compat-list li { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink-2); }
+@media (max-width: 560px) { .compat-list { gap: 8px 20px; } .compat-list li { font-size: 15px; } }

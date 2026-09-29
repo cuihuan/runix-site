@@ -1604,6 +1604,11 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 }
 @media (max-width: 560px) {
   .hero-flagship { padding: 72px 0 64px; }
+  /* The two-line break is composed for a wide measure; on a phone "layer"
+     was stranded on a line of its own. Let the headline wrap and balance. */
+  .hero-flagship h1 .line, .split-hero h1 .line { display: inline; }
+  .split-hero .actions { flex-direction: column; align-items: stretch; }
+  .split-hero .actions .btn { width: 100%; text-align: center; }
   .hero-flagship .sub { font-size: 17.5px; }
   .pmap { margin-top: 48px; border-radius: 14px; }
   .assure-grid { grid-template-columns: 1fr; }

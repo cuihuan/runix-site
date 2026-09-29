@@ -39,8 +39,11 @@ try "retired model id in an example" \
     blog/llm-gateway-guide.html '"model": "your-model-id"' '"model": "gpt-4o-2024-05-13"' \
     "will be retired on someone else"
 
+# Points router.html at another page's card. It used /pricing's card until
+# pricing.html was removed (2026-09-06); from then on the injection produced a
+# missing-file failure instead, and the case went unproved. /fs's card exists.
 try "two pages sharing one social card" \
-    router.html "assets/og/router.png" "assets/og/pricing.png" \
+    router.html "assets/og/router.png" "assets/og/fs.png" \
     "pages share the share card"
 
 try "aria-hidden link still focusable" \
@@ -66,7 +69,7 @@ try "pipeline stage count disagreeing" \
     "five stages"
 
 try "product count disagreeing" \
-    about.html "Four products" "Five products" \
+    about.html "Five products" "Six products" \
     "product pages"
 
 try "our own page named but not linked" \
@@ -133,8 +136,11 @@ try "a gap in the heading outline" \
     docs/router.html '<h2 id=' '<h4 id=' \
     "heading outline jumps"
 
+# The Router tile stopped being a whole-card link on 2026-09-29 (it holds a
+# code sample with a copy button, and a button cannot sit inside a link), so
+# the injection moved to the Pipeline tile, which still is one.
 try "a link whose name is a paragraph" \
-    index.html ' aria-label="Explore Runix Router"' '' \
+    index.html ' aria-label="Explore Runix Pipeline"' '' \
     "accessible name is"
 
 QA_SAVE=$QA

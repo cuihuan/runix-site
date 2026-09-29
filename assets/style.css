@@ -1604,6 +1604,8 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .nav-panel::before { display: none; }
   .nav-links .nav-prod { padding: 8px 0; }
   .nav-prod span, .nav-prod i { display: none; }
+  /* Sub-items under "Products" read lighter than it, not heavier. */
+  .nav-prod b { font-weight: 500; font-size: 14.5px; color: var(--ink-2); }
 }
 @media (max-width: 560px) {
   .hero-flagship { padding: 72px 0 64px; }

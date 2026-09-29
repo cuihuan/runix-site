@@ -34,24 +34,28 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-# 每页每宽度都起一次浏览器（50 页 × 3 宽 = 150 次）。用 Chrome.app 会：
-#   ① 每次在 macOS 应用系统里注册一次 —— 就是"系统一直在启动 Chrome"的观感
-#   ② 每次拉起一个 chrome_crashpad_handler，高频churn 下会崩（2026-08-06 13:31
-#      一分钟内 24 个 chrome_crashpad_handler 崩溃报告）
-#   ③ 慢 5.8 倍（实测 2.34s vs 0.40s 每次；150 次 = 351s vs 61s）
-# chrome-headless-shell 是专用无头二进制，无 .app bundle 不注册到应用系统。
-# 实测两者 --dump-dom 输出逐字节一致。找不到就回退 Chrome.app，行为不变。
+# One browser launch per page per width (50 pages x 3 widths = 150). Using
+# Chrome.app for that:
+#   1. registers with macOS as an application on every launch -- which is the
+#      "the system keeps starting Chrome" effect;
+#   2. starts a chrome_crashpad_handler each time, which crashes under this
+#      churn (2026-08-06 13:31: 24 crash reports in one minute);
+#   3. is 5.8x slower (measured 2.34s vs 0.40s per launch; 351s vs 61s for 150).
+# chrome-headless-shell is a dedicated headless binary with no .app bundle, so it
+# never registers. Measured: both produce byte-identical --dump-dom output. If it
+# is not installed, fall back to Chrome.app with no change in behaviour.
 def _find_browser():
     import glob
     for p in sorted(glob.glob(os.path.expanduser(
             "~/.cache/puppeteer/chrome-headless-shell/*/chrome-headless-shell-*/chrome-headless-shell")),
             reverse=True):
         if os.access(p, os.X_OK):
-            return p, False          # headless-shell 本身即无头，不用 --headless
+            return p, False          # headless-shell is headless already; no --headless flag
     return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", True
 
 CHROME, _NEEDS_HEADLESS_FLAG = _find_browser()
-# 关掉崩溃上报与首次运行流程：崩溃上报器是上面 ② 的来源，且对一次性渲染毫无用处
+# Crash reporting and first-run flows off: the crash reporter is the source of
+# problem 2 above, and it does nothing useful for a one-shot render.
 _BROWSER_FLAGS = ([ "--headless" ] if _NEEDS_HEADLESS_FLAG else []) + [
     "--disable-gpu", "--hide-scrollbars",
     "--disable-crash-reporter", "--disable-breakpad",

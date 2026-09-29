@@ -12,6 +12,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
 : "${CLOUDFLARE_API_TOKEN:?set CLOUDFLARE_API_TOKEN first}"
+# A Pages-scoped token cannot list accounts, so without this wrangler fails with
+# "Failed to automatically retrieve account IDs" -- unless it happens to find
+# the id cached in ./.wrangler, which is only true in the repository root. The
+# id identifies the account; it authorises nothing, so it belongs in the script.
+export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-30005bd01771d6fc41408e2c5df43ffd}"
 OUT="$(mktemp -d)"
 trap 'rm -rf "$OUT"' EXIT
 

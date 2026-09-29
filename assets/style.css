@@ -1609,3 +1609,110 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .cta-band { padding: 64px 22px; border-radius: 18px; }
   .section-head h2 { font-size: 31px; }
 }
+
+/* ---------- Product page parts (first used by /fs) ---------- */
+/* Split hero: the claim on the left, the thing itself on the right. Used where
+   a product can be shown working in a few lines, which a centred hero with
+   three buttons under it cannot do. */
+.split-hero { padding: 96px 0 88px; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+.split-hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, #fff 30%, rgba(255, 255, 255, 0.4) 70%, rgba(255, 255, 255, 0.75)),
+    repeating-linear-gradient(90deg, rgba(13, 17, 23, 0.045) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(0deg, rgba(13, 17, 23, 0.045) 0 1px, transparent 1px 80px);
+}
+.split-hero .container {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 64px; align-items: center;
+}
+.split-hero h1 {
+  font-size: clamp(40px, 5vw, 62px); font-weight: var(--display-weight);
+  letter-spacing: -0.045em; line-height: 1.04; max-width: 13ch;
+}
+.split-hero .badge { margin-bottom: 26px; }
+.split-hero .sub { margin-top: 24px; font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 36em; }
+.split-hero .actions { margin-top: 34px; display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-note { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
+.split-hero .term { box-shadow: 0 40px 80px -44px rgba(11, 16, 24, 0.55); }
+
+/* "Built on" strip: the provenance line, set as a ruled band rather than a
+   badge, because it is a fact about the product, not a decoration on it. */
+.oss-strip { border-bottom: 1px solid var(--line); background: var(--bg-alt); }
+.oss-strip .container { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding-top: 20px; padding-bottom: 20px; }
+.oss-strip b { font-size: 14.5px; font-weight: 650; }
+.oss-strip span { font: 500 13px/1.4 var(--mono); color: var(--ink-2); }
+.oss-strip a { margin-left: auto; font-size: 14px; }
+
+/* Capability grid: one hairline frame, six cells. The frame is drawn once and
+   the cells share edges, which is what makes a set of six read as one system
+   instead of six cards that happen to be neighbours. */
+.fgrid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--line); gap: 1px;
+}
+.fcell { background: #fff; padding: 34px 32px 36px; }
+.fcell .fno { display: block; font: 600 12px/1 var(--mono); letter-spacing: 0.08em; color: var(--cyan-text); margin-bottom: 18px; }
+.fcell h3 { font-size: 19px; font-weight: 650; letter-spacing: -0.02em; margin-bottom: 10px; }
+.fcell p { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+/* Architecture figure, drawn in HTML so it reflows on a phone instead of
+   shrinking a fixed-width drawing to unreadable labels. */
+.arch { margin: 0; max-width: 1000px; margin-inline: auto; }
+.arch-stack {
+  display: grid; gap: 0; border: 1px solid var(--line-2); border-radius: 18px; overflow: hidden; background: #fff;
+}
+.arch-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); border-top: 1px solid var(--line); }
+.arch-row:first-child { border-top: 0; }
+.arch-label {
+  display: flex; align-items: center; padding: 0 20px; background: var(--bg-alt); border-right: 1px solid var(--line);
+  font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+}
+.arch-cells { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px; }
+.arch-cells span {
+  flex: 1 1 0; min-width: 120px; text-align: center; padding: 13px 10px; border-radius: 10px;
+  border: 1px solid var(--line); background: #fff; font-size: 14px; font-weight: 550; color: var(--ink);
+}
+.arch-cells span small { display: block; margin-top: 3px; font-size: 12.5px; font-weight: 400; color: var(--ink-3); }
+.arch-core .arch-cells { background: var(--panel); }
+.arch-core .arch-label { background: #151a23; color: #b9c1cd; border-right-color: rgba(255, 255, 255, 0.08); }
+.arch-core .arch-cells span { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
+.arch-core .arch-cells span small { color: #b9c1cd; }
+.arch-store .arch-cells span { border-style: dashed; border-color: var(--line-2); background: transparent; }
+.arch figcaption { margin: 18px auto 0; max-width: 700px; text-align: center; color: var(--ink-3); font-size: 14.5px; line-height: 1.6; }
+
+/* Four code samples, each a worked example against the same namespace. */
+.codegrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.codegrid .codecell h3 { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; margin-bottom: 4px; }
+.codegrid .codecell > p { color: var(--ink-3); font-size: 14.5px; margin-bottom: 14px; }
+.codegrid .term pre { font-size: 12.5px; }
+
+/* Workloads: ruled rows, each with its evidence linked where there is some. */
+.uses { border-top: 1px solid var(--line); }
+.use {
+  display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 12px 48px;
+  padding: 30px 0; border-bottom: 1px solid var(--line);
+}
+.use:last-child { border-bottom: 0; }
+.use h3 { font-size: 20px; font-weight: 650; letter-spacing: -0.02em; }
+.use p { color: var(--ink-2); font-size: 15.5px; }
+.use .evidence { margin-top: 10px; font-size: 14px; color: var(--ink-3); }
+
+/* A figure with a source, not a claim. */
+.src-note { margin-top: 16px; font-size: 14px; color: var(--ink-3); max-width: 760px; }
+
+@media (max-width: 920px) {
+  .split-hero .container { grid-template-columns: 1fr; gap: 44px; }
+  .fgrid { grid-template-columns: 1fr 1fr; }
+  .codegrid { grid-template-columns: 1fr; }
+  .use { grid-template-columns: 1fr; }
+  .arch-row { grid-template-columns: 1fr; }
+  .arch-label { padding: 12px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .oss-strip a { margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .split-hero { padding: 64px 0 56px; }
+  .fgrid { grid-template-columns: 1fr; }
+  .fcell { padding: 28px 22px; }
+  .arch-cells span { min-width: 100%; }
+}

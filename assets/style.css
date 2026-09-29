@@ -1731,3 +1731,57 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .fcell { padding: 28px 22px; }
   .arch-cells span { min-width: 100%; }
 }
+
+/* ---------- Inner pages, flagship pass ---------- */
+/* Cards without an icon kept the 38px indent that clears one: every blog and
+   docs card title started to the right of its own meta line and excerpt. The
+   indent now exists only where the icon does. */
+.card:not(:has(.icon)) h3, .card:not(:has(.icon)) .card-layer { padding-left: 0; }
+.blog-list .card h3 a { color: var(--ink); }
+.blog-list .card h3 a:hover { color: var(--indigo); }
+
+/* One primary button. The site had two: near-black in the header and every
+   hero, brand indigo on the pricing and product bands. Two primaries on one
+   site means neither reads as the primary. Indigo stays the link colour. */
+.btn-grad { background: var(--ink); }
+.btn-grad:hover { background: #262b36; }
+
+/* Notes and caveats: a neutral panel, not a blue alert box. The copy in them
+   is a statement of status, and tinting it the brand colour made the least
+   promotional sentence on each page look like the most promotional one. */
+.callout { background: var(--bg-alt); border-color: var(--line); color: var(--ink-2); border-radius: var(--radius); }
+.callout svg { stroke: var(--ink-3); }
+
+/* Centred product heroes: the status chip leads the headline, as on /fs and
+   the home page, and the drafting grid gives the band the same ground. The
+   chip stays after the h1 in the markup, so the document outline is unchanged. */
+.page-hero.center { position: relative; overflow: hidden; padding: 112px 0 96px; }
+.page-hero.center::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 55%, #fff 92%),
+    repeating-linear-gradient(90deg, rgba(13, 17, 23, 0.045) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(0deg, rgba(13, 17, 23, 0.045) 0 1px, transparent 1px 80px);
+  background-position: center top;
+}
+.page-hero.center .container { position: relative; display: flex; flex-direction: column; align-items: center; }
+.page-hero.center .badge { order: -1; margin: 0 0 24px; }
+.page-hero.center h1 { font-size: 60px; line-height: 1.05; letter-spacing: -0.045em; }
+.page-hero.center p { font-size: 19px; max-width: 600px; }
+
+/* Long-form reading: 17px on a 640px measure (about 76 characters), up from
+   15.5px on 542px. The old size was set for a denser layout; next to 52px
+   titles and a 1200px canvas it read as a footnote. */
+.article > * { max-width: 640px; }
+.article p, .article li { font-size: 17px; line-height: 1.75; }
+.article h2 { font-size: 26px; font-weight: 650; letter-spacing: -0.025em; margin: 48px 0 14px; }
+.article h3 { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; margin: 30px 0 10px; }
+.article > .table-scroll, .article > pre, .article > figure, .article > .diagram { max-width: 820px; }
+
+@media (max-width: 560px) {
+  .page-hero.center { padding: 72px 0 60px; }
+  .page-hero.center h1 { font-size: 34px; }
+  .page-hero.center .container { align-items: stretch; }
+  .page-hero.center .badge { align-self: center; }
+  .article p, .article li { font-size: 16.5px; }
+}

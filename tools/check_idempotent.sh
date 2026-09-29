@@ -19,9 +19,13 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 2
 fi
 
-BUILDERS="add_closing_ctas add_docs_nav add_router_diagram center_product_heroes
+# center_product_heroes, open_self_serve_signup and numbered_product_system
+# were retired from this list on 2026-09-29: each now exits at its top with a
+# SUPERSEDED note, because the site has since moved past what they build and
+# re-running any of them would regress it. flagship_nav owns the header nav.
+BUILDERS="add_closing_ctas add_docs_nav add_router_diagram
           expand_about fix_orphans wrap_tables sync_schema add_related add_glossary
-          open_self_serve_signup credits_on_request numbered_product_system"
+          credits_on_request flagship_nav"
 
 fail=0
 for t in $BUILDERS; do

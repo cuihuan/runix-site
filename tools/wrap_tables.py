@@ -37,7 +37,10 @@ for path in sorted(glob.glob("blog/*.html") + glob.glob("docs/*.html") + glob.gl
     html = open(path).read()
     if "<table" not in html:
         continue
-    if "table-scroll" in html:
+    # A .dsheet is already a keyboard-scrollable, labelled frame (the /plans
+    # datasheet and the /fs tables). Wrapping it again nests a second focusable
+    # region inside the first, so a keyboard user tabs into the same table twice.
+    if "table-scroll" in html or 'class="dsheet' in html:
         skipped += 1
         continue
     count = len(re.findall(r"<table\b.*?</table>", html, flags=re.S))

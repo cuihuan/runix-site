@@ -21,6 +21,12 @@ thing the page exists to show.
 
 Idempotent. Run from the site root.
 """
+
+# SUPERSEDED (2026-09-06): pricing.html was removed when /pricing became a redirect to /plans, and the script cannot run without it
+# Re-running this now would regress the live site, so it stops here. It stays
+# in the repository as the record of how the site got its earlier shape.
+import sys as _sys
+_sys.exit("center_product_heroes.py: superseded by the /plans page -- kept for the record, not for re-running")
 import os
 import pathlib
 import re

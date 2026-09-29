@@ -37,6 +37,12 @@ console opens as its own app rather than replacing the marketing site.
 
 Idempotent. Run from the site root.
 """
+
+# SUPERSEDED (2026-09-29): the home page and the header nav were rebuilt in the flagship pass; this script rewrites both to the four-product version
+# Re-running this now would regress the live site, so it stops here. It stays
+# in the repository as the record of how the site got its earlier shape.
+import sys as _sys
+_sys.exit("numbered_product_system.py: superseded by tools/flagship_nav.py and the 2026-09-29 home page -- kept for the record, not for re-running")
 import os
 import re
 import pathlib

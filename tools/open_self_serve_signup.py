@@ -28,6 +28,12 @@ limits, invoicing); it just stops being the only door.
 Idempotent — re-running finds the new copy already in place and does nothing.
 Run from the site root.
 """
+
+# SUPERSEDED (2026-09): the site went back to invite-only intake (see close_signup_invite_only.py); this script flips every CTA to self-serve signup
+# Re-running this now would regress the live site, so it stops here. It stays
+# in the repository as the record of how the site got its earlier shape.
+import sys as _sys
+_sys.exit("open_self_serve_signup.py: superseded by close_signup_invite_only.py -- kept for the record, not for re-running")
 import os
 import pathlib
 import sys

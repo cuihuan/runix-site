@@ -110,6 +110,22 @@ which is a positioning decision. `python3 tools/publish.py
 open-source-gateway-continuity` ships it. See `OSS-LANDSCAPE.md` for the
 research behind it.
 
+## The header nav
+
+`flagship_nav.py` owns the header nav, the footer's Product column and the
+no-script nav fallback on every page (2026-09-29). It rebuilds the whole
+`<nav class="nav">` block, so a nav change is an edit to the lists at the top
+of that file followed by one run -- never a hand edit to 60 pages. It is in
+`check_idempotent.sh`'s list, so a hand edit that drifts from it shows up there.
+
+## Superseded builders
+
+`open_self_serve_signup.py`, `numbered_product_system.py` and
+`center_product_heroes.py` exit at their first line with a SUPERSEDED note.
+The site has moved past what each of them builds, and re-running one would
+regress it; they are kept because their docstrings are the record of why the
+site took its earlier shape.
+
 ## One-shot builders (already applied; kept for reproducibility)
 
 `add_closing_ctas.py` · `add_docs_nav.py` · `add_glossary.py` ·

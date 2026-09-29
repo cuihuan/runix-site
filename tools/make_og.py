@@ -50,7 +50,7 @@ body {{
   -webkit-font-smoothing:antialiased;
 }}
 .top {{ display:flex; align-items:center; gap:14px; }}
-.mark {{ width:30px; height:30px; }}
+.mark {{ width:36px; height:36px; }}
 .name {{ font-size:25px; font-weight:650; letter-spacing:-0.015em; }}
 .cat {{
   margin-left:auto; font-size:19px; font-weight:600; color:#3ec9e8;
@@ -66,12 +66,7 @@ h1 {{
 .dot {{ width:5px; height:5px; border-radius:50%; background:#3ec9e8; flex:none; }}
 </style>
 <div class=top>
-  <svg class=mark viewBox="0 0 32 32" fill="none" aria-hidden="true">
-    <rect x="1.4" y="1.4" width="29.2" height="29.2" rx="8.4"
-          stroke="#3ec9e8" stroke-width="2.4"/>
-    <path d="M10.6 22.4V9.6h6.2a4.1 4.1 0 0 1 0 8.2h-6.2M17 17.8l4.8 4.6"
-          stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
+  <img class=mark src="{logo}" alt="">
   <div class=name>Runix</div>
   <div class=cat>{cat}</div>
 </div>
@@ -115,8 +110,19 @@ def size_for(title):
 MANIFEST = pathlib.Path("tools/og.json")
 
 
+# The site's own mark, embedded, so a card carries the logo the header shows.
+# The cards used a separate "R" tile drawn in this file for months after the
+# site moved to the orbital mark, because nothing tied the two together.
+LOGO_URI = "data:image/svg+xml;base64," + __import__("base64").b64encode(
+    pathlib.Path("assets/logo.svg").read_bytes()).decode()
+# A card is stale when its text changes -- and when the template or the logo
+# does. Without the second half a redesigned card only reached the pages whose
+# titles happened to change afterwards, and the set drifted apart silently.
+TEMPLATE_ID = hashlib.sha256(TPL.encode() + LOGO_URI.encode()).hexdigest()[:8]
+
+
 def fingerprint(title, cat, foot):
-    return hashlib.sha256(f"{title}\x00{cat}\x00{foot}\x00{size_for(title)}".encode()).hexdigest()[:16]
+    return hashlib.sha256(f"{title}\x00{cat}\x00{foot}\x00{size_for(title)}\x00{TEMPLATE_ID}".encode()).hexdigest()[:16]
 
 
 def render(jobs, font_uri, only=None):
@@ -132,7 +138,7 @@ def render(jobs, font_uri, only=None):
     OUT.mkdir(parents=True, exist_ok=True)
     made = []
     for path, out, title, cat, foot in jobs:
-        doc = TPL.format(font=font_uri, size=size_for(title),
+        doc = TPL.format(logo=LOGO_URI, font=font_uri, size=size_for(title),
                          cat=_h.escape(cat), title=_h.escape(title), foot=_h.escape(foot))
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False) as f:
             f.write(doc)
@@ -170,7 +176,7 @@ def check_fit(jobs, font_uri):
     fails is as useless as one that never does. Each card now carries its own
     size rule keyed by id.
     """
-    css = TPL.format(font=font_uri, size=70, cat="", title="", foot="")
+    css = TPL.format(logo=LOGO_URI, font=font_uri, size=70, cat="", title="", foot="")
     css = css.split("<style>", 1)[1].split("</style>", 1)[0]
     css = css.replace("html,body { width:1200px; height:630px; }", "")
     css = css.replace("body {", ".card {")
@@ -178,7 +184,7 @@ def check_fit(jobs, font_uri):
                      for i, (_p, _o, t, _c, _f) in enumerate(jobs))
     cards = []
     for i, (path, _out, title, cat, foot) in enumerate(jobs):
-        inner = TPL.format(font=font_uri, size=size_for(title), cat=_h.escape(cat),
+        inner = TPL.format(logo=LOGO_URI, font=font_uri, size=size_for(title), cat=_h.escape(cat),
                            title=_h.escape(title), foot=_h.escape(foot))
         inner = inner.split("</style>", 1)[1]
         cards.append(f'<div class="card" id="c{i}" data-path="{_h.escape(path)}">{inner}</div>')

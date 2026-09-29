@@ -41,9 +41,9 @@ because a lapsed certificate takes everything down and gives a month of
 warning nobody is watching for.
 | `link_rot.py` | Probes every external source we cite (published pages and drafts) twice and reports any that stop resolving. Wired into `daily_check.sh`: a deploy cannot break a link on another company's site, but time can. |
 
-## Product sub-sites (five live subdomains)
+## Product sub-sites (six live subdomains)
 
-`build_subsites.py <outdir>` rebuilds the four product landing pages as
+`build_subsites.py <outdir>` rebuilds the five product landing pages as
 standalone sites. They are **not** covered by `deploy.sh` — refreshing them is
 a separate step that is easy to forget, and they were three days stale while
 the main site changed all night.
@@ -61,6 +61,7 @@ have to remember.
 | `runix-comic` | comic.runixcloud.io |
 | `runix-code` | code.runixcloud.io |
 | `runix-data` | data.runixcloud.io |
+| `runix-fs` | fs.runixcloud.io (added 2026-09-29 with the Runix FS launch) |
 
 **They also carry `_headers`, so a change to the CSP or cache policy on the main
 site does not reach them until they are rebuilt.** That gap was live for about

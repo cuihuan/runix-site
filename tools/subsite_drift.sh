@@ -11,7 +11,7 @@
 # times, and a single probe right after a deploy reports drift that is really
 # propagation. Two disagreements are drift; one is the edge catching up.
 set -uo pipefail
-HOSTS=${HOSTS:-"gateway comic code data"}
+HOSTS=${HOSTS:-"gateway comic code data fs"}
 
 probe() {  # host -> "<ref> <bytes>"
   local host=$1 ref bytes
@@ -34,7 +34,7 @@ probe() {  # host -> "<ref> <bytes>"
 # reported agreement. Proved by editing router.html, deploying, and watching it
 # say "all match" while the sub-domain still had the old sentence. The file on
 # disk is the thing that was just deployed, so it cannot be stale.
-declare -a MIRROR=("gateway:router.html" "comic:comic.html" "code:code.html" "data:pipeline.html")
+declare -a MIRROR=("gateway:router.html" "comic:comic.html" "code:code.html" "data:pipeline.html" "fs:fs.html")
 
 normalise() {  # stdin: html -> 16 hex chars of <main>'s visible text
   python3 -c '

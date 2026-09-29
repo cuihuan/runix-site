@@ -1858,3 +1858,11 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .section-head.center { text-align: left; margin-left: 0; margin-right: 0; }
   .section-head.center p { margin-left: 0; margin-right: 0; }
 }
+
+/* The jump lists on /glossary and /faq: two columns from tablet width up. As a
+   single column the glossary's list ran twenty entries down the page before
+   the first definition. */
+@media (min-width: 768px) {
+  .article > .doc-toc[aria-labelledby="lookup-toc"] ul { columns: 2; column-gap: 40px; }
+  .article > .doc-toc[aria-labelledby="lookup-toc"] li { break-inside: avoid; }
+}

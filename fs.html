@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runix FS — AI-Native File System on Object Storage</title>
+<meta name="description" content="Runix FS puts a POSIX file system and a multi-tier cache over your S3-compatible storage, so training, inference and agents read data without copying it.">
+<link rel="canonical" href="https://runixcloud.io/fs">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<meta property="og:title" content="Runix FS — AI-Native File System on Object Storage">
+<meta property="og:description" content="Runix FS puts a POSIX file system and a multi-tier cache over your S3-compatible storage, so training, inference and agents read data without copying it.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/fs">
+<meta property="og:site_name" content="Runix">
+<meta property="og:image" content="https://runixcloud.io/assets/og/fs.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/fs.png?v=0">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=58">
+<script src="assets/site-config.js?v=14" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Runix FS",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux",
+  "description": "A POSIX file system and multi-tier distributed cache over S3-compatible object storage, for AI training, inference and agent workloads. Built on Curvine.",
+  "url": "https://runixcloud.io/fs",
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "isBasedOn": {
+    "@type": "SoftwareSourceCode",
+    "name": "Curvine",
+    "codeRepository": "https://github.com/CurvineIO/curvine",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "programmingLanguage": "Rust"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is Runix FS related to Curvine?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Runix FS is built on Curvine, an open-source distributed file system and cache released under Apache 2.0 and accepted as a Cloud Native Computing Foundation Sandbox project. Runix deploys it into your cloud account and supports it under a contract with a US company."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does my data live?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In your own object storage. Runix FS caches blocks on its workers, but the bucket stays the durable copy, and file paths map one-to-one to object keys, so the data stays readable without Runix FS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do we have to change our code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Applications read and write through a FUSE mount as if it were a local directory, through the S3-compatible gateway, or through the HDFS-compatible client, so training scripts, Spark jobs and S3 tools keep working."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which storage does it work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Amazon S3 and any S3-compatible store such as MinIO, plus Google Cloud Storage, Azure Blob Storage, Alibaba Cloud OSS and HDFS. The cluster runs on Kubernetes, on virtual machines or on bare metal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is it priced?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "During early access, pricing is quoted per deployment. Tell us how much data you have and what reads it, and we come back with a quote within one business day."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can we buy it through AWS Marketplace?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not yet. A listing is in preparation. Until then you contract directly with Runix AI Inc and are invoiced in USD."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Runix FS",
+      "item": "https://runixcloud.io/fs"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Runix FS — AI-Native File System on Object Storage">
+<meta name="twitter:description" content="Runix FS puts a POSIX file system and a multi-tier cache over your S3-compatible storage, so training, inference and agents read data without copying it.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top active" href="/#products">Products</a>
+        <div class="nav-panel">
+          <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          <a class="nav-prod" href="/fs"><b>Runix FS <i>New</i></b><span>AI-native file system on your object storage</span></a>
+          <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>Raw material into model-ready data</span></a>
+          <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+          <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          <a class="nav-prod" href="/#platform"><b>Platform overview</b><span>How the five products fit together</span></a>
+        </div>
+      </div>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="split-hero">
+  <div class="container">
+    <div>
+      <span class="badge">Runix FS · Early access</span>
+      <h1>The AI file system for your object storage</h1>
+      <p class="sub">Runix FS puts a POSIX file system and a multi-tier distributed cache in front of the S3-compatible storage you already run. Training jobs, inference servers and agents read the same data through a local path, with no copies and no rewritten I/O code.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/about#contact">Request early access</a>
+        <a class="btn btn-ghost" href="/docs/fs">Read the quick start</a>
+      </div>
+      <p class="hero-note">Built on Curvine, an open-source CNCF Sandbox project under the Apache 2.0 licence.</p>
+    </div>
+    <div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><b>mount an existing bucket</b></div>
+<pre><span class="c"># 1. Attach the bucket to the namespace</span>
+$ bin/cv mount s3://training-data/imagenet \
+    /training-data/imagenet \
+    --write-type cache_mode \
+    -c s3.endpoint_url=https://s3.us-east-1.amazonaws.com \
+    -c s3.region_name=us-east-1 \
+    -c s3.credentials.access=$AWS_ACCESS_KEY_ID \
+    -c s3.credentials.secret=$AWS_SECRET_ACCESS_KEY
+
+<span class="c"># 2. Expose it as a local directory</span>
+$ bin/curvine-fuse.sh start --mnt-path /mnt/curvine
+
+<span class="c"># 3. Your training code reads a path, as before</span>
+$ ls /mnt/curvine/training-data/imagenet
+<span class="g">train/  val/  labels.csv</span></pre>
+      </div>
+      <p class="term-cap">Commands from the Curvine documentation. The bucket, region and listing are placeholders.</p>
+    </div>
+  </div>
+</section>
+
+<div class="oss-strip" aria-label="Open-source foundation">
+  <div class="container">
+    <b>Built on Curvine</b>
+    <span>Apache 2.0</span>
+    <span>CNCF Sandbox project</span>
+    <span>Rust core, no garbage collector</span>
+    <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine on GitHub &rarr;</a>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Object-storage economics, local-file semantics</h2>
+      <p>Object storage is where AI data lives because it is cheap and durable. It is also slow to list, slow to open and has no rename. Runix FS keeps the bucket as the source of truth and puts a file system and a cache in front of it.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">01</span>
+        <h3>POSIX, not a new API</h3>
+        <p>A FUSE mount behaves like a local directory: open, read, write, rename and list. Tools such as git and inotify work against it unmodified.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">02</span>
+        <h3>A cache that tiers itself</h3>
+        <p>Workers hold memory, SSD and HDD tiers. Hot data is promoted to faster tiers automatically; anything not cached is read from the bucket on demand.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">03</span>
+        <h3>Every way in</h3>
+        <p>POSIX through FUSE, an S3-compatible gateway, an HDFS-compatible client for Spark and Flink, and SDKs for Java, Python and Rust, all on one namespace.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">04</span>
+        <h3>Kubernetes-native volumes</h3>
+        <p>A CSI driver provisions ReadWriteMany volumes by creating a directory, not by calling a cloud API, so provisioning keeps up when thousands of pods start at once.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">05</span>
+        <h3>Your bucket stays readable</h3>
+        <p>File paths map one-to-one to object keys. If the cluster is stopped, the data is still in your bucket, in its original layout, readable by anything else.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">06</span>
+        <h3>Built to stay up</h3>
+        <p>Metadata is replicated across masters with Raft, cached blocks can be replicated across workers, and a built-in web UI and metrics show every component.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Where it sits in your stack</h2>
+      <p>Between the workloads that read data and the bucket that keeps it. Metadata goes to the masters; data is served by the workers, which fetch from the bucket on a miss and write back to it for durability.</p>
+    </div>
+    <figure class="arch">
+      <div class="arch-stack">
+        <div class="arch-row">
+          <p class="arch-label">Workloads</p>
+          <div class="arch-cells"><span>Training</span><span>Inference</span><span>AI agents</span><span>Analytics</span></div>
+        </div>
+        <div class="arch-row">
+          <p class="arch-label">Interfaces</p>
+          <div class="arch-cells"><span>FUSE<small>POSIX mount</small></span><span>S3 gateway<small>S3 API</small></span><span>HDFS client<small>Spark, Flink</small></span><span>SDKs<small>Java, Python, Rust</small></span><span>CSI driver<small>Kubernetes</small></span></div>
+        </div>
+        <div class="arch-row arch-core">
+          <p class="arch-label">Runix FS cluster</p>
+          <div class="arch-cells"><span>Masters<small>Metadata, Raft-replicated</small></span><span>Workers<small>Memory, SSD, HDD cache</small></span><span>Web UI and metrics<small>Every component</small></span></div>
+        </div>
+        <div class="arch-row arch-store">
+          <p class="arch-label">Your storage</p>
+          <div class="arch-cells"><span>Amazon S3</span><span>Google Cloud Storage</span><span>Azure Blob</span><span>MinIO</span><span>HDFS</span></div>
+        </div>
+      </div>
+      <figcaption>On a cache miss a worker reads the block from the bucket and keeps it; the bucket remains the durable copy throughout.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Your code does not change</h2>
+      <p>Four ways in, all against the same namespace. Every command below is from the Curvine documentation; hosts and bucket names are placeholders.</p>
+    </div>
+    <div class="codegrid">
+      <div class="codecell">
+        <h3>Warm the cache before the job starts</h3>
+        <p>Load a path into the cache ahead of time, and watch the job finish.</p>
+        <div class="term">
+          <div class="term-bar"><i></i><i></i><i></i><b>shell</b></div>
+<pre>$ bin/cv load /training-data/imagenet/train/shard-00001.tar --watch
+$ bin/cv fs ls /training-data/imagenet
+$ bin/cv report</pre>
+        </div>
+      </div>
+      <div class="codecell">
+        <h3>Read it from Python</h3>
+        <p>No SDK: a mounted path is a path.</p>
+        <div class="term">
+          <div class="term-bar"><i></i><i></i><i></i><b>train.py</b></div>
+<pre>from pathlib import Path
+
+root = Path("/mnt/curvine/training-data/imagenet")
+for shard in sorted(root.glob("train/*.tar"))[:2]:
+    print(shard.name, len(shard.read_bytes()))</pre>
+        </div>
+      </div>
+      <div class="codecell">
+        <h3>Give every pod a volume</h3>
+        <p>A StorageClass for the CSI driver; each claim becomes a directory.</p>
+        <div class="term">
+          <div class="term-bar"><i></i><i></i><i></i><b>storage-class.yaml</b></div>
+<pre>apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: curvine-sc
+provisioner: curvine
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+parameters:
+  master-addrs: "m0:8995,m1:8995,m2:8995"
+  fs-path: "/agents"
+  path-type: "DirectoryOrCreate"</pre>
+        </div>
+      </div>
+      <div class="codecell">
+        <h3>Or speak S3 to it</h3>
+        <p>The gateway serves the same files to anything with an S3 client.</p>
+        <div class="term">
+          <div class="term-bar"><i></i><i></i><i></i><b>shell</b></div>
+<pre>$ aws s3 ls s3://training-data/ \
+    --endpoint-url http://localhost:9900
+$ aws s3 cp s3://training-data/labels.csv . \
+    --endpoint-url http://localhost:9900</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Built for the workloads that stall on I/O</h2>
+      <p>GPUs are the expensive part of an AI cluster, and they sit idle while data crosses the network one object at a time. These are the places that shows up first.</p>
+    </div>
+    <div class="uses">
+      <div class="use">
+        <h3>Model training</h3>
+        <div>
+          <p>Datasets and checkpoints are cached next to the GPU nodes, so epochs after the first read from the cache instead of the bucket, and checkpoints land on a file system instead of a multipart upload.</p>
+        </div>
+      </div>
+      <div class="use">
+        <h3>LLM inference</h3>
+        <div>
+          <p>A shared tier for the KV cache that outlives a single GPU's memory, so a prompt prefix computed on one replica can be reused on another.</p>
+          <p class="evidence">AWS published a reference architecture for this on SageMaker HyperPod with Curvine as the shared tier, reporting up to 2.7&times; faster time to first token at 2,500 tokens. <a href="https://aws.amazon.com/blogs/machine-learning/tiered-kv-cache-for-large-llms-on-amazon-sagemaker-hyperpod-with-curvine/" rel="noopener">Read the AWS post</a></p>
+        </div>
+      </div>
+      <div class="use">
+        <h3>AI agent platforms</h3>
+        <div>
+          <p>Every agent wants its own writable workspace. Block volumes run into per-node attachment limits long before a node runs out of CPU; a directory on a shared file system does not.</p>
+          <p class="evidence">The Curvine project provisioned 10,000 volumes for 10,000 agent pods on 99 EKS nodes, all bound and running, with a storage cluster of four pods. <a href="https://curvineio.github.io/blog/2026/07/07/ai-agent-storage-curvine-eks" rel="noopener">Read the write-up</a></p>
+        </div>
+      </div>
+      <div class="use">
+        <h3>Model and artifact distribution</h3>
+        <div>
+          <p>Weights and artifacts are pulled once from the bucket and served from the cache to every node that starts a replica, instead of each node downloading the same files.</p>
+        </div>
+      </div>
+      <div class="use">
+        <h3>Analytics on the lake</h3>
+        <div>
+          <p>Spark, Flink and OLAP engines read hot tables through the HDFS-compatible client or the S3 gateway, with the cache absorbing repeated scans of the same files.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>What the project has measured</h2>
+      <p>These figures are published by the Curvine project from its own benchmark runs. They are not a Runix service level. During early access we measure on your data, your instances and your access pattern.</p>
+    </div>
+    <div class="dsheet" tabindex="0" role="region" aria-label="Published Curvine benchmark figures">
+      <table aria-label="Published Curvine benchmark figures">
+        <thead><tr><th scope="col">Measure</th><th scope="col">Result</th><th scope="col">Conditions</th></tr></thead>
+        <tbody>
+          <tr class="grp"><th scope="colgroup" colspan="3">Metadata operations</th></tr>
+          <tr><th scope="row">Create</th><td>19,985 ops/s</td><td>40 concurrent clients</td></tr>
+          <tr><th scope="row">Open</th><td>60,376 ops/s</td><td>40 concurrent clients</td></tr>
+          <tr><th scope="row">Rename</th><td>43,009 ops/s</td><td>40 concurrent clients</td></tr>
+          <tr><th scope="row">Delete</th><td>39,013 ops/s</td><td>40 concurrent clients</td></tr>
+          <tr class="grp"><th scope="colgroup" colspan="3">Throughput</th></tr>
+          <tr><th scope="row">Sequential read, 256 KiB blocks</th><td>9.5 GiB/s</td><td>32 threads</td></tr>
+          <tr><th scope="row">Random read, 256 KiB blocks</th><td>7.8 GiB/s</td><td>32 threads</td></tr>
+          <tr class="grp"><th scope="colgroup" colspan="3">Scale</th></tr>
+          <tr><th scope="row">Small files in one cluster</th><td>5 billion</td><td>Stated design capacity</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src-note">Source: the Curvine <a href="https://github.com/CurvineIO/curvine" rel="noopener">README</a> and <a href="https://curvineio.github.io/docs/category/benchmark" rel="noopener">benchmark documentation</a>, which also describe the hardware and the comparison systems.</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Open source, or run with us</h2>
+      <p>The file system is the same. What Runix adds is the part a production team needs around it: someone to size it, deploy it, answer for it, and sign for it.</p>
+    </div>
+    <div class="dsheet" tabindex="0" role="region" aria-label="Curvine open source compared with Runix FS">
+      <table aria-label="Curvine open source compared with Runix FS">
+        <thead><tr><th scope="col"></th><th scope="col">Curvine, open source</th><th scope="col">Runix FS</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Licence</th><td>Apache 2.0</td><td>Apache 2.0 core</td></tr>
+          <tr><th scope="row">Where it runs</th><td>Wherever you run it</td><td>Your AWS, Google Cloud or Azure account</td></tr>
+          <tr><th scope="row">Deployment</th><td>Self-managed</td><td>Sized and deployed with our engineers</td></tr>
+          <tr><th scope="row">Support</th><td>Community, on GitHub</td><td>Our team, 1 business day response</td></tr>
+          <tr><th scope="row">Contract</th><td class="no">None</td><td>Runix AI Inc, MSA and DPA on request</td></tr>
+          <tr><th scope="row">Price</th><td>Free</td><td>Quoted per deployment in early access</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>How is Runix FS related to Curvine?</h3>
+        <p>Runix FS is built on Curvine, an open-source distributed file system and cache released under Apache 2.0 and accepted as a Cloud Native Computing Foundation Sandbox project. Runix deploys it into your cloud account and supports it under a contract with a US company.</p>
+      </div>
+      <div class="qa">
+        <h3>Where does my data live?</h3>
+        <p>In your own object storage. Runix FS caches blocks on its workers, but the bucket stays the durable copy, and file paths map one-to-one to object keys, so the data stays readable without Runix FS.</p>
+      </div>
+      <div class="qa">
+        <h3>Do we have to change our code?</h3>
+        <p>No. Applications read and write through a FUSE mount as if it were a local directory, through the S3-compatible gateway, or through the HDFS-compatible client, so training scripts, Spark jobs and S3 tools keep working.</p>
+      </div>
+      <div class="qa">
+        <h3>Which storage does it work with?</h3>
+        <p>Amazon S3 and any S3-compatible store such as MinIO, plus Google Cloud Storage, Azure Blob Storage, Alibaba Cloud OSS and HDFS. The cluster runs on Kubernetes, on virtual machines or on bare metal.</p>
+      </div>
+      <div class="qa">
+        <h3>How is it priced?</h3>
+        <p>During early access, pricing is quoted per deployment. Tell us how much data you have and what reads it, and we come back with a quote within one business day.</p>
+      </div>
+      <div class="qa">
+        <h3>Can we buy it through AWS Marketplace?</h3>
+        <p>Not yet. A listing is in preparation. Until then you contract directly with Runix AI Inc and are invoiced in USD.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Put a file system in front of your bucket</h2>
+      <p>Tell us where your data lives, how big it is and what reads it. We reply within one business day with a deployment plan.</p>
+      <a class="btn btn-grad" href="/about#contact">Request early access</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+        <p class="desc">AI, made effortless: Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/router">Runix Router</a>
+        <a href="/fs">Runix FS</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

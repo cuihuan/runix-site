@@ -1,11 +1,13 @@
 # Runix
 
-> Runix builds tools that make AI effortless to use. Its flagship, Runix Router,
-> is an LLM router: one OpenAI-compatible API in front of many model providers,
-> with routing, automatic failover, central key custody, per-key quotas and
-> per-request cost attribution. Operated by Runix AI Inc, a company incorporated
-> in Wyoming, United States. The service is in early access — keys are issued on
-> request rather than through self-serve signup.
+> Runix builds infrastructure for teams running AI in production. Runix Router is
+> an LLM router: one OpenAI-compatible API in front of many model providers, with
+> routing, automatic failover, central key custody, per-key quotas and per-request
+> cost attribution. Runix FS is an AI-native file system: a POSIX file system and
+> multi-tier cache over S3-compatible object storage, built on the open-source
+> Curvine project. Operated by Runix AI Inc, a company incorporated in Wyoming,
+> United States. Both are in early access — accounts are set up on request rather
+> than through self-serve signup.
 
 ## Products
 
@@ -17,6 +19,14 @@ Products at different stages. The statuses below are literal.
   written data terms, automatic failover between providers with streaming preserved, and
   routing by cost, health and configuration. Hosted API, billed on usage.
   https://runixcloud.io/router
+- **Runix FS** — *status: early access, launched September 2026.* An AI-native file system:
+  a POSIX file system (FUSE) and a memory/SSD/HDD distributed cache in front of
+  S3-compatible object storage, with an S3-compatible gateway, an HDFS-compatible client,
+  Java/Python/Rust SDKs and a Kubernetes CSI driver. File paths map one-to-one to object
+  keys, so the bucket stays the durable, independently readable copy. Built on Curvine
+  (Apache 2.0, a CNCF Sandbox project); Runix deploys it into the customer's own cloud
+  account and supports it under contract. Priced per deployment during early access.
+  https://runixcloud.io/fs
 - **Runix Pipeline** — *status: in development with design partners.* Managed data
   preparation for AI: ingestion, cleaning, three tiers of deduplication, schema-validated
   LLM extraction, PII masking that fails closed, and a quality report with every delivery.
@@ -36,6 +46,7 @@ Products at different stages. The statuses below are literal.
 - [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
 - [Docs hub](https://runixcloud.io/docs/): guides for every product, honest about status.
 - [Router quickstart](https://runixcloud.io/docs/router): base URL and key, model selection, streaming, failover semantics, limits.
+- [FS quick start](https://runixcloud.io/docs/fs): start a cluster, attach an S3 bucket, FUSE mount, Kubernetes CSI volumes, S3 gateway.
 - [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the six stages, delivery and the quality report.
 - [Code rollout guide](https://runixcloud.io/docs/code): cohorts, seats and policies, the review-gated workflow.
 - [Comic workflow guide](https://runixcloud.io/docs/comic): the three production stages and how cohorts run.
@@ -61,6 +72,7 @@ Products at different stages. The statuses below are literal.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
 - [Home](https://runixcloud.io/): the product line, how the router is integrated, company facts.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
+- [Runix FS](https://runixcloud.io/fs): the AI-native file system: capabilities, architecture, workloads, published benchmarks, FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the six pipeline stages and what an engagement looks like.
 - [Runix Code](https://runixcloud.io/code): codebase-aware assistance, agentic workflows, team controls, and the waitlist.
 - [Runix Comic](https://runixcloud.io/comic): the three production stages being built, who it is for, and the waitlist.

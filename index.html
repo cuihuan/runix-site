@@ -180,7 +180,10 @@
           </div>
           <pre>curl https://api.router.runixcloud.io/v1/chat/completions \
   -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
-  -d <span class="s">'{"model": "auto", "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
+  -d <span class="s">'{
+    "model": "auto",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'</span></pre>
         </div>
         <p class="card-meta"><span>Status: early access</span> · <span>Hosted API</span> · <span>Usage-based</span></p>
         <a class="read-more" href="/router">Explore Runix Router &rarr;</a>

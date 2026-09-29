@@ -1438,7 +1438,7 @@ main > .section:first-child { padding-top: 64px; }
     display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     column-gap: 72px; align-items: end;
   }
-  .section-head.center h2 { grid-column: 1; grid-row: 1 / span 4; max-width: 15ch; }
+  .section-head.center h2 { grid-column: 1; grid-row: 1 / span 4; }
   .section-head.center > :not(h2) { grid-column: 2; margin-left: 0; margin-right: 0; }
   .section-head.center > p:first-of-type { margin-top: 0; }
   .section-head.center p { font-size: 17.5px; max-width: 520px; }
@@ -1456,8 +1456,8 @@ main > .section:first-child { padding-top: 64px; }
   background-position: center top;
 }
 .hero-flagship h1 {
-  font-size: clamp(44px, 6.6vw, 86px); line-height: 1.02; letter-spacing: -0.048em;
-  max-width: 15ch; margin: 28px auto 0;
+  font-size: clamp(42px, 5.8vw, 80px); line-height: 1.03; letter-spacing: -0.048em;
+  max-width: none; margin: 28px auto 0;
 }
 .hero-flagship .sub { margin: 28px auto 0; max-width: 640px; font-size: 20px; }
 .hero-flagship .actions { justify-content: center; }
@@ -1576,7 +1576,7 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 .cta-actions .btn { margin-top: 0; }
 .cta-foot { position: relative; margin-top: 22px; font-size: 14px; }
 .cta-band a:not(.btn) { color: #d4dbff; text-decoration-color: rgba(212, 219, 255, 0.5); }
-.section-end { padding-top: 96px; }
+.section-end { padding: 96px 0 104px; }
 
 /* ---------- Footer ---------- */
 .site-footer { background: #fff; padding: 72px 0 36px; }
@@ -1628,7 +1628,7 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 }
 .split-hero h1 {
   font-size: clamp(40px, 5vw, 62px); font-weight: var(--display-weight);
-  letter-spacing: -0.045em; line-height: 1.04; max-width: 13ch;
+  letter-spacing: -0.045em; line-height: 1.04;
 }
 .split-hero .badge { margin-bottom: 26px; }
 .split-hero .sub { margin-top: 24px; font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 36em; }
@@ -1685,7 +1685,10 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 .codegrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .codegrid .codecell h3 { font-size: 17px; font-weight: 650; letter-spacing: -0.015em; margin-bottom: 4px; }
 .codegrid .codecell > p { color: var(--ink-3); font-size: 14.5px; margin-bottom: 14px; }
+.codegrid .term { box-shadow: none; }
 .codegrid .term pre { font-size: 12.5px; }
+/* A comparison in words, not figures: sans, and allowed to wrap. */
+.dsheet.plain td { font-family: inherit; font-size: 14.5px; white-space: normal; color: var(--ink-2); }
 
 /* Workloads: ruled rows, each with its evidence linked where there is some. */
 .uses { border-top: 1px solid var(--line); }

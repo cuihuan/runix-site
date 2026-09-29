@@ -89,6 +89,13 @@ def card_fields(path, doc):
     title = _text(m.group(1)) if m else ""
     c = re.search(r'<span class="cat">([^<]*)</span>', doc)
     cat = _text(c.group(1)) if c else ""
+    # A product page names its product in the status chip ("Runix FS · Early
+    # access"); that is the label a shared link should carry, rather than the
+    # bare brand every product card used to show.
+    if not cat:
+        b = re.search(r'<span class="badge">([^<]*?)\s*\u00b7', doc)
+        if b and _text(b.group(1)).startswith("Runix "):
+            cat = _text(b.group(1))
     if not cat:
         cat = "Docs" if path.startswith("docs/") else "Runix"
     foot = "runixcloud.io"

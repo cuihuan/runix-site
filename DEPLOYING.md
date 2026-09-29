@@ -27,3 +27,13 @@ deployed to the same Pages project at different times during 2026-09:
   kept because `site` was reconciled with `-s ours` on 2026-09-06 and did not
   take its content: `pricing.html`, the Inter subsets, and the home page's
   "AI for Science" copy are only there.
+
+## Asset versions must only go up
+
+`/assets/*` is served with a one-year immutable cache, so a `?v=` number that
+production has served must never be reused for different bytes. On 2026-09-29
+it nearly was: the 2026-09-07 deploy bumped `style.css` to v59 at deploy time
+and never committed the bump, so the next working line bumped its own copy
+from v58 to v59 as well. `deploy.sh` now compares the local number against
+the live one and refuses to deploy a number production has already served
+with other bytes.

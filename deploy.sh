@@ -31,6 +31,28 @@ echo "==> Bump ?v= on assets whose bytes changed"
 # the one-year cache on /assets/* safe: forgetting to bump is no longer possible.
 python3 "$SRC/tools/bump_assets.py" --if-changed
 
+echo "==> The stylesheet version has never been served with other bytes"
+# /assets/* is immutable for a year, so a ?v= that production has already
+# served must never carry different bytes. It did on 2026-09-29: the 09-07
+# deploy bumped style.css to v59 at deploy time without committing the bump,
+# the next line bumped its own copy 58 -> 59 as well, and a deploy would have
+# left every returning visitor with the old stylesheet under the new pages.
+# Compare against what production actually serves, not against git.
+live_v=$(curl -s --max-time 15 "$DOMAIN/" | grep -o 'assets/style\.css?v=[0-9]*' | head -1 | sed 's/.*v=//')
+local_v=$(grep -o 'assets/style\.css?v=[0-9]*' "$SRC/index.html" | head -1 | sed 's/.*v=//')
+if [ -n "$live_v" ] && [ -n "$local_v" ] && [ "$local_v" -le "$live_v" ]; then
+  live_css="$(mktemp)"
+  curl -s --max-time 15 -o "$live_css" "$DOMAIN/assets/style.css?v=$local_v"
+  if ! cmp -s "$live_css" "$SRC/assets/style.css"; then
+    rm -f "$live_css"
+    echo "    style.css?v=$local_v is already live with different bytes (production is on v$live_v)." >&2
+    echo "    Raise ?v= past v$live_v -- e.g. edit tools/assets.json's style.css hash and re-run bump_assets.py." >&2
+    exit 1
+  fi
+  rm -f "$live_css"
+fi
+echo "    local v$local_v, live v$live_v"
+
 echo "==> Render per-page social cards"
 # Every page used to declare the same og:image, so a link shared anywhere
 # previewed as the same untitled cover. Cards are content-hashed, so a retitled

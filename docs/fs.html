@@ -139,7 +139,7 @@
 
 <h2 id="what-you-deploy">1. What you deploy</h2>
 <ul>
-<li><strong>Masters</strong> hold the metadata: the namespace, the mount table and scheduling. Run three for high availability; they replicate metadata with Raft.</li>
+<li><strong>Masters</strong> hold the metadata: the namespace, the mount table and scheduling. They replicate it with Raft, so a highly available cluster runs several; the Kubernetes examples use three.</li>
 <li><strong>Workers</strong> hold the cache, in memory, SSD and HDD tiers, and serve data directly to clients. On a miss they read from the bucket.</li>
 <li><strong>Access</strong> is whichever of these your workloads need: the FUSE daemon for a POSIX mount, the S3-compatible gateway, the CSI driver for Kubernetes, or the Java, Python and Rust SDKs.</li>
 </ul>

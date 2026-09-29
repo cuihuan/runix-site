@@ -143,6 +143,41 @@
       "description": "Recording enough about each request — latency, tokens, model, outcome, request id — to answer questions after the fact, without hoarding content you should not keep.",
       "url": "https://runixcloud.io/glossary#observability",
       "inDefinedTermSet": "https://runixcloud.io/glossary"
+    },
+    {
+      "@type": "DefinedTerm",
+      "name": "AI file system",
+      "description": "A file system built for how AI workloads read data: many readers, large datasets and frequent checkpoints. It is usually layered over object storage with a cache in front, so data is read through a path instead of fetched object by object.",
+      "url": "https://runixcloud.io/glossary#ai-file-system",
+      "inDefinedTermSet": "https://runixcloud.io/glossary"
+    },
+    {
+      "@type": "DefinedTerm",
+      "name": "POSIX semantics",
+      "description": "The file behaviour code written for a local disk expects: open, read, write, seek, atomic rename, directory listing and permissions.",
+      "url": "https://runixcloud.io/glossary#posix-semantics",
+      "inDefinedTermSet": "https://runixcloud.io/glossary"
+    },
+    {
+      "@type": "DefinedTerm",
+      "name": "Multi-tier cache",
+      "description": "A cache spread over memory, SSD and HDD on the worker nodes, which promotes hot data to faster tiers and falls back to the bucket for anything it does not hold.",
+      "url": "https://runixcloud.io/glossary#multi-tier-cache",
+      "inDefinedTermSet": "https://runixcloud.io/glossary"
+    },
+    {
+      "@type": "DefinedTerm",
+      "name": "CSI driver",
+      "description": "The Kubernetes Container Storage Interface plugin that turns a PersistentVolumeClaim into a volume mounted inside a pod.",
+      "url": "https://runixcloud.io/glossary#csi-driver",
+      "inDefinedTermSet": "https://runixcloud.io/glossary"
+    },
+    {
+      "@type": "DefinedTerm",
+      "name": "KV cache offload",
+      "description": "Moving an LLM's attention key-value cache out of GPU memory, into host memory or a shared storage tier, so a prompt prefix computed once can be reused instead of recomputed.",
+      "url": "https://runixcloud.io/glossary#kv-cache-offload",
+      "inDefinedTermSet": "https://runixcloud.io/glossary"
     }
   ]
 }
@@ -210,15 +245,20 @@
 <nav class="doc-toc" aria-labelledby="lookup-toc">
   <p id="lookup-toc" class="toc-title">Jump to a term</p>
   <ul>
+    <li><a href="#ai-file-system">AI file system</a></li>
     <li><a href="#blast-radius">Blast radius</a></li>
     <li><a href="#circuit-breaker">Circuit breaker</a></li>
     <li><a href="#cost-attribution">Cost attribution</a></li>
+    <li><a href="#csi-driver">CSI driver</a></li>
     <li><a href="#deduplication">Deduplication</a></li>
     <li><a href="#failover">Failover</a></li>
+    <li><a href="#kv-cache-offload">KV cache offload</a></li>
     <li><a href="#llm-gateway">LLM gateway</a></li>
     <li><a href="#llm-router">LLM router</a></li>
+    <li><a href="#multi-tier-cache">Multi-tier cache</a></li>
     <li><a href="#observability">Observability (for LLM traffic)</a></li>
     <li><a href="#pii-masking">PII masking</a></li>
+    <li><a href="#posix-semantics">POSIX semantics</a></li>
     <li><a href="#prompt-caching">Prompt caching</a></li>
     <li><a href="#rate-limit">Rate limit (429)</a></li>
     <li><a href="#retry-budget">Retry budget</a></li>
@@ -317,6 +357,36 @@
 <p><strong>How you would check it.</strong> Pick a past incident and check whether the logs you keep would have explained it.</p>
 <p><strong>Where people go wrong.</strong> Logging whole prompts and responses by default. That is a data-retention liability, and it is rarely the field you needed.</p>
 <p class="g-more"><a href="/blog/llm-observability">What to Log for LLM Traffic, and What Not To</a></p>
+
+<h2 id="ai-file-system">AI file system</h2>
+<p>A file system built for how AI workloads read data: many readers, large datasets and frequent checkpoints. It is usually layered over object storage with a cache in front, so data is read through a path instead of fetched object by object.</p>
+<p><strong>How you would check it.</strong> Point an existing data loader at the mount without changing its code, then compare the second epoch's read time with the first. The cache should make the difference visible.</p>
+<p><strong>Where people go wrong.</strong> Treating it as a replacement for the bucket. The bucket stays the durable copy; the file system is how the data is read.</p>
+<p class="g-more"><a href="/fs">The AI file system for object storage</a></p>
+
+<h2 id="posix-semantics">POSIX semantics</h2>
+<p>The file behaviour code written for a local disk expects: open, read, write, seek, atomic rename, directory listing and permissions.</p>
+<p><strong>How you would check it.</strong> Run an atomic rename and a git status against the mount. Both depend on semantics that plain object storage does not have.</p>
+<p><strong>Where people go wrong.</strong> Assuming every object-storage mount provides them. Many read-mostly mounts do not support in-place modification or atomic rename, which is fine for a dataset and fatal for an agent's workspace.</p>
+<p class="g-more"><a href="/docs/fs">Runix FS: quick start</a></p>
+
+<h2 id="multi-tier-cache">Multi-tier cache</h2>
+<p>A cache spread over memory, SSD and HDD on the worker nodes, which promotes hot data to faster tiers and falls back to the bucket for anything it does not hold.</p>
+<p><strong>How you would check it.</strong> Read the same large file twice. The second read should not reach the bucket at all, which the object store's own request metrics will show.</p>
+<p><strong>Where people go wrong.</strong> Sizing the cache to the whole dataset. It needs to hold the working set: what the job reads repeatedly.</p>
+<p class="g-more"><a href="/fs">The AI file system for object storage</a></p>
+
+<h2 id="csi-driver">CSI driver</h2>
+<p>The Kubernetes Container Storage Interface plugin that turns a PersistentVolumeClaim into a volume mounted inside a pod.</p>
+<p><strong>How you would check it.</strong> Create a few hundred claims at once and time how long they take to bind. Provisioning that calls a cloud API for every volume slows down and runs into rate limits.</p>
+<p><strong>Where people go wrong.</strong> Using block volumes for per-pod workspaces at high density. Nodes have attachment limits, and they are reached long before the CPU runs out.</p>
+<p class="g-more"><a href="/docs/fs">Runix FS: quick start</a></p>
+
+<h2 id="kv-cache-offload">KV cache offload</h2>
+<p>Moving an LLM's attention key-value cache out of GPU memory, into host memory or a shared storage tier, so a prompt prefix computed once can be reused instead of recomputed.</p>
+<p><strong>How you would check it.</strong> Send the same long prefix to two different replicas and compare time to first token. With a shared tier, the second request should skip most of the prefill.</p>
+<p><strong>Where people go wrong.</strong> Counting only the GPU's own memory. A prefix cache that dies with one replica does not help a router that sends the next request somewhere else.</p>
+<p class="g-more"><a href="/fs">The AI file system for object storage</a></p>
 
 <h2 id="missing">Something missing?</h2>
 <p>If a term left you guessing, tell us and it belongs here — <!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->.</p>

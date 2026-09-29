@@ -185,14 +185,17 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 .nav-links .nav-prod {
   display: grid; gap: 2px; padding: 12px 14px; border-radius: var(--radius-sm);
   color: var(--ink); font-size: 14px;
+  /* Without this a short entry is stretched to its row-mate's height and its
+     title drifts down, so two titles in one row stop sharing a baseline. */
+  align-content: start;
 }
 .nav-links .nav-prod:hover, .nav-links .nav-prod:focus-visible { background: var(--bg-alt); }
 .nav-prod b { font-weight: 650; font-size: 14.5px; display: flex; align-items: center; gap: 8px; }
 .nav-prod span { color: var(--ink-3); font-size: 13px; line-height: 1.45; }
 .nav-prod i {
-  font: 600 12px/1 var(--mono); font-style: normal; letter-spacing: 0.04em;
-  color: var(--cyan-text); background: rgba(11, 150, 184, 0.08);
-  border: 1px solid rgba(11, 150, 184, 0.35); border-radius: 999px; padding: 3px 7px;
+  font: 600 12px/1 var(--mono); font-style: normal; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--indigo-ink); background: rgba(74, 91, 214, 0.08);
+  border: 1px solid rgba(74, 91, 214, 0.3); border-radius: 999px; padding: 2px 6px;
 }
 
 /* ---------- Hero ---------- */

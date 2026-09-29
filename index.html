@@ -12,12 +12,12 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Runix — LLM Gateway, Data Pipeline, AI Coding &amp; Comic Studio</title>
-<meta name="description" content="Runix makes AI effortless: an OpenAI-compatible LLM router with failover, managed data preparation, and an end-to-end AI comic drama studio in development.">
+<title>Runix — LLM Gateway, AI File System &amp; Data Infrastructure</title>
+<meta name="description" content="Runix is AI infrastructure for production teams: a compliant OpenAI-compatible LLM gateway, an AI-native file system on your object storage, and data tooling.">
 <link rel="canonical" href="https://runixcloud.io/">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
-<meta property="og:title" content="Runix — AI Router, Data Pipeline &amp; Comic Studio">
-<meta property="og:description" content="Runix makes AI effortless: an OpenAI-compatible LLM router with failover, managed data preparation, and an end-to-end AI comic drama studio in development.">
+<meta property="og:title" content="Runix — LLM Gateway, AI File System &amp; Data Infrastructure">
+<meta property="og:description" content="Runix is AI infrastructure for production teams: a compliant OpenAI-compatible LLM gateway, an AI-native file system on your object storage, and data tooling.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/">
 <meta property="og:site_name" content="Runix">
@@ -40,7 +40,7 @@
   "url": "https://runixcloud.io/",
   "logo": "https://runixcloud.io/assets/logo.svg?v=11",
   "image": "https://runixcloud.io/assets/og-cover.png?v=12",
-  "description": "Runix makes AI effortless: an OpenAI-compatible LLM router with failover, managed data preparation, and an end-to-end AI comic drama studio in development.",
+  "description": "Runix is AI infrastructure for production teams: a compliant OpenAI-compatible LLM gateway, an AI-native file system on your object storage, and data tooling.",
   "address": {
     "@type": "PostalAddress",
     "addressRegion": "WY",
@@ -82,8 +82,8 @@
 }
 </script>
 <meta property="og:locale" content="en_US">
-<meta name="twitter:title" content="Runix — LLM Gateway, Data Pipeline, AI Coding &amp; Comic Studio">
-<meta name="twitter:description" content="Runix makes AI effortless: an OpenAI-compatible LLM router with failover, managed data preparation, and an end-to-end AI comic drama studio in development.">
+<meta name="twitter:title" content="Runix — LLM Gateway, AI File System &amp; Data Infrastructure">
+<meta name="twitter:description" content="Runix is AI infrastructure for production teams: a compliant OpenAI-compatible LLM gateway, an AI-native file system on your object storage, and data tooling.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
 </head>
 <body>
@@ -106,168 +106,119 @@
 </header>
 
 <main id="main">
-<section class="hero">
-  <div class="container hero-split">
-    <div>
-      <h1><span class="line">AI,</span>
-<span class="line"><span class="grad-text">made effortless.</span></span></h1>
-      <span class="badge">Router · Pipeline · Code · Comic</span>
-      <p class="sub">Runix builds the tools that take the friction out of AI: Router gives your product one endpoint for every model, Pipeline turns raw material into data models can read, Code puts a reviewable AI agent in your repository, and Comic turns scripts into published episodes.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="#platform">See the platform</a>
-        <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a><!--/email_off-->
-      </div>
-      <p class="sub" style="font-size:14.5px;margin-top:20px;">Runix Router is invite-only: tell us what you are building and your account is set up within one business day. Evaluation credits are issued on request, so you can test against real traffic before you pay. Pipeline is built with design partners; Code and Comic are in development with waitlists open.</p>
-    </div>
-    <div>
-      <div class="code-card">
-        <div class="bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span>example request</span>
-        </div>
-        <pre><span class="c"># Point your existing OpenAI-compatible client at Runix.</span>
-<span class="c"># "auto" routes by cost and health; or name a model id.</span>
-curl https://api.router.runixcloud.io/v1/chat/completions \
-  -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
-  -d <span class="s">'{
-    "model": "auto",
-    "messages": [{"role": "user", "content": "Hello"}]
-  }'</span></pre>
-      </div>
-      <div class="hero-metrics">
-        <div><b>Access</b><span>Runix Router</span></div>
-        <div><b>Prepare</b><span>Runix Pipeline</span></div>
-        <div><b>Build</b><span>Runix Code</span></div>
-        <div><b>Create</b><span>Runix Comic</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="strip" aria-label="Compatibility">
-  <div class="compat">
-    <b>Works with</b><span>OpenAI SDK</span><span>LangChain</span><span>LlamaIndex</span><span>Vercel AI SDK</span><span>curl</span><span>anything that speaks the OpenAI API</span>
-  </div>
-</div>
-
-<section class="section" id="platform">
+<section class="hero hero-flagship">
   <div class="container">
-    <div class="section-head center">
-      <h2>How Runix fits together</h2>
-      <p>Four layers, in the order the work actually happens: get model access under control, make the data usable, then build and create on top.</p>
+    <a class="hero-kicker" href="/fs"><span class="kicker-tag">New</span> Runix FS: an AI-native file system on your object storage <span aria-hidden="true">&rarr;</span></a>
+    <h1><span class="line">The infrastructure layer</span>
+<span class="line">for production AI.</span></h1>
+    <p class="sub">Runix gives engineering teams one compliant endpoint for every model and a file system that serves training and inference straight from their own object storage, with data and agent tooling built on top.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#products">Explore products</a>
+      <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a><!--/email_off-->
     </div>
-    <div class="stack">
-      <div class="layer layer-lead" id="layer-01">
-        <div class="layer-num" aria-hidden="true">01</div>
-        <div class="layer-body">
-          <h3>Gateway &amp; routing</h3>
-          <p>One OpenAI-compatible endpoint in front of every provider: routing, mid-request failover, central key custody, per-key quotas and per-request cost.</p>
-          <p class="layer-prod"><a href="#router">Runix Router</a> <span class="layer-state on">Running traffic today</span></p>
+  </div>
+  <div class="container">
+    <div class="pmap" id="platform">
+      <div class="pmap-row">
+        <p class="pmap-layer">Build &amp; create</p>
+        <div class="pmap-cells">
+          <a class="pmap-cell" href="/code"><b>Runix Code</b><span>An AI agent that ships reviewable diffs</span><em class="pmap-st">In development</em></a>
+          <a class="pmap-cell" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span><em class="pmap-st">In development</em></a>
         </div>
       </div>
-      <div class="layer" id="layer-02">
-        <div class="layer-num" aria-hidden="true">02</div>
-        <div class="layer-body">
-          <h3>Data &amp; models</h3>
-          <p>What the gateway points at, and what makes it worth pointing at: clean data, tuned models, dedicated deployment when a shared endpoint is not enough.</p>
-          <p class="layer-prod"><a href="#pipeline">Runix Pipeline</a> <span class="layer-side">Fine-tuning · Dedicated deployment · Frontier &amp; open models</span></p>
+      <div class="pmap-row">
+        <p class="pmap-layer">Access</p>
+        <div class="pmap-cells">
+          <a class="pmap-cell pmap-live" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model provider</span><em class="pmap-st">Early access</em></a>
         </div>
       </div>
-      <div class="layer" id="layer-03">
-        <div class="layer-num" aria-hidden="true">03</div>
-        <div class="layer-body">
-          <h3>Applications &amp; agents</h3>
-          <p>Where the work actually gets done: code that ships under review gates, and episodes that reach an audience.</p>
-          <p class="layer-prod"><a href="#code">Runix Code</a> · <a href="#comic">Runix Comic</a> <span class="layer-state soon">In development</span></p>
+      <div class="pmap-row">
+        <p class="pmap-layer">Data</p>
+        <div class="pmap-cells">
+          <a class="pmap-cell pmap-live" href="/fs"><b>Runix FS <i>New</i></b><span>POSIX file system and cache over object storage</span><em class="pmap-st">Early access</em></a>
+          <a class="pmap-cell" href="/pipeline"><b>Runix Pipeline</b><span>Raw material into model-ready data</span><em class="pmap-st">In development</em></a>
         </div>
       </div>
-      <div class="layer" id="layer-04">
-        <div class="layer-num" aria-hidden="true">04</div>
-        <div class="layer-body">
-          <h3>Capabilities that ride along</h3>
-          <p>The pieces that are not products in their own right but come with the platform.</p>
-          <p class="layer-prod"><span class="layer-side">Skill library · Agent tools · GPU &amp; inference · Office &amp; workflow</span></p>
-        </div>
+      <div class="pmap-row pmap-base">
+        <p class="pmap-layer">Your cloud</p>
+        <p class="pmap-ground">S3-compatible object storage <span aria-hidden="true">&middot;</span> HDFS <span aria-hidden="true">&middot;</span> Kubernetes <span aria-hidden="true">&middot;</span> your GPUs <span aria-hidden="true">&middot;</span> every model provider you already use</p>
       </div>
     </div>
-    <p class="model-note">Start at the layer you need: most teams start at 01. <a href="/about#contact">Tell us where you are.</a></p>
   </div>
 </section>
 
 <section class="section alt" id="products">
   <div class="container">
     <div class="section-head center">
-      <h2>The four products</h2>
-      <p>Each one sits in a layer above. The statuses are literal, not roadmap language: only the Router is serving traffic today.</p>
+      <h2>Five products, one platform</h2>
+      <p>Each sits in a layer of the map above. The statuses are literal, not roadmap language: Router and FS are in early access; Pipeline, Code and Comic are in development.</p>
     </div>
-    <div class="grid cols-2">
-      <a class="card card-clickable" id="router" href="/router" aria-label="Explore Runix Router">
+    <div class="bento">
+      <div class="card bento-lg" id="router">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M12 4l8 8-8 8"/></svg></div>
-        <p class="card-layer">Layer <b>01</b> · Access</p>
+        <p class="card-layer">Access</p>
         <h3>Runix Router</h3>
-        <p><strong>Security, compliance and performance</strong> for the LLM traffic you already run: one OpenAI-compatible endpoint in front of every provider.</p>
+        <p>One OpenAI-compatible endpoint in front of every provider, with the key custody, contracts and failover your legal and on-call teams ask for.</p>
         <ul>
           <li>Central key custody, per-key limits and quotas</li>
           <li>Contracts and data terms your legal team can read</li>
           <li>Failover mid-request, streaming preserved</li>
         </ul>
-        <p class="card-meta"><span>Status: early access</span> · <span>Hosted API</span> · <span>Usage-based</span></p>
-        <span class="read-more">Explore Runix Router →</span>
-      </a>
+        <div class="code-card bento-code">
+          <div class="bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span>example request</span>
+          </div>
+          <pre>curl https://api.router.runixcloud.io/v1/chat/completions \
+  -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
+  -d <span class="s">'{"model": "auto", "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
+        </div>
+        <p class="card-meta"><span>Status: early access</span> &middot; <span>Hosted API</span> &middot; <span>Usage-based</span></p>
+        <a class="read-more" href="/router">Explore Runix Router &rarr;</a>
+      </div>
+      <div class="card bento-lg" id="fs">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="2.5"/><path d="M4 5.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6M4 11.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/></svg></div>
+        <p class="card-layer">Data <span class="card-new">New</span></p>
+        <h3>Runix FS</h3>
+        <p>A POSIX file system and a multi-tier cache over the object storage you already pay for, so training jobs, inference servers and agents stop waiting on the bucket.</p>
+        <ul>
+          <li>Mount through FUSE, S3 or HDFS, with no I/O code rewritten</li>
+          <li>Memory, SSD and HDD cache tiers in front of S3-compatible storage</li>
+          <li>Built on Curvine, the open-source CNCF Sandbox file system</li>
+        </ul>
+        <div class="mini-arch" aria-hidden="true">
+          <div class="ma-row"><span>Training</span><span>Inference</span><span>Agents</span></div>
+          <div class="ma-row ma-if"><span>POSIX</span><span>S3</span><span>HDFS</span><span>CSI</span></div>
+          <div class="ma-row ma-core"><b>Runix FS</b><span>Memory</span><span>SSD</span><span>HDD</span></div>
+          <div class="ma-row ma-store"><span>Your object storage bucket</span></div>
+        </div>
+        <p class="card-meta"><span>Status: early access</span> &middot; <span>Runs in your cloud account</span> &middot; <span>Built on Curvine</span></p>
+        <a class="read-more" href="/fs">Explore Runix FS &rarr;</a>
+      </div>
       <a class="card card-clickable" id="pipeline" href="/pipeline" aria-label="Explore Runix Pipeline">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
-        <p class="card-layer">Layer <b>02</b> · Prepare</p>
+        <p class="card-layer">Data</p>
         <h3>Runix Pipeline</h3>
-        <p><strong>The unglamorous half of every AI project</strong> — raw, duplicated, half-structured source material turned into something a model can read.</p>
-        <ul>
-          <li>Ingestion, cleaning and three tiers of deduplication</li>
-          <li>Schema-validated extraction, PII masked before it travels</li>
-          <li>A quality report with every delivery</li>
-        </ul>
-        <p class="card-meta"><span>Status: in development</span> · <span>Managed engagement</span> · <span>Per project</span></p>
-        <span class="read-more">Explore Runix Pipeline →</span>
+        <p><strong>The unglamorous half of every AI project</strong>: raw, duplicated, half-structured source material turned into something a model can read.</p>
+        <p class="card-meta"><span>Status: in development</span> &middot; <span>Managed engagement</span></p>
+        <span class="read-more">Explore Runix Pipeline &rarr;</span>
       </a>
       <a class="card card-clickable" id="code" href="/code" aria-label="Explore Runix Code">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-        <p class="card-layer">Layer <b>03</b> · Build</p>
+        <p class="card-layer">Build</p>
         <h3>Runix Code</h3>
-        <p><strong>An AI pair that has read your code</strong> — codebase-aware assistance and agentic tasks, under review gates and team controls.</p>
-        <ul>
-          <li>Grounded in your repository and conventions</li>
-          <li>Multi-file tasks landing as reviewable diffs</li>
-          <li>Seats, attribution and model routing policies</li>
-        </ul>
-        <p class="card-meta"><span>Status: in development</span> · <span>Waitlist open</span></p>
-        <span class="read-more">Explore Runix Code →</span>
+        <p><strong>An AI pair that has read your code</strong>: codebase-aware assistance and agentic tasks, under review gates and team controls.</p>
+        <p class="card-meta"><span>Status: in development</span> &middot; <span>Waitlist open</span></p>
+        <span class="read-more">Explore Runix Code &rarr;</span>
       </a>
       <a class="card card-clickable" id="comic" href="/comic" aria-label="Explore Runix Comic">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
-        <p class="card-layer">Layer <b>04</b> · Create</p>
+        <p class="card-layer">Create</p>
         <h3>Runix Comic</h3>
-        <p><strong>From script to screen to audience</strong> — an end-to-end studio for AI comic dramas, being built stage by stage.</p>
-        <ul>
-          <li>Scripts, consistent characters and storyboards</li>
-          <li>Styled panels, motion, voice and subtitles</li>
-          <li>Export, publishing and promo assets</li>
-        </ul>
-        <p class="card-meta"><span>Status: in development</span> · <span>Waitlist open</span></p>
-        <span class="read-more">Explore Runix Comic →</span>
+        <p><strong>From script to screen to audience</strong>: an end-to-end studio for AI comic dramas, being built stage by stage.</p>
+        <p class="card-meta"><span>Status: in development</span> &middot; <span>Waitlist open</span></p>
+        <span class="read-more">Explore Runix Comic &rarr;</span>
       </a>
-    </div>
-    <p class="model-note">Statuses above are literal: only the Router is running traffic today; Pipeline is being built with design partners, and Code and Comic are in development with waitlists open. <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Roadmap">Tell us which one you need first.</a><!--/email_off--></p>
-  </div>
-</section>
-
-<section class="section alt">
-  <div class="container">
-    <div class="section-head center">
-      <h2>Integrate in minutes, not weeks</h2>
-      <p>Runix speaks the OpenAI API. If your code already calls an LLM, switching is a base-URL change.</p>
-    </div>
-    <div class="steps">
-      <div class="stepc"><div class="n" aria-hidden="true">1</div><h3>Point your client</h3><p>Change the base URL to <code>api.router.runixcloud.io</code> and drop in your Runix key. The SDKs you already use keep working.</p></div>
-      <div class="stepc"><div class="n" aria-hidden="true">2</div><h3>Choose a model</h3><p>Call a model by id, or let routing pick based on availability and your configuration.</p></div>
-      <div class="stepc"><div class="n" aria-hidden="true">3</div><h3>Ship with guardrails</h3><p>Retries, failover, per-key limits, and usage tracking are part of the router from your first call.</p></div>
     </div>
   </div>
 </section>
@@ -275,87 +226,51 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
 <section class="section" id="data">
   <div class="container">
     <div class="section-head center">
-      <h2>How we handle your data</h2>
-      <p>Straight answers, no marketing. For formal terms, see our <a href="/privacy">Privacy Policy</a> and <a href="/security">Security</a> page, or ask us for details.</p>
+      <h2>Built to pass procurement</h2>
+      <p>Two things stall AI rollouts: the provider that fails at 3am, and the review that never ends. The products handle the first. This is what we put in writing for the second.</p>
     </div>
-    <div class="grid cols-3">
-      <div class="card">
-        <h3>You own your content</h3>
-        <p>Prompts and outputs you send through Runix are yours. We process them to serve your request: <strong>we do not use your content to train models</strong>, and we don't sell it.</p>
+    <div class="assure">
+      <div class="assure-grid">
+        <div class="assure-item">
+          <h3>You own your content</h3>
+          <p>Prompts, outputs and files you send through Runix are yours. <strong>We do not use your content to train models</strong>, and we do not sell it.</p>
+        </div>
+        <div class="assure-item">
+          <h3>Content vs. metadata</h3>
+          <p>We keep operational metadata, such as usage counts and error codes, to run billing, reliability and support. The <a href="/privacy">Privacy Policy</a> says what is kept and for how long.</p>
+        </div>
+        <div class="assure-item">
+          <h3>Paperwork on request</h3>
+          <p>MSA and DPA reviewed per engagement. Refund, cancellation and acceptable-use policies are published in full.</p>
+        </div>
+        <div class="assure-item">
+          <h3>Stated plainly</h3>
+          <p>We do not claim certifications we have not earned. The <a href="/security">Security</a> page lists the controls that are actually in place.</p>
+        </div>
       </div>
-      <div class="card">
-        <h3>Content vs. metadata</h3>
-        <p>We keep operational metadata (usage counts, latency, and error codes) to run billing, reliability, and support. That's distinct from prompt/response content; see the Privacy Policy for what's kept and for how long.</p>
-      </div>
-      <div class="card">
-        <h3>Enterprise &amp; compliance</h3>
-        <p>Need a DPA, a security review, or specific data-handling terms? <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Compliance">Talk to sales</a><!--/email_off-->: we'll walk through what we can support for your use case.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section alt" id="company">
-  <div class="container">
-    <div class="feature">
-      <div>
-        <h3>The paperwork, ready before you ask</h3>
-        <p>Two things stall AI rollouts: the provider that fails at 3am, and the procurement review that never ends. The gateway handles the first. This handles the second.</p>
-        <ul>
-          <li>A registered US entity to contract with and invoice through</li>
-          <li>Data handling written down, not implied — see <a href="/privacy">Privacy</a> and <a href="/security">Security</a></li>
-          <li>Refund, cancellation and acceptable-use policies published in full</li>
-          <li>Security posture stated plainly — we do not claim certifications we have not earned</li>
-        </ul>
-      </div>
-      <div class="facts">
+      <div class="facts" id="company">
         <div class="facts-head">Company facts</div>
         <div class="frow"><span class="k">Legal entity</span><span class="v"><span data-cfg="legalCompanyName">Runix AI Inc</span><small><span data-cfg="registrationJurisdiction">Wyoming, United States</span></small></span></div>
         <div class="frow"><span class="k">Contracting</span><span class="v">MSA &amp; DPA on request<small>Reviewed per engagement</small></span></div>
-        <div class="frow"><span class="k">Billing</span><span class="v">USD · usage-based<small>Itemised statements, invoicing available</small></span></div>
+        <div class="frow"><span class="k">Billing</span><span class="v">USD<small>Itemised statements, invoicing available</small></span></div>
         <div class="frow"><span class="k">Data handling</span><span class="v">Documented in writing<small>Content is not used to train models</small></span></div>
-        <div class="frow"><span class="k">Access</span><span class="v">Early access, by request<small>Keys issued after a short intake</small></span></div>
+        <div class="frow"><span class="k">Access</span><span class="v">Early access, by request<small>Accounts set up after a short intake</small></span></div>
         <div class="frow"><span class="k">Response time</span><span class="v">1 business day<small><!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off--></small></span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="start">
-  <div class="container">
-    <div class="section-head center">
-      <h2>Start with Runix</h2>
-      <p>However you like to begin — a conversation, a sales chat, or support. A real person replies within one business day.</p>
-    </div>
-    <div class="paths">
-      <div class="path">
-        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
-        <h3>Request access</h3>
-        <p>Tell us what you are building; accounts are set up within one business day.</p>
-        <a class="btn btn-primary" href="/about#contact">Request access</a>
-      </div>
-      <div class="path">
-        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <h3>Talk to sales</h3>
-        <p>Volume pricing, enterprise agreements, DPAs, and custom terms for teams.</p>
-        <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a><!--/email_off-->
-      </div>
-      <div class="path">
-        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
-        <h3>Support</h3>
-        <p>Questions, integration help, or an issue? Reach our team and we'll get you unblocked.</p>
-        <!--email_off--><a class="btn btn-ghost" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off-->
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
+<section class="section section-end" id="start">
   <div class="container">
     <div class="cta-band">
       <h2>Build on infrastructure you don't have to babysit</h2>
-      <p>Tell us your use case and expected volume: we'll come back with a concrete plan and pricing.</p>
-      <a class="btn btn-grad" href="/about#contact">Request access</a>
+      <p>Tell us your use case and expected volume. A real person replies within one business day with a concrete plan and pricing.</p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="/about#contact">Request access</a>
+        <!--email_off--><a class="btn btn-ghost" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a><!--/email_off-->
+      </div>
+      <p class="cta-foot">Already building with us? <!--email_off--><a href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off--></p>
     </div>
   </div>
 </section>

@@ -14,7 +14,7 @@ Engineering teams putting LLM calls into production — the person who owns the 
 
 ## Product Purpose
 
-Runix sells AI infrastructure teams do not have to babysit. Four products, one live: **Router** (the gateway — one OpenAI-compatible endpoint in front of every model, in early access, invite-only), **Pipeline** (raw material into data models can read, built with design partners), **Code** (a repo agent that ships the fix, not a suggestion), **Comic** (scripts into published episodes). Success is a team pointing an existing OpenAI-compatible client at `api.router.runixcloud.io` and never touching provider plumbing again.
+Runix sells AI infrastructure teams do not have to babysit. Five products, two in early access: **Router** (the gateway — one OpenAI-compatible endpoint in front of every model, in early access, invite-only), **FS** (an AI-native file system: POSIX and a multi-tier cache over the customer's own object storage, built on the open-source Curvine project, in early access since 2026-09-29), **Pipeline** (raw material into data models can read, built with design partners), **Code** (a repo agent that ships the fix, not a suggestion), **Comic** (scripts into published episodes). Success is a team pointing an existing OpenAI-compatible client at `api.router.runixcloud.io` and never touching provider plumbing again.
 
 ## Positioning
 

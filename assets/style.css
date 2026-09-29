@@ -1806,3 +1806,24 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .page-hero h1 { font-size: 42px; }
   .page-hero.center h1 { font-size: 46px; }
 }
+
+/* Published figures, set large. Each carries its source in the caption under
+   it, because a number without a source on this site would be the first one. */
+.stats-band { border-bottom: 1px solid var(--line); }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+.stats > div { padding: 44px 28px 40px 0; }
+.stats > div + div { padding-left: 28px; border-left: 1px solid var(--line); }
+.stats dt { font-size: 44px; font-weight: var(--display-weight); letter-spacing: -0.04em; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stats dd { margin: 12px 0 0; color: var(--ink-3); font-size: 14px; line-height: 1.5; max-width: 26ch; }
+.stats-src { padding: 0 0 22px; margin: 0; color: var(--ink-3); font-size: 13px; }
+@media (max-width: 920px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats > div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .stats > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .stats { grid-template-columns: 1fr; }
+  .stats > div, .stats > div + div { padding: 28px 0; border-left: 0; }
+  .stats > div + div { border-top: 1px solid var(--line); }
+  .stats dt { font-size: 38px; }
+}

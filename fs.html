@@ -206,6 +206,19 @@ $ ls /mnt/curvine/training-data/imagenet
   </div>
 </div>
 
+<section class="stats-band" aria-labelledby="published-results">
+  <div class="container">
+    <h2 id="published-results" class="visually-hidden">Published results</h2>
+    <dl class="stats">
+      <div><dt>5 billion</dt><dd>small files in one cluster, the project's stated design capacity</dd></div>
+      <div><dt>10,000</dt><dd>agent pods, each with its own volume, on 99 EKS nodes in the project's test</dd></div>
+      <div><dt>2.7&times;</dt><dd>faster time to first token in AWS's SageMaker HyperPod reference architecture</dd></div>
+      <div><dt>9.5 GiB/s</dt><dd>sequential read at 32 threads in the project's own benchmark</dd></div>
+    </dl>
+    <p class="stats-src">Figures published by the Curvine project and by AWS, not Runix service levels. Sources are linked further down this page.</p>
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
     <div class="section-head center">

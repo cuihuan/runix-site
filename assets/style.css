@@ -1785,3 +1785,7 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .page-hero.center .badge { align-self: center; }
   .article p, .article li { font-size: 16.5px; }
 }
+@media (max-width: 920px) and (min-width: 561px) {
+  .page-hero h1 { font-size: 42px; }
+  .page-hero.center h1 { font-size: 46px; }
+}

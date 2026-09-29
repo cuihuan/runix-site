@@ -46,9 +46,13 @@ os.chdir(ROOT)
 # is not installed, fall back to Chrome.app with no change in behaviour.
 def _find_browser():
     import glob
-    for p in sorted(glob.glob(os.path.expanduser(
-            "~/.cache/puppeteer/chrome-headless-shell/*/chrome-headless-shell-*/chrome-headless-shell")),
-            reverse=True):
+    # Puppeteer's cache first, then Playwright's: either install ships the same
+    # headless-shell binary, and a machine usually has one or the other.
+    candidates = (glob.glob(os.path.expanduser(
+            "~/.cache/puppeteer/chrome-headless-shell/*/chrome-headless-shell-*/chrome-headless-shell"))
+        + glob.glob(os.path.expanduser(
+            "~/Library/Caches/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-*/chrome-headless-shell")))
+    for p in sorted(candidates, reverse=True):
         if os.access(p, os.X_OK):
             return p, False          # headless-shell is headless already; no --headless flag
     return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", True

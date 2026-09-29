@@ -55,7 +55,12 @@ if unknown:
 
 # Font URLs live in the stylesheet, not in the pages; everything else is
 # referenced from the HTML. Both are rewritten the same way.
+# Drafts in scheduled/ are included: publish.py moves them into blog/ as they
+# are, so a draft left out of the bump ships whatever ?v= it was written with.
+# One draft was still on style.css?v=12 when the site was on v61 -- and under
+# a year-long immutable cache that URL can still be answered with July's bytes.
 pages = (glob.glob("*.html") + glob.glob("docs/*.html") + glob.glob("blog/*.html")
+         + [d for d in glob.glob("scheduled/*.html") if not d.split("/")[-1].startswith("_")]
          + ["assets/style.css"])
 current = {}
 for asset in wanted:

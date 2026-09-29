@@ -1784,11 +1784,23 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 .article > .table-scroll, .article > pre, .article > figure, .article > .diagram { max-width: 820px; }
 
 @media (max-width: 560px) {
-  .page-hero.center { padding: 72px 0 60px; }
+  /* A phone reads the centred hero as mixed alignment: the prose under it is
+     already left-aligned at this width for readability, so the chip and the
+     headline follow it rather than sitting centred above it. */
+  .page-hero.center { padding: 72px 0 60px; text-align: left; }
   .page-hero.center h1 { font-size: 34px; }
   .page-hero.center .container { align-items: stretch; }
-  .page-hero.center .badge { align-self: center; }
+  .page-hero.center .badge { align-self: flex-start; }
   .article p, .article li { font-size: 16.5px; }
+  /* The FS tile's drawing: four cells in a row leave "Runix FS" clipped at
+     phone width, so the core gets a row of its own above its tiers. */
+  .ma-core { flex-wrap: wrap; }
+  .ma-core b { flex: 1 0 100%; }
+  .ma-row span, .ma-row b { font-size: 12px; padding: 9px 4px; }
+  /* Label above value: a 148px label column leaves the value a third of a
+     phone, and every value wrapped to two or three lines. */
+  .facts .frow { grid-template-columns: 1fr; gap: 2px; }
+  .facts .k { min-width: 0; font-size: 13px; }
 }
 @media (max-width: 920px) and (min-width: 561px) {
   .page-hero h1 { font-size: 42px; }

@@ -6,7 +6,14 @@
     <atom:link href="https://runixcloud.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Engineering notes on LLM gateways, reliability, cost control and data pipelines, from the team building Runix.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Introducing Runix FS: an AI file system for object storage</title>
+      <link>https://runixcloud.io/blog/introducing-runix-fs</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/introducing-runix-fs</guid>
+      <description>Runix FS puts a POSIX file system and a multi-tier cache in front of object storage. Why the layer is missing, what it is built on, and how early access works.</description>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>One key can drain a shared quota pool</title>
       <link>https://runixcloud.io/blog/per-key-llm-quotas</link>

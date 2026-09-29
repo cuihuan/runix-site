@@ -330,12 +330,12 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
     <div class="section-head center">
       <h2>Common questions</h2>
     </div>
-    <div class="grid cols-2">
-      <div class="card"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
-      <div class="card"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget, so one provider's bad hour does not become your outage.</p></div>
-      <div class="card"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
-      <div class="card"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
-      <div class="card"><h3>How do I get access?</h3><p>Access is invite-only: <a href="/about#contact">tell us what you are building</a> and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on <a href="/access">Access</a>.</p></div>
+    <div class="qas">
+      <div class="qa"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
+      <div class="qa"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget, so one provider's bad hour does not become your outage.</p></div>
+      <div class="qa"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
+      <div class="qa"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
+      <div class="qa"><h3>How do I get access?</h3><p>Access is invite-only: <a href="/about#contact">tell us what you are building</a> and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on <a href="/access">Access</a>.</p></div>
     </div>
   </div>
 </section>

@@ -1738,7 +1738,9 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
   .split-hero { padding: 64px 0 56px; }
   .fgrid { grid-template-columns: 1fr; }
   .fcell { padding: 28px 22px; }
-  .arch-cells span { min-width: 100%; }
+  /* Two cells a row, not one: a full-width cell per interface turned the
+     figure into a two-screen list. */
+  .arch-cells span { min-width: 40%; }
 }
 
 /* ---------- Inner pages, flagship pass ---------- */
@@ -1848,3 +1850,11 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
    section's bottom padding already, so its own top padding is halved instead
    of stacking into a screen of white before the band. */
 .section:has(> .container > .cta-band:only-child) { padding: 72px 0 104px; }
+
+/* Section heads read from the left edge at every width. The desktop split
+   head is left-aligned, and the prose under a head is already left-aligned
+   on a phone, so a centred heading above it was the one element out of line. */
+@media (max-width: 920px) {
+  .section-head.center { text-align: left; margin-left: 0; margin-right: 0; }
+  .section-head.center p { margin-left: 0; margin-right: 0; }
+}

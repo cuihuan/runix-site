@@ -1870,3 +1870,10 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 /* Docs hub: the two products in early access on one row, the three in
    development on the next, the same split the home page makes. */
 .grid + .grid.docs-dev { margin-top: 28px; }
+
+/* Escape dismisses the products menu until the pointer or focus leaves it
+   (the handler is in site-config.js?v=15). Desktop only: on a phone the list is
+   part of the open hamburger panel and is not a pop-over. */
+@media (min-width: 921px) {
+  .nav-menu.is-closed .nav-panel { display: none; }
+}

@@ -264,3 +264,33 @@ document.addEventListener("click", function (event) {
   var open = links.classList.toggle("open");
   toggle.setAttribute("aria-expanded", open ? "true" : "false");
 });
+
+/* Products menu: Escape closes it.
+   The panel opens on hover and on keyboard focus with CSS alone. Content that
+   appears on hover or focus has to be dismissible without moving the pointer
+   or the focus (WCAG 1.4.13), so Escape hides it and returns focus to
+   "Products"; it opens again once the pointer or the focus leaves and comes
+   back. */
+(function () {
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+    var active = document.activeElement;
+    var menu = active && active.closest ? active.closest(".nav-menu") : null;
+    if (!menu) {
+      menu = document.querySelector(".nav-menu:hover");
+      if (!menu) return;
+    }
+    menu.classList.add("is-closed");
+    var top = menu.querySelector(".nav-menu-top");
+    if (top && active !== top) top.focus();
+  });
+  function reopen(event) {
+    var menu = event.currentTarget;
+    if (event.type === "focusout" && menu.contains(event.relatedTarget)) return;
+    menu.classList.remove("is-closed");
+  }
+  document.querySelectorAll(".nav-menu").forEach(function (menu) {
+    menu.addEventListener("mouseleave", reopen);
+    menu.addEventListener("focusout", reopen);
+  });
+})();

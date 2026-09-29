@@ -526,7 +526,7 @@ for _src, _sec, _tag, _prose, _label in _COUNTED:
 # --- the products the site claims to have are the products it has ----------
 # "four products" appears in prose; the products themselves are pages. If one
 # ships or is dropped, the sentence is the thing that gets forgotten.
-_PRODUCT_PAGES = [f for f in ("router.html", "pipeline.html", "code.html", "comic.html")
+_PRODUCT_PAGES = [f for f in ("router.html", "fs.html", "pipeline.html", "code.html", "comic.html")
                   if os.path.isfile(f)]
 for page in PAGES + ["llms.txt"]:
     if not os.path.isfile(page):
@@ -845,14 +845,18 @@ for page in PAGES:
 # sentence-level scan cannot tell which card a "Status:" belongs to when cards
 # carry no sentence punctuation, and it reports three inconsistencies that are
 # not real.
-PRODUCT_STATUS = {"router": "early access", "pipeline": "in development",
+PRODUCT_STATUS = {"router": "early access", "fs": "early access",
+                  "pipeline": "in development",
                   "code": "in development", "comic": "in development"}
 seen_status = {}
 for page in PAGES:
     doc = open(page).read()
     for badge in re.findall(r'<span class="badge">([^<]*)</span>', doc):
         for prod, expected in PRODUCT_STATUS.items():
-            if f"Runix {prod.capitalize()} " in badge and "\u00b7" in badge:
+            # "fs".capitalize() is "Fs", which no badge says -- the product's
+            # name is an initialism, so it is spelled out rather than derived.
+            _name = {"fs": "FS"}.get(prod, prod.capitalize())
+            if f"Runix {_name} " in badge and "\u00b7" in badge:
                 got = badge.split("\u00b7", 1)[1].strip().lower()
                 if got != expected:
                     fail(page, f"badge says Runix {prod} is “{got}”, "
@@ -978,6 +982,22 @@ for page in PAGES:
 # --- the nav is the same everywhere -------------------------------------
 # It is the most-seen component on the site; an item missing on one page makes
 # the whole bar shift when a visitor navigates.
+# The block is cut at the </div> that balances its opening tag. It used to be
+# cut at the first </div>, which was the same thing until the Products menu
+# put a <div> inside the block (2026-09-29): from then on the check would have
+# compared only the menu and never seen Pricing, Docs, Company or the two
+# buttons. Link text is read with its inner tags stripped for the same reason:
+# a menu entry is "<b>Runix FS</b><span>...</span>", which the old
+# ">text</a>" pattern could not see at all.
+def _nav_block(html, start):
+    depth = 0
+    for m in re.finditer(r"<div\b|</div>", html[start:]):
+        depth += 1 if m.group(0) != "</div>" else -1
+        if depth == 0:
+            return html[start:start + m.end()]
+    return html[start:]
+
+
 navs = {}
 for page in PAGES:
     html = open(page).read()
@@ -985,8 +1005,9 @@ for page in PAGES:
     if start < 0:
         fail(page, "no nav-links block")
         continue
-    block = html[start:html.find("</div>", start)]
-    navs[page] = tuple(re.findall(r">([^<>]+)</a>", block))
+    block = _nav_block(html, start)
+    navs[page] = tuple(" ".join(re.sub(r"<[^>]+>", " ", t).split())
+                       for t in re.findall(r"<a\b[^>]*>(.*?)</a>", block, re.S))
 if navs:
     common = max(set(navs.values()), key=list(navs.values()).count)
     for page, items in navs.items():

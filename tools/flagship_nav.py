@@ -62,6 +62,25 @@ def active_for(path):
     return None
 
 
+TOGGLE_SVG = ('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" '
+              'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+              'aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>')
+
+
+def build_header_nav(path):
+    """The whole <nav>: brand, menu button and links, in one canonical form.
+
+    Rebuilt as a unit because the pages had drifted apart underneath the link
+    list the nav check compares: 43 of 57 left the logo's fallback letter
+    exposed to screen readers (no aria-hidden on .mark) and 8 had a menu button
+    with no accessible name. Neither shows on screen, so neither was caught.
+    """
+    return ('  <nav class="nav" aria-label="Primary">\n'
+            '    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>\n'
+            f'    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">{TOGGLE_SVG}</button>\n'
+            + build_nav(path, "    ") + "\n  </nav>")
+
+
 def build_nav(path, indent):
     active = active_for(path)
     i1, i2, i3 = indent + "  ", indent + "    ", indent + "      "
@@ -103,16 +122,15 @@ def main():
         rel = p.as_posix()
         t = p.read_text(encoding="utf-8")
         orig = t
-        i = t.find('<div class="nav-links">')
+        i = t.find('<nav class="nav" aria-label="Primary">')
         if i >= 0:
             carriers += 1
-            end = div_span(t, i)
-            if end is None:
-                problems.append(f"{rel}: unbalanced nav-links block")
+            end = t.find("</nav>", i)
+            if end < 0 or '<div class="nav-links">' not in t[i:end]:
+                problems.append(f"{rel}: header nav not in the expected shape")
                 continue
             line_start = t.rfind("\n", 0, i) + 1
-            indent = t[line_start:i]
-            t = t[:line_start] + build_nav(rel, indent) + t[end:]
+            t = t[:line_start] + build_header_nav(rel) + t[end + len("</nav>"):]
             if NOSCRIPT_OLD in t and NOSCRIPT_NEW not in t:
                 t = t.replace(NOSCRIPT_OLD, NOSCRIPT_NEW, 1)
         # Only inside the footer: the same link can appear in body copy, and

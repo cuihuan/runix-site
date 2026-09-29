@@ -84,7 +84,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix — LLM Gateway, AI File System &amp; Data Infrastructure">
 <meta name="twitter:description" content="Runix is AI infrastructure for production teams: a compliant OpenAI-compatible LLM gateway, an AI-native file system on your object storage, and data tooling.">
-<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}}</style></noscript>
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 </head>
 <body>
 
@@ -94,8 +94,17 @@
     <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
-      <a href="/#platform">Platform</a>
-      <a href="/#products">Products</a>
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          <a class="nav-prod" href="/fs"><b>Runix FS <i>New</i></b><span>AI-native file system on your object storage</span></a>
+          <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>Raw material into model-ready data</span></a>
+          <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+          <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          <a class="nav-prod" href="/#platform"><b>Platform overview</b><span>How the five products fit together</span></a>
+        </div>
+      </div>
       <a href="/plans">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about">Company</a>
@@ -173,7 +182,7 @@
   -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
   -d <span class="s">'{"model": "auto", "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
         </div>
-        <p class="card-meta"><span>Status: early access</span> &middot; <span>Hosted API</span> &middot; <span>Usage-based</span></p>
+        <p class="card-meta"><span>Status: early access</span> · <span>Hosted API</span> · <span>Usage-based</span></p>
         <a class="read-more" href="/router">Explore Runix Router &rarr;</a>
       </div>
       <div class="card bento-lg" id="fs">
@@ -192,7 +201,7 @@
           <div class="ma-row ma-core"><b>Runix FS</b><span>Memory</span><span>SSD</span><span>HDD</span></div>
           <div class="ma-row ma-store"><span>Your object storage bucket</span></div>
         </div>
-        <p class="card-meta"><span>Status: early access</span> &middot; <span>Runs in your cloud account</span> &middot; <span>Built on Curvine</span></p>
+        <p class="card-meta"><span>Status: early access</span> · <span>Runs in your cloud account</span> · <span>Built on Curvine</span></p>
         <a class="read-more" href="/fs">Explore Runix FS &rarr;</a>
       </div>
       <a class="card card-clickable" id="pipeline" href="/pipeline" aria-label="Explore Runix Pipeline">
@@ -200,7 +209,7 @@
         <p class="card-layer">Data</p>
         <h3>Runix Pipeline</h3>
         <p><strong>The unglamorous half of every AI project</strong>: raw, duplicated, half-structured source material turned into something a model can read.</p>
-        <p class="card-meta"><span>Status: in development</span> &middot; <span>Managed engagement</span></p>
+        <p class="card-meta"><span>Status: in development</span> · <span>Managed engagement</span></p>
         <span class="read-more">Explore Runix Pipeline &rarr;</span>
       </a>
       <a class="card card-clickable" id="code" href="/code" aria-label="Explore Runix Code">
@@ -208,7 +217,7 @@
         <p class="card-layer">Build</p>
         <h3>Runix Code</h3>
         <p><strong>An AI pair that has read your code</strong>: codebase-aware assistance and agentic tasks, under review gates and team controls.</p>
-        <p class="card-meta"><span>Status: in development</span> &middot; <span>Waitlist open</span></p>
+        <p class="card-meta"><span>Status: in development</span> · <span>Waitlist open</span></p>
         <span class="read-more">Explore Runix Code &rarr;</span>
       </a>
       <a class="card card-clickable" id="comic" href="/comic" aria-label="Explore Runix Comic">
@@ -216,7 +225,7 @@
         <p class="card-layer">Create</p>
         <h3>Runix Comic</h3>
         <p><strong>From script to screen to audience</strong>: an end-to-end studio for AI comic dramas, being built stage by stage.</p>
-        <p class="card-meta"><span>Status: in development</span> &middot; <span>Waitlist open</span></p>
+        <p class="card-meta"><span>Status: in development</span> · <span>Waitlist open</span></p>
         <span class="read-more">Explore Runix Comic &rarr;</span>
       </a>
     </div>
@@ -281,11 +290,12 @@
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
-        <p class="desc">AI, made effortless — Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+        <p class="desc">The infrastructure layer for production AI: Runix Router, Runix FS, Runix Pipeline, Runix Code and Runix Comic.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>
         <a href="/router">Runix Router</a>
+        <a href="/fs">Runix FS</a>
         <a href="/pipeline">Runix Pipeline</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>

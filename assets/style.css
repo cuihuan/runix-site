@@ -202,9 +202,13 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
 .hero { position: relative; padding: 132px 0 116px; overflow: hidden; }
 .hero::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
+  /* The same drafting grid as the product heroes (2026-09-29); the two tinted
+     glows it replaces were the last colour washes left on the site. */
   background:
-    radial-gradient(820px 420px at 12% -8%, rgba(91, 140, 255, 0.07), transparent 64%),
-    radial-gradient(720px 380px at 90% 4%, rgba(34, 211, 238, 0.05), transparent 64%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 46%, #fff 82%),
+    repeating-linear-gradient(90deg, rgba(13, 17, 23, 0.05) 0 1px, transparent 1px 80px),
+    repeating-linear-gradient(0deg, rgba(13, 17, 23, 0.05) 0 1px, transparent 1px 80px);
+  background-position: center top;
 }
 .hero .container { position: relative; }
 .hero h1 { font-size: 62px; font-weight: var(--display-weight); max-width: 820px; letter-spacing: -0.04em; }
@@ -1742,8 +1746,10 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
    docs card title started to the right of its own meta line and excerpt. The
    indent now exists only where the icon does. */
 .card:not(:has(.icon)) h3, .card:not(:has(.icon)) .card-layer { padding-left: 0; }
-.blog-list .card h3 a { color: var(--ink); }
-.blog-list .card h3 a:hover { color: var(--indigo); }
+/* A card whose title is its link: ink, indigo on hover. The whole card is the
+   affordance, so the title does not need to be coloured like a link in prose. */
+.card h3 > a:not(.btn) { color: var(--ink); }
+.card h3 > a:not(.btn):hover { color: var(--indigo); }
 
 /* One primary button. The site had two: near-black in the header and every
    hero, brand indigo on the pricing and product bands. Two primaries on one

@@ -55,18 +55,20 @@ TAGLINE_NEW = ("Rebuild AI Unix: an efficient, stable, enterprise-grade AI "
 
 def footer_products(indent, active_href):
     """The footer's Product column, in the order the stack is drawn."""
-    links = []
-    for layer, *_ in LAYERS:
+    # Grouped under the layer's name, top to bottom, the way the stack is
+    # drawn (2026-09-30 redesign): the footer is the site map in miniature.
+    out = []
+    for layer, _num, lname, _role in LAYERS:
+        out.append(f'{indent}<span class="footer-sub">{lname}</span>')
         for key in products_in(layer):
             _, href, name, *_rest = STACK[key]
-            links.append((href, name))
+            cls = ' class="active"' if href == active_href else ""
+            out.append(f'{indent}<a href="{href}"{cls}>{name}</a>')
             if key == "code":
-                links.append(("/code-plans", "Code plans"))
-    links.append(("/plans", "Pricing"))
-    out = []
-    for href, name in links:
-        cls = ' class="active"' if href == active_href else ""
-        out.append(f'{indent}<a href="{href}"{cls}>{name}</a>')
+                cls = ' class="active"' if active_href == "/code-plans" else ""
+                out.append(f'{indent}<a href="/code-plans"{cls}>Code plans</a>')
+    cls = ' class="active"' if active_href == "/plans" else ""
+    out.append(f'{indent}<a href="/plans"{cls}>Pricing</a>')
     return "\n".join(out)
 
 
@@ -170,7 +172,7 @@ def main():
         if f0 >= 0:
             foot = t[f0:]
             foot = foot.replace(LOCKUP_OLD, LOCKUP_NEW, 1)
-            m = re.search(r'(<p class="footer-heading">Product</p>\n)((?:[ \t]*<a [^\n]*</a>\n)+)', foot)
+            m = re.search(r'(<p class="footer-heading">Product</p>\n)((?:[ \t]*(?:<a |<span class="footer-sub">)[^\n]*</(?:a|span)>\n)+)', foot)
             if m:
                 ind = re.match(r"[ \t]*", m.group(2)).group(0)
                 act = re.search(r'<a href="([^"]+)" class="active">', m.group(2))

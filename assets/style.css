@@ -2016,6 +2016,14 @@ main a.pcard:not(.btn):hover { border-color: var(--ink-3); }
 .page-hero.center .prod-eyebrow { justify-content: center; }
 .page-hero .prod-eyebrow { margin-bottom: 22px; }
 .page-hero .prod-eyebrow .badge, .split-hero .prod-eyebrow .badge { margin: 0; }
+/* The flagship pass lifted the centred heroes' badge above the heading with
+   order:-1; inside the eyebrow that would put it before the locator, so the
+   two page types would open in opposite orders. */
+.page-hero.center .prod-eyebrow .badge { order: 0; }
+@media (max-width: 920px) {
+  /* Phones left-align the centred heroes; the eyebrow follows the heading. */
+  .page-hero.center .prod-eyebrow { justify-content: flex-start; }
+}
 .split-hero .prod-eyebrow { margin-bottom: 4px; }
 main a.stack-loc:not(.btn) {
   display: inline-flex; align-items: center; gap: 10px; padding: 5px 12px 5px 8px;

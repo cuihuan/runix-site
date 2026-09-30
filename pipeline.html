@@ -159,27 +159,58 @@
     </div>
   </nav>
 </header>
-<main id="main">
-<div class="page-hero center">
-  <div class="container">
-    <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i></span>Layer 02 · Data<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Pipeline · In development</span></div>
-    <h1><span class="line">Data a model can</span>
-<span class="line">actually use</span></h1>
-    <p>The tooling behind Runix Data: six auditable stages that turn raw, duplicated, half-structured source material into something a model reads without choking, with a quality report at the end.</p>
-    <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
-      <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Pipeline%20design%20partner">Become a design partner</a><!--/email_off-->
-      <a class="btn btn-ghost" href="/data">Want it done for you? Runix Data</a>
-    
-      <a class="btn btn-ghost" href="/docs/pipeline">How an engagement works</a></div>
+<main id="main" class="has-pbar">
+<!--pt:bar-->
+<nav class="pbar" aria-label="Runix Pipeline on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Runix Pipeline</a>
+    <a class="pbar-layer" href="/#platform">02 &middot; Data</a>
+    <span class="pbar-status">In development</span>
+    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#start">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%20Pipeline%20design%20partner">Become a design partner</a><!--/email_off-->
   </div>
-</div>
-<section class="section">
+</nav>
+<!--/pt:bar-->
+<section class="split-hero" id="overview">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i></span>Layer 02 · Data<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Pipeline · In development</span></div>
+      <h1><span class="line">Data a model can</span>
+<span class="line">actually use</span></h1>
+      <p class="sub">The tooling behind Runix Data: six auditable stages that turn raw, duplicated, half-structured source material into something a model reads without choking, with a quality report at the end.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Pipeline%20design%20partner">Become a design partner</a><!--/email_off-->
+        <a class="btn btn-ghost" href="/docs/pipeline">How an engagement works</a>
+      </div>
+      <p class="hero-note">Want the work done for you? That is <a href="/data">Runix Data</a>, the service built on this tooling.</p>
+    </div>
+    <div>
+<!--pt:glance-->
+      <div class="glance">
+        <p class="glance-title">At a glance</p>
+        <dl>
+        <div><dt>Stages</dt><dd>Ingest, clean and dedupe, structure, mask, report, deliver</dd></div>
+        <div><dt>Deduplication</dt><dd>Exact, near and semantic</dd></div>
+        <div><dt>Extraction</dt><dd>LLM-assisted, into your schema, validated on the way out</dd></div>
+        <div><dt>Masking</dt><dd>Personal data masked before a model or a training set; fails closed</dd></div>
+        <div><dt>Delivery</dt><dd>Files, a database or an endpoint; batch or continuous</dd></div>
+        <div><dt>Role</dt><dd>The tooling Runix Data engagements run on</dd></div>
+        <div><dt>Pricing</dt><dd>Per project or by volume, quoted first</dd></div>
+        <div><dt>Status</dt><dd>In development, with design partners</dd></div>
+        </dl>
+      </div>
+<!--/pt:glance-->
+    </div>
+  </div>
+</section>
+<section class="section" id="capabilities">
   <div class="container">
     <div class="callout" style="margin-top:0;">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
       <span><b>Status: in development.</b> Runix Pipeline is the tooling <a href="/data">Runix Data</a> engagements run on, and is being built into a product alongside a small number of design partners. If you want the data work done for you, that is Runix Data; if you want to run these stages on your own data, that is the design-partner conversation. There is more on the approach in <a href="/blog/ai-data-pipelines">how we think about data pipelines</a>.</span>
     </div>
     <div class="section-head center" style="margin-top:56px;">
+      <p class="sec-no">02 &middot; Capabilities</p>
       <h2>Six stages, each one auditable</h2>
       <p>Every stage produces something you can inspect, so a bad answer downstream can be traced to the record that caused it.</p>
     </div>
@@ -216,9 +247,94 @@
   </div>
 </section>
 
-<section class="section alt">
+<!--pt:specs-->
+<section class="section alt" id="specs">
   <div class="container">
-    <div class="section-head center"><h2>Common questions</h2></div>
+    <div class="section-head center">
+      <p class="sec-no">03 &middot; Specifications</p>
+      <h2>The details a review asks for</h2>
+      <p>One table, the same shape on every product page, kept current with the pages it points to.</p>
+    </div>
+    <div class="dsheet plain specs" tabindex="0" role="region" aria-label="Runix Pipeline specifications">
+      <table aria-label="Runix Pipeline specifications">
+        <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Stages</th><td>Ingest, clean and dedupe, structure, mask, report, deliver: each one leaves something you can inspect</td><td><a href="/docs/pipeline">Engagement guide</a></td></tr>
+          <tr><th scope="row">Deduplication</th><td>Exact, near and semantic, with counts you can check</td><td>This page</td></tr>
+          <tr><th scope="row">Extraction</th><td>LLM-assisted extraction into a schema you define, validated on the way out so malformed records fail loudly</td><td>This page</td></tr>
+          <tr><th scope="row">Masking</th><td>Personal data identified and masked before it reaches a model or a training set; fails closed when detection is uncertain</td><td>This page</td></tr>
+          <tr><th scope="row">Quality report</th><td>One per delivery: coverage, duplication rates, extraction confidence, and what was dropped and why</td><td><a href="/docs/pipeline">Engagement guide</a></td></tr>
+          <tr><th scope="row">Delivery</th><td>Files, a database or an endpoint; batch or continuous</td><td>This page</td></tr>
+          <tr><th scope="row">Pricing</th><td>Per project or by volume, quoted before work starts</td><td><a href="/plans">Pricing</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!--/pt:specs-->
+
+<!--pt:with-->
+<section class="section" id="works-with">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">04 &middot; Works with</p>
+      <h2>The layers on either side</h2>
+      <p>Runix Pipeline hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
+    </div>
+    <div class="grid cols-3 works">
+      <a class="card card-clickable" href="/data" aria-label="Explore Runix Data">
+        <p class="card-layer">Same layer &middot; 02 Data</p>
+        <h3>Runix Data</h3>
+        <p>The service built on this tooling, with the rules for six domains on top.</p>
+        <span class="read-more">Explore Runix Data &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/models" aria-label="Explore Runix Models">
+        <p class="card-layer">Above &middot; 03 Models</p>
+        <h3>Runix Models</h3>
+        <p>Where model-ready data goes next: a model tuned to your task.</p>
+        <span class="read-more">Explore Runix Models &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/fs" aria-label="Explore Runix FS">
+        <p class="card-layer">Below &middot; 01 Infrastructure</p>
+        <h3>Runix FS</h3>
+        <p>Where the raw material is read from: one path over your object storage.</p>
+        <span class="read-more">Explore Runix FS &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+<!--/pt:with-->
+
+<!--pt:start-->
+<section class="section alt" id="start">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">05 &middot; How to start</p>
+      <h2>How to start</h2>
+      <p>Three steps, each with a person on the other end: Runix Pipeline is not self-serve.</p>
+    </div>
+    <div class="prun">
+      <div class="pstep">
+        <h3><span class="pstep-n">01</span>Send a sample and what you need</h3>
+        <p>A slice of the real data, not a description of it, and what has to come out. We reply within one business day.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">02</span>Get a scoped plan</h3>
+        <p>Stages, trade-offs and what we will not attempt, with the price, before any work starts.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">03</span>Receive the data and the report</h3>
+        <p>Batch or continuous, in the form your downstream consumes, with a quality report every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/pt:start-->
+
+<section class="section alt" id="faq">
+  <div class="container">
+    <div class="section-head center">      <p class="sec-no">06 &middot; Questions</p>
+<h2>Common questions</h2></div>
     <div class="qas">
       <div class="qa"><h3>How does Runix Pipeline relate to Runix Data?</h3><p>Runix Pipeline is the tooling: the six stages every engagement runs through. <a href="/data">Runix Data</a> is the service built on it, with the domain rules for code, finance, cybersecurity, legal, embodied AI and AI for Science. If you want the work done for you, start with Runix Data; if you want to run the stages yourself, become a design partner.</p></div>
       <div class="qa"><h3>Why an engagement, not a self-serve tool?</h3><p>Because the hard part is never the transform — it is deciding what "clean" means for your data, and that judgement is different every time. We start from a sample of the real thing and come back with a scoped plan, including the parts we think are not worth doing.</p></div>

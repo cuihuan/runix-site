@@ -166,8 +166,19 @@
     </div>
   </nav>
 </header>
-<main id="main">
-<section class="split-hero">
+<main id="main" class="has-pbar">
+<!--pt:bar-->
+<nav class="pbar" aria-label="Runix Models on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Runix Models</a>
+    <a class="pbar-layer" href="/#platform">03 &middot; Models</a>
+    <span class="pbar-status pbar-live">Early access</span>
+    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#early-access">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%20Models%20early%20access">Request early access</a><!--/email_off-->
+  </div>
+</nav>
+<!--/pt:bar-->
+<section class="split-hero" id="overview">
   <div class="container">
     <div>
       <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i><i></i></span>Layer 03 · Models<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Models · Early access</span></div>
@@ -181,6 +192,41 @@
       <p class="hero-note">Scoped and quoted before any training starts. Training data can come from your own team or from <a href="/data">Runix Data</a>.</p>
     </div>
     <div>
+<!--pt:glance-->
+      <div class="glance">
+        <p class="glance-title">At a glance</p>
+        <dl>
+        <div><dt>What</dt><dd>Fine-tuning and dedicated serving of open-weight models</dd></div>
+        <div><dt>Base models</dt><dd>Qwen, Llama, Mistral, Gemma, DeepSeek; licence checked first</dd></div>
+        <div><dt>Methods</dt><dd>Supervised fine-tuning, LoRA and QLoRA, DPO</dd></div>
+        <div><dt>Evaluation</dt><dd>Held-out set, against the model you run today</dd></div>
+        <div><dt>Serving</dt><dd>Single-tenant, OpenAI-compatible; behind Runix Router if you use it</dd></div>
+        <div><dt>Runs in</dt><dd>Your cloud account, or capacity arranged per engagement</dd></div>
+        <div><dt>Your data</dt><dd>Trains the model you commission, and nothing else</dd></div>
+        <div><dt>Status</dt><dd>Early access, by engagement</dd></div>
+        </dl>
+      </div>
+<!--/pt:glance-->
+    </div>
+  </div>
+</section>
+
+<div class="oss-strip" aria-label="Open-weight model families">
+  <div class="container">
+    <b>Open-weight families</b>
+    <span>Qwen</span>
+    <span>Llama</span>
+    <span>Mistral</span>
+    <span>Gemma</span>
+    <span>DeepSeek</span>
+    <a href="#what-we-tune">How we choose a base model &rarr;</a>
+  </div>
+</div>
+
+<!--pt:example-->
+<section class="section example-band" id="example">
+  <div class="container">
+    <div class="example-grid">
       <div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>engagement spec (example)</b></div>
 <pre><span class="c"># agreed before any training starts</span>
@@ -201,26 +247,20 @@ serving:
   api: openai-compatible
   via: runix-router</pre>
       </div>
-      <p class="term-cap">An illustrative spec, not a product API. Every field is agreed per engagement.</p>
+      <div class="example-note">
+        <p class="sec-no">02 &middot; Example</p>
+        <p class="example-title">engagement spec (example)</p>
+        <p>An illustrative spec, not a product API. Every field is agreed per engagement before any training starts: the base model and its licence, the method, where the data comes from, the baseline the evaluation is measured against, and where the model is served.</p>
+      </div>
     </div>
   </div>
 </section>
+<!--/pt:example-->
 
-<div class="oss-strip" aria-label="Open-weight model families">
-  <div class="container">
-    <b>Open-weight families</b>
-    <span>Qwen</span>
-    <span>Llama</span>
-    <span>Mistral</span>
-    <span>Gemma</span>
-    <span>DeepSeek</span>
-    <a href="#what-we-tune">How we choose a base model &rarr;</a>
-  </div>
-</div>
-
-<section class="section">
+<section class="section" id="capabilities">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">03 &middot; Capabilities</p>
       <h2>From base model to production endpoint</h2>
       <p>One engagement, six pieces of work. Each produces something you can inspect: a dataset, a training run, an evaluation against your current model, an endpoint.</p>
     </div>
@@ -259,9 +299,10 @@ serving:
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="how">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">04 &middot; How it works</p>
       <h2>Where it sits in the stack</h2>
       <p>Runix Models is the model layer. Training data comes up from <a href="/data">Runix Data</a> or from your own team, and the tuned model goes out through <a href="/router">Runix Router</a>, next to the hosted models your application already calls.</p>
     </div>
@@ -292,6 +333,7 @@ serving:
 <section class="section" id="what-we-tune">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">05 &middot; Models</p>
       <h2>What we tune and serve</h2>
       <p>Small and open-weight models, chosen for the task in front of them. We say which model we would start from, and why, before any work starts.</p>
     </div>
@@ -321,6 +363,7 @@ serving:
 <section class="section alt">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">06 &middot; Fit</p>
       <h2>When a tuned model is the right call</h2>
       <p>Not every team needs its own model, and we will say so if you do not: a hosted model through <a href="/router">Runix Router</a> is often the cheaper answer. These are the cases where a model of your own earns its cost.</p>
     </div>
@@ -345,9 +388,69 @@ serving:
   </div>
 </section>
 
+<!--pt:specs-->
+<section class="section alt" id="specs">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">07 &middot; Specifications</p>
+      <h2>The details a review asks for</h2>
+      <p>One table, the same shape on every product page, kept current with the pages it points to.</p>
+    </div>
+    <div class="dsheet plain specs" tabindex="0" role="region" aria-label="Runix Models specifications">
+      <table aria-label="Runix Models specifications">
+        <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Base model families</th><td>Open-weight families whose licences permit your use, for example Qwen, Llama, Mistral, Gemma and DeepSeek</td><td><a href="/models#what-we-tune">What we tune</a></td></tr>
+          <tr><th scope="row">Tuning methods</th><td>Supervised fine-tuning; LoRA and QLoRA; preference tuning with DPO</td><td>This page</td></tr>
+          <tr><th scope="row">Evaluation</th><td>Task-specific held-out sets; before-and-after against the model you run today</td><td>This page</td></tr>
+          <tr><th scope="row">Serving</th><td>Dedicated, single-tenant; quantised variants only where the evaluation shows quality holds</td><td>This page</td></tr>
+          <tr><th scope="row">Interface</th><td>OpenAI-compatible API; can sit behind Runix Router next to hosted providers</td><td><a href="/router">Runix Router</a></td></tr>
+          <tr><th scope="row">Weights and access</th><td>Set in the engagement contract before training starts</td><td>This page</td></tr>
+          <tr><th scope="row">Data use</th><td>The data you provide trains and evaluates the model you commission, and nothing else</td><td><a href="/terms">Terms of Service, section 5</a></td></tr>
+          <tr><th scope="row">Pricing</th><td>Per engagement, quoted after scoping and before any training starts</td><td><a href="/plans">Pricing</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!--/pt:specs-->
+
+<!--pt:with-->
+<section class="section" id="works-with">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">08 &middot; Works with</p>
+      <h2>The layers on either side</h2>
+      <p>Runix Models hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
+    </div>
+    <div class="grid cols-3 works">
+      <a class="card card-clickable" href="/router" aria-label="Explore Runix Router">
+        <p class="card-layer">Above &middot; 04 Gateway</p>
+        <h3>Runix Router</h3>
+        <p>The tuned model answers through the same OpenAI-compatible endpoint as the hosted providers.</p>
+        <span class="read-more">Explore Runix Router &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/data" aria-label="Explore Runix Data">
+        <p class="card-layer">Below &middot; 02 Data</p>
+        <h3>Runix Data</h3>
+        <p>Training and evaluation sets in six domains, delivered with provenance and a quality report.</p>
+        <span class="read-more">Explore Runix Data &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/#platform" aria-label="See the stack">
+        <p class="card-layer">The whole stack</p>
+        <h3>Five layers, seven products</h3>
+        <p>How Models fits between the data it learns from and the gateway it answers through.</p>
+        <span class="read-more">See the stack &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+<!--/pt:with-->
+
 <section class="section" id="early-access">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">09 &middot; How to start</p>
       <h2>How early access works</h2>
       <p>Three steps, each with a person on the other end: Runix Models is an engagement, not a self-serve training console.</p>
     </div>
@@ -368,9 +471,10 @@ serving:
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="faq">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">10 &middot; Questions</p>
       <h2>Common questions</h2>
     </div>
     <div class="qas">

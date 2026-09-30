@@ -350,7 +350,6 @@ def example_html(term, title, caption, num):
     <div class="example-grid">
       {term}
       <div class="example-note">
-        <p class="sec-no">{num:02d} &middot; Example</p>
         <p class="example-title">{title}</p>
         <p>{caption}</p>
       </div>
@@ -446,7 +445,7 @@ def bar_html(key, c, doc, primary):
 def number_sections(doc, c):
     """A numbered label on every section head, in page order; 01 is the hero."""
     doc = re.sub(r'[ \t]*<p class="sec-no">[^<]*</p>\n', "", doc)
-    main_a = doc.index('<main id="main">')
+    main_a = doc.index('<main id="main"')
     main_b = doc.index("</main>")
     body = doc[main_a:main_b]
     n = 1
@@ -456,8 +455,8 @@ def number_sections(doc, c):
         sec = body[m.start():sec_end]
         if "example-band" in m.group(1):
             n += 1
-            sec = sec.replace('<p class="sec-no">', f'<p class="sec-no">', 1)
-            sec = re.sub(r'<p class="sec-no">\d\d &middot;', f'<p class="sec-no">{n:02d} &middot;', sec)
+            sec = sec.replace('<p class="example-title">',
+                              f'<p class="sec-no">{n:02d} &middot; Example</p>\n        <p class="example-title">', 1)
         elif '<div class="section-head' in sec:
             n += 1
             h2 = re.search(r"<h2[^>]*>(.*?)</h2>", sec, re.S)
@@ -479,12 +478,12 @@ def number_sections(doc, c):
                     label = "Close"
                 else:
                     label = "Capabilities" if n == 2 else text.split(",")[0][:24]
-            head = re.search(r'<div class="section-head[^"]*">\n?', sec)
+            head = re.search(r'<div class="section-head[^"]*"[^>]*>\n?', sec)
             ins = head.end()
             sec = sec[:ins] + f'      <p class="sec-no">{n:02d} &middot; {label}</p>\n' + sec[ins:]
         out.append(body[pos:m.start()])
         out.append(sec)
-        pos = m.start() + len(sec)
+        pos = sec_end  # the ORIGINAL end: sec has grown by the label
     out.append(body[pos:])
     return doc[:main_a] + "".join(out) + doc[main_b:]
 
@@ -496,6 +495,11 @@ def main():
         p = pathlib.Path(page)
         doc = p.read_text(encoding="utf-8")
         orig = doc
+        # A rerun: the code sample now lives in the example band, which is
+        # about to be stripped, so it is recovered from there first.
+        prev = re.search(r"<!--pt:example-->(.*?)<!--/pt:example-->", doc, re.S)
+        prev_term = re.search(r'<div class="term">.*?</pre>\n\s*</div>', prev.group(1), re.S) if prev else None
+        prev_term = prev_term.group(0) if prev_term else None
         doc = strip_blocks(doc)
         doc = re.sub(r'[ \t]*<p class="sec-no">[^<]*</p>\n', "", doc)
         # hero
@@ -506,7 +510,7 @@ def main():
             doc, term = hero_from_split(doc, key, c)
         if "example" in c:
             t, title, caption = c["example"]
-            term = t or term
+            term = t or term or prev_term
             if term:
                 # after the strip that follows the hero, else right after the hero
                 hero_end = doc.index("</section>", doc.index('<section class="split-hero"')) + len("</section>")
@@ -518,7 +522,7 @@ def main():
         if m:
             doc = doc[:m.start()] + m.group(0)[:-1] + ' id="faq">' + doc[m.end():]
         for needle, sid in (("Where it sits", "how"), ("bad hour", "how"), ("Domain judgement", "how")):
-            h = re.search(r'<section class="section[^"]*"(?![^>]*\bid=)>(?=\s*<div class="container">\s*<div class="section-head[^"]*">\s*<h2>[^<]*' + needle, doc)
+            h = re.search(r'<section class="section[^"]*"(?![^>]*\bid=)>(?=\s*<div class="container">\s*<div class="section-head[^"]*">\s*<h2>[^<]*' + re.escape(needle) + ')', doc)
             if h:
                 doc = doc[:h.start()] + h.group(0)[:-1] + f' id="{sid}">' + doc[h.end():]
         # first content section after hero: capabilities
@@ -540,6 +544,9 @@ def main():
         doc = doc.replace('<main id="main">', '<main id="main" class="has-pbar">\n' + bar, 1) if 'class="has-pbar"' not in doc \
             else doc.replace('<main id="main" class="has-pbar">', '<main id="main" class="has-pbar">\n' + bar, 1)
         doc = number_sections(doc, c)
+        # The blocks are inserted with blank lines around them; without this
+        # a rerun grows the file by a blank line per block and never settles.
+        doc = re.sub(r"\n{3,}", "\n\n", doc)
         if doc != orig:
             p.write_text(doc, encoding="utf-8")
             changed += 1

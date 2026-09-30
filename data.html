@@ -158,8 +158,19 @@
     </div>
   </nav>
 </header>
-<main id="main">
-<section class="split-hero">
+<main id="main" class="has-pbar">
+<!--pt:bar-->
+<nav class="pbar" aria-label="Runix Data on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Runix Data</a>
+    <a class="pbar-layer" href="/#platform">02 &middot; Data</a>
+    <span class="pbar-status pbar-live">Early access</span>
+    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#early-access">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%20Data%20early%20access">Request early access</a><!--/email_off-->
+  </div>
+</nav>
+<!--/pt:bar-->
+<section class="split-hero" id="overview">
   <div class="container">
     <div>
       <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i></span>Layer 02 · Data<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Data · Early access</span></div>
@@ -173,6 +184,41 @@
       <p class="hero-note">Built on <a href="/pipeline">Runix Pipeline</a>, the data tooling its engagements run on.</p>
     </div>
     <div>
+<!--pt:glance-->
+      <div class="glance">
+        <p class="glance-title">At a glance</p>
+        <dl>
+        <div><dt>Domains</dt><dd>Code (the focus), finance, cybersecurity, legal, embodied AI, AI for Science</dd></div>
+        <div><dt>Every record</dt><dd>Provenance and licence recorded</dd></div>
+        <div><dt>Every delivery</dt><dd>A quality report: coverage, duplication, what was dropped and why</dd></div>
+        <div><dt>Personal data</dt><dd>Masked before training; fails closed</dd></div>
+        <div><dt>Evaluation</dt><dd>Split from training data by source</dd></div>
+        <div><dt>Tooling</dt><dd>Runix Pipeline</dd></div>
+        <div><dt>Pricing</dt><dd>Per project or by volume, quoted first</dd></div>
+        <div><dt>Status</dt><dd>Early access, by engagement</dd></div>
+        </dl>
+      </div>
+<!--/pt:glance-->
+    </div>
+  </div>
+</section>
+
+<div class="oss-strip" aria-label="Domains">
+  <div class="container">
+    <b>Six domains</b>
+    <span>Code</span>
+    <span>Finance</span>
+    <span>Cybersecurity</span>
+    <span>Legal</span>
+    <span>Embodied AI</span>
+    <span>AI for Science</span>
+  </div>
+</div>
+
+<!--pt:example-->
+<section class="section example-band" id="example">
+  <div class="container">
+    <div class="example-grid">
       <div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>example record</b></div>
 <pre><span class="c">// one accepted record, pretty-printed</span>
@@ -199,26 +245,20 @@
 { "id": <span class="g">"code-task-000143"</span>, "verdict": <span class="a">"dropped"</span>,
   "dropped_reason": <span class="g">"target tests pass without the patch"</span> }</pre>
       </div>
-      <p class="term-cap">An illustrative record. The repository, commit and IDs are placeholders.</p>
+      <div class="example-note">
+        <p class="sec-no">02 &middot; Example</p>
+        <p class="example-title">example record</p>
+        <p>An illustrative record. Every accepted record carries its source, its licence, the deduplication decision and the checks it passed; a dropped record carries the reason, and the quality report counts both.</p>
+      </div>
     </div>
   </div>
 </section>
-
-<div class="oss-strip" aria-label="Domains">
-  <div class="container">
-    <b>Six domains</b>
-    <span>Code</span>
-    <span>Finance</span>
-    <span>Cybersecurity</span>
-    <span>Legal</span>
-    <span>Embodied AI</span>
-    <span>AI for Science</span>
-  </div>
-</div>
+<!--/pt:example-->
 
 <section class="section" id="domains">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">03 &middot; Domains</p>
       <h2>Six domains, six definitions of clean</h2>
       <p>The stages are the same everywhere: ingest, clean, structure, mask, report. What counts as a duplicate, a valid record or a leak changes with the field, and that is where each domain gets its own rules.</p>
     </div>
@@ -327,9 +367,10 @@
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="how">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">04 &middot; How it works</p>
       <h2>Domain judgement on shared tooling</h2>
       <p>Runix Pipeline runs the stages the same way on every engagement. Runix Data is the layer of judgement on top of it: the rules that decide, field by field, what survives and what is dropped.</p>
     </div>
@@ -357,9 +398,10 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="capabilities">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">05 &middot; Deliverables</p>
       <h2>What every delivery carries</h2>
       <p>The data is half of a delivery. The other half is what lets you check it without taking our word for it.</p>
     </div>
@@ -398,9 +440,69 @@
   </div>
 </section>
 
+<!--pt:specs-->
+<section class="section alt" id="specs">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">06 &middot; Specifications</p>
+      <h2>The details a review asks for</h2>
+      <p>One table, the same shape on every product page, kept current with the pages it points to.</p>
+    </div>
+    <div class="dsheet plain specs" tabindex="0" role="region" aria-label="Runix Data specifications">
+      <table aria-label="Runix Data specifications">
+        <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Domains</th><td>Six, each with its own rules and the public standards they follow</td><td><a href="/data#domains">The domains</a></td></tr>
+          <tr><th scope="row">Inputs</th><td>Data you provide or have the rights to use, or public sources whose licences permit your use</td><td>This page</td></tr>
+          <tr><th scope="row">Code tasks</th><td>Run in a clean container: target tests pass with the patch and fail without it, and the rest of the suite still passes</td><td><a href="/code-data">Code data</a></td></tr>
+          <tr><th scope="row">Deliverables</th><td>Files, a database or an endpoint; batch or continuous</td><td>This page</td></tr>
+          <tr><th scope="row">Quality report</th><td>Coverage, duplication, extraction confidence, the checks each record passed, and what was dropped and why</td><td>This page</td></tr>
+          <tr><th scope="row">Personal data</th><td>Identified and masked before a training set; a record that cannot be cleared is held back</td><td>This page</td></tr>
+          <tr><th scope="row">Evaluation data</th><td>Split from training data by source, so near-duplicates cannot sit on both sides</td><td>This page</td></tr>
+          <tr><th scope="row">Pricing</th><td>Per project or by volume, quoted before any work starts</td><td><a href="/plans">Pricing</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!--/pt:specs-->
+
+<!--pt:with-->
+<section class="section" id="works-with">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">07 &middot; Works with</p>
+      <h2>The layers on either side</h2>
+      <p>Runix Data hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
+    </div>
+    <div class="grid cols-3 works">
+      <a class="card card-clickable" href="/models" aria-label="Explore Runix Models">
+        <p class="card-layer">Above &middot; 03 Models</p>
+        <h3>Runix Models</h3>
+        <p>The training and evaluation sets go into a model tuned to your task.</p>
+        <span class="read-more">Explore Runix Models &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/pipeline" aria-label="Explore Runix Pipeline">
+        <p class="card-layer">Same layer &middot; 02 Data</p>
+        <h3>Runix Pipeline</h3>
+        <p>The tooling every Data engagement runs on: six stages, each one auditable.</p>
+        <span class="read-more">Explore Runix Pipeline &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/fs" aria-label="Explore Runix FS">
+        <p class="card-layer">Below &middot; 01 Infrastructure</p>
+        <h3>Runix FS</h3>
+        <p>Where the raw material is read from: one path over the object storage you already run.</p>
+        <span class="read-more">Explore Runix FS &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+<!--/pt:with-->
+
 <section class="section alt" id="early-access">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">08 &middot; How to start</p>
       <h2>How early access works</h2>
       <p>Three steps, each with a person on the other end: Runix Data is scoped per engagement, not bought off a shelf.</p>
     </div>
@@ -421,9 +523,10 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="faq">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">09 &middot; Questions</p>
       <h2>Common questions</h2>
     </div>
     <div class="qas">

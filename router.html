@@ -159,23 +159,76 @@
     </div>
   </nav>
 </header>
-<main id="main">
-<div class="page-hero center">
-  <div class="container">
-    <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i></span>Layer 04 · Gateway<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Router · Early access</span></div>
-    <h1><span class="line">One compliant endpoint</span>
-<span class="line">for every model</span></h1>
-    <p>The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request — behind one OpenAI-compatible API.</p>
-    <div class="actions" style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
-      <a class="btn btn-primary" href="/about#contact">Request access</a>
-      <a class="btn btn-ghost" href="/plans">See how billing works</a>
-    
-      <a class="btn btn-ghost" href="/docs/router">Read the docs</a></div>
+<main id="main" class="has-pbar">
+<!--pt:bar-->
+<nav class="pbar" aria-label="Runix Router on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Runix Router</a>
+    <a class="pbar-layer" href="/#platform">04 &middot; Gateway</a>
+    <span class="pbar-status pbar-live">Early access</span>
+    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#start">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Request access</a>
   </div>
-</div>
-<section class="section">
+</nav>
+<!--/pt:bar-->
+<section class="split-hero" id="overview">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i></span>Layer 04 · Gateway<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Router · Early access</span></div>
+      <h1><span class="line">One compliant endpoint</span>
+<span class="line">for every model</span></h1>
+      <p class="sub">The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request, behind one OpenAI-compatible API.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/about#contact">Request access</a>
+        <a class="btn btn-ghost" href="/docs/router">Read the docs</a>
+      </div>
+      <p class="hero-note">Evaluation credits on request; no card, nothing to install. Billing is usage-based in USD, <a href="/plans">quoted per workload</a>.</p>
+    </div>
+    <div>
+<!--pt:glance-->
+      <div class="glance">
+        <p class="glance-title">At a glance</p>
+        <dl>
+        <div><dt>Interface</dt><dd>OpenAI-compatible API</dd></div>
+        <div><dt>Endpoint</dt><dd><code>api.router.runixcloud.io/v1</code></dd></div>
+        <div><dt>Keys</dt><dd>Per key: quota, limits, allowed models, routing</dd></div>
+        <div><dt>Failover</dt><dd>Mid-request, streaming preserved</dd></div>
+        <div><dt>Data terms</dt><dd>Content never used for training</dd></div>
+        <div><dt>Billing</dt><dd>Usage-based, USD, itemised</dd></div>
+        <div><dt>Contracting</dt><dd>Runix AI Inc &middot; MSA &amp; DPA on request</dd></div>
+        <div><dt>Status</dt><dd>Early access, running traffic</dd></div>
+        </dl>
+      </div>
+<!--/pt:glance-->
+    </div>
+  </div>
+</section>
+
+<!--pt:example-->
+<section class="section example-band" id="example">
+  <div class="container">
+    <div class="example-grid">
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><b>one request, any model</b></div>
+<pre>$ curl https://api.router.runixcloud.io/v1/chat/completions \
+    -H <span class="g">"Authorization: Bearer $RUNIX_API_KEY"</span> \
+    -d <span class="g">'{"model": "auto",
+         "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
+      </div>
+      <div class="example-note">
+        <p class="sec-no">02 &middot; Example</p>
+        <p class="example-title">one request, any model</p>
+        <p>An OpenAI-compatible request. <code>"auto"</code> lets Router choose by cost, health and your key's policy; an explicit model id pins the model, and failover stays within the providers that serve it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/pt:example-->
+
+<section class="section" id="capabilities">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">03 &middot; Capabilities</p>
       <h2>Built for the three things that block rollouts</h2>
       <p>Teams rarely stall on whether a model works. They stall on who holds the keys, what legal can sign, and what happens at 3am when a provider degrades.</p>
     </div>
@@ -248,9 +301,10 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   </div>
 </section>
 
-<section class="section section-alt">
+<section class="section section-alt" id="how">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">04 &middot; How it works</p>
       <h2>What a provider's bad hour looks like from your side</h2>
       <p>Your application holds one base URL and one key. Everything below happens behind that line, while the request is still in flight.</p>
     </div>
@@ -341,9 +395,96 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   </div>
 </section>
 
-<section class="section">
+<!--pt:specs-->
+<section class="section alt" id="specs">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">05 &middot; Specifications</p>
+      <h2>The details a review asks for</h2>
+      <p>One table, the same shape on every product page, kept current with the pages it points to.</p>
+    </div>
+    <div class="dsheet plain specs" tabindex="0" role="region" aria-label="Runix Router specifications">
+      <table aria-label="Runix Router specifications">
+        <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">API surface</th><td>Chat completions and model listing, with server-sent events for streaming</td><td><a href="/docs/router">Router quickstart</a></td></tr>
+          <tr><th scope="row">Model selection</th><td><code>"auto"</code>, or an explicit model id</td><td><a href="/docs/router">Router quickstart</a></td></tr>
+          <tr><th scope="row">Failover</th><td>Provider to provider, mid-request, streaming preserved</td><td><a href="/reliability">Reliability</a></td></tr>
+          <tr><th scope="row">Limits</th><td>Per key: rate limits, quotas and allowed models, revocable without a redeploy</td><td><a href="/access">Access</a></td></tr>
+          <tr><th scope="row">Errors</th><td>OpenAI-style error envelope, with a request id on every response</td><td><a href="/docs/router">Router quickstart</a></td></tr>
+          <tr><th scope="row">Data handling</th><td>Content processed to serve the request; operational metadata kept for billing and support</td><td><a href="/privacy">Privacy Policy</a> and <a href="/security">Security</a></td></tr>
+          <tr><th scope="row">Transport</th><td>TLS 1.3 and 1.2; 1.0 and 1.1 refused</td><td><a href="/security">Security</a></td></tr>
+          <tr><th scope="row">Service level</th><td>No published SLA during early access; the failover mechanism is documented</td><td><a href="/reliability">Reliability</a></td></tr>
+          <tr><th scope="row">Billing</th><td>Usage-based in USD, per token or per request by model; prepaid balance or invoice</td><td><a href="/plans">Pricing</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!--/pt:specs-->
+
+<!--pt:with-->
+<section class="section" id="works-with">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">06 &middot; Works with</p>
+      <h2>The layers on either side</h2>
+      <p>Runix Router hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
+    </div>
+    <div class="grid cols-3 works">
+      <a class="card card-clickable" href="/#layer-applications" aria-label="See the applications">
+        <p class="card-layer">Above &middot; 05 Applications</p>
+        <h3>Runix Code and Runix Comic</h3>
+        <p>Call every model through Router, so the application never changes when a provider does.</p>
+        <span class="read-more">See the applications &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/models" aria-label="Explore Runix Models">
+        <p class="card-layer">Below &middot; 03 Models</p>
+        <h3>Runix Models</h3>
+        <p>A model tuned on your data sits behind Router next to the hosted providers, on dedicated capacity.</p>
+        <span class="read-more">Explore Runix Models &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/#platform" aria-label="See the stack">
+        <p class="card-layer">The whole stack</p>
+        <h3>Five layers, seven products</h3>
+        <p>How Router fits with data, storage and the applications on top.</p>
+        <span class="read-more">See the stack &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+<!--/pt:with-->
+
+<!--pt:start-->
+<section class="section alt" id="start">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">07 &middot; How to start</p>
+      <h2>How to start</h2>
+      <p>Three steps, each with a person on the other end: Runix Router is not self-serve.</p>
+    </div>
+    <div class="prun">
+      <div class="pstep">
+        <h3><span class="pstep-n">01</span>Tell us what you are building</h3>
+        <p>Models, expected volume, latency needs. We reply within one business day and set the account up.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">02</span>Evaluate before you pay</h3>
+        <p>Evaluation credits on request, full router functionality, no card. Integration is a base-URL change.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">03</span>Go to production in writing</h3>
+        <p>Rates stated before you commit; MSA and DPA on request; prepaid balance or invoice, in USD.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/pt:start-->
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">08 &middot; Questions</p>
       <h2>Common questions</h2>
     </div>
     <div class="qas">

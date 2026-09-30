@@ -174,8 +174,19 @@
     </div>
   </nav>
 </header>
-<main id="main">
-<section class="split-hero">
+<main id="main" class="has-pbar">
+<!--pt:bar-->
+<nav class="pbar" aria-label="Runix FS on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Runix FS</a>
+    <a class="pbar-layer" href="/#platform">01 &middot; Infrastructure</a>
+    <span class="pbar-status pbar-live">Early access</span>
+    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#early-access">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%20FS%20early%20access">Request early access</a><!--/email_off-->
+  </div>
+</nav>
+<!--/pt:bar-->
+<section class="split-hero" id="overview">
   <div class="container">
     <div>
       <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i></span>Layer 01 · Infrastructure<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix FS · Early access</span></div>
@@ -189,6 +200,39 @@
       <p class="hero-note">Built on Curvine, an open-source CNCF Sandbox project under the Apache 2.0 licence. <a href="/blog/introducing-runix-fs">Read the launch post</a>.</p>
     </div>
     <div>
+<!--pt:glance-->
+      <div class="glance">
+        <p class="glance-title">At a glance</p>
+        <dl>
+        <div><dt>Interfaces</dt><dd>FUSE, Hadoop-compatible client, Java, Python and Rust SDKs, Kubernetes CSI</dd></div>
+        <div><dt>Storage</dt><dd>S3-compatible object storage; paths map one-to-one to object keys</dd></div>
+        <div><dt>Cache</dt><dd>Memory, SSD and HDD tiers on the workers</dd></div>
+        <div><dt>Metadata</dt><dd>Masters replicated with Raft</dd></div>
+        <div><dt>Mount modes</dt><dd>Cache mode, or file-system mode with background sync</dd></div>
+        <div><dt>Runs in</dt><dd>Your AWS, Google Cloud or Azure account</dd></div>
+        <div><dt>Built on</dt><dd>Curvine: Apache 2.0, CNCF Sandbox</dd></div>
+        <div><dt>Status</dt><dd>Early access, per deployment</dd></div>
+        </dl>
+      </div>
+<!--/pt:glance-->
+    </div>
+  </div>
+</section>
+
+<div class="oss-strip" aria-label="Open-source foundation">
+  <div class="container">
+    <b>Built on Curvine</b>
+    <span>Apache 2.0</span>
+    <span>CNCF Sandbox project</span>
+    <span>Rust core, no garbage collector</span>
+    <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine on GitHub &rarr;</a>
+  </div>
+</div>
+
+<!--pt:example-->
+<section class="section example-band" id="example">
+  <div class="container">
+    <div class="example-grid">
       <div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>mount an existing bucket</b></div>
 <pre><span class="c"># 1. Attach the bucket to the namespace</span>
@@ -207,20 +251,15 @@ $ bin/curvine-fuse.sh start --mnt-path /mnt/curvine
 $ ls /mnt/curvine/training-data/imagenet
 <span class="g">train/  val/  labels.csv</span></pre>
       </div>
-      <p class="term-cap">Commands from the Curvine documentation. The bucket, region and listing are placeholders.</p>
+      <div class="example-note">
+        <p class="sec-no">02 &middot; Example</p>
+        <p class="example-title">mount an existing bucket</p>
+        <p>Three commands: attach the bucket to the namespace, expose it as a local directory, and read it as a path. Nothing in the training code changes.</p>
+      </div>
     </div>
   </div>
 </section>
-
-<div class="oss-strip" aria-label="Open-source foundation">
-  <div class="container">
-    <b>Built on Curvine</b>
-    <span>Apache 2.0</span>
-    <span>CNCF Sandbox project</span>
-    <span>Rust core, no garbage collector</span>
-    <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine on GitHub &rarr;</a>
-  </div>
-</div>
+<!--/pt:example-->
 
 <section class="stats-band" aria-labelledby="published-results">
   <div class="container">
@@ -235,9 +274,10 @@ $ ls /mnt/curvine/training-data/imagenet
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="capabilities">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">03 &middot; Capabilities</p>
       <h2>Object-storage economics, local-file semantics</h2>
       <p>Object storage is where AI data lives because it is cheap and durable. It is also slow to list, slow to open and poor at renames. Runix FS puts a file system and a cache in front of the bucket, and each mount picks how writes reach it: read-heavy data keeps the bucket as the source of truth, write-heavy work completes in Runix FS first and is synchronised to the bucket in the background.</p>
     </div>
@@ -276,9 +316,10 @@ $ ls /mnt/curvine/training-data/imagenet
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="how">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">04 &middot; How it works</p>
       <h2>Where it sits in your stack</h2>
       <p>Between the workloads that read data and the bucket that keeps it. Metadata goes to the masters; data is served by the workers, which read from the bucket on a miss and write back to it, directly or through a background sync depending on the mount mode.</p>
     </div>
@@ -309,6 +350,7 @@ $ ls /mnt/curvine/training-data/imagenet
 <section class="section">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">05 &middot; Integration</p>
       <h2>Your code does not change</h2>
       <p>Four examples against the same namespace. Every command below is from the Curvine documentation; hosts and bucket names are placeholders.</p>
     </div>
@@ -370,6 +412,7 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
 <section class="section alt">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">06 &middot; Workloads</p>
       <h2>Built for the workloads that stall on I/O</h2>
       <p>GPUs are the expensive part of an AI cluster, and they sit idle while data crosses the network one object at a time. These are the places that shows up first.</p>
     </div>
@@ -413,6 +456,7 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
 <section class="section">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">07 &middot; Results</p>
       <h2>What the project has measured</h2>
       <p>These figures are published in the Curvine project's README. They are not a Runix service level. During early access we measure on your data, your instances and your access pattern.</p>
     </div>
@@ -440,6 +484,7 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
 <section class="section alt">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">08 &middot; Open source</p>
       <h2>Open source, or run with us</h2>
       <p>The file system is the same. What Runix adds is the part a production team needs around it: someone to size it, deploy it, answer for it, and sign for it.</p>
     </div>
@@ -459,9 +504,70 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
   </div>
 </section>
 
+<!--pt:specs-->
+<section class="section alt" id="specs">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">09 &middot; Specifications</p>
+      <h2>The details a review asks for</h2>
+      <p>One table, the same shape on every product page, kept current with the pages it points to.</p>
+    </div>
+    <div class="dsheet plain specs" tabindex="0" role="region" aria-label="Runix FS specifications">
+      <table aria-label="Runix FS specifications">
+        <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Interfaces</th><td>FUSE mount; Hadoop-compatible client; Java, Python and Rust SDKs; Kubernetes CSI driver</td><td><a href="/docs/fs">Quick start</a></td></tr>
+          <tr><th scope="row">Object storage</th><td>S3-compatible; the bucket keeps its layout and stays independently readable</td><td>This page</td></tr>
+          <tr><th scope="row">Cache tiers</th><td>Memory, SSD and HDD, written to the fastest available tier first</td><td>This page</td></tr>
+          <tr><th scope="row">Metadata</th><td>Masters replicated with Raft</td><td>This page</td></tr>
+          <tr><th scope="row">Mount modes</th><td>Cache mode: the bucket is the source of truth and writes pass through. File-system mode: operations complete in the cluster, then sync to the bucket</td><td><a href="/docs/fs">Quick start</a></td></tr>
+          <tr><th scope="row">Kubernetes</th><td>The CSI driver provisions ReadWriteMany volumes by creating a directory, not by calling a cloud API</td><td><a href="/docs/fs">Quick start</a></td></tr>
+          <tr><th scope="row">Deployment</th><td>Sized and deployed with you, in your own cloud account; supported under contract with Runix AI Inc</td><td>This page</td></tr>
+          <tr><th scope="row">Published results</th><td>The Curvine project's own figures, labelled as such; not a Runix service level</td><td><a href="/fs#published-results">Published results</a></td></tr>
+          <tr><th scope="row">Pricing</th><td>Quoted per deployment during early access</td><td><a href="/plans">Pricing</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!--/pt:specs-->
+
+<!--pt:with-->
+<section class="section" id="works-with">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">10 &middot; Works with</p>
+      <h2>The layers on either side</h2>
+      <p>Runix FS hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
+    </div>
+    <div class="grid cols-3 works">
+      <a class="card card-clickable" href="/data" aria-label="Explore Runix Data">
+        <p class="card-layer">Above &middot; 02 Data</p>
+        <h3>Runix Data and Runix Pipeline</h3>
+        <p>Raw material is read through the file system before it is cleaned.</p>
+        <span class="read-more">Explore Runix Data &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/models" aria-label="Explore Runix Models">
+        <p class="card-layer">Above &middot; 03 Models</p>
+        <h3>Runix Models</h3>
+        <p>Training reads datasets and checkpoints through one path instead of waiting on the bucket.</p>
+        <span class="read-more">Explore Runix Models &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/#platform" aria-label="See the stack">
+        <p class="card-layer">Below &middot; 00 Compute</p>
+        <h3>Your own cloud</h3>
+        <p>GPUs, object storage and Kubernetes in your account. The file system runs on them and replaces none of them.</p>
+        <span class="read-more">See the stack &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+<!--/pt:with-->
+
 <section class="section" id="early-access">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">11 &middot; How to start</p>
       <h2>How early access works</h2>
       <p>Three steps, each with a person on the other end: Runix FS is not self-serve during early access.</p>
     </div>
@@ -482,9 +588,10 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="faq">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">12 &middot; Questions</p>
       <h2>Common questions</h2>
     </div>
     <div class="qas">

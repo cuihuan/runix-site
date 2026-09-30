@@ -87,18 +87,35 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     <div class="nav-links">
       <div class="nav-menu">
         <a class="nav-menu-top" href="/#products">Products</a>
         <div class="nav-panel">
-          <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
-          <a class="nav-prod" href="/fs"><b>Runix FS <i>New</i></b><span>AI-native file system on your object storage</span></a>
-          <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>Raw material into model-ready data</span></a>
-          <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
-          <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
-          <a class="nav-prod" href="/#platform"><b>Platform overview</b><span>How the five products fit together</span></a>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Applications</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
         </div>
       </div>
       <a href="/plans">Pricing</a>
@@ -176,17 +193,19 @@
   <div class="container">
     <div class="footer-grid footer-grid-4">
       <div>
-        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>
-        <p class="desc">The infrastructure layer for production AI: Runix Router, Runix FS, Runix Pipeline, Runix Code and Runix Comic.</p>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Full-stack AI infrastructure in five layers: storage, data, models, a model gateway and the applications on top.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>
-        <a href="/router">Runix Router</a>
-        <a href="/fs">Runix FS</a>
-        <a href="/pipeline">Runix Pipeline</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
+        <a href="/router">Runix Router</a>
+        <a href="/models">Runix Models</a>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/fs">Runix FS</a>
         <a href="/plans">Pricing</a>
       </div>
       <div>

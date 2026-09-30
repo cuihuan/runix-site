@@ -53,7 +53,7 @@
       "name": "Which robots and formats do you work with?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Whatever your recordings come from. We read ROS 2 bags and MCAP and deliver in the format your training code expects, such as RLDS or LeRobot."
+        "text": "We read ROS 2 bags and MCAP directly; other logging formats are assessed on a sample. Delivery is in the format your training code expects, such as RLDS or LeRobot."
       }
     },
     {
@@ -242,13 +242,13 @@
         <span class="fno" aria-hidden="true">04</span>
         <h3>Failures labelled, unsafe removed</h3>
         <p>Failed attempts are kept and labelled, because a policy learns from them too. Unsafe or corrupted episodes are removed, with the reason recorded.</p>
-        <p class="basis"><b>Follows</b> Success labels in open cross-embodiment datasets.</p>
+        <p class="basis"><b>Follows</b> Open datasets that release labelled failures, such as DROID's episodes marked not successful.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">05</span>
         <h3>Actions comparable across robots</h3>
         <p>Units, coordinate frames and control rates are normalised, so data from different robots and controllers can be trained on together.</p>
-        <p class="basis"><b>Follows</b> Open X-Embodiment's work on training across many robots.</p>
+        <p class="basis"><b>Follows</b> The gap Open X-Embodiment documented: its cross-robot data shares a 7-DoF end-effector action normalised per dataset, but leaves coordinate frames unaligned.</p>
       </div>
     </div>
   </div>
@@ -262,9 +262,9 @@
     </div>
     <ul class="refs">
       <li><a href="https://mcap.dev/" rel="noopener">MCAP</a><span>An open container format for timestamped robotics data.</span></li>
-      <li><a href="https://docs.ros.org/" rel="noopener">ROS 2 documentation</a><span>Including rosbag2, the ROS 2 recording format.</span></li>
-      <li><a href="https://wiki.ros.org/urdf" rel="noopener">URDF</a><span>The XML format that describes a robot's links and joints.</span></li>
-      <li><a href="https://github.com/google-research/rlds" rel="noopener">RLDS</a><span>An episode-based format for reinforcement learning and robot data.</span></li>
+      <li><a href="https://github.com/ros2/rosbag2" rel="noopener">rosbag2</a><span>The ROS 2 recording tool; its default storage format has been MCAP since ROS 2 Iron.</span></li>
+      <li><a href="https://docs.ros.org/en/jazzy/Tutorials/Intermediate/URDF/URDF-Main.html" rel="noopener">URDF</a><span>The XML format that describes a robot's links and joints.</span></li>
+      <li><a href="https://github.com/google-research/rlds" rel="noopener">RLDS</a><span>Google Research's episode-based format for robot and reinforcement-learning data.</span></li>
       <li><a href="https://robotics-transformer-x.github.io/" rel="noopener">Open X-Embodiment</a><span>A collaboration pooling robot data across many embodiments.</span></li>
       <li><a href="https://github.com/huggingface/lerobot" rel="noopener">LeRobot</a><span>Hugging Face's open library and dataset format for robot learning.</span></li>
     </ul>
@@ -302,7 +302,7 @@
     <div class="qas">
       <div class="qa">
         <h3>Which robots and formats do you work with?</h3>
-        <p>Whatever your recordings come from. We read ROS 2 bags and MCAP and deliver in the format your training code expects, such as RLDS or LeRobot.</p>
+        <p>We read ROS 2 bags and MCAP directly; other logging formats are assessed on a sample. Delivery is in the format your training code expects, such as RLDS or LeRobot.</p>
       </div>
       <div class="qa">
         <h3>Why keep failed episodes?</h3>

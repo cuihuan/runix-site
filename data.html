@@ -186,8 +186,9 @@
   },
   "dedup": { "cluster": <span class="g">"c-5521"</span>, "kept": <span class="g">"1 of 3"</span> },
   "checks": {
-    "tests_with_reference_patch": <span class="g">"pass"</span>,
-    "tests_without_patch": <span class="g">"fail"</span>,
+    "target_tests_with_patch": <span class="g">"pass"</span>,
+    "target_tests_without_patch": <span class="g">"fail"</span>,
+    "other_tests_with_patch": <span class="g">"pass"</span>,
     "secrets_scan": <span class="g">"clean"</span>,
     "statement_matches_tests": <span class="a">true</span>
   },
@@ -197,7 +198,7 @@
 
 <span class="c">// and one that did not make it</span>
 { "id": <span class="g">"code-task-000143"</span>, "verdict": <span class="a">"dropped"</span>,
-  "dropped_reason": <span class="g">"tests pass without the patch"</span> }</pre>
+  "dropped_reason": <span class="g">"target tests pass without the patch"</span> }</pre>
       </div>
       <p class="term-cap">An illustrative record. The repository, commit and IDs are placeholders.</p>
     </div>
@@ -241,14 +242,14 @@
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l6 6-6 6M12 18h8"/></svg></div>
         <p class="card-layer">Code · verification</p>
         <h3>Every task is run, not read</h3>
-        <p>A coding task only teaches or measures something if its tests can tell a right answer from a wrong one. Each task is executed in a clean container: the reference solution must make its tests pass, and the untouched repository must make the same tests fail.</p>
+        <p>A coding task only teaches or measures something if its tests can tell a right answer from a wrong one. Each task is executed in a clean container: the reference solution must make its target tests pass, the untouched repository must make those tests fail, and the rest of the suite must still pass.</p>
         <div class="mini-arch" aria-hidden="true">
           <div class="ma-row"><span>Repository at the base commit</span></div>
-          <div class="ma-row ma-core"><b>Reference patch</b><span>Tests pass</span></div>
-          <div class="ma-row ma-if"><span>Without the patch</span><span>Same tests fail</span></div>
+          <div class="ma-row ma-core"><b>Reference patch</b><span>Target tests pass</span></div>
+          <div class="ma-row ma-if"><span>Without the patch</span><span>Target tests fail</span></div>
           <div class="ma-row ma-store"><span>Only then: into the dataset</span></div>
         </div>
-        <p class="card-meta">A task whose tests pass without its patch is dropped, and the report says so</p>
+        <p class="card-meta">A task whose target tests pass without its patch is dropped, and the report says so</p>
       </div>
       <div class="card" id="domain-finance">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M7 17v-6M12 17V7M17 17v-9"/></svg></div>
@@ -313,7 +314,7 @@
           <li>Accession numbers reconciled where two databases disagree</li>
           <li>Names, aliases and identifiers normalised to one entity</li>
         </ul>
-        <p class="card-meta">We teach this work in a free course, CC BY-SA, taught in Chinese. <a href="https://ai4s.runixcloud.io/en/" target="_blank" rel="noopener">Read the English overview</a></p>
+        <p class="card-meta">We teach this work in a free course, CC BY-SA 4.0, taught in Chinese. <a href="https://ai4s.runixcloud.io/en/" target="_blank" rel="noopener">Read the English overview</a></p>
         <a class="read-more" href="/ai-for-science-data">AI for Science: rules and public references &rarr;</a>
       </div>
       <div class="card">

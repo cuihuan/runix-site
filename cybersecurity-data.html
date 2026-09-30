@@ -50,7 +50,7 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Do the datasets contain live malware or exploits?",
+      "name": "Can delivered data contain live malware or exploits?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. Indicators are defanged, malware is referenced by hash, and exploit code is excluded."
@@ -61,7 +61,7 @@
       "name": "How are conflicting advisories handled?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "They are merged on the CVE identifier with every source kept, so a model sees where the sources agree and where they do not."
+        "text": "They are merged on the CVE identifier and the aliases OSV lists, with every source kept, so a model sees where the sources agree and where they do not."
       }
     },
     {
@@ -175,7 +175,7 @@
       <div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>cybersecurity: what each record is checked against</b></div>
 <pre><span class="a">vulnerabilities  </span>CVE ID; NVD and OSV merged
-<span class="a">weaknesses       </span>CWE categories
+<span class="a">weaknesses       </span>CWE weakness IDs, not categories
 <span class="a">severity         </span>CVSS vector, version kept
 <span class="a">behaviour        </span>MITRE ATT&amp;CK techniques
 <span class="a">intelligence     </span>STIX 2.1 objects
@@ -223,8 +223,8 @@
       <div class="fcell">
         <span class="fno" aria-hidden="true">01</span>
         <h3>One vulnerability, one record</h3>
-        <p>The same flaw appears in the national database, vendor advisories and package ecosystems in different words. Records are merged on the CVE identifier, with every source kept.</p>
-        <p class="basis"><b>Follows</b> The CVE Program's identifiers; the NVD and OSV databases.</p>
+        <p>The same flaw appears in the NVD, vendor advisories and package ecosystems in different words. Records are merged on the CVE identifier and the aliases OSV records list, with every source kept.</p>
+        <p class="basis"><b>Follows</b> The CVE Program's identifiers; the NVD; the aliases field of the OSV schema.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">02</span>
@@ -254,7 +254,7 @@
         <span class="fno" aria-hidden="true">06</span>
         <h3>Labels you can trace</h3>
         <p>Every detection label records the rule or analyst decision that assigned it, so a disputed label can be checked rather than argued about.</p>
-        <p class="basis"><b>Follows</b> Standard practice for labelled security datasets.</p>
+        <p class="basis"><b>Follows</b> Detection rules with stable identifiers, as in the open Sigma rule format.</p>
       </div>
     </div>
   </div>
@@ -274,6 +274,7 @@
       <li><a href="https://www.first.org/cvss/" rel="noopener">CVSS</a><span>FIRST's standard for scoring vulnerability severity.</span></li>
       <li><a href="https://attack.mitre.org/" rel="noopener">MITRE ATT&amp;CK</a><span>A knowledge base of adversary tactics and techniques.</span></li>
       <li><a href="https://oasis-open.github.io/cti-documentation/" rel="noopener">STIX and TAXII</a><span>OASIS standards for structured threat intelligence.</span></li>
+      <li><a href="https://github.com/SigmaHQ/sigma" rel="noopener">Sigma</a><span>An open, generic format for detection rules, each rule with its own identifier.</span></li>
     </ul>
   </div>
 </section>
@@ -308,12 +309,12 @@
     </div>
     <div class="qas">
       <div class="qa">
-        <h3>Do the datasets contain live malware or exploits?</h3>
+        <h3>Can delivered data contain live malware or exploits?</h3>
         <p>No. Indicators are defanged, malware is referenced by hash, and exploit code is excluded.</p>
       </div>
       <div class="qa">
         <h3>How are conflicting advisories handled?</h3>
-        <p>They are merged on the CVE identifier with every source kept, so a model sees where the sources agree and where they do not.</p>
+        <p>They are merged on the CVE identifier and the aliases OSV lists, with every source kept, so a model sees where the sources agree and where they do not.</p>
       </div>
       <div class="qa">
         <h3>Do you sell ready-made Cybersecurity datasets?</h3>

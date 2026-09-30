@@ -61,7 +61,7 @@
       "name": "How do you know a coding task is fair?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It is run: the reference patch must make its tests pass and the unpatched repository must make them fail, in a clean container, and the statement is checked against what the tests actually test."
+        "text": "It is run: in a clean container, the reference patch must make its target tests pass, the unpatched repository must make those tests fail, and the rest of the suite must still pass. The statement is then checked against what the tests actually test."
       }
     },
     {
@@ -224,7 +224,7 @@
         <span class="fno" aria-hidden="true">01</span>
         <h3>Licence first</h3>
         <p>Every file carries a licence identifier detected by scanning the file, not trusted from a README. Files whose licence does not permit your use are left out, and the licence travels with every record that stays.</p>
-        <p class="basis"><b>Follows</b> The SPDX License List for identifiers; scanners such as ScanCode; public code corpora such as The Stack, built from permissively licensed code with an opt-out.</p>
+        <p class="basis"><b>Follows</b> The SPDX License List for identifiers; scanners such as ScanCode; public code corpora such as The Stack, built from permissively licensed repositories with an opt-out.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">02</span>
@@ -241,7 +241,7 @@
       <div class="fcell">
         <span class="fno" aria-hidden="true">04</span>
         <h3>Run, not read</h3>
-        <p>A task counts only if the reference patch makes its tests pass and the unpatched repository makes the same tests fail, in a clean container. A task whose tests pass without the patch is dropped.</p>
+        <p>A task counts only if, in a clean container, the reference patch makes its target tests pass, the unpatched repository makes those tests fail, and the rest of the suite still passes. A task whose target tests pass without the patch is dropped.</p>
         <p class="basis"><b>Follows</b> SWE-bench's execution-based evaluation, with fail-to-pass and pass-to-pass tests.</p>
       </div>
       <div class="fcell">
@@ -267,7 +267,7 @@
       <p>The standards and open sources these rules are built on. They are other organisations' work, linked so you can read them yourself.</p>
     </div>
     <ul class="refs">
-      <li><a href="https://spdx.org/licenses/" rel="noopener">SPDX License List</a><span>Standard identifiers for open-source licences.</span></li>
+      <li><a href="https://spdx.org/licenses/" rel="noopener">SPDX License List</a><span>Standard short identifiers for licences used in open-source and other shared software and data.</span></li>
       <li><a href="https://github.com/aboutcode-org/scancode-toolkit" rel="noopener">ScanCode Toolkit</a><span>Open-source licence and copyright detection.</span></li>
       <li><a href="https://huggingface.co/datasets/bigcode/the-stack" rel="noopener">The Stack (BigCode)</a><span>A public code corpus of permissively licensed source, with an opt-out.</span></li>
       <li><a href="https://www.swebench.com/" rel="noopener">SWE-bench</a><span>Execution-based evaluation of coding agents on real repository issues.</span></li>
@@ -312,7 +312,7 @@
       </div>
       <div class="qa">
         <h3>How do you know a coding task is fair?</h3>
-        <p>It is run: the reference patch must make its tests pass and the unpatched repository must make them fail, in a clean container, and the statement is checked against what the tests actually test.</p>
+        <p>It is run: in a clean container, the reference patch must make its target tests pass, the unpatched repository must make those tests fail, and the rest of the suite must still pass. The statement is then checked against what the tests actually test.</p>
       </div>
       <div class="qa">
         <h3>Do you sell ready-made Code datasets?</h3>

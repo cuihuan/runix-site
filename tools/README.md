@@ -119,6 +119,32 @@ no-script nav fallback on every page (2026-09-29). It rebuilds the whole
 of that file followed by one run -- never a hand edit to 60 pages. It is in
 `check_idempotent.sh`'s list, so a hand edit that drifts from it shows up there.
 
+## The product shell (2026-09-30 redesign)
+
+Every product page is one template drawn from one definition. After editing
+any of these sources, run the builders in this order from the site root; each
+is idempotent and `check_idempotent.sh` proves it.
+
+| Source | Builder | What it draws |
+|---|---|---|
+| `stack.py` (layers, products, statuses), `domains.py` (the six data domains) | `flagship_nav.py` | header menu grouped by layer, footer grouped by layer, the Runix Lab lockup |
+| `stack.py` | `stack_build.py` | the home page's stack diagram, the layer locator on every product page |
+| `product_template.py` (`PRODUCTS`: at-a-glance rows, specs, neighbours, start steps) | `product_template.py` | the product bar, the split hero with its panel, the example band, numbered section heads, the specifications table, works-with, how-to-start |
+| `domains.py` | `build_domain_pages.py` | the six domain pages, on the same shell |
+| `docs_shell.py` (`GUIDES`) | `docs_shell.py` | the docs sidebar by layer, breadcrumbs, the hub grouped by layer |
+
+The design the shell implements is the canvas "Runix Lab Site Redesign"
+(private; the person who owns the account can share it). Its rules in one
+line: one shell, one rhythm; the stack is the map; dense where it counts;
+literal statuses, no invented figures; contact first.
+
+Generator pitfalls that were hit twice on the day the shell landed, so they
+are worth naming: a builder that adds a class to `<main>` breaks every other
+builder that looks for the bare `<main id="main">` tag (match the prefix);
+and in a CSS grid where items have explicit columns but automatic rows,
+sparse auto-placement pushes an item whose column is left of the cursor to
+the next row (pin `grid-row` on all of them).
+
 ## Superseded builders
 
 `open_self_serve_signup.py`, `numbered_product_system.py` and

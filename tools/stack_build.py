@@ -61,10 +61,13 @@ def eyebrow(key):
     num, lname = LAYER_OF[layer]
     bars = "".join('<i class="on"></i>' if n == num else "<i></i>"
                    for _k, n, *_ in LAYERS)
-    return (f'<div class="prod-eyebrow"><a class="stack-loc" href="/#platform">'
+    # The link sits in a wrapper of its own: it is a standalone pill, not a
+    # link inside a sentence, and the wrapper is how the render check tells the
+    # two apart (it measures a link against its parent's text colour).
+    return (f'<div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform">'
             f'<span class="sl-mini" aria-hidden="true">{bars}</span>'
             f'Layer {num:02d} \u00b7 {lname}'
-            f'<span class="visually-hidden">: see the whole stack</span></a>'
+            f'<span class="visually-hidden">: see the whole stack</span></a></span>'
             f'<span class="badge">{name} \u00b7 {status.capitalize()}</span></div>')
 
 

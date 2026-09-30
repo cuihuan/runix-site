@@ -223,7 +223,7 @@ def page(shell, d):
     blocks = list(re.finditer(r'<script type="application/ld\+json">.*?</script>\n?', s, re.S))
     if blocks:
         s = s[:blocks[0].start()] + structured(d) + "\n" + s[blocks[-1].end():]
-    a, b = s.index('<main id="main">'), s.index("</main>") + len("</main>")
+    a, b = s.index('<main id="main"'), s.index("</main>") + len("</main>")
     return s[:a] + main_html(d) + s[b:]
 
 

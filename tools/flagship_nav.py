@@ -47,12 +47,6 @@ LOCKUP_OLD = '<span class="mark" aria-hidden="true">R</span>Runix</a>'
 LOCKUP_NEW = ('<span class="mark" aria-hidden="true">R</span>Runix '
               '<span class="brand-lab">Lab</span></a>')
 
-TAGLINES_OLD = [
-    ("AI, made effortless — Runix Router, Runix Pipeline, Runix Code "
-     "and Runix Comic."),
-    ("The infrastructure layer for production AI: Runix Router, Runix FS, "
-     "Runix Pipeline, Runix Code and Runix Comic."),
-]
 TAGLINE_NEW = ("Full-stack AI infrastructure in five layers: storage, data, "
                "models, a model gateway and the applications on top.")
 
@@ -181,8 +175,13 @@ def main():
             else:
                 problems.append(f"{rel}: footer has no Product column in the expected shape")
             t = t[:f0] + foot
-        for old in TAGLINES_OLD:
-            t = t.replace(old, TAGLINE_NEW)
+            # The footer's description, replaced whole rather than matched
+            # against known old wordings: four product pages carried a colon
+            # variant of the 2026-08 tagline that no string here matched, so
+            # they kept naming four products after the fifth shipped.
+            t = t[:f0] + re.sub(r'(<p class="desc">)[^<]*(</p>)',
+                                lambda m: m.group(1) + TAGLINE_NEW + m.group(2),
+                                t[f0:], count=1)
         if t != orig:
             p.write_text(t, encoding="utf-8")
             changed += 1

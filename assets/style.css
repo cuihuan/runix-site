@@ -2161,7 +2161,16 @@ main .pbar a.pbar-layer:not(.btn) {
   content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 7px;
   border-radius: 50%; background: var(--cyan-text); vertical-align: 1px;
 }
-.pbar-links { display: flex; gap: 18px; list-style: none; margin: 0 0 0 10px; padding: 0; overflow-x: auto; }
+.pbar-links {
+  display: flex; gap: 18px; list-style: none; margin: 0 12px 0 10px; padding: 0;
+  /* Takes the width between the status and the action and scrolls inside it,
+     so a page with many sections never pushes the action off the bar or
+     against the last link; the fade says there is more to the right. */
+  flex: 1 1 0; min-width: 0; overflow-x: auto;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+}
+.pbar-name { white-space: nowrap; }
 .pbar-links li { flex: none; }
 main .pbar a.pbar-cta:not(.btn) {
   margin-left: auto; flex: none; display: inline-flex; align-items: center; height: 34px; padding: 0 16px;
@@ -2257,8 +2266,8 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 /* On a phone the bar keeps the name and the section links; the action is the
    hero's own button, one screen below. */
 @media (max-width: 920px) {
-  .pbar-name { white-space: nowrap; }
   main .pbar a.pbar-cta:not(.btn) { display: none; }
+  .pbar-links { margin-right: 0; }
 }
 
 /* ---------- Docs shell (v3, design artboard 06) ----------

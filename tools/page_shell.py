@@ -131,7 +131,7 @@ def sections(doc):
 
 def legal_status(doc):
     m = re.search(r"Last updated: ([^&<]+?)&nbsp;.*?Version ([0-9.]+)", doc)
-    return f"Version {m.group(2)} &middot; updated {m.group(1).strip()}" if m else None
+    return f"Version {m.group(2)} &middot; {m.group(1).strip()}" if m else None
 
 
 def post_meta(doc):

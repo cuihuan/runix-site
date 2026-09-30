@@ -97,9 +97,9 @@
         <a class="nav-menu-top" href="/#products">Products</a>
         <div class="nav-panel">
           <div class="nav-layer">
-            <p class="nav-layer-name"><span>05</span>Applications</p>
-            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
-            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -162,7 +162,7 @@
 <li><strong>Small tools, joined by pipes.</strong> Each program does one job, and the output of one becomes the input of the next, where you can inspect it.</li>
 <li><strong>A kernel that does the work</strong>, and manages the machine on behalf of every program that runs on it.</li>
 <li><strong>One call interface.</strong> Programs ask the kernel for what they need through system calls, and POSIX later wrote that interface down, so the same program could run on machines from different vendors.</li>
-<li><strong>Userland.</strong> Applications sit on top and can change freely, without touching anything beneath them.</li>
+<li><strong>Userland.</strong> Programs sit on top and can change freely, without touching anything beneath them.</li>
 </ul>
 
 <p>None of those ideas is about a particular machine. They are about keeping the layers of a system honest with each other, so that each can be replaced without breaking the rest.</p>
@@ -182,7 +182,7 @@
 <li><strong>Small tools, joined by pipes: <a href="/pipeline">Runix Pipeline</a> and <a href="/data">Runix Data</a>.</strong> Pipeline, in development, is the tooling: the six stages from ingestion to delivery, each one leaving something you can inspect. Data, in early access, is the service built on it, with the rules that differ from one field to the next: code, which is our focus, then finance, cybersecurity, legal, embodied AI and AI for Science.</li>
 <li><strong>A kernel that does the work: <a href="/models">Runix Models</a></strong>, in early access. Open-weight models fine-tuned on your own data, evaluated against the model you run today before anything ships, and served on dedicated capacity.</li>
 <li><strong>One call interface: <a href="/router">Runix Router</a></strong>, in early access and running traffic. One OpenAI-compatible API in front of every model provider, with central key custody, per-key quotas and failover that fires mid-request, so the application above it does not need to know which provider answered.</li>
-<li><strong>Userland: <a href="/code">Runix Code</a> and <a href="/comic">Runix Comic</a></strong>, both in development. A coding agent that works in your repository under review gates, and a studio that takes a comic drama from script to published episode.</li>
+<li><strong>Userland: <a href="/code">Runix Code</a> and <a href="/comic">Runix Comic</a></strong>, both in development. The top of this stack is agents and the harnesses that run them, each independent and built for one domain. A coding agent that works in your repository under review gates, and a studio that takes a comic drama from script to published episode.</li>
 </ul>
 
 <p>Underneath all five sits the part we do not sell: GPUs, power and cloud capacity. The stack runs on the compute you already have and replaces none of it.</p>
@@ -221,11 +221,11 @@
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
-        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>
-        <span class="footer-sub">Applications</span>
+        <span class="footer-sub">Agents</span>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>

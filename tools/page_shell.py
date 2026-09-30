@@ -35,6 +35,7 @@ SUPPORT = ("mailto:support@runixcloud.io?subject=Runix%20support", "Contact supp
 PAGES = {
     "plans.html": ("Pricing", "Pricing", "/plans", ("mailto:sales@runixcloud.io?subject=Runix%20pricing", "Talk to sales")),
     "code-plans.html": ("Code plans", "Pricing", "/plans", SALES),
+    "router-models.html": ("Models catalogue", "Runix Router", "/router", ("/about#contact", "Request access")),
     "about.html": ("About", "Company", "/about", ("#contact", "Contact us")),
     "security.html": ("Security", "Company", "/about", SALES),
     "reliability.html": ("Reliability", "Company", "/about", SALES),
@@ -67,6 +68,7 @@ LABELS = {
     "None of these quite you?": "Other roles", "All posts": "Posts", "Product guides": "Guides",
     "Background reading": "Reading", "Reliability requirements to check against": "Checklist",
     "Request an account": "Request",
+    "The catalogue": "Catalogue", "How a request is priced": "Pricing",
 }
 
 

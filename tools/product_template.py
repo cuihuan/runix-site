@@ -43,6 +43,7 @@ PRODUCTS = {
             ("Interface", "OpenAI-compatible API"),
             ("Endpoint", '<code>api.router.runixcloud.io/v1</code>'),
             ("Keys", "Per key: quota, limits, allowed models, routing"),
+            ("Models", 'Public list prices, <a href="/router-models">on the catalogue</a>'),
             ("Failover", "Mid-request, streaming preserved"),
             ("Data terms", "Content never used for training"),
             ("Billing", "Usage-based, USD, itemised"),
@@ -54,6 +55,7 @@ PRODUCTS = {
         "specs": [
             ("API surface", "Chat completions and model listing, with server-sent events for streaming", '<a href="/docs/router">Router quickstart</a>'),
             ("Model selection", '<code>"auto"</code>, or an explicit model id', '<a href="/docs/router">Router quickstart</a>'),
+            ("Models and prices", "Every model on the catalogue at its vendor's public list price; contract rates in writing", '<a href="/router-models">Models catalogue</a>'),
             ("Failover", "Provider to provider, mid-request, streaming preserved", '<a href="/reliability">Reliability</a>'),
             ("Limits", "Per key: rate limits, quotas and allowed models, revocable without a redeploy", '<a href="/access">Access</a>'),
             ("Errors", "OpenAI-style error envelope, with a request id on every response", '<a href="/docs/router">Router quickstart</a>'),
@@ -63,10 +65,11 @@ PRODUCTS = {
             ("Billing", "Usage-based in USD, per token or per request by model; prepaid balance or invoice", '<a href="/plans">Pricing</a>'),
         ],
         "with": [
-            ("Above &middot; 05 Applications", "Runix Code and Runix Comic", "Call every model through Router, so the application never changes when a provider does.", "/#layer-applications", "See the applications"),
+            ("Above &middot; 05 Agents", "Runix Code and Runix Comic", "Independent domain agents. One that wants a single endpoint for every model can put Router in front of its calls.", "/#layer-applications", "See the agents"),
             ("Below &middot; 03 Models", "Runix Models", "A model tuned on your data sits behind Router next to the hosted providers, on dedicated capacity.", "/models", "Explore Runix Models"),
-            ("The whole stack", "Five layers, seven products", "How Router fits with data, storage and the applications on top.", "/#platform", "See the stack"),
+            ("The whole stack", "Five layers, seven products", "How Router fits with data, storage and the agents on top.", "/#platform", "See the stack"),
         ],
+        "after_specs": [("/router-models", "Models")],
         "start": [
             ("Tell us what you are building", "Models, expected volume, latency needs. We reply within one business day and set the account up."),
             ("Evaluate before you pay", "Evaluation credits on request, full router functionality, no card. Integration is a base-URL change."),
@@ -204,7 +207,7 @@ PRODUCTS = {
             ("Grounding", "Your repository: modules, idioms, the versions you run"),
             ("Changes", "Every change lands as a reviewable diff"),
             ("Team controls", "Seats, per-key limits, usage attribution by developer"),
-            ("Models", "Reached through Runix Router"),
+            ("Runs as", "An independent agent for its domain, with its own harness"),
             ("Plans", "Four team plans, on the Code plans page"),
             ("Status", "In development, waitlist open"),
         ],
@@ -213,14 +216,14 @@ PRODUCTS = {
             ("Tasks", "Multi-file implement, refactor and test from one instruction", "This page"),
             ("Review gates", "Every change lands as a reviewable diff, never a silent write", "This page"),
             ("Team controls", "Seats, per-key limits, usage attribution by developer", '<a href="/docs/code">Rollout guide</a>'),
-            ("Models", "Reached through Runix Router, so a provider change does not touch the tool", '<a href="/router">Runix Router</a>'),
+            ("Runs as", "An independent agent for its domain, with its own harness; Runix Router is optional in front of its model calls", '<a href="/router">Runix Router</a>'),
             ("Plans", "Four team plans", '<a href="/code-plans">Code plans</a>'),
             ("Availability", "In development; waitlist cohorts", '<a href="/docs/code">Rollout guide</a>'),
         ],
         "with": [
-            ("Below &middot; 04 Gateway", "Runix Router", "Every model call goes through one endpoint, with keys and quotas beneath it.", "/router", "Explore Runix Router"),
-            ("Same layer &middot; 05 Applications", "Runix Comic", "The other application on the stack: a studio for comic dramas.", "/comic", "Explore Runix Comic"),
-            ("The whole stack", "Five layers, seven products", "How the applications sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
+            ("Below &middot; 04 Gateway", "Runix Router", "Optional in front of an agent's model calls: one endpoint for every model, with keys and quotas beneath it. The agent runs independently of it.", "/router", "Explore Runix Router"),
+            ("Same layer &middot; 05 Agents", "Runix Comic", "The other agent on the stack: an independent studio agent for comic dramas.", "/comic", "Explore Runix Comic"),
+            ("The whole stack", "Five layers, seven products", "How the agents sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
         ],
         "start": [
             ("Join the waitlist", "Tell us the team size and the repositories. Cohorts are invited in order."),
@@ -238,20 +241,20 @@ PRODUCTS = {
             ("Pre-production", "Scripts, episode plans, consistent characters, storyboards"),
             ("Production", "Styled panels, motion and camera, voice, music, subtitles"),
             ("Publishing", "Vertical cuts and full episodes, for the platforms you name"),
-            ("Models", "Reached through Runix Router"),
+            ("Runs as", "An independent agent for its domain, with its own harness"),
             ("Status", "In development, waitlist open"),
         ],
         "specs": [
             ("Pre-production", "Script and episode planning, character sheets that hold across scenes, storyboards from the script", '<a href="/docs/comic">Workflow guide</a>'),
             ("Production", "Styled panels that keep one look, motion and camera, AI voice-over, music, multi-language subtitles", "This page"),
             ("Publishing", "Vertical short-video cuts and full episodes from one project", "This page"),
-            ("Models", "Reached through Runix Router", '<a href="/router">Runix Router</a>'),
+            ("Runs as", "An independent agent for its domain, with its own harness; Runix Router is optional in front of its model calls", '<a href="/router">Runix Router</a>'),
             ("Availability", "In development; waitlist cohorts", '<a href="/docs/comic">Workflow guide</a>'),
         ],
         "with": [
-            ("Below &middot; 04 Gateway", "Runix Router", "Every model call goes through one endpoint, with keys and quotas beneath it.", "/router", "Explore Runix Router"),
-            ("Same layer &middot; 05 Applications", "Runix Code", "The other application on the stack: a reviewable coding agent.", "/code", "Explore Runix Code"),
-            ("The whole stack", "Five layers, seven products", "How the applications sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
+            ("Below &middot; 04 Gateway", "Runix Router", "Optional in front of an agent's model calls: one endpoint for every model, with keys and quotas beneath it. The agent runs independently of it.", "/router", "Explore Runix Router"),
+            ("Same layer &middot; 05 Agents", "Runix Code", "The other agent on the stack: an independent coding agent, reviewable in your repository.", "/code", "Explore Runix Code"),
+            ("The whole stack", "Five layers, seven products", "How the agents sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
         ],
         "start": [
             ("Join the waitlist", "Tell us what you make and where it is published."),
@@ -431,7 +434,9 @@ def bar_html(key, c, doc, primary):
     links = [("#" + (first.group(1) if first else "capabilities"), label)]
     if 'id="how"' in doc:
         links.append(("#how", "How it works"))
-    links += [("#specs", "Specs"), ("#works-with", "Works with")]
+    # a product with a page of its own beyond this one (Router's model
+    # catalogue) links it from the bar, right after the specifications
+    links += [("#specs", "Specs")] + list(c.get("after_specs", [])) + [("#works-with", "Works with")]
     links.append(("#early-access", "How to start") if 'id="early-access"' in doc else ("#start", "How to start"))
     links.append(("#faq", "Questions"))
     lis = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in links)

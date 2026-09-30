@@ -2349,3 +2349,12 @@ main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 
 .page-hero .page-eyebrow { order: -2; }
 .page-hero h1 + .badge { order: -1; margin: 0 0 18px; }
 .doc-crumb-date { margin-left: 10px; font: 500 12px/1 var(--mono); letter-spacing: 0.04em; color: var(--ink-3); }
+
+/* The Router models catalogue (/router-models): ids and names stacked in the
+   row head, numbers right-aligned in tabular figures, sources allowed to wrap. */
+.catalogue table { min-width: 820px; }
+.catalogue tbody th { width: auto; }
+.catalogue tbody th code { display: block; font-size: 13px; }
+.catalogue tbody th span { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 400; color: var(--ink-3); }
+.catalogue .num { text-align: right; font-variant-numeric: tabular-nums; }
+.catalogue td.src { white-space: normal; min-width: 260px; max-width: 420px; line-height: 1.5; }

@@ -120,9 +120,9 @@
         <a class="nav-menu-top active" href="/#products">Products</a>
         <div class="nav-panel">
           <div class="nav-layer">
-            <p class="nav-layer-name"><span>05</span>Applications</p>
-            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
-            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -156,7 +156,7 @@
 <nav class="pbar" aria-label="Runix Code on this page">
   <div class="container pbar-inner">
     <a class="pbar-name" href="#overview">Runix Code</a>
-    <a class="pbar-layer" href="/#platform">05 &middot; Applications</a>
+    <a class="pbar-layer" href="/#platform">05 &middot; Agents</a>
     <span class="pbar-status">In development</span>
     <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#start">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
     <!--email_off--><a class="pbar-cta" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a><!--/email_off-->
@@ -166,7 +166,7 @@
 <section class="split-hero" id="overview">
   <div class="container">
     <div>
-      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span>Layer 05 · Applications<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Code · In development</span></div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span>Layer 05 · Agents<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Code · In development</span></div>
       <h1><span class="line">An AI pair that has</span>
 <span class="line">actually read your code</span></h1>
       <p class="sub">An AI coding agent being built for teams: grounded in your repository, agentic where that saves time, gated by human review where it must be, with the controls an organisation needs to roll it out safely.</p>
@@ -185,7 +185,7 @@
         <div><dt>Grounding</dt><dd>Your repository: modules, idioms, the versions you run</dd></div>
         <div><dt>Changes</dt><dd>Every change lands as a reviewable diff</dd></div>
         <div><dt>Team controls</dt><dd>Seats, per-key limits, usage attribution by developer</dd></div>
-        <div><dt>Models</dt><dd>Reached through Runix Router</dd></div>
+        <div><dt>Runs as</dt><dd>An independent agent for its domain, with its own harness</dd></div>
         <div><dt>Plans</dt><dd>Four team plans, on the Code plans page</dd></div>
         <div><dt>Status</dt><dd>In development, waitlist open</dd></div>
         </dl>
@@ -277,7 +277,7 @@
           <tr><th scope="row">Tasks</th><td>Multi-file implement, refactor and test from one instruction</td><td>This page</td></tr>
           <tr><th scope="row">Review gates</th><td>Every change lands as a reviewable diff, never a silent write</td><td>This page</td></tr>
           <tr><th scope="row">Team controls</th><td>Seats, per-key limits, usage attribution by developer</td><td><a href="/docs/code">Rollout guide</a></td></tr>
-          <tr><th scope="row">Models</th><td>Reached through Runix Router, so a provider change does not touch the tool</td><td><a href="/router">Runix Router</a></td></tr>
+          <tr><th scope="row">Runs as</th><td>An independent agent for its domain, with its own harness; Runix Router is optional in front of its model calls</td><td><a href="/router">Runix Router</a></td></tr>
           <tr><th scope="row">Plans</th><td>Four team plans</td><td><a href="/code-plans">Code plans</a></td></tr>
           <tr><th scope="row">Availability</th><td>In development; waitlist cohorts</td><td><a href="/docs/code">Rollout guide</a></td></tr>
         </tbody>
@@ -299,19 +299,19 @@
       <a class="card card-clickable" href="/router" aria-label="Explore Runix Router">
         <p class="card-layer">Below &middot; 04 Gateway</p>
         <h3>Runix Router</h3>
-        <p>Every model call goes through one endpoint, with keys and quotas beneath it.</p>
+        <p>Optional in front of an agent's model calls: one endpoint for every model, with keys and quotas beneath it. The agent runs independently of it.</p>
         <span class="read-more">Explore Runix Router &rarr;</span>
       </a>
       <a class="card card-clickable" href="/comic" aria-label="Explore Runix Comic">
-        <p class="card-layer">Same layer &middot; 05 Applications</p>
+        <p class="card-layer">Same layer &middot; 05 Agents</p>
         <h3>Runix Comic</h3>
-        <p>The other application on the stack: a studio for comic dramas.</p>
+        <p>The other agent on the stack: an independent studio agent for comic dramas.</p>
         <span class="read-more">Explore Runix Comic &rarr;</span>
       </a>
       <a class="card card-clickable" href="/#platform" aria-label="See the stack">
         <p class="card-layer">The whole stack</p>
         <h3>Five layers, seven products</h3>
-        <p>How the applications sit on the gateway, models, data and storage beneath them.</p>
+        <p>How the agents sit on the gateway, models, data and storage beneath them.</p>
         <span class="read-more">See the stack &rarr;</span>
       </a>
     </div>
@@ -377,11 +377,11 @@
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
-        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>
-        <span class="footer-sub">Applications</span>
+        <span class="footer-sub">Agents</span>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>

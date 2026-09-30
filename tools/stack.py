@@ -14,7 +14,7 @@ stands on rather than as a sixth product layer.
 
 # (key, number, name, role) -- top to bottom, the order they are drawn in.
 LAYERS = [
-    ("applications", 5, "Applications", "Products where AI does the work"),
+    ("applications", 5, "Agents", "Domain agents, and the harnesses that run them"),
     ("gateway", 4, "Gateway", "One way in to every model"),
     ("models", 3, "Models", "Open-weight models, tuned and served"),
     ("data", 2, "Data", "Domain data, cleaned for training and evaluation"),
@@ -26,10 +26,10 @@ LAYERS = [
 # whose badge or card says anything else.
 PRODUCTS = {
     "code": ("code.html", "/code", "Runix Code",
-             "A reviewable AI agent in your repository",
+             "An independent coding agent, reviewable in your repository",
              "applications", "in development", ""),
     "comic": ("comic.html", "/comic", "Runix Comic",
-              "Scripts into published episodes",
+              "An independent agent for comic dramas, script to episode",
               "applications", "in development", ""),
     "router": ("router.html", "/router", "Runix Router",
                "One compliant endpoint for every model",

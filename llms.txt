@@ -7,7 +7,7 @@
 > storage), data (Runix Data, domain training and evaluation data, and Runix Pipeline, the
 > data tooling), models (Runix Models, fine-tuning and dedicated serving of open-weight
 > models), gateway (Runix Router, one OpenAI-compatible API in front of many model
-> providers) and applications (Runix Code and Runix Comic). Operated by Runix AI Inc, a
+> providers) and agents (Runix Code and Runix Comic, independent agents for their domains, each with its own harness). Operated by Runix AI Inc, a
 > company incorporated in Wyoming, United States. Router, FS, Data and Models are in early
 > access: accounts and engagements are set up on request rather than through self-serve
 > signup.
@@ -16,8 +16,8 @@
 
 Unix lasted on a few ideas, and each layer rebuilds one of them for AI: everything is a
 file (Runix FS), small tools joined by pipes (Runix Data and Runix Pipeline), a kernel
-that does the work (Runix Models), one call interface (Runix Router), and userland on top
-(Runix Code and Runix Comic). The aims are efficiency, stability and what an enterprise
+that does the work (Runix Models), one call interface (Runix Router), and userland on top:
+agents and the harnesses that run them (Runix Code and Runix Comic). The aims are efficiency, stability and what an enterprise
 needs to buy it: contracts, key custody and deployment into its own cloud account.
 
 ## The stack
@@ -25,7 +25,7 @@ needs to buy it: contracts, key custody and deployment into its own cloud accoun
 Five layers, top to bottom as the home page draws them, standing on the customer's own
 compute (GPUs, power and cloud capacity), which Runix Lab does not sell:
 
-- Layer 5, Applications: Runix Code, Runix Comic
+- Layer 5, Agents: Runix Code, Runix Comic (independent domain agents and their harnesses)
 - Layer 4, Gateway: Runix Router
 - Layer 3, Models: Runix Models
 - Layer 2, Data: Runix Data, Runix Pipeline (domains: code, the focus; finance;
@@ -42,6 +42,7 @@ Seven products at different stages. The statuses below are literal.
   written data terms, automatic failover between providers with streaming preserved, and
   routing by cost, health and configuration. Hosted API, billed on usage.
   https://runixcloud.io/router
+  Models catalogue, every model at its vendor's public list price: https://runixcloud.io/router-models
 - **Runix FS** — *status: early access, launched September 2026.* An AI-native file system:
   a POSIX file system (FUSE) and a memory/SSD/HDD distributed cache in front of
   S3-compatible object storage, with a Hadoop-compatible client,
@@ -85,6 +86,7 @@ Seven products at different stages. The statuses below are literal.
 - [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
 - [Docs hub](https://runixcloud.io/docs/): guides for every product, honest about status.
 - [Router quickstart](https://runixcloud.io/docs/router): base URL and key, model selection, streaming, failover semantics, limits.
+- [Router models catalogue](https://runixcloud.io/router-models): every model Router routes to, at the vendor's public list price per million tokens, with context window and source.
 - [FS quick start](https://runixcloud.io/docs/fs): start a cluster, attach an S3 bucket, FUSE mount, Kubernetes CSI volumes, cache management.
 - [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the six stages, delivery and the quality report.
 - [Code rollout guide](https://runixcloud.io/docs/code): cohorts, seats and policies, the review-gated workflow.

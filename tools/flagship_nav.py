@@ -50,7 +50,7 @@ LOCKUP_NEW = ('<span class="mark" aria-hidden="true">R</span>Runix '
               '<span class="brand-lab">Lab</span></a>')
 
 TAGLINE_NEW = ("Rebuild AI Unix: an efficient, stable, enterprise-grade AI "
-               "operating system, in five layers from storage to applications.")
+               "operating system, in five layers from storage to agents.")
 
 
 COMPANY = [("/about", "About"), ("/about#contact", "Contact"), ("/security", "Security"),

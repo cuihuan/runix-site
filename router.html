@@ -128,9 +128,9 @@
         <a class="nav-menu-top active" href="/#products">Products</a>
         <div class="nav-panel">
           <div class="nav-layer">
-            <p class="nav-layer-name"><span>05</span>Applications</p>
-            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
-            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -166,7 +166,7 @@
     <a class="pbar-name" href="#overview">Runix Router</a>
     <a class="pbar-layer" href="/#platform">04 &middot; Gateway</a>
     <span class="pbar-status pbar-live">Early access</span>
-    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="#works-with">Works with</a></li><li><a href="#start">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
+    <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="/router-models">Models</a></li><li><a href="#works-with">Works with</a></li><li><a href="#start">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
     <a class="pbar-cta" href="/about#contact">Request access</a>
   </div>
 </nav>
@@ -192,6 +192,7 @@
         <div><dt>Interface</dt><dd>OpenAI-compatible API</dd></div>
         <div><dt>Endpoint</dt><dd><code>api.router.runixcloud.io/v1</code></dd></div>
         <div><dt>Keys</dt><dd>Per key: quota, limits, allowed models, routing</dd></div>
+        <div><dt>Models</dt><dd>Public list prices, <a href="/router-models">on the catalogue</a></dd></div>
         <div><dt>Failover</dt><dd>Mid-request, streaming preserved</dd></div>
         <div><dt>Data terms</dt><dd>Content never used for training</dd></div>
         <div><dt>Billing</dt><dd>Usage-based, USD, itemised</dd></div>
@@ -395,6 +396,7 @@
         <tbody>
           <tr><th scope="row">API surface</th><td>Chat completions and model listing, with server-sent events for streaming</td><td><a href="/docs/router">Router quickstart</a></td></tr>
           <tr><th scope="row">Model selection</th><td><code>"auto"</code>, or an explicit model id</td><td><a href="/docs/router">Router quickstart</a></td></tr>
+          <tr><th scope="row">Models and prices</th><td>Every model on the catalogue at its vendor's public list price; contract rates in writing</td><td><a href="/router-models">Models catalogue</a></td></tr>
           <tr><th scope="row">Failover</th><td>Provider to provider, mid-request, streaming preserved</td><td><a href="/reliability">Reliability</a></td></tr>
           <tr><th scope="row">Limits</th><td>Per key: rate limits, quotas and allowed models, revocable without a redeploy</td><td><a href="/access">Access</a></td></tr>
           <tr><th scope="row">Errors</th><td>OpenAI-style error envelope, with a request id on every response</td><td><a href="/docs/router">Router quickstart</a></td></tr>
@@ -418,11 +420,11 @@
       <p>Runix Router hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
     </div>
     <div class="grid cols-3 works">
-      <a class="card card-clickable" href="/#layer-applications" aria-label="See the applications">
-        <p class="card-layer">Above &middot; 05 Applications</p>
+      <a class="card card-clickable" href="/#layer-applications" aria-label="See the agents">
+        <p class="card-layer">Above &middot; 05 Agents</p>
         <h3>Runix Code and Runix Comic</h3>
-        <p>Call every model through Router, so the application never changes when a provider does.</p>
-        <span class="read-more">See the applications &rarr;</span>
+        <p>Independent domain agents. One that wants a single endpoint for every model can put Router in front of its calls.</p>
+        <span class="read-more">See the agents &rarr;</span>
       </a>
       <a class="card card-clickable" href="/models" aria-label="Explore Runix Models">
         <p class="card-layer">Below &middot; 03 Models</p>
@@ -433,7 +435,7 @@
       <a class="card card-clickable" href="/#platform" aria-label="See the stack">
         <p class="card-layer">The whole stack</p>
         <h3>Five layers, seven products</h3>
-        <p>How Router fits with data, storage and the applications on top.</p>
+        <p>How Router fits with data, storage and the agents on top.</p>
         <span class="read-more">See the stack &rarr;</span>
       </a>
     </div>
@@ -500,11 +502,11 @@
     <div class="footer-grid footer-grid-4">
       <div>
         <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
-        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>
-        <span class="footer-sub">Applications</span>
+        <span class="footer-sub">Agents</span>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>

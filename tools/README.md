@@ -133,6 +133,7 @@ is idempotent and `check_idempotent.sh` proves it.
 | `domains.py` | `build_domain_pages.py` | the six domain pages, on the same shell |
 | `docs_shell.py` (`GUIDES`) | `docs_shell.py` | the docs sidebar by layer, breadcrumbs, the hub grouped by layer |
 | `page_shell.py` (`PAGES`, `LABELS`) | `page_shell.py` | the page bar, eyebrow and numbered section heads on every non-product page: pricing, company, legal, blog, docs hub, payments |
+| `models_catalog.json` | `build_models_catalog.py` | `/router-models`: every model Router routes to at its vendor's public list price, with the source page and the date the prices were read. Re-verify the prices (two independent fetches of each vendor's own page) before changing the data; a model whose vendor stops publishing a price comes out of the file, it is never guessed. Runs after `product_template.py` (it borrows the Router page's chrome) and before `page_shell.py` (which adds its bar) |
 
 The design the shell implements is the canvas "Runix Lab Site Redesign"
 (private; the person who owns the account can share it). Its rules in one

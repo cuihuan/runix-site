@@ -113,6 +113,12 @@ Seven products at different stages. The statuses below are literal.
 - [Home](https://runixcloud.io/): the mission (Rebuild AI Unix), the five-layer stack with the data domains, the seven products and their statuses, company facts.
 - [Runix Models](https://runixcloud.io/models): fine-tuning methods, evaluation before rollout, dedicated serving, licences, FAQ.
 - [Runix Data](https://runixcloud.io/data): the six domains and their cleaning rules, verified coding tasks, what every delivery carries, FAQ.
+- [Code data](https://runixcloud.io/code-data): the cleaning rules for code data and the public standards each follows.
+- [Finance data](https://runixcloud.io/finance-data): the cleaning rules for Finance data and the public standards each follows.
+- [Cybersecurity data](https://runixcloud.io/cybersecurity-data): the cleaning rules for Cybersecurity data and the public standards each follows.
+- [Legal data](https://runixcloud.io/legal-data): the cleaning rules for Legal data and the public standards each follows.
+- [Embodied AI data](https://runixcloud.io/embodied-ai-data): the cleaning rules for Embodied AI data and the public standards each follows.
+- [AI for Science data](https://runixcloud.io/ai-for-science-data): the cleaning rules for AI for Science data and the public standards each follows.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
 - [Runix FS](https://runixcloud.io/fs): the AI-native file system: capabilities, architecture, workloads, published benchmarks, FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the six pipeline stages and what an engagement looks like.

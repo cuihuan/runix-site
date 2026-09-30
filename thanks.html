@@ -13,11 +13,11 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex,follow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment received — Runix AI</title>
-<meta name="description" content="Your Runix AI payment has been received — a monthly plan or a prepaid top-up. We switch it on by hand and confirm by email within one business day.">
+<title>Payment received — Runix Lab</title>
+<meta name="description" content="Your payment to Runix Lab has been received, for an agreed plan or a prepaid top-up. We switch it on by hand and confirm by email within one business day.">
 <link rel="canonical" href="https://runixcloud.io/thanks">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
-<meta property="og:title" content="Payment received — Runix AI">
+<meta property="og:title" content="Payment received — Runix Lab">
 <meta property="og:description" content="Payment received. We switch it on by hand and confirm by email within one business day.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/thanks">
@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="assets/style.css?v=70">
 <script src="assets/site-config.js?v=15" defer></script>
 <meta property="og:locale" content="en_US">
-<meta name="twitter:title" content="Payment received — Runix AI">
+<meta name="twitter:title" content="Payment received — Runix Lab">
 <meta name="twitter:description" content="Payment received. We switch it on by hand and confirm by email within one business day.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 <script type="application/ld+json">
@@ -40,7 +40,7 @@
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Payment received",
-  "description": "Confirmation that a Runix AI payment has been received — a monthly plan or a prepaid top-up — and what happens between that payment and it going live.",
+  "description": "Confirmation that a payment to Runix Lab has been received, for an agreed plan or a prepaid top-up, and what happens between that payment and it going live.",
   "url": "https://runixcloud.io/thanks",
   "isPartOf": { "@id": "https://runixcloud.io/#org" }
 }
@@ -58,7 +58,6 @@
 </script>
 </head>
 <body>
-<!-- impeccable-disable flat-type-hierarchy -- the h1 is clamp(38px, 5vw, 58px) via .plan-hero, which static analysis cannot evaluate, so it counts only the literal px values and sees 12.5-19.5px. Measured in a browser at 1280px on 2026-09-04: the rendered scale runs 58 / 34 / 19.5 / 17.5 / 16 / 12.5px, a 4.6:1 range. -->
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
@@ -113,27 +112,26 @@
 </nav>
 <!--/ps:bar-->
 
-<section class="plan-hero thanks-hero" id="overview">
+<div class="page-hero" id="overview">
   <div class="container">
-    <div>
-      <h1>Thanks. <em data-t="head">We have your payment.</em></h1>
-      <p class="sub"><span data-t="provider">The payment provider</span> has taken the payment and
-         emailed you a receipt. <span data-t="what">What you bought</span> is switched on for your Runix
-         account by a person, not a script, so there is one short step left.</p>
-      <div class="cta">
-        <a class="btn btn-ghost" href="/pay">Back to payments</a>
-        <a class="btn btn-ghost" href="/docs/">Read the docs</a>
-      </div>
+    <!--ps:eyebrow--><p class="page-eyebrow">Payments</p><!--/ps:eyebrow-->
+    <h1>Thanks. <span data-t="head">We have your payment.</span></h1>
+    <p><span data-t="provider">The payment provider</span> has taken the payment and
+       emailed you a receipt. <span data-t="what">What you bought</span> is switched on for your Runix
+       account by a person, not a script, so there is one short step left.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/docs/">Read the docs</a>
+      <a class="btn btn-ghost" href="/pay">Back to payments</a>
     </div>
   </div>
-</section>
+</div>
 
-<hr class="prule">
-
-<section class="psec">
+<section class="section">
   <div class="container">
-    <div class="psec-head">
+    <div class="section-head center">
+      <p class="sec-no">02 &middot; Two emails,</p>
       <h2 id="two-emails-then-you-are-running">Two emails, then you are running</h2>
+      <p>The receipt is the provider's; the confirmation is ours. Nothing is live until the second one lands.</p>
     </div>
     <div class="prun">
       <div class="pstep">
@@ -149,9 +147,9 @@
            and we will sort it out the same day.</p>
       </div>
       <div class="pstep">
-        <h3><span class="pstep-n">03</span>Start running agents</h3>
-        <p>The integration guide is in the <a href="/docs/">docs</a>. If you were already using Runix,
-           nothing changes except the capacity &mdash; the same keys keep working.</p>
+        <h3><span class="pstep-n">03</span>Start using it</h3>
+        <p>The integration guides are in the <a href="/docs/">docs</a>. If you were already using Runix,
+           nothing changes except the capacity: the same keys keep working.</p>
       </div>
     </div>
 
@@ -172,6 +170,16 @@
         <p>Cancelling and refunds are covered by the <a href="/cancellation">Cancellation Policy</a> and
            the <a href="/refund">Refund Policy</a>.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2 id="while-the-confirmation-is-on-its-way">While the confirmation is on its way</h2>
+      <p>The guides cover integration for every product, from the first request to failover semantics and limits.</p>
+      <a class="btn btn-primary" href="/docs/">Read the docs</a>
     </div>
   </div>
 </section>
@@ -251,6 +259,7 @@
         <a href="/about">About</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
         <a href="/faq">FAQ</a>
         <a href="/glossary">Glossary</a>
         <a href="/access">Access</a>

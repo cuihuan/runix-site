@@ -155,8 +155,8 @@ PRODUCTS = {
             ("Pricing", "Per project or by volume, quoted before work starts", '<a href="/plans">Pricing</a>'),
         ],
         "with": [
-            ("Same layer &middot; 02 Data", "Runix Data", "The service built on this tooling, with the rules for six domains on top.", "/data", "Explore Runix Data"),
             ("Above &middot; 03 Models", "Runix Models", "Where model-ready data goes next: a model tuned to your task.", "/models", "Explore Runix Models"),
+            ("Same layer &middot; 02 Data", "Runix Data", "The service built on this tooling, with the rules for six domains on top.", "/data", "Explore Runix Data"),
             ("Below &middot; 01 Infrastructure", "Runix FS", "Where the raw material is read from: one path over your object storage.", "/fs", "Explore Runix FS"),
         ],
         "start": [
@@ -192,7 +192,7 @@ PRODUCTS = {
         "with": [
             ("Above &middot; 02 Data", "Runix Data and Runix Pipeline", "Raw material is read through the file system before it is cleaned.", "/data", "Explore Runix Data"),
             ("Above &middot; 03 Models", "Runix Models", "Training reads datasets and checkpoints through one path instead of waiting on the bucket.", "/models", "Explore Runix Models"),
-            ("Below &middot; 00 Compute", "Your own cloud", "GPUs, object storage and Kubernetes in your account. The file system runs on them and replaces none of them.", "/#platform", "See the stack"),
+            ("Below &middot; 00 Compute &amp; energy", "Your own cloud", "GPUs, object storage and Kubernetes in your account. The file system runs on them and replaces none of them.", "/#platform", "See the stack"),
         ],
         "labels": {"Object-storage economics": "Capabilities", "Where it sits": "How it works", "Your code does not change": "Integration", "workloads that stall": "Workloads", "project has measured": "Results", "Open source": "Open source", "early access works": "How to start"},
     },
@@ -419,7 +419,16 @@ def start_html(steps, name):
 def bar_html(key, c, doc, primary):
     _, href, name, _line, layer, status, _tag = STACK[key]
     num, lname = LAYER_OF[layer]
-    links = [("#capabilities", "Capabilities")]
+    # The first content section is what the bar calls Capabilities, under
+    # the label its own head carries (on /data it is "Domains").
+    first = re.search(r'<section class="section[^"]*" id="([^"]+)">\s*<div class="container">\s*<div class="section-head[^"]*">\s*<h2>([^<]*)</h2>', doc[doc.index("</section>", doc.index('<section class="split-hero"')):])
+    label = "Capabilities"
+    if first:
+        text = first.group(2)
+        for needle, lab in c.get("labels", {}).items():
+            if needle.lower() in text.lower():
+                label = lab
+    links = [("#" + (first.group(1) if first else "capabilities"), label)]
     if 'id="how"' in doc:
         links.append(("#how", "How it works"))
     links += [("#specs", "Specs"), ("#works-with", "Works with")]
@@ -440,6 +449,31 @@ def bar_html(key, c, doc, primary):
     {cta}
   </div>
 </nav>''')
+
+
+def alternate(doc):
+    """Section backgrounds alternate white / grey down the page, the closing
+    band is always white with the section-end spacing, and the hero, example
+    and stats bands are left alone. One rule for every product page."""
+    a = doc.index('<main id="main"')
+    b = doc.index("</main>")
+    body = doc[a:b]
+    state = {"grey": False}
+    def rep(m):
+        classes = m.group(1).split()
+        if "section" not in classes or {"example-band", "stats-band", "split-hero"} & set(classes):
+            return m.group(0)
+        classes = [x for x in classes if x not in ("alt", "section-alt", "section-end")]
+        tail = body[m.end():body.find("</section>", m.end())]
+        if '<div class="cta-band">' in tail:
+            classes.append("section-end")
+        else:
+            if state["grey"]:
+                classes.insert(1, "alt")
+            state["grey"] = not state["grey"]
+        return '<section class="' + " ".join(classes) + '"' + m.group(2) + ">"
+    body = re.sub(r'<section class="([^"]*)"([^>]*)>', rep, body)
+    return doc[:a] + body + doc[b:]
 
 
 def number_sections(doc, c):
@@ -525,12 +559,15 @@ def main():
             h = re.search(r'<section class="section[^"]*"(?![^>]*\bid=)>(?=\s*<div class="container">\s*<div class="section-head[^"]*">\s*<h2>[^<]*' + re.escape(needle) + ')', doc)
             if h:
                 doc = doc[:h.start()] + h.group(0)[:-1] + f' id="{sid}">' + doc[h.end():]
-        # first content section after hero: capabilities
+        # first content section after hero: capabilities, unless it already
+        # carries an id of its own (the domains section on /data), in which
+        # case the bar links to that
+        doc = doc.replace(' id="capabilities"', "")
         hero_end = doc.index("</section>", doc.index('<section class="split-hero"')) + len("</section>")
-        first = re.search(r'<section class="section(?: alt)?"(?![^>]*\bid=)>', doc[hero_end:])
-        if first and 'id="capabilities"' not in doc:
+        first = re.search(r'<section class="section(?: alt)?"([^>]*)>', doc[hero_end:])
+        if first and 'id="' not in first.group(1):
             a = hero_end + first.start()
-            doc = doc[:a] + first.group(0)[:-1] + ' id="capabilities">' + doc[hero_end + first.end():]
+            doc = doc[:a] + '<section class="section' + (' alt' if ' alt' in first.group(0) else '') + '" id="capabilities">' + doc[hero_end + first.end():]
         # generated sections before the start section or the FAQ
         anchor = re.search(r'<section class="section[^"]*" id="early-access">', doc) or \
             re.search(r'<section class="section[^"]*" id="faq">', doc)
@@ -543,6 +580,7 @@ def main():
         bar = bar_html(key, c, doc, (primary.group(1), primary.group(2)))
         doc = doc.replace('<main id="main">', '<main id="main" class="has-pbar">\n' + bar, 1) if 'class="has-pbar"' not in doc \
             else doc.replace('<main id="main" class="has-pbar">', '<main id="main" class="has-pbar">\n' + bar, 1)
+        doc = alternate(doc)
         doc = number_sections(doc, c)
         # The blocks are inserted with blank lines around them; without this
         # a rerun grows the file by a blank line per block and never settles.

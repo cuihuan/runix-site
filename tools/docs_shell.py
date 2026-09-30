@@ -21,9 +21,9 @@ from stack import LAYERS, PRODUCTS, products_in  # noqa: E402
 GUIDES = {
     "code": ("/docs/code", "Rollout guide"),
     "comic": ("/docs/comic", "Workflow guide"),
-    "router": ("/docs/router", "Quickstart and integration"),
-    "models": ("/models#early-access", "How an engagement runs"),
-    "data": ("/data#early-access", "How an engagement runs"),
+    "router": ("/docs/router", "Integration guide"),
+    "models": ("/models#early-access", "Engagement guide"),
+    "data": ("/data#early-access", "Engagement guide"),
     "pipeline": ("/docs/pipeline", "Engagement guide"),
     "fs": ("/docs/fs", "Quick start"),
 }
@@ -50,10 +50,19 @@ def sidebar(current):
     return "\n".join(out)
 
 
-def crumb(key):
+def crumb(key, doc):
     _, num, lname = next((k, n, nm) for k, n, nm, _ in LAYERS if k == PRODUCTS[key][4])
+    # The updated date comes from the page's structured data, the one place
+    # it is maintained; the visible line used to carry its own copy and the
+    # two had drifted apart on the Router guide.
+    m = re.search(r'"dateModified": "(\d{4})-(\d{2})-(\d{2})"', doc)
+    when = ""
+    if m:
+        import datetime
+        d = datetime.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        when = f' <span class="doc-crumb-date">Updated {d.strftime("%B")} {d.day}, {d.year}</span>'
     return (f'<!--ds:crumb--><p class="doc-crumb"><a href="/docs/">Docs</a> <span aria-hidden="true">/</span> '
-            f'{num:02d} {lname} <span aria-hidden="true">/</span> {PRODUCTS[key][2]}</p><!--/ds:crumb-->')
+            f'{num:02d} {lname} <span aria-hidden="true">/</span> {PRODUCTS[key][2]}{when}</p><!--/ds:crumb-->')
 
 
 def strip(doc):
@@ -75,7 +84,10 @@ def guide_pages():
         # breadcrumb: first thing in the page hero's container
         hero = doc.index('<div class="page-hero">')
         cont = doc.index('<div class="container">', hero) + len('<div class="container">')
-        doc = doc[:cont] + "\n    " + crumb(key) + doc[cont:]
+        doc = doc[:cont] + "\n    " + crumb(key, doc) + doc[cont:]
+        # the blog-style meta line the guides carried above the title: the
+        # crumb now says what it said
+        doc = re.sub(r'[ \t]*<div class="post-meta">.*?</div>\n', "", doc, count=1, flags=re.S)
         # sidebar: first child of the doc wrap
         w = doc.index('<div class="doc-wrap">')
         doc = doc[:w] + '<div class="doc-wrap has-side">\n' + sidebar(href) + doc[w + len('<div class="doc-wrap">'):]

@@ -61,7 +61,29 @@ def write_index(posts):
     idx = ROOT / "blog/index.html"
     s = idx.read_text()
     block = '<div class="blog-list">\n' + "\n".join(cards) + "\n    </div>"
-    idx.write_text(re.sub(r'<div class="blog-list">.*?\n    </div>', block, s, count=1, flags=re.S))
+    s = re.sub(r'<div class="blog-list">.*?\n    </div>', block, s, count=1, flags=re.S)
+    s = write_blog_schema(s, posts)
+    idx.write_text(s)
+
+
+def write_blog_schema(s, posts):
+    """The Blog JSON-LD lists every published post, like the cards do.
+
+    It was written once by fix_schema.py and never maintained, so it stopped
+    at 18 posts while the page grew to 31 (found 2026-09-30). Rebuilt here from
+    the same posts the cards are built from, so the two cannot drift apart.
+    """
+    import json
+    m = re.search(r'(<script type="application/ld\+json">\n?)(\s*\{.*?"@type": "Blog".*?\})(\n?</script>)', s, re.S)
+    if not m:
+        return s
+    data = json.loads(m.group(2))
+    data["blogPost"] = [
+        {"@type": "BlogPosting", "headline": html.unescape(re.sub(r"<[^>]+>", "", p["headline"])),
+         "url": f"{BASE}/blog/{p['slug']}", "datePublished": p["iso"]}
+        for p in posts
+    ]
+    return s[:m.start(2)] + json.dumps(data, ensure_ascii=False, indent=2) + s[m.end(2):]
 
 
 def write_sitemap(posts):

@@ -17,8 +17,8 @@
 <meta name="description" content="For customers who have agreed a plan or a top-up with the Runix team: pay by card through Stripe or Airwallex. New to Runix? Talk to sales first.">
 <link rel="canonical" href="https://runixcloud.io/pay">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
-<meta property="og:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
-<meta property="og:description" content="Basic, 5X, 10X and 30X, billed monthly and cancellable any time — or top up once and keep the credits.">
+<meta property="og:title" content="Payments for Agreed Plans and Top-ups — Runix Lab">
+<meta property="og:description" content="For customers who have agreed a plan or a top-up with the Runix team: pay by card through Stripe or Airwallex. New to Runix? Talk to sales first.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/pay">
 <meta property="og:site_name" content="Runix Lab">
@@ -32,27 +32,28 @@
 <link rel="stylesheet" href="assets/style.css?v=70">
 <script src="assets/site-config.js?v=15" defer></script>
 <meta property="og:locale" content="en_US">
-<meta name="twitter:title" content="Runix AI Plans — Monthly Subscriptions | Runix">
-<meta name="twitter:description" content="Basic, 5X, 10X and 30X, billed monthly and cancellable any time — or top up once and keep the credits.">
+<meta name="twitter:title" content="Payments for Agreed Plans and Top-ups — Runix Lab">
+<meta name="twitter:description" content="For customers who have agreed a plan or a top-up with the Runix team: pay by card through Stripe or Airwallex. New to Runix? Talk to sales first.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Runix AI plans",
-  "serviceType": "AI agent subscription plans",
-  "description": "Four monthly Runix AI plans - Basic, 5X, 10X and 30X - differing by agent credits and parallelism, alongside one-time prepaid top-ups from $10 whose credits are worth twice the amount paid. Checkout is hosted by Stripe or Airwallex; card, Apple Pay, Google Pay and Cash App Pay are available depending on the provider chosen.",
+  "name": "Runix Lab plan and top-up payments",
+  "serviceType": "Payments for agreed plans",
+  "description": "Card payments for plans and prepaid top-ups already agreed with the Runix team: four monthly plans (Basic, 5X, 10X and 30X) and one-time top-ups from $10 whose credits are worth twice the amount paid. Checkout is hosted by Stripe or Airwallex.",
   "url": "https://runixcloud.io/pay",
-  "provider": { "@id": "https://runixcloud.io/#org" },
+  "provider": {
+    "@id": "https://runixcloud.io/#org"
+  },
   "areaServed": "Worldwide",
   "offers": [
     {
       "@type": "Offer",
-      "name": "Runix AI Basic",
-      "description": "Base agent credits. Work with Docs, Sheets and Slides. Deep Research. Website deploy. Code Plan included.",
+      "name": "Basic plan",
+      "description": "Monthly plan, 1x credits, for customers who have agreed it with the Runix team.",
       "price": "9.90",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock",
       "url": "https://buy.stripe.com/4gMdR2gmQcAP3kV0vx5J605",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -65,11 +66,10 @@
     },
     {
       "@type": "Offer",
-      "name": "Runix AI 5X",
-      "description": "5x agent credits. Everything in Basic, plus Swarm - multiple agents running subtasks in parallel.",
+      "name": "5X plan",
+      "description": "Monthly plan, 5x credits, for customers who have agreed it with the Runix team.",
       "price": "39.90",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock",
       "url": "https://buy.stripe.com/8x2dR2gmQasH08Jdij5J606",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -82,11 +82,10 @@
     },
     {
       "@type": "Offer",
-      "name": "Runix AI 10X",
-      "description": "10x agent credits. Everything in 5X, plus agent multi-tasking, Goal mode and one-click agent deploy.",
+      "name": "10X plan",
+      "description": "Monthly plan, 10x credits, for customers who have agreed it with the Runix team.",
       "price": "69.90",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock",
       "url": "https://buy.stripe.com/eVqbIU9YsgR58Ff2DF5J607",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -99,11 +98,10 @@
     },
     {
       "@type": "Offer",
-      "name": "Runix AI 30X",
-      "description": "30x agent credits. Everything in 10X, plus up to 1M tokens of context, the highest concurrency and top priority queue.",
+      "name": "30X plan",
+      "description": "Monthly plan, 30x credits, for customers who have agreed it with the Runix team.",
       "price": "199.90",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock",
       "url": "https://buy.stripe.com/7sYdR20nS0S72gRemn5J608",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -177,7 +175,7 @@
   <div class="container pbar-inner">
     <a class="pbar-name" href="#overview">Payments</a>
     <a class="pbar-layer" href="/pay">Payments</a>
-    <ul class="pbar-links"><li><a href="#what-happens-when-you-press-enter">What happens when you press enter</a></li><li><a href="#pick-the-throughput-not-the-feature-list">Pick the throughput, not the feature list</a></li><li><a href="#or-pay-once-and-keep-what-you-buy">Or pay once, and keep what you buy</a></li><li><a href="#the-differences-side-by-side">The differences, side by side</a></li><li><a href="#how-the-other-products-are-priced">How the other products are priced</a></li><li><a href="#before-you-subscribe">Before you subscribe</a></li><li><a href="#start-on-basic-move-up-when-the-queue-gets-long">Start on Basic. Move up when the queue gets long.</a></li></ul>
+    <ul class="pbar-links"><li><a href="#monthly-plans">Monthly plans</a></li><li><a href="#one-time-top-up">One-time top-up</a></li><li><a href="#the-plans-side-by-side">The plans, side by side</a></li><li><a href="#before-you-pay">Before you pay</a></li></ul>
     <!--email_off--><a class="pbar-cta" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off-->
   </div>
 </nav>
@@ -191,139 +189,70 @@
   </div>
 </div>
 
-<section class="plan-hero" id="overview">
+<div class="page-hero" id="overview">
   <div class="container">
-    <div>
-      <h1>An agent that ships the fix, <em>not a suggestion.</em></h1>
-      <p class="sub">Runix reads the repo, writes a plan you can read, edits across files, runs your suite
-         until it passes, and opens the PR. Four plans, one difference between them: how much it runs at once.</p>
-      <div class="cta">
-        <a class="btn btn-grad" href="#plans">See the plans</a>
-        <a class="btn btn-ghost" href="https://buy.stripe.com/4gMdR2gmQcAP3kV0vx5J605">Start at $9.90/mo</a>
-      </div>
-      <p class="note">Monthly subscription &middot; USD &middot; checkout by Stripe</p>
-    </div>
-    <div>
-      <div class="term">
-        <div class="term-bar"><i></i><i></i><i></i><b>runix &mdash; ~/acme-api</b></div>
-<pre><span class="a">$</span> runix run "fix the flaky auth test in ci"
-
-<span class="a">&#9656; plan</span>      4 steps &middot; 2 files in scope
-  <span class="c">1</span> reproduce  tests/auth/session.spec.ts
-  <span class="c">2</span> locate     race in refreshToken()
-  <span class="c">3</span> patch      await refresh before assert
-  <span class="c">4</span> verify     run the suite 20&times;
-
-<span class="a">&#9656; edit</span>      src/auth/refresh-token.ts   <span class="g">+9</span> <span class="c">&minus;3</span>
-<span class="a">&#9656; verify</span>    <span class="g">20/20 passed</span> &middot; 4m 12s
-<span class="a">&#9656; ship</span>      fix/flaky-auth &rarr; PR #482
-
-<span class="c">done in 6m 03s &middot; 1 agent</span></pre>
-      </div>
-      <p class="term-cap">Illustrative run &mdash; not a recording of a specific session.</p>
+    <!--ps:eyebrow--><p class="page-eyebrow">Payments</p><!--/ps:eyebrow-->
+    <h1>Pay for a plan or top-up you have agreed with us</h1>
+    <p>Two ways to pay by card: a monthly plan, or a one-time top-up that adds credits to your account. Both open the payment provider's own hosted checkout, and a person switches what you paid for on within one business day.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#monthly-plans">Monthly plans</a>
+      <a class="btn btn-ghost" href="#one-time-top-up">One-time top-up</a>
     </div>
   </div>
-</section>
+</div>
 
-<hr class="prule">
-
-<section class="psec" id="run">
+<section class="section" id="plans">
   <div class="container">
-    <div class="psec-head">
-      <h2 id="what-happens-when-you-press-enter">What happens when you press enter</h2>
-    </div>
-    <div class="prun">
-      <div class="pstep">
-        <h3><span class="pstep-n">01</span>Plan</h3>
-        <p>Runix maps the files in scope before it changes any of them, then writes the step list in plain language. You approve a plan you can read, not a black box.</p>
-      </div>
-      <div class="pstep">
-        <h3><span class="pstep-n">02</span>Edit</h3>
-        <p>Multi-file edits with the diff in front of you. Every hunk is attributed to a step, so you can drop one change without unwinding the whole run.</p>
-      </div>
-      <div class="pstep">
-        <h3><span class="pstep-n">03</span>Verify</h3>
-        <p>It runs your suite rather than summarising it. A failure feeds back into the plan and the agent tries again instead of handing you a broken branch.</p>
-      </div>
-      <div class="pstep">
-        <h3><span class="pstep-n">04</span>Ship</h3>
-        <p>Branch name, commit message and PR body drafted from the plan and the diff, in the conventions the repository already uses.</p>
-      </div>
-    </div>
-    <div class="incs">
-        <div class="inc"><h3>Deep Research</h3><p>Reads issues, docs and the open web before deciding.</p></div>
-        <div class="inc"><h3>Docs, Sheets &amp; Slides</h3><p>Turns a run into a changelog, a sheet or a deck.</p></div>
-        <div class="inc"><h3>Website deploy</h3><p>Ships sites and apps with a database attached.</p></div>
-        <div class="inc"><h3>Scheduled tasks</h3><p>Runs on a schedule and pushes the result to you.</p></div>
-        <div class="inc"><h3>Dashboard widgets</h3><p>Long-running work, visible without opening a terminal.</p></div>
-        <div class="inc"><h3>15+ plugins</h3><p>Connect the trackers and data sources you already use.</p></div>
-    </div>
-  </div>
-</section>
-
-<hr class="prule">
-
-<section class="psec" id="plans">
-  <div class="container">
-    <div class="psec-head">
-      <h2 id="pick-the-throughput-not-the-feature-list">Pick the throughput, not the feature list</h2>
+    <div class="section-head center">
+      <p class="sec-no">02 &middot; Monthly plans</p>
+      <h2 id="monthly-plans">Monthly plans</h2>
+      <p>Four tiers, billed monthly in USD. The names and prices are the ones on the Stripe checkout; pick the tier you agreed with us.</p>
     </div>
     <div class="plans plans-4">
         <div class="plan" id="plan-basic">
-          
           <h3>Basic</h3>
-          <p class="plan-for">For side projects and evenings.</p>
           <div class="price"><span class="cur">$</span>9.90<small>/mo</small></div>
           <p class="plan-rate">&asymp; $9.90 per 1&times; of credits</p>
-          <div class="mult"><b>1&times;</b><span>agent credits</span></div>
-          <p class="plan-diff">The starting allowance, with the whole toolset already switched on.</p>
+          <div class="mult"><b>1&times;</b><span>credits</span></div>
           <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/4gMdR2gmQcAP3kV0vx5J605">Subscribe to Basic</a>
         </div>
         <div class="plan" id="plan-5x">
-          
           <h3>5X</h3>
-          <p class="plan-for">For one developer shipping every day.</p>
           <div class="price"><span class="cur">$</span>39.90<small>/mo</small></div>
           <p class="plan-rate">&asymp; $7.98 per 1&times; of credits</p>
-          <div class="mult"><b>5&times;</b><span>agent credits</span></div>
-          <p class="plan-diff">Adds <b>Swarm</b>: several agents splitting one job and running the subtasks in parallel.</p>
+          <div class="mult"><b>5&times;</b><span>credits</span></div>
           <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/8x2dR2gmQasH08Jdij5J606">Subscribe to 5X</a>
         </div>
-        <div class="plan featured" id="plan-10x">
-          <span class="flag">Adds Goal mode</span>
+        <div class="plan" id="plan-10x">
           <h3>10X</h3>
-          <p class="plan-for">For a repo that never sleeps.</p>
           <div class="price"><span class="cur">$</span>69.90<small>/mo</small></div>
           <p class="plan-rate">&asymp; $6.99 per 1&times; of credits</p>
-          <div class="mult"><b>10&times;</b><span>agent credits</span></div>
-          <p class="plan-diff">Adds <b>Goal mode</b>, agents keep working until the task is done, plus multi-tasking and one-click deploy.</p>
-          <a class="btn btn-grad btn-block" href="https://buy.stripe.com/eVqbIU9YsgR58Ff2DF5J607">Subscribe to 10X</a>
+          <div class="mult"><b>10&times;</b><span>credits</span></div>
+          <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/eVqbIU9YsgR58Ff2DF5J607">Subscribe to 10X</a>
         </div>
         <div class="plan" id="plan-30x">
           <span class="flag">Lowest rate</span>
           <h3>30X</h3>
-          <p class="plan-for">For a team running agents like CI.</p>
           <div class="price"><span class="cur">$</span>199.90<small>/mo</small></div>
           <p class="plan-rate">&asymp; $6.66 per 1&times; of credits</p>
-          <div class="mult"><b>30&times;</b><span>agent credits</span></div>
-          <p class="plan-diff">Adds <b>1M tokens of context</b>, the highest concurrency and top priority in the queue.</p>
+          <div class="mult"><b>30&times;</b><span>credits</span></div>
           <a class="btn btn-ghost btn-block" href="https://buy.stripe.com/7sYdR20nS0S72gRemn5J608">Subscribe to 30X</a>
         </div>
     </div>
     <p class="model-note">Billed monthly in <span data-cfg="defaultCurrency">USD</span> by
       <span data-cfg="legalCompanyName">Runix AI Inc</span>. Checkout is hosted by Stripe: card
-      details are entered on their page, never ours. Visa, Mastercard, American Express and
+      details are entered on their page, never ours. Visa, Mastercard and
       <b>China UnionPay</b> accepted; Stripe may show the amount in your local currency, and the figure
-      on the Stripe page is the figure charged.</p>
+      on the Stripe page is the figure charged. How every Runix Lab product is priced is on the <a href="/plans">pricing page</a>.</p>
   </div>
 </section>
 
-<hr class="prule">
-
-<section class="psec" id="topup">
+<section class="section alt" id="topup">
   <div class="container">
-    <div class="psec-head">
-      <h2 id="or-pay-once-and-keep-what-you-buy">Or pay once, and keep what you buy</h2>
+    <div class="section-head center">
+      <p class="sec-no">03 &middot; One-time top-up</p>
+      <h2 id="one-time-top-up">One-time top-up</h2>
+      <p>Pay once and keep what you buy: the credits are worth twice the amount charged, at every amount, and nothing renews.</p>
     </div>
 
     <div class="topup">
@@ -360,7 +289,7 @@
           <input id="topup-amount" type="number" inputmode="numeric" min="10" max="10000" step="1"
                  placeholder="1000" aria-describedby="topup-amount-error">
         </div>
-        <small>Anything from $10 to $10,000. Need more in one go? <a href="about#contact">Talk to us</a>.</small>
+        <small>Anything from $10 to $10,000. Need more in one go? <a href="/about#contact">Talk to us</a>.</small>
         <small class="topup-amount-error" id="topup-amount-error" role="alert"></small>
       </div>
 
@@ -391,7 +320,7 @@
           <a class="payopt" href="https://buy.stripe.com/7sY5kw7QkdET1cNguv5J609"
              aria-label="Pay with Stripe — accepts UnionPay; you set the amount on their page">
             <span class="payopt-name">UnionPay, Visa, Mastercard, Apple Pay</span>
-            <span class="payopt-sub"><strong>Set the amount on Stripe's page</strong> (it opens at its own default</span>
+            <span class="payopt-sub"><strong>Set the amount on Stripe's page</strong> (it opens at its own default)</span>
             <span class="payopt-by">Checkout by Stripe</span>
           </a>
           <!-- Airwallex goes through hosted checkout, which needs an intent
@@ -410,7 +339,7 @@
                   aria-label="Pay with Airwallex — opens with your chosen amount"
                   data-endpoint="/api/airwallex/intent">
             <span class="payopt-name">Card, Google Pay or Afterpay</span>
-            <span class="payopt-sub"><strong>Opens with your amount already set</strong>) nothing to retype</span>
+            <span class="payopt-sub"><strong>Opens with your amount already set</strong>, nothing to retype</span>
             <span class="payopt-by" id="pay-airwallex-by">Checkout by Airwallex</span>
           </button>
         </div>
@@ -430,100 +359,57 @@
     <p class="model-note">Charged by <span data-cfg="legalCompanyName">Runix AI Inc</span> in
       <span data-cfg="defaultCurrency">USD</span>. Checkout is hosted by the payment provider: card details are entered on their page, never ours. A top-up is a one-time payment and sets up no
       recurring charge; the balance is added to your account by a person, normally within one business
-      day. See <a href="refund">Refunds</a> for how it is handled.</p>
+      day. See <a href="/refund">Refunds</a> for how it is handled.</p>
   </div>
 </section>
 
-<hr class="prule">
-
-<section class="psec" id="specs">
+<section class="section" id="specs">
   <div class="container">
-    <div class="psec-head">
-      <h2 id="the-differences-side-by-side">The differences, side by side</h2>
+    <div class="section-head center">
+      <p class="sec-no">04 &middot; The plans,</p>
+      <h2 id="the-plans-side-by-side">The plans, side by side</h2>
+      <p>Every cell is the price on the Stripe checkout for that tier, or arithmetic on it.</p>
     </div>
-    <!-- Every cell below is taken from the product description a buyer sees on
-         the Stripe checkout page for that tier, or is arithmetic on the price.
-         The handover document supplied a longer table -- concurrent task counts,
-         subagent counts, context sizes per tier, scheduled-task and widget
-         limits, project and storage caps -- and states those figures were
-         extrapolated from another vendor's pricing page rather than measured
-         from Runix. They are left out rather than published as specifications. -->
     <div class="dsheet">
       <table>
-        <caption class="visually-hidden">Runix AI plan comparison: Basic, 5X, 10X and 30X</caption>
+        <caption class="visually-hidden">Plan comparison: Basic, 5X, 10X and 30X</caption>
         <thead>
           <tr><th scope="col">&nbsp;</th><th scope="col">Basic</th><th scope="col">5X</th><th scope="col">10X</th><th scope="col">30X</th></tr>
         </thead>
         <tbody>
-          <tr class="grp"><th colspan="5" scope="colgroup">Capacity</th></tr>
-          <tr><th scope="row">Agent credits</th><td>1&times;</td><td>5&times;</td><td>10&times;</td><td>30&times;</td></tr>
+          <tr><th scope="row">Monthly price</th><td>$9.90</td><td>$39.90</td><td>$69.90</td><td>$199.90</td></tr>
+          <tr><th scope="row">Credits</th><td>1&times;</td><td>5&times;</td><td>10&times;</td><td>30&times;</td></tr>
           <tr><th scope="row">Effective price per 1&times;</th><td>$9.90</td><td>$7.98</td><td>$6.99</td><td>$6.66</td></tr>
-          <tr class="grp"><th colspan="5" scope="colgroup">Agent capability</th></tr>
-          <tr><th scope="row">Swarm &mdash; parallel subagents</th><td class="no">&mdash;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Agent multi-tasking</th><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Goal mode</th><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">One-click agent deploy</th><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">1M tokens of context</th><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Highest concurrency, top priority queue</th><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&check;</td></tr>
-          <tr class="grp"><th colspan="5" scope="colgroup">In every plan</th></tr>
-          <tr><th scope="row">Deep Research</th><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Docs, Sheets &amp; Slides</th><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Website deploy with database</th><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Code Plan</th><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">Scheduled tasks &amp; dashboard widgets</th><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
-          <tr><th scope="row">15+ plugins</th><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td><td class="yes">&check;</td></tr>
+          <tr><th scope="row">Billing</th><td>Monthly, USD</td><td>Monthly, USD</td><td>Monthly, USD</td><td>Monthly, USD</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<hr class="prule">
-
-<section class="psec" id="other-products">
+<section class="section alt" id="faq">
   <div class="container">
-    <div class="psec-head">
-      <h2 id="how-the-other-products-are-priced">How the other products are priced</h2>
-    </div>
-    <div class="dsheet plain" tabindex="0" role="region" aria-label="How the other Runix products are priced">
-      <table aria-label="How the other Runix products are priced">
-        <thead><tr><th scope="col">Product</th><th scope="col">Status</th><th scope="col">How it is priced</th></tr></thead>
-        <tbody>
-          <tr><th scope="row"><a href="/router">Runix Router</a></th><td>Early access</td><td>Usage-based in USD, metered per token or per request by model, with itemised statements</td></tr>
-          <tr><th scope="row"><a href="/models">Runix Models</a></th><td>Early access</td><td>Per engagement, quoted after scoping and before any training starts</td></tr>
-          <tr><th scope="row"><a href="/data">Runix Data</a></th><td>Early access</td><td>Per project or by volume, quoted before any work starts</td></tr>
-          <tr><th scope="row"><a href="/fs">Runix FS</a></th><td>Early access</td><td>Quoted per deployment during early access</td></tr>
-          <tr><th scope="row"><a href="/pipeline">Runix Pipeline</a></th><td>In development</td><td>Scoped and priced per project or volume</td></tr>
-          <tr><th scope="row"><a href="/comic">Runix Comic</a></th><td>In development</td><td>No price yet; the waitlist is open</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<hr class="prule">
-
-<section class="psec" id="faq">
-  <div class="container">
-    <div class="psec-head">
-      <h2 id="before-you-subscribe">Before you subscribe</h2>
+    <div class="section-head center">
+      <p class="sec-no">05 &middot; Before you</p>
+      <h2 id="before-you-pay">Before you pay</h2>
+      <p>What happens between the payment and the plan or balance going live.</p>
     </div>
     <div class="qas">
       <div class="qa">
         <h3>How am I billed?</h3>
-        <p>Every plan is a monthly subscription in USD, charged by Stripe on the same date each month. Stripe emails a receipt for each charge.</p>
+        <p>Every plan is a monthly subscription in USD, charged by Stripe on the same date each month. Stripe emails a receipt for each charge. A top-up is a one-time payment with no renewal.</p>
       </div>
       <div class="qa">
         <h3>Which cards work?</h3>
-        <p>Visa, Mastercard, American Express and China UnionPay. A card issued in mainland China needs international payments enabled on it first.</p>
+        <p>Visa, Mastercard and China UnionPay. A card issued in mainland China needs international payments enabled on it first.</p>
       </div>
       <div class="qa">
         <h3>How do I cancel?</h3>
         <p>Email <!--email_off--><a href="mailto:billing@runixcloud.io?subject=Cancel%20plan">billing@runixcloud.io</a><!--/email_off--> and we cancel it for you. Cancelling stops the next renewal; the plan runs to the end of the period you have already paid for.</p>
       </div>
       <div class="qa">
-        <h3>When does my plan start working?</h3>
-        <p>We activate it on your Runix account by hand and confirm by email within one business day of payment. Stripe's receipt arrives immediately; ours is the one that means the plan is live.</p>
+        <h3>When does it start working?</h3>
+        <p>We activate the plan or add the balance on your Runix account by hand and confirm by email within one business day of payment. Stripe's receipt arrives immediately; ours is the one that means it is live.</p>
       </div>
       <div class="qa">
         <h3>Can I move between plans?</h3>
@@ -537,14 +423,12 @@
   </div>
 </section>
 
-<section class="psec" style="padding-top:0">
+<section class="section section-end">
   <div class="container">
-    <div class="pclose">
-      <h2 id="start-on-basic-move-up-when-the-queue-gets-long">Start on Basic. Move up when the queue gets long.</h2>
-      <div class="cta">
-        <a class="btn btn-grad" href="https://buy.stripe.com/eVqbIU9YsgR58Ff2DF5J607">Get 10X &mdash; $69.90/mo</a>
-        <a class="btn btn-ghost" href="https://buy.stripe.com/4gMdR2gmQcAP3kV0vx5J605">Get Basic &mdash; $9.90/mo</a>
-      </div>
+    <div class="cta-band">
+      <h2 id="not-sure-which-plan-you-agreed">Not sure which plan you agreed?</h2>
+      <p>Ask before you pay. A real person replies within one business day and tells you exactly what to pick here.</p>
+      <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20payment%20question">Ask sales</a><!--/email_off-->
     </div>
   </div>
 </section>
@@ -580,6 +464,7 @@
         <a href="/about">About</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
         <a href="/faq">FAQ</a>
         <a href="/glossary">Glossary</a>
         <a href="/access">Access</a>

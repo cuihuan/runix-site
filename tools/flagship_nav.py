@@ -53,6 +53,26 @@ TAGLINE_NEW = ("Rebuild AI Unix: an efficient, stable, enterprise-grade AI "
                "operating system, in five layers from storage to applications.")
 
 
+COMPANY = [("/about", "About"), ("/about#contact", "Contact"), ("/security", "Security"),
+           ("/reliability", "Reliability"), ("/faq", "FAQ"), ("/glossary", "Glossary"),
+           ("/access", "Access"), ("/careers", "Careers"), ("/blog/", "Blog")]
+LEGAL = [("/terms", "Terms of Service"), ("/privacy", "Privacy Policy"), ("/refund", "Refund Policy"),
+         ("/delivery", "Shipping &amp; Delivery"), ("/cancellation", "Cancellation Policy"),
+         ("/acceptable-use", "Acceptable Use")]
+
+
+def footer_column(indent, links, page):
+    """A footer column from the canonical list, the current page marked active.
+    The columns used to be per-page copies, and /access had lost the Glossary
+    link nobody else had lost."""
+    self_href = "/" + (page[:-5] if page != "index.html" else "")
+    out = []
+    for href, name in links:
+        cls = ' class="active"' if href == self_href else ""
+        out.append(f'{indent}<a href="{href}"{cls}>{name}</a>')
+    return "\n".join(out)
+
+
 def footer_products(indent, active_href):
     """The footer's Product column, in the order the stack is drawn."""
     # Grouped under the layer's name, top to bottom, the way the stack is
@@ -76,7 +96,8 @@ def active_for(path):
     p = str(path)
     if p.startswith("docs/"):
         return "/docs/"
-    if p == "about.html":
+    if p in ("about.html", "security.html", "reliability.html", "access.html",
+             "faq.html", "glossary.html", "careers.html"):
         return "/about"
     if p in ("plans.html", "pricing.html", "code-plans.html"):
         return "/plans"
@@ -180,6 +201,13 @@ def main():
                 foot = foot[:m.start(2)] + col + foot[m.end(2):]
             else:
                 problems.append(f"{rel}: footer has no Product column in the expected shape")
+            for heading, links in (("Company", COMPANY), ("Legal", LEGAL)):
+                m = re.search(r'(<p class="footer-heading">' + heading + r'</p>\n)((?:[ \t]*<a [^\n]*</a>\n)+)', foot)
+                if m:
+                    ind = re.match(r"[ \t]*", m.group(2)).group(0)
+                    foot = foot[:m.start(2)] + footer_column(ind, links, rel) + "\n" + foot[m.end(2):]
+                else:
+                    problems.append(f"{rel}: footer has no {heading} column in the expected shape")
             t = t[:f0] + foot
             # The footer's description, replaced whole rather than matched
             # against known old wordings: four product pages carried a colon

@@ -186,7 +186,7 @@ def number_sections(doc):
 def shell(page, doc):
     doc = strip(doc)
     doc = give_ids(doc)
-    is_post = page.startswith("blog/") and page != "blog/index.html"
+    is_post = page.startswith(("blog/", "scheduled/")) and page != "blog/index.html"
     if is_post:
         cat, date = post_meta(doc) or ("Post", "")
         b = bar(page, doc, "Blog", cat, "/blog/", SALES, status=date, layer_is_link=False)
@@ -214,7 +214,8 @@ def shell(page, doc):
 
 def main():
     product_pages = {v[0] for v in PRODUCTS.values()} | {f"{d['slug']}.html" for d in DOMAINS}
-    targets = [p for p in PAGES] + sorted(p for p in glob.glob("blog/*.html") if not p.endswith("index.html"))
+    targets = ([p for p in PAGES] + sorted(p for p in glob.glob("blog/*.html") if not p.endswith("index.html"))
+               + sorted(glob.glob("scheduled/*.html")))
     changed = 0
     for page in targets:
         if page in product_pages:

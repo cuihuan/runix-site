@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">PENDING</span>
+    <ul class="pbar-links"><li><a href="#read-the-licence-file-not-the-badge">Read the licence file, not the badge</a></li><li><a href="#licences-change-and-they-change-in-one-direction">Licences change, and they change in one direction</a></li><li><a href="#open-source-and-the-part-you-need-is-open-source-are-differe">"Open source" and "the part you need is open source" are different claims</a></li><li><a href="#check-whether-the-project-and-its-paid-edition-are-still-the">Check whether the project and its paid edition are still the same software</a></li><li><a href="#assume-the-vendor-may-not-be-independent-next-year">Assume the vendor may not be independent next year</a></li><li><a href="#cost-the-operation-not-the-licence">Cost the operation, not the licence</a></li><li><a href="#the-short-version">The short version</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>PENDING</span><span>·</span><span>7 min read</span></div>
     <h1 style="margin-top: 14px;">The licence on your gateway is a dependency</h1>
@@ -148,7 +159,7 @@ and it is much harder to check.</p>
 <p>Here is what to check, and what checking it turns up right now. Every claim below links
 to the licence file, commit or announcement it came from, because these things move.</p>
 
-<h2>1. Read the licence file, not the badge</h2>
+<h2 id="read-the-licence-file-not-the-badge">1. Read the licence file, not the badge</h2>
 
 <p>The licence shown on a repository page is a guess made by a classifier. It is wrong often
 enough to matter.</p>
@@ -173,7 +184,7 @@ people, that is the plan disallowed. It is listed as Apache-2.0 in several widel
 <p><strong>What to do:</strong> open the LICENSE file itself, and check <code>git log</code>
 on that file. A licence with a history is a licence that can have more history.</p>
 
-<h2>2. Licences change, and they change in one direction</h2>
+<h2 id="licences-change-and-they-change-in-one-direction">2. Licences change, and they change in one direction</h2>
 
 <p>In this category, over roughly two years: LiteLLM added a proprietary directory to an MIT
 project. Helicone's Rust gateway went <a href="https://github.com/Helicone/ai-gateway/commit/9649b27bdc9fb0907d359e899894102a15f3a085">from Apache-2.0 to GPL-3.0 in
@@ -190,7 +201,7 @@ consistently toward more restriction, not less.</p>
 anything you depend on commercially. It costs a minute and it is the only way you find out
 before an upgrade forces the question.</p>
 
-<h2>3. "Open source" and "the part you need is open source" are different claims</h2>
+<h2 id="open-source-and-the-part-you-need-is-open-source-are-differe">3. "Open source" and "the part you need is open source" are different claims</h2>
 
 <p>Kong AI Gateway is genuinely Apache-2.0. The Apache-licensed tree ships
 <a href="https://github.com/Kong/kong/tree/master/kong/plugins">six <code>ai-*</code> plugins</a>; the plugin catalogue lists
@@ -209,7 +220,7 @@ in the tree you are licensed to use.</p>
 <p><strong>What to do:</strong> list the three features you are actually adopting it for,
 then find each one in the open-source source tree. Not the docs — the tree.</p>
 
-<h2>4. Check whether the project and its paid edition are still the same software</h2>
+<h2 id="check-whether-the-project-and-its-paid-edition-are-still-the">4. Check whether the project and its paid edition are still the same software</h2>
 
 <p>A subtler version of the same problem: the open-source edition and the commercial edition
 can drift apart in version, not just in features. When the OSS changelog stops years behind
@@ -221,7 +232,7 @@ release, and the newest tag on the public container image with the commercial on
 have diverged by more than a minor version, ask what the OSS maintenance commitment actually
 is, and get the answer in writing.</p>
 
-<h2>5. Assume the vendor may not be independent next year</h2>
+<h2 id="assume-the-vendor-may-not-be-independent-next-year">5. Assume the vendor may not be independent next year</h2>
 
 <p>Between March and June 2026, three projects in this category stopped being independent
 concerns. <a href="https://www.mintlify.com/blog/mintlify-acquires-helicone">Mintlify acquired Helicone</a>, stating that Helicone
@@ -244,7 +255,7 @@ reproduce your current routing and spend attribution somewhere else. If that par
 hard to write, that difficulty <em>is</em> the lock-in, and it exists whether or not you
 self-host.</p>
 
-<h2>6. Cost the operation, not the licence</h2>
+<h2 id="cost-the-operation-not-the-licence">6. Cost the operation, not the licence</h2>
 
 <p>Self-hosting is free in the sense that the software costs nothing. The operational floor
 varies by more than an order of magnitude between projects, and the projects themselves are
@@ -267,7 +278,7 @@ page and write down every stateful component it requires. That list is your actu
 surface, and it is the number to compare against a managed price — not the licence fee,
 which is zero on both sides of the comparison you are trying to make.</p>
 
-<h2>The short version</h2>
+<h2 id="the-short-version">The short version</h2>
 
 <ol>
 <li>Open the LICENSE file. Check its history.</li>
@@ -323,6 +334,7 @@ links before relying on any of it.</p>
         <a href="/about">About</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
         <a href="/faq">FAQ</a>
         <a href="/glossary">Glossary</a>
         <a href="/access">Access</a>

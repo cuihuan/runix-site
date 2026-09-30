@@ -283,25 +283,11 @@
           <li>Per-key limits and usage tracking apply from the first call</li>
         </ul>
       </div>
-      <div class="code-card" style="margin-top:0;">
-        <div class="bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span>example request</span>
-        </div>
-        <pre><span class="c"># Point your existing OpenAI-compatible client at Runix</span>
-curl https://api.router.runixcloud.io/v1/chat/completions \
-  -H <span class="s">"Authorization: Bearer $RUNIX_API_KEY"</span> \
-  -d <span class="s">'{
-    "model": "auto",
-    "messages": [{"role": "user", "content": "Hello"}],
-    "stream": true
-  }'</span></pre>
-      </div>
-    </div>
+          </div>
   </div>
 </section>
 
-<section class="section section-alt" id="how">
+<section class="section" id="how">
   <div class="container">
     <div class="section-head center">
       <p class="sec-no">04 &middot; How it works</p>
@@ -497,7 +483,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
   </div>
 </section>
 
-<section class="section">
+<section class="section section-end">
   <div class="container">
     <div class="cta-band">
       <h2>Put the gateway in front of your traffic</h2>
@@ -538,6 +524,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
         <a href="/about">About</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
         <a href="/faq">FAQ</a>
         <a href="/glossary">Glossary</a>
         <a href="/access">Access</a>

@@ -1015,7 +1015,10 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
     display: grid; grid-template-columns: 212px minmax(0, 820px); gap: 40px;
     padding: 0 24px;
   }
-  .doc-toc {
+  /* Only the docs grid's rail is sticky: the FAQ's and the glossary's own
+     contents lists sit inside a single-column article, where a sticky block
+     scrolls over the text that follows it. */
+  .doc-wrap .doc-toc {
     position: sticky; top: 92px; align-self: start;
     padding: 56px 0 0; max-height: calc(100vh - 120px); overflow-y: auto;
   }
@@ -2240,20 +2243,20 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 }
 
 /* ---------- Home: how the layers connect, and latest writing (v2) ---------- */
-.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.path { padding: 28px; border: 1px solid var(--line-2); border-radius: var(--radius); background: #fff; }
-.path-label { margin: 0 0 14px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--indigo-ink); }
+.lpaths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.lpath { padding: 28px; border: 1px solid var(--line-2); border-radius: var(--radius); background: #fff; }
+.lpath-label { margin: 0 0 14px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--indigo-ink); }
 .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 14px; }
 .pc { padding: 9px 13px; border: 1px solid var(--line-2); border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--ink); }
 .pc-dark { background: var(--panel); border-color: var(--panel); color: #fff; }
 .pc-arrow, .pc-or { color: var(--ink-3); font-size: 14px; }
-.path > p:not(.path-label):not(.chain):not(.path-more) { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.6; }
-.path-more { margin: 14px 0 0; }
+.lpath > p:not(.lpath-label):not(.chain):not(.lpath-more) { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.6; }
+.lpath-more { margin: 14px 0 0; }
 .posts .post-card { display: flex; flex-direction: column; gap: 8px; padding: 26px 28px; }
 .posts .post-card h3 { padding-left: 0; min-height: 0; font-size: 18px; line-height: 1.3; }
 .posts .card-layer { padding-left: 0; min-height: 0; line-height: 1.3; color: var(--indigo-ink); }
 .posts .card-meta { margin-top: auto; padding-top: 8px; }
-@media (max-width: 920px) { .paths { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 920px) { .lpaths { grid-template-columns: minmax(0, 1fr); } }
 
 /* Footer product column grouped by layer (v2). */
 .site-footer .footer-sub {
@@ -2336,3 +2339,13 @@ main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 
   .post-meta { display: block; line-height: 2; }
   .post-meta > span { margin-right: 6px; }
 }
+
+/* v4 audit: no glow behind the closing band (the design's only gradients
+   are none); the page hero is a column so a status badge written after the
+   h1 sits in the eyebrow row above it, on every page alike. */
+.cta-band::before { background: none; }
+.page-hero .container { display: flex; flex-direction: column; align-items: flex-start; }
+.page-hero .container > * { max-width: 100%; }
+.page-hero .page-eyebrow { order: -2; }
+.page-hero h1 + .badge { order: -1; margin: 0 0 18px; }
+.doc-crumb-date { margin-left: 10px; font: 500 12px/1 var(--mono); letter-spacing: 0.04em; color: var(--ink-3); }

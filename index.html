@@ -214,18 +214,18 @@
       <h2>How the layers connect</h2>
       <p>Two paths run through the stack. Requests go down through one endpoint; data comes up into training. Each product hands off to its neighbours, and each works on its own.</p>
     </div>
-    <div class="paths">
-      <div class="path">
-        <p class="path-label">The request path, top down</p>
+    <div class="lpaths">
+      <div class="lpath">
+        <p class="lpath-label">The request path, top down</p>
         <p class="chain"><span class="pc">Runix Code &middot; Comic &middot; your app</span><span class="pc-arrow" aria-hidden="true">&rarr;</span><span class="pc pc-dark">Runix Router</span><span class="pc-arrow" aria-hidden="true">&rarr;</span><span class="pc">Hosted providers</span><span class="pc-or">or</span><span class="pc">A model tuned by Runix Models</span></p>
         <p>One OpenAI-compatible API in front of every model. Keys, quotas and failover sit beneath it, so the application never learns which provider answered, or whether the answer came from a model of your own.</p>
-        <p class="path-more"><a class="read-more" href="/router">Explore Runix Router &rarr;</a></p>
+        <p class="lpath-more"><a class="read-more" href="/router">Explore Runix Router &rarr;</a></p>
       </div>
-      <div class="path">
-        <p class="path-label">The data path, bottom up</p>
+      <div class="lpath">
+        <p class="lpath-label">The data path, bottom up</p>
         <p class="chain"><span class="pc">Your bucket &middot; Runix FS</span><span class="pc-arrow" aria-hidden="true">&rarr;</span><span class="pc">Runix Pipeline</span><span class="pc-arrow" aria-hidden="true">&rarr;</span><span class="pc pc-dark">Runix Data</span><span class="pc-arrow" aria-hidden="true">&rarr;</span><span class="pc">Runix Models</span></p>
         <p>Raw material is read through the file system, cleaned in stages you can inspect, given each domain's rules, and lands as training and evaluation sets for a model tuned to your task and served on dedicated capacity.</p>
-        <p class="path-more"><a class="read-more" href="/data">Explore Runix Data &rarr;</a></p>
+        <p class="lpath-more"><a class="read-more" href="/data">Explore Runix Data &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -472,6 +472,7 @@
         <a href="/about">About</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
         <a href="/faq">FAQ</a>
         <a href="/glossary">Glossary</a>
         <a href="/access">Access</a>

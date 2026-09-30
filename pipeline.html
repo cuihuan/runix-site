@@ -205,11 +205,7 @@
 </section>
 <section class="section" id="capabilities">
   <div class="container">
-    <div class="callout" style="margin-top:0;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-      <span><b>Status: in development.</b> Runix Pipeline is the tooling <a href="/data">Runix Data</a> engagements run on, and is being built into a product alongside a small number of design partners. If you want the data work done for you, that is Runix Data; if you want to run these stages on your own data, that is the design-partner conversation. There is more on the approach in <a href="/blog/ai-data-pipelines">how we think about data pipelines</a>.</span>
-    </div>
-    <div class="section-head center" style="margin-top:56px;">
+        <div class="section-head center">
       <p class="sec-no">02 &middot; Capabilities</p>
       <h2>Six stages, each one auditable</h2>
       <p>Every stage produces something you can inspect, so a bad answer downstream can be traced to the record that caused it.</p>
@@ -223,6 +219,10 @@
       <div class="stepc"><div class="n" aria-hidden="true">4</div><h3>Mask</h3><p>Personal data identified and masked before it reaches a model or a training set, failing closed when detection is uncertain.</p></div>
       <div class="stepc"><div class="n" aria-hidden="true">5</div><h3>Report</h3><p>A quality report per delivery: coverage, duplication rates, extraction confidence, and what was dropped and why.</p></div>
       <div class="stepc"><div class="n" aria-hidden="true">6</div><h3>Deliver</h3><p>Files, a database, or an endpoint — batch or continuous, whichever your downstream actually consumes.</p></div>
+    </div>
+      <div class="callout">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span><b>Status: in development.</b> Runix Pipeline is the tooling <a href="/data">Runix Data</a> engagements run on, and is being built into a product alongside a small number of design partners. If you want the data work done for you, that is Runix Data; if you want to run these stages on your own data, that is the design-partner conversation. There is more on the approach in <a href="/blog/ai-data-pipelines">how we think about data pipelines</a>.</span>
     </div>
   </div>
 </section>
@@ -248,7 +248,7 @@
 </section>
 
 <!--pt:specs-->
-<section class="section alt" id="specs">
+<section class="section" id="specs">
   <div class="container">
     <div class="section-head center">
       <p class="sec-no">03 &middot; Specifications</p>
@@ -274,7 +274,7 @@
 <!--/pt:specs-->
 
 <!--pt:with-->
-<section class="section" id="works-with">
+<section class="section alt" id="works-with">
   <div class="container">
     <div class="section-head center">
       <p class="sec-no">04 &middot; Works with</p>
@@ -282,17 +282,17 @@
       <p>Runix Pipeline hands off to its neighbours in the stack and works on its own. The same block sits on every product page, with the neighbours changed.</p>
     </div>
     <div class="grid cols-3 works">
-      <a class="card card-clickable" href="/data" aria-label="Explore Runix Data">
-        <p class="card-layer">Same layer &middot; 02 Data</p>
-        <h3>Runix Data</h3>
-        <p>The service built on this tooling, with the rules for six domains on top.</p>
-        <span class="read-more">Explore Runix Data &rarr;</span>
-      </a>
       <a class="card card-clickable" href="/models" aria-label="Explore Runix Models">
         <p class="card-layer">Above &middot; 03 Models</p>
         <h3>Runix Models</h3>
         <p>Where model-ready data goes next: a model tuned to your task.</p>
         <span class="read-more">Explore Runix Models &rarr;</span>
+      </a>
+      <a class="card card-clickable" href="/data" aria-label="Explore Runix Data">
+        <p class="card-layer">Same layer &middot; 02 Data</p>
+        <h3>Runix Data</h3>
+        <p>The service built on this tooling, with the rules for six domains on top.</p>
+        <span class="read-more">Explore Runix Data &rarr;</span>
       </a>
       <a class="card card-clickable" href="/fs" aria-label="Explore Runix FS">
         <p class="card-layer">Below &middot; 01 Infrastructure</p>
@@ -306,7 +306,7 @@
 <!--/pt:with-->
 
 <!--pt:start-->
-<section class="section alt" id="start">
+<section class="section" id="start">
   <div class="container">
     <div class="section-head center">
       <p class="sec-no">05 &middot; How to start</p>
@@ -345,7 +345,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section section-end">
   <div class="container">
     <div class="cta-band">
       <h2>Have a pile of data and a deadline?</h2>
@@ -386,6 +386,7 @@
         <a href="/about">About</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
         <a href="/faq">FAQ</a>
         <a href="/glossary">Glossary</a>
         <a href="/access">Access</a>

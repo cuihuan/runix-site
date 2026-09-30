@@ -149,14 +149,32 @@ PROBE = r"""
     });
     return clone.textContent.replace(/[\s·|,.;:—–-]+/g, '') !== '';
   }
+  // The part of an element a finger can reach: its box clipped by every
+  // scrolling ancestor. A link scrolled out of a row that overflows (the page
+  // bar's section links) has a box that runs on under the row's neighbour,
+  // but no one can tap the clipped part -- the gate reported the bar's last
+  // link touching the action on every page with many sections.
+  function reachable(e){
+    var r = e.getBoundingClientRect();
+    var box = {left: r.left, top: r.top, right: r.right, bottom: r.bottom};
+    for (var p = e.parentElement; p && p !== document.body; p = p.parentElement) {
+      var o = getComputedStyle(p);
+      if (o.overflowX !== 'visible' || o.overflowY !== 'visible') {
+        var pr = p.getBoundingClientRect();
+        box.left = Math.max(box.left, pr.left); box.right = Math.min(box.right, pr.right);
+        box.top = Math.max(box.top, pr.top); box.bottom = Math.min(box.bottom, pr.bottom);
+      }
+    }
+    return box;
+  }
   var discrete = Array.prototype.slice.call(document.querySelectorAll('a[href], button')).filter(function(e){
     if (inlineInProse(e)) return false;
-    var r = e.getBoundingClientRect();
-    return r.width > 0 && r.height > 0;
+    var r = reachable(e);
+    return r.right - r.left > 0 && r.bottom - r.top > 0;
   });
   for (var di = 0; di < discrete.length; di++) {
     for (var dj = di + 1; dj < discrete.length; dj++) {
-      var da = discrete[di].getBoundingClientRect(), db = discrete[dj].getBoundingClientRect();
+      var da = reachable(discrete[di]), db = reachable(discrete[dj]);
       if (discrete[di].contains(discrete[dj]) || discrete[dj].contains(discrete[di])) continue;
       var ddx = Math.max(0, Math.max(da.left, db.left) - Math.min(da.right, db.right));
       var ddy = Math.max(0, Math.max(da.top, db.top) - Math.min(da.bottom, db.bottom));

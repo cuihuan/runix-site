@@ -124,7 +124,7 @@ Seven products at different stages. The statuses below are literal.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the six pipeline stages and what an engagement looks like.
 - [Runix Code](https://runixcloud.io/code): codebase-aware assistance, agentic workflows, team controls, and the waitlist.
 - [Runix Comic](https://runixcloud.io/comic): the three production stages being built, who it is for, and the waitlist.
-- [Pricing](https://runixcloud.io/pricing): billing models and exactly what every quote states.
+- [Pricing](https://runixcloud.io/plans): how each product is priced. Every account is set up by the team and every price is quoted in writing first; there is no self-serve sign-up or checkout.
 - [Security](https://runixcloud.io/security): data handling, key custody, access control, retention.
 - [About](https://runixcloud.io/about): the company, and how to contact it.
 - [Careers](https://runixcloud.io/careers): open roles.

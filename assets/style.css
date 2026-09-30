@@ -2126,3 +2126,11 @@ main a.pd-focus:not(.btn) {
 .refs li { display: grid; gap: 4px; padding: 18px 0; border-top: 1px solid var(--line-2); }
 .refs li span { color: var(--ink-3); font-size: 14.5px; line-height: 1.5; }
 @media (max-width: 920px) { .refs { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Contact-first pricing (2026-09-30) ----------
+   /plans explains how each product is priced and routes to sales; the card
+   payments live on /pay, which the team sends to customers once a plan is
+   agreed and which says so at the top. */
+.page-hero .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+.pay-notice { padding: 28px 0 0; }
+.pay-notice .callout { margin: 0; }

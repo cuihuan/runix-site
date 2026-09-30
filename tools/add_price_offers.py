@@ -21,7 +21,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-PAGE = "plans.html"
+PAGE = "pay.html"   # the priced plans moved here on 2026-09-30; /plans is contact-first
 SITE = "https://runixcloud.io"
 
 OFFERS = [

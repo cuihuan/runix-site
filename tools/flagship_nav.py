@@ -34,7 +34,6 @@ import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from stack import LAYERS, PRODUCTS as STACK, products_in, product_pages  # noqa: E402
 
-CONSOLE = "https://console.router.runixcloud.io"
 
 TOP = [("/plans", "Pricing"), ("/docs/", "Docs"), ("/about", "Company")]
 PRODUCT_PAGES = set(product_pages())
@@ -127,9 +126,11 @@ def build_nav(path, indent):
     for href, label in TOP:
         cls = ' class="active"' if href == active else ""
         lines.append(f'{i1}<a href="{href}"{cls}>{label}</a>')
-    lines.append(f'{i1}<a class="nav-signin" href="{CONSOLE}" target="_blank" '
-                 f'rel="noopener">Sign in</a>')
-    lines.append(f'{i1}<a class="nav-cta" href="/about#contact">Request access</a>')
+    # 2026-09-30: every product is sold to teams through a conversation, so the
+    # header carries no sign-in and no sign-up. Accounts are set up by the team
+    # and customers get the console address with their onboarding; a public
+    # sign-in link only led prospects to a login they did not have yet.
+    lines.append(f'{i1}<a class="nav-cta" href="/about#contact">Contact sales</a>')
     lines.append(f'{indent}</div>')
     return "\n".join(lines)
 

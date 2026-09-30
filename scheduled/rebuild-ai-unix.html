@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebuild AI Unix — Why Runix Lab Is Building an AI Operating System</title>
+<meta name="description" content="Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.">
+<meta property="og:title" content="Rebuild AI Unix — Why Runix Lab Is Building an AI Operating System">
+<meta property="og:description" content="Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-rebuild-ai-unix.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-rebuild-ai-unix.png?v=0">
+<meta property="og:url" content="https://runixcloud.io/blog/rebuild-ai-unix">
+<link rel="canonical" href="https://runixcloud.io/blog/rebuild-ai-unix">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=65">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Rebuild AI Unix: why Runix Lab is building an operating system for AI",
+  "description": "Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/rebuild-ai-unix"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-rebuild-ai-unix.png?v=0",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-09-29",
+  "dateModified": "2026-09-29"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Rebuild AI Unix",
+      "item": "https://runixcloud.io/blog/rebuild-ai-unix"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Rebuild AI Unix — Why Runix Lab Is Building an AI Operating System">
+<meta name="twitter:description" content="Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.">
+<meta property="article:published_time" content="2026-09-29">
+<meta property="article:modified_time" content="2026-09-29">
+<meta property="article:section" content="Announcement">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Applications</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<div class="page-hero">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Announcement</span><span>DATE</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Rebuild AI Unix: why Runix Lab is building an operating system for AI</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Runix Lab has one goal, and it fits in three words: rebuild AI Unix. We want enterprise AI to run on an operating system that is efficient, stable and built for the companies that have to sign for it, instead of on the pile of scripts, keys and one-off integrations most teams run on today. This post explains what we mean by that, what we have built so far, and what is still in development.</p>
+
+<h2 id="why-unix">Why Unix</h2>
+
+<p>Unix was written at Bell Labs at the end of the 1960s, and programs written for it decades ago still run. That is not an accident of hardware. It rests on a handful of ideas that turned out to be right:</p>
+
+<ul>
+<li><strong>Everything is a file.</strong> Disks, devices and streams are all read and written the same way, so a program does not need to know what is behind a path.</li>
+<li><strong>Small tools, joined by pipes.</strong> Each program does one job, and the output of one becomes the input of the next, where you can inspect it.</li>
+<li><strong>A kernel that does the work</strong>, and manages the machine on behalf of every program that runs on it.</li>
+<li><strong>One call interface.</strong> Programs ask the kernel for what they need through system calls, and POSIX later wrote that interface down, so the same program could run on machines from different vendors.</li>
+<li><strong>Userland.</strong> Applications sit on top and can change freely, without touching anything beneath them.</li>
+</ul>
+
+<p>None of those ideas is about a particular machine. They are about keeping the layers of a system honest with each other, so that each can be replaced without breaking the rest.</p>
+
+<h2 id="what-ai-is-missing">What enterprise AI is missing</h2>
+
+<p>Look at how most companies run AI in production and you find the opposite. Training data is copied out of the bucket onto local disks before every job, because object storage is not a file system. Data cleaning lives in scripts that one person understands and nobody can audit. Every model provider comes with its own SDK, its own keys and its own ways of failing, and they are wired into the application directly. The models themselves are rented, never owned, even for the narrow, repeated tasks where a smaller model of your own would do. And applications are written against one vendor's API, so changing any layer beneath them means changing them too.</p>
+
+<p>The cost shows up in the same places every time: GPUs that wait on storage, outages that start with someone else's bad hour, and security and procurement reviews that stall because nobody can say where the keys and the data actually go.</p>
+
+<h2 id="five-layers">Five layers, one idea each</h2>
+
+<p>We are rebuilding those ideas as <a href="/#platform">five layers</a>. Each one is a product a team can use on its own, and each is built to hand off to the layer above it. The statuses are literal.</p>
+
+<ul>
+<li><strong>Everything is a file: <a href="/fs">Runix FS</a></strong>, in early access. A POSIX file system and a multi-tier cache over the object storage you already run, so training jobs, inference servers and agents read datasets, checkpoints and weights through one path. It is built on Curvine, an open-source CNCF Sandbox project, and deployed into your own cloud account.</li>
+<li><strong>Small tools, joined by pipes: <a href="/pipeline">Runix Pipeline</a> and <a href="/data">Runix Data</a>.</strong> Pipeline, in development, is the tooling: the six stages from ingestion to delivery, each one leaving something you can inspect. Data, in early access, is the service built on it, with the rules that differ from one field to the next: code, which is our focus, then finance, cybersecurity, legal, embodied AI and AI for Science.</li>
+<li><strong>A kernel that does the work: <a href="/models">Runix Models</a></strong>, in early access. Open-weight models fine-tuned on your own data, evaluated against the model you run today before anything ships, and served on dedicated capacity.</li>
+<li><strong>One call interface: <a href="/router">Runix Router</a></strong>, in early access and running traffic. One OpenAI-compatible API in front of every model provider, with central key custody, per-key quotas and failover that fires mid-request, so the application above it does not need to know which provider answered.</li>
+<li><strong>Userland: <a href="/code">Runix Code</a> and <a href="/comic">Runix Comic</a></strong>, both in development. A coding agent that works in your repository under review gates, and a studio that takes a comic drama from script to published episode.</li>
+</ul>
+
+<p>Underneath all five sits the part we do not sell: GPUs, power and cloud capacity. The stack runs on the compute you already have and replaces none of it.</p>
+
+<h2 id="enterprise-grade">What efficient, stable and enterprise-grade mean here</h2>
+
+<p>Those three words are easy to write, so here is what each one means in terms of what the layers already do.</p>
+
+<ul>
+<li><strong>Efficient.</strong> GPUs read from a cache instead of waiting on the bucket. Requests are routed by cost and health. A small tuned model takes the jobs a large general one does not need to do.</li>
+<li><strong>Stable.</strong> Failover between providers happens mid-request with streaming preserved. File-system metadata is replicated with Raft. Every data stage leaves something you can inspect, so a bad answer can be traced back to the record that caused it.</li>
+<li><strong>Enterprise-grade.</strong> A registered US company to contract with, with an MSA and DPA on request. Provider keys held centrally, not scattered across repositories. Deployment into your own cloud account where the data has to stay. And your content is never used to train a model you did not ask for.</li>
+</ul>
+
+<p>Just as plainly, what we do not claim: we hold no SOC 2, ISO 27001 or PCI certification, there is no published service level during early access, and a product marked in development is not something you can buy yet.</p>
+
+<h2 id="where-to-start">Where to start</h2>
+
+<p>You do not have to adopt the whole stack. Most teams start at one layer: the gateway, when the problem is keys, contracts and provider outages; the data layer, when the problem is what the model learns from; or the file system, when GPUs are waiting on storage. Tell us which problem you have and <a href="/about#contact">we reply within one business day</a>, from the engineers who build and run it.</p>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+  <li><a href="/#platform">The Runix Lab stack: five layers, seven products</a></li>
+  <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+  <li><a href="/data">Runix Data: domain data for training and evaluation</a></li>
+  <li><a href="/models">Runix Models: fine-tuning and deployment for open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/router">Runix Router</a>
+        <a href="/models">Runix Models</a>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

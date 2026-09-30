@@ -2308,3 +2308,16 @@ main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 
 .doc-hub-layer p { margin: 0; color: var(--ink-3); font-size: 14px; line-height: 1.5; max-width: 26ch; }
 .doc-hub-layer .doc-side-h { margin: 0 0 6px; color: var(--ink); }
 @media (max-width: 920px) { .doc-hub-row { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Page shell (v4): the bar and eyebrow on every non-product page ---------- */
+.page-eyebrow {
+  margin: 0 0 14px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--indigo-ink);
+}
+.pbar span.pbar-layer { font: 600 12px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+/* The links row scrolls when a page has more sections than fit; the
+   scrollbar stays hidden, as on phones. */
+.pbar-links { scrollbar-width: none; }
+.pbar-links::-webkit-scrollbar { display: none; }
+.pbar-page .pbar-status { white-space: nowrap; }
+.page-hero .actions { margin-top: 28px; }

@@ -16,7 +16,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from stack import LAYERS, PRODUCTS, LAYER_OF, products_in  # noqa: E402
+from stack import LAYERS, PRODUCTS, LAYER_OF, DOMAINS, products_in  # noqa: E402
 
 START, END = "<!--stack-->", "<!--/stack-->"
 GROUND = ("GPUs, power and cloud capacity in your own account, with the "
@@ -29,10 +29,11 @@ def home_stack(indent):
     n_products = len(PRODUCTS)
     words = {5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
     out = [f'{indent}<div class="pmap pstack" id="platform">',
-           f'{i1}<div class="pmap-cap"><p>The Runix Lab stack</p>'
+           f'{i1}<div class="pmap-cap"><p>Runix Lab &middot; the AI operating system</p>'
            f'<p>{words[len(LAYERS)].capitalize()} layers, {words[n_products]} products</p></div>']
     for key, num, name, role in LAYERS:
-        out.append(f'{i1}<div class="pmap-row" id="layer-{key}-map" data-layer="{key}">')
+        extra = " has-domains" if key == "data" else ""
+        out.append(f'{i1}<div class="pmap-row{extra}" id="layer-{key}-map" data-layer="{key}">')
         out.append(f'{i2}<p class="pmap-layer"><span class="pl-no">{num:02d}</span>'
                    f'<span class="pl-name">{name}</span><span class="pl-role">{role}</span></p>')
         out.append(f'{i2}<ul class="pmap-cells">')
@@ -43,6 +44,18 @@ def home_stack(indent):
             out.append(f'{i3}<li><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
                        f'<span>{line}</span><em class="pmap-st">{status.capitalize()}</em></a></li>')
         out.append(f'{i2}</ul>')
+        if key == "data":
+            # The domains the data layer works in, each a link to its card on
+            # /data. Drawn under the layer's products because they belong to the
+            # layer's work, not to one product's tile.
+            out.append(f'{i2}<div class="pmap-domains"><p class="pd-label">Domains</p>')
+            out.append(f'{i3}<ul>')
+            for anchor, label, focus in DOMAINS:
+                cls = "pd-chip pd-focus" if focus else "pd-chip"
+                tag = " <i>Focus</i>" if focus else ""
+                out.append(f'{i4}<li><a class="{cls}" href="/data#{anchor}">{label}{tag}</a></li>')
+            out.append(f'{i3}</ul>')
+            out.append(f'{i2}</div>')
         out.append(f'{i1}</div>')
     out += [f'{i1}<div class="pmap-row pmap-base">',
             f'{i2}<p class="pmap-layer"><span class="pl-no">00</span>'

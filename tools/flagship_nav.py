@@ -47,8 +47,8 @@ LOCKUP_OLD = '<span class="mark" aria-hidden="true">R</span>Runix</a>'
 LOCKUP_NEW = ('<span class="mark" aria-hidden="true">R</span>Runix '
               '<span class="brand-lab">Lab</span></a>')
 
-TAGLINE_NEW = ("Full-stack AI infrastructure in five layers: storage, data, "
-               "models, a model gateway and the applications on top.")
+TAGLINE_NEW = ("Rebuild AI Unix: an efficient, stable, enterprise-grade AI "
+               "operating system, in five layers from storage to applications.")
 
 
 def footer_products(indent, active_href):

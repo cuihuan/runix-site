@@ -1,7 +1,8 @@
 # Runix Lab
 
-> Runix Lab builds full-stack AI infrastructure in five layers, each one a product a team
-> can use on its own: infrastructure (Runix FS, an AI-native file system over object
+> Runix Lab is rebuilding Unix for AI (its motto: "Rebuild AI Unix"): an efficient, stable,
+> enterprise-grade AI operating system in five layers, each one a product a team can use
+> on its own: infrastructure (Runix FS, an AI-native file system over object
 > storage), data (Runix Data, domain training and evaluation data, and Runix Pipeline, the
 > data tooling), models (Runix Models, fine-tuning and dedicated serving of open-weight
 > models), gateway (Runix Router, one OpenAI-compatible API in front of many model
@@ -9,6 +10,14 @@
 > company incorporated in Wyoming, United States. Router, FS, Data and Models are in early
 > access: accounts and engagements are set up on request rather than through self-serve
 > signup.
+
+## The idea
+
+Unix lasted on a few ideas, and each layer rebuilds one of them for AI: everything is a
+file (Runix FS), small tools joined by pipes (Runix Data and Runix Pipeline), a kernel
+that does the work (Runix Models), one call interface (Runix Router), and userland on top
+(Runix Code and Runix Comic). The aims are efficiency, stability and what an enterprise
+needs to buy it: contracts, key custody and deployment into its own cloud account.
 
 ## The stack
 
@@ -18,7 +27,8 @@ compute (GPUs, power and cloud capacity), which Runix Lab does not sell:
 - Layer 5, Applications: Runix Code, Runix Comic
 - Layer 4, Gateway: Runix Router
 - Layer 3, Models: Runix Models
-- Layer 2, Data: Runix Data, Runix Pipeline
+- Layer 2, Data: Runix Data, Runix Pipeline (domains: code, the focus; finance;
+  cybersecurity; legal; embodied AI; AI for Science)
 - Layer 1, Infrastructure: Runix FS
 
 ## Products
@@ -100,7 +110,7 @@ Seven products at different stages. The statuses below are literal.
 - [FAQ](https://runixcloud.io/faq): access, billing, data handling, contracting, certifications.
 - [Access](https://runixcloud.io/access): how keys are issued and what intake involves.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
-- [Home](https://runixcloud.io/): the five-layer stack, the seven products and their statuses, company facts.
+- [Home](https://runixcloud.io/): the mission (Rebuild AI Unix), the five-layer stack with the data domains, the seven products and their statuses, company facts.
 - [Runix Models](https://runixcloud.io/models): fine-tuning methods, evaluation before rollout, dedicated serving, licences, FAQ.
 - [Runix Data](https://runixcloud.io/data): the six domains and their cleaning rules, verified coding tasks, what every delivery carries, FAQ.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.

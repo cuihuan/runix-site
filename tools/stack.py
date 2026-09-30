@@ -48,6 +48,19 @@ PRODUCTS = {
            "infrastructure", "early access", ""),
 }
 
+# The Data layer's domains, in the order the site lists them. Code is the
+# focus (2026-09-30: "coding data is an important part of the business") --
+# the one marked, not the largest; nothing on the site claims a size.
+# (anchor on /data, label, focus)
+DOMAINS = [
+    ("domain-code", "Code", True),
+    ("domain-finance", "Finance", False),
+    ("domain-cybersecurity", "Cybersecurity", False),
+    ("domain-legal", "Legal", False),
+    ("domain-embodied-ai", "Embodied AI", False),
+    ("domain-ai-for-science", "AI for Science", False),
+]
+
 LAYER_OF = {key: (num, name) for key, num, name, _ in LAYERS}
 
 

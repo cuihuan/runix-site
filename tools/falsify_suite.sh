@@ -69,7 +69,7 @@ try "pipeline stage count disagreeing" \
     "five stages"
 
 try "product count disagreeing" \
-    about.html "Five products" "Six products" \
+    about.html "Seven products" "Six products" \
     "product pages"
 
 try "our own page named but not linked" \

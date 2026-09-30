@@ -432,9 +432,22 @@ for page in PAGES:
     # check only matched the former, so it never ran on the page whose defect
     # motivated it -- the gate reported clean while the duplicate was still
     # there. Match the actual container, and take the button block inside it.
-    _hero = re.search(r'<(section|div) class="[^"]*\b(?:page-)?hero\b[^"]*".*?</\1>', doc, re.S)
+    _hero = re.search(r'<(section|div) class="[^"]*\b(?:page-)?hero\b[^"]*"', doc)
     if not _hero or not _nav_hrefs:
         continue
+    # The hero's extent is found by counting nested tags, not by the first
+    # closing tag after it. The non-greedy match this replaced ended the hero
+    # at the first </div> -- which, once the layer locator went in above the
+    # heading on 2026-09-30, was the locator's, so the buttons fell outside the
+    # scope and this gate went quiet on every product page. falsify_suite.sh
+    # caught it.
+    _tag, _depth, _end = _hero.group(1), 0, len(doc)
+    for _t in re.finditer(r"<(/?)" + _tag + r"\b", doc[_hero.start():]):
+        _depth += -1 if _t.group(1) else 1
+        if _depth == 0:
+            _end = _hero.start() + _t.end()
+            break
+    _hero = re.match(r".*", doc[_hero.start():_end], re.S)
     # Match the whole anchor, not just its opening tag. The first version
     # tested the label against the opening tag, where the label is not -- so
     # the condition was always false and the gate could never fire.

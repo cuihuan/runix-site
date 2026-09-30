@@ -19,34 +19,59 @@ The nav is rebuilt structurally (balanced <div> matching) rather than by
 string replacement, because each page marks its own item active and the
 block now contains a nested <div>. Idempotent: a second run changes nothing.
 Run from the site root.
+
+2026-09-30, second pass: the products are now drawn as a five-layer stack
+(tools/stack.py is the one definition). The Products menu groups them by
+layer, top to bottom as the home page draws them; the footer's Product column
+is rebuilt from the same list; and the lockup reads "Runix Lab" in the header
+and the footer. The company is still Runix AI Inc and the products keep their
+"Runix X" names -- only the mark changes.
 """
 import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from stack import LAYERS, PRODUCTS as STACK, products_in, product_pages  # noqa: E402
+
 CONSOLE = "https://console.router.runixcloud.io"
 
-PRODUCTS = [
-    ("/router", "Runix Router", "One compliant endpoint for every model", ""),
-    ("/fs", "Runix FS", "AI-native file system on your object storage", "New"),
-    ("/pipeline", "Runix Pipeline", "Raw material into model-ready data", ""),
-    ("/code", "Runix Code", "A reviewable AI agent in your repository", ""),
-    ("/comic", "Runix Comic", "Scripts into published episodes", ""),
-    ("/#platform", "Platform overview", "How the five products fit together", ""),
-]
 TOP = [("/plans", "Pricing"), ("/docs/", "Docs"), ("/about", "Company")]
-PRODUCT_PAGES = {"router.html", "fs.html", "pipeline.html", "code.html", "comic.html"}
+PRODUCT_PAGES = set(product_pages())
 
 NOSCRIPT_OLD = (".nav-toggle{display:none!important}}</style></noscript>")
 NOSCRIPT_NEW = (".nav-toggle{display:none!important}"
                 ".nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>")
 
-FOOTER_OLD = '<a href="/router">Runix Router</a>\n'
-FOOTER_FS = '<a href="/fs">Runix FS</a>\n'
-TAGLINE_OLD = ("AI, made effortless — Runix Router, Runix Pipeline, Runix Code "
-               "and Runix Comic.")
-TAGLINE_NEW = ("The infrastructure layer for production AI: Runix Router, Runix FS, "
-               "Runix Pipeline, Runix Code and Runix Comic.")
+LOCKUP_OLD = '<span class="mark" aria-hidden="true">R</span>Runix</a>'
+LOCKUP_NEW = ('<span class="mark" aria-hidden="true">R</span>Runix '
+              '<span class="brand-lab">Lab</span></a>')
+
+TAGLINES_OLD = [
+    ("AI, made effortless — Runix Router, Runix Pipeline, Runix Code "
+     "and Runix Comic."),
+    ("The infrastructure layer for production AI: Runix Router, Runix FS, "
+     "Runix Pipeline, Runix Code and Runix Comic."),
+]
+TAGLINE_NEW = ("Full-stack AI infrastructure in five layers: storage, data, "
+               "models, a model gateway and the applications on top.")
+
+
+def footer_products(indent, active_href):
+    """The footer's Product column, in the order the stack is drawn."""
+    links = []
+    for layer, *_ in LAYERS:
+        for key in products_in(layer):
+            _, href, name, *_rest = STACK[key]
+            links.append((href, name))
+            if key == "code":
+                links.append(("/code-plans", "Code plans"))
+    links.append(("/plans", "Pricing"))
+    out = []
+    for href, name in links:
+        cls = ' class="active"' if href == active_href else ""
+        out.append(f'{indent}<a href="{href}"{cls}>{name}</a>')
+    return "\n".join(out)
 
 
 def active_for(path):
@@ -76,7 +101,7 @@ def build_header_nav(path):
     with no accessible name. Neither shows on screen, so neither was caught.
     """
     return ('  <nav class="nav" aria-label="Primary">\n'
-            '    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix</a>\n'
+            '    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>\n'
             f'    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">{TOGGLE_SVG}</button>\n'
             + build_nav(path, "    ") + "\n  </nav>")
 
@@ -89,10 +114,18 @@ def build_nav(path, indent):
              f'{i1}<div class="nav-menu">',
              f'{i2}<a class="{top_cls}" href="/#products">Products</a>',
              f'{i2}<div class="nav-panel">']
-    for href, name, line, tag in PRODUCTS:
-        badge = f" <i>{tag}</i>" if tag else ""
-        lines.append(f'{i3}<a class="nav-prod" href="{href}"><b>{name}{badge}</b>'
-                     f'<span>{line}</span></a>')
+    i4 = i3 + "  "
+    for layer, num, lname, _role in LAYERS:
+        lines.append(f'{i3}<div class="nav-layer">')
+        lines.append(f'{i4}<p class="nav-layer-name"><span>{num:02d}</span>{lname}</p>')
+        for key in products_in(layer):
+            _, href, name, line, _l, _st, tag = STACK[key]
+            badge = f" <i>{tag}</i>" if tag else ""
+            lines.append(f'{i4}<a class="nav-prod" href="{href}"><b>{name}{badge}</b>'
+                         f'<span>{line}</span></a>')
+        lines.append(f'{i3}</div>')
+    lines.append(f'{i3}<a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack '
+                 f'<span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>')
     lines += [f'{i2}</div>', f'{i1}</div>']
     for href, label in TOP:
         cls = ' class="active"' if href == active else ""
@@ -136,11 +169,20 @@ def main():
         # Only inside the footer: the same link can appear in body copy, and
         # the first match in the file is not necessarily the footer's.
         f0 = t.rfind("<footer")
-        if f0 >= 0 and FOOTER_OLD in t[f0:] and FOOTER_FS not in t[f0:]:
-            j = t.find(FOOTER_OLD, f0)
-            ind = t[t.rfind("\n", 0, j) + 1:j]
-            t = t[:j] + FOOTER_OLD + ind + FOOTER_FS + t[j + len(FOOTER_OLD):]
-        t = t.replace(TAGLINE_OLD, TAGLINE_NEW)
+        if f0 >= 0:
+            foot = t[f0:]
+            foot = foot.replace(LOCKUP_OLD, LOCKUP_NEW, 1)
+            m = re.search(r'(<p class="footer-heading">Product</p>\n)((?:[ \t]*<a [^\n]*</a>\n)+)', foot)
+            if m:
+                ind = re.match(r"[ \t]*", m.group(2)).group(0)
+                act = re.search(r'<a href="([^"]+)" class="active">', m.group(2))
+                col = footer_products(ind, act.group(1) if act else None) + "\n"
+                foot = foot[:m.start(2)] + col + foot[m.end(2):]
+            else:
+                problems.append(f"{rel}: footer has no Product column in the expected shape")
+            t = t[:f0] + foot
+        for old in TAGLINES_OLD:
+            t = t.replace(old, TAGLINE_NEW)
         if t != orig:
             p.write_text(t, encoding="utf-8")
             changed += 1

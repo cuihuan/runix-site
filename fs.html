@@ -69,7 +69,7 @@
       "name": "Where does my data live?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "In your own object storage. Runix FS caches blocks on its workers, but the bucket stays the durable copy, and file paths map one-to-one to object keys, so the data stays readable without Runix FS."
+        "text": "In your own object storage. File paths map one-to-one to object keys, so what is in the bucket keeps its layout and stays readable without Runix FS. In cache mode the bucket is the source of truth and writes go straight to it; in file-system mode, writes complete in Runix FS first and reach the bucket through a background sync."
       }
     },
     {
@@ -223,7 +223,7 @@ $ ls /mnt/curvine/training-data/imagenet
   <div class="container">
     <div class="section-head center">
       <h2>Object-storage economics, local-file semantics</h2>
-      <p>Object storage is where AI data lives because it is cheap and durable. It is also slow to list, slow to open and has no rename. Runix FS keeps the bucket as the source of truth and puts a file system and a cache in front of it.</p>
+      <p>Object storage is where AI data lives because it is cheap and durable. It is also slow to list, slow to open and has no rename. Runix FS puts a file system and a cache in front of the bucket, and each mount picks how writes reach it: read-heavy data keeps the bucket as the source of truth, write-heavy work completes in Runix FS first and is synchronised to the bucket in the background.</p>
     </div>
     <div class="fgrid">
       <div class="fcell">
@@ -249,7 +249,7 @@ $ ls /mnt/curvine/training-data/imagenet
       <div class="fcell">
         <span class="fno" aria-hidden="true">05</span>
         <h3>Your bucket stays readable</h3>
-        <p>File paths map one-to-one to object keys. If the cluster is stopped, the data is still in your bucket, in its original layout, readable by anything else.</p>
+        <p>File paths map one-to-one to object keys. What is in your bucket keeps its original layout and stays readable by anything else, whether or not the cluster is running.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">06</span>
@@ -264,7 +264,7 @@ $ ls /mnt/curvine/training-data/imagenet
   <div class="container">
     <div class="section-head center">
       <h2>Where it sits in your stack</h2>
-      <p>Between the workloads that read data and the bucket that keeps it. Metadata goes to the masters; data is served by the workers, which fetch from the bucket on a miss and write back to it for durability.</p>
+      <p>Between the workloads that read data and the bucket that keeps it. Metadata goes to the masters; data is served by the workers, which read from the bucket on a miss and write back to it, directly or through a background sync depending on the mount mode.</p>
     </div>
     <figure class="arch">
       <div class="arch-stack">
@@ -285,7 +285,7 @@ $ ls /mnt/curvine/training-data/imagenet
           <div class="arch-cells"><span>Amazon S3</span><span>Google Cloud Storage</span><span>Azure Blob</span><span>MinIO</span><span>HDFS</span></div>
         </div>
       </div>
-      <figcaption>On a cache miss a worker reads the block from the bucket and keeps it; the bucket remains the durable copy throughout.</figcaption>
+      <figcaption>Two mount modes. In cache mode the bucket is the source of truth and writes go straight to it. In file-system mode, the default, every operation completes in Runix FS first and is synchronised to the bucket in the background.</figcaption>
     </figure>
   </div>
 </section>
@@ -456,7 +456,7 @@ $ aws s3 cp s3://training-data/labels.csv . \
       </div>
       <div class="qa">
         <h3>Where does my data live?</h3>
-        <p>In your own object storage. Runix FS caches blocks on its workers, but the bucket stays the durable copy, and file paths map one-to-one to object keys, so the data stays readable without Runix FS.</p>
+        <p>In your own object storage. File paths map one-to-one to object keys, so what is in the bucket keeps its layout and stays readable without Runix FS. In cache mode the bucket is the source of truth and writes go straight to it; in file-system mode, writes complete in Runix FS first and reach the bucket through a background sync.</p>
       </div>
       <div class="qa">
         <h3>Do we have to change our code?</h3>

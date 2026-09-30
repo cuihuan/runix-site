@@ -92,6 +92,7 @@ FAQ_PAGES = [
     ("code.html", "Common questions"),
     ("comic.html", "Common questions"),
     ("code-plans.html", "Common questions"),
+    ("fs.html", "Common questions"),
     ("faq.html", None),        # whole page is the FAQ; handled by its own tool
     ("access.html", None),
 ]

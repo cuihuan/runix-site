@@ -124,7 +124,7 @@
 
 <article class="article">
 
-<p>Today we are opening early access to <a href="/fs">Runix FS</a>, a POSIX file system and a multi-tier distributed cache that sits in front of the object storage a team already runs. Training jobs, inference servers and agents read the same data through a local path, and the bucket stays the durable copy. This post is about why we think that layer is missing from most AI stacks, what we are building it on, and what we will and will not claim about it.</p>
+<p>Today we are opening early access to <a href="/fs">Runix FS</a>, a POSIX file system and a multi-tier distributed cache that sits in front of the object storage a team already runs. Training jobs, inference servers and agents read the same data through a local path, and the data lives in your own bucket. This post is about why we think that layer is missing from most AI stacks, what we are building it on, and what we will and will not claim about it.</p>
 
 <h2 id="the-gap">The gap between the bucket and the GPU</h2>
 
@@ -134,7 +134,7 @@
 
 <h2 id="what-runix-fs-is">What Runix FS is</h2>
 
-<p>Runix FS keeps the bucket as the source of truth and puts two things in front of it. The first is a file system: masters hold the metadata and replicate it with Raft, and clients see an ordinary namespace through a FUSE mount, an S3-compatible gateway, an HDFS-compatible client or SDKs for Java, Python and Rust. The second is a cache: workers hold blocks in memory, SSD and HDD tiers, serve them directly to clients, and read from the bucket on a miss.</p>
+<p>Runix FS puts two things in front of the bucket. The first is a file system: masters hold the metadata and replicate it with Raft, and clients see an ordinary namespace through a FUSE mount, an S3-compatible gateway, an HDFS-compatible client or SDKs for Java, Python and Rust. The second is a cache: workers hold blocks in memory, SSD and HDD tiers, serve them directly to clients, and read from the bucket on a miss. Each mount chooses how writes reach the bucket: straight through, with the bucket as the source of truth, for read-heavy data; or completed in Runix FS first and synchronised in the background, for write-heavy work.</p>
 
 <p>Two properties matter more than any benchmark. File paths map one-to-one to object keys, so the data in your bucket keeps its original layout and stays readable by anything else, with or without the cluster running. And on Kubernetes, the CSI driver provisions a volume by creating a directory rather than calling a cloud API, so provisioning keeps up when thousands of pods start at once.</p>
 

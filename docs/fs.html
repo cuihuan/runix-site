@@ -143,7 +143,7 @@
 <li><strong>Workers</strong> hold the cache, in memory, SSD and HDD tiers, and serve data directly to clients. On a miss they read from the bucket.</li>
 <li><strong>Access</strong> is whichever of these your workloads need: the FUSE daemon for a POSIX mount, the S3-compatible gateway, the CSI driver for Kubernetes, or the Java, Python and Rust SDKs.</li>
 </ul>
-<p>The bucket stays the durable copy. File paths map one-to-one to object keys, so the data remains readable in its original layout without the cluster.</p>
+<p>File paths map one-to-one to object keys, so what is in the bucket keeps its original layout and stays readable without the cluster. How writes reach the bucket depends on the mount mode, in the next steps.</p>
 
 <h2 id="try-it-on-one-machine">2. Try it on one machine</h2>
 <p>Download a release package from the <a href="https://github.com/CurvineIO/curvine/releases" rel="noopener">Curvine releases page</a>, extract it, and start a local cluster from the extracted directory:</p>
@@ -156,14 +156,14 @@ bin/cv fs ls /</code></pre>
 <p>The web UI is served on port 9000 on the master and 9001 on the worker. <code>localhost</code> is only right for a single machine: on more than one node, set the master, worker and client hostnames to addresses the other nodes can reach.</p>
 
 <h2 id="attach-a-bucket">3. Attach a bucket</h2>
-<p>A mount attaches a bucket prefix to a path in the namespace. In <code>cache_mode</code>, reads are served from the cache and filled from the bucket on a miss:</p>
+<p>A mount attaches a bucket prefix to a path in the namespace, in one of two modes. <code>cache_mode</code> is for read-heavy data: the bucket stays the source of truth, writes pass straight through to it, and a read that misses the cache is served from the bucket while the cache fills in the background. <code>fs_mode</code>, the default, is for write-heavy work: every operation completes in Runix FS first and is synchronised to the bucket asynchronously. This example uses <code>cache_mode</code>:</p>
 <pre><code>bin/cv mount s3://training-data/imagenet /training-data/imagenet \
   --write-type cache_mode \
   -c s3.endpoint_url=https://s3.us-east-1.amazonaws.com \
   -c s3.region_name=us-east-1 \
   -c s3.credentials.access=$AWS_ACCESS_KEY_ID \
   -c s3.credentials.secret=$AWS_SECRET_ACCESS_KEY</code></pre>
-<p>By default the path inside the namespace mirrors the bucket and prefix, as above. Mounts are stored in the metadata, so they survive a restart. To warm the cache before a job starts, load a path ahead of time:</p>
+<p>By default the path inside the namespace mirrors the bucket and prefix, as above. Mounts are stored in the metadata, so they survive a restart. Two cautions from the Curvine documentation: in <code>cache_mode</code>, deleting a file through the mount deletes it from the bucket too; in <code>fs_mode</code>, a rename on object storage becomes a delete and a full copy, so avoid renaming large directories. To warm the cache before a job starts, load a path ahead of time:</p>
 <pre><code>bin/cv load /training-data/imagenet/train/shard-00001.tar --watch</code></pre>
 
 <h2 id="mount-it">4. Mount it</h2>

@@ -23,7 +23,9 @@ Products at different stages. The statuses below are literal.
   a POSIX file system (FUSE) and a memory/SSD/HDD distributed cache in front of
   S3-compatible object storage, with an S3-compatible gateway, an HDFS-compatible client,
   Java/Python/Rust SDKs and a Kubernetes CSI driver. File paths map one-to-one to object
-  keys, so the bucket stays the durable, independently readable copy. Built on Curvine
+  keys, so data in the bucket stays independently readable; a mount either keeps the bucket
+  as the source of truth (cache mode, for read-heavy data) or completes writes in Runix FS
+  first and syncs them to the bucket in the background (file-system mode). Built on Curvine
   (Apache 2.0, a CNCF Sandbox project); Runix deploys it into the customer's own cloud
   account and supports it under contract. Priced per deployment during early access.
   https://runixcloud.io/fs

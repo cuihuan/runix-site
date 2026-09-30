@@ -63,7 +63,7 @@ def render(slug, title, description, badge, h1, lede, body, schema=(), out=None,
 <meta property="og:description" content="{description}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
-<meta property="og:site_name" content="Runix">
+<meta property="og:site_name" content="Runix Lab">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="{SITE}/assets/og-cover.png?v={_cover_version()}">
 <meta property="og:image:width" content="1200">

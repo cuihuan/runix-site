@@ -52,6 +52,7 @@ body {{
 .top {{ display:flex; align-items:center; gap:14px; }}
 .mark {{ width:36px; height:36px; }}
 .name {{ font-size:25px; font-weight:650; letter-spacing:-0.015em; }}
+.name span {{ font-weight:500; color:#c3c9d2; }}
 .cat {{
   margin-left:auto; font-size:19px; font-weight:600; color:#3ec9e8;
   letter-spacing:0.055em; text-transform:uppercase;
@@ -67,7 +68,7 @@ h1 {{
 </style>
 <div class=top>
   <img class=mark src="{logo}" alt="">
-  <div class=name>Runix</div>
+  <div class=name>Runix <span>Lab</span></div>
   <div class=cat>{cat}</div>
 </div>
 <h1>{title}</h1>
@@ -92,7 +93,7 @@ def card_fields(path, doc):
         if b and _text(b.group(1)).startswith("Runix "):
             cat = _text(b.group(1))
     if not cat:
-        cat = "Docs" if path.startswith("docs/") else "Runix"
+        cat = "Docs" if path.startswith("docs/") else "Runix Lab"
     foot = "runixcloud.io"
     if path.startswith("blog/") and path != "blog/index.html":
         d = re.search(r'<span>((?:January|February|March|April|May|June|July|'

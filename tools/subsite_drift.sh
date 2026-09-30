@@ -34,7 +34,7 @@ probe() {  # host -> "<ref> <bytes>"
 # reported agreement. Proved by editing router.html, deploying, and watching it
 # say "all match" while the sub-domain still had the old sentence. The file on
 # disk is the thing that was just deployed, so it cannot be stale.
-declare -a MIRROR=("gateway:router.html" "comic:comic.html" "code:code.html" "data:pipeline.html" "fs:fs.html")
+declare -a MIRROR=("gateway:router.html" "comic:comic.html" "code:code.html" "data:data.html" "fs:fs.html")
 
 normalise() {  # stdin: html -> 16 hex chars of <main>'s visible text
   python3 -c '

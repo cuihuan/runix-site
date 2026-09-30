@@ -1,17 +1,29 @@
-# Runix
+# Runix Lab
 
-> Runix builds infrastructure for teams running AI in production. Runix Router is
-> an LLM router: one OpenAI-compatible API in front of many model providers, with
-> routing, automatic failover, central key custody, per-key quotas and per-request
-> cost attribution. Runix FS is an AI-native file system: a POSIX file system and
-> multi-tier cache over S3-compatible object storage, built on the open-source
-> Curvine project. Operated by Runix AI Inc, a company incorporated in Wyoming,
-> United States. Both are in early access — accounts are set up on request rather
-> than through self-serve signup.
+> Runix Lab builds full-stack AI infrastructure in five layers, each one a product a team
+> can use on its own: infrastructure (Runix FS, an AI-native file system over object
+> storage), data (Runix Data, domain training and evaluation data, and Runix Pipeline, the
+> data tooling), models (Runix Models, fine-tuning and dedicated serving of open-weight
+> models), gateway (Runix Router, one OpenAI-compatible API in front of many model
+> providers) and applications (Runix Code and Runix Comic). Operated by Runix AI Inc, a
+> company incorporated in Wyoming, United States. Router, FS, Data and Models are in early
+> access: accounts and engagements are set up on request rather than through self-serve
+> signup.
+
+## The stack
+
+Five layers, top to bottom as the home page draws them, standing on the customer's own
+compute (GPUs, power and cloud capacity), which Runix Lab does not sell:
+
+- Layer 5, Applications: Runix Code, Runix Comic
+- Layer 4, Gateway: Runix Router
+- Layer 3, Models: Runix Models
+- Layer 2, Data: Runix Data, Runix Pipeline
+- Layer 1, Infrastructure: Runix FS
 
 ## Products
 
-Products at different stages. The statuses below are literal.
+Seven products at different stages. The statuses below are literal.
 
 - **Runix Router** — *status: early access, running traffic today.* One OpenAI-compatible
   endpoint across many providers, positioned on security, compliance and performance:
@@ -29,8 +41,22 @@ Products at different stages. The statuses below are literal.
   (Apache 2.0, a CNCF Sandbox project); Runix deploys it into the customer's own cloud
   account and supports it under contract. Priced per deployment during early access.
   https://runixcloud.io/fs
-- **Runix Pipeline** — *status: in development with design partners.* Managed data
-  preparation for AI: ingestion, cleaning, three tiers of deduplication, schema-validated
+- **Runix Models** — *status: early access, by engagement.* Fine-tuning and dedicated
+  serving of small and open-weight models (for example Qwen, Llama, Mistral, Gemma and
+  DeepSeek, with the licence checked against the use case first): supervised fine-tuning,
+  LoRA and QLoRA, preference tuning (DPO), evaluation against the model a team runs today,
+  and single-tenant serving in the customer's cloud account or on capacity arranged per
+  engagement, behind an OpenAI-compatible API that can sit behind Runix Router. Priced per
+  engagement. https://runixcloud.io/models
+- **Runix Data** — *status: early access, by engagement.* Training and evaluation data in six
+  domains: code (the focus: repository and task data for code models and coding agents,
+  with each task verified by running its tests in a clean container), finance,
+  cybersecurity, legal, embodied AI, and AI for Science (limited to biological data:
+  antibody and protein records). Every delivery carries per-record provenance and licence,
+  a quality report, personal data masked (failing closed) and evaluation data split from
+  training data by source. Priced per project or volume. https://runixcloud.io/data
+- **Runix Pipeline** — *status: in development with design partners.* The tooling behind
+  Runix Data, being built for teams to run themselves. Managed data preparation for AI: ingestion, cleaning, three tiers of deduplication, schema-validated
   LLM extraction, PII masking that fails closed, and a quality report with every delivery.
   Scoped and priced per project or volume. https://runixcloud.io/pipeline
 - **Runix Code** — *status: in development, waitlist open.* An AI coding agent being built
@@ -61,7 +87,9 @@ Products at different stages. The statuses below are literal.
 - Billing: USD, usage-based (per token or per request, by model), itemised statements,
   prepaid draw-down or invoiced. There is no published rate card; quotes are per workload.
 - Data handling: customer prompt and response content is not used to train models and is
-  not sold. Operational metadata (usage counts, latency, error codes) is kept to run
+  not sold. The one exception is Runix Models, where data a customer provides trains the
+  model that customer asked for, under a statement of work that takes precedence over the
+  standard Terms. Operational metadata (usage counts, latency, error codes) is kept to run
   billing, reliability and support. Details in the Privacy Policy and Security page.
 - Certifications: none are claimed. Runix does not assert SOC 2, ISO 27001 or PCI status.
 - Support: replies within one business day, contact@runixcloud.io.
@@ -72,7 +100,9 @@ Products at different stages. The statuses below are literal.
 - [FAQ](https://runixcloud.io/faq): access, billing, data handling, contracting, certifications.
 - [Access](https://runixcloud.io/access): how keys are issued and what intake involves.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
-- [Home](https://runixcloud.io/): the platform map, the five products and their statuses, company facts.
+- [Home](https://runixcloud.io/): the five-layer stack, the seven products and their statuses, company facts.
+- [Runix Models](https://runixcloud.io/models): fine-tuning methods, evaluation before rollout, dedicated serving, licences, FAQ.
+- [Runix Data](https://runixcloud.io/data): the six domains and their cleaning rules, verified coding tasks, what every delivery carries, FAQ.
 - [Runix Router](https://runixcloud.io/router): security, compliance and performance detail, plus FAQ.
 - [Runix FS](https://runixcloud.io/fs): the AI-native file system: capabilities, architecture, workloads, published benchmarks, FAQ.
 - [Runix Pipeline](https://runixcloud.io/pipeline): the six pipeline stages and what an engagement looks like.

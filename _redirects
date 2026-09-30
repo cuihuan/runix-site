@@ -7,8 +7,8 @@
 
 /gateway /router 301
 /gateway.html /router 301
-/forge / 301
-/forge.html / 301
+/forge /models 301
+/forge.html /models 301
 
 # /pricing merged into /plans (2026-09-02). The two pages described the same
 # thing from different angles; keeping both split the traffic and the copy.

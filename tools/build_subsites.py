@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the four product sub-sites from their main-site pages.
+"""Build the product sub-sites from their main-site pages.
 
 Each product page becomes the index of its subdomain, with internal links
 rewritten to absolute main-site URLs. Canonicals already point at the main
@@ -18,7 +18,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIN = "https://runixcloud.io"
 MAP = {"gateway": "router.html", "comic": "comic.html",
-       "code": "code.html", "data": "pipeline.html", "fs": "fs.html"}
+       "code": "code.html", "data": "data.html", "fs": "fs.html"}
 PAGES = ["pricing", "security", "about", "careers", "router", "fs", "pipeline",
          "code", "comic", "terms", "privacy", "refund", "cancellation",
          "acceptable-use"]

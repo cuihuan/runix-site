@@ -526,8 +526,11 @@ for _src, _sec, _tag, _prose, _label in _COUNTED:
 # --- the products the site claims to have are the products it has ----------
 # "four products" appears in prose; the products themselves are pages. If one
 # ships or is dropped, the sentence is the thing that gets forgotten.
-_PRODUCT_PAGES = [f for f in ("router.html", "fs.html", "pipeline.html", "code.html", "comic.html")
-                  if os.path.isfile(f)]
+# The list of products is tools/stack.py's, the one definition the nav, the
+# home page's stack and the product pages' locators are drawn from.
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+from stack import PRODUCTS as _STACK, LAYERS as _LAYERS  # noqa: E402
+_PRODUCT_PAGES = [v[0] for v in _STACK.values() if os.path.isfile(v[0])]
 for page in PAGES + ["llms.txt"]:
     if not os.path.isfile(page):
         continue
@@ -845,9 +848,7 @@ for page in PAGES:
 # sentence-level scan cannot tell which card a "Status:" belongs to when cards
 # carry no sentence punctuation, and it reports three inconsistencies that are
 # not real.
-PRODUCT_STATUS = {"router": "early access", "fs": "early access",
-                  "pipeline": "in development",
-                  "code": "in development", "comic": "in development"}
+PRODUCT_STATUS = {k: v[5] for k, v in _STACK.items()}
 seen_status = {}
 for page in PAGES:
     doc = open(page).read()
@@ -872,6 +873,28 @@ for page, statuses in seen_status.items():
     if len(statuses) == len(expected_set) and sorted(statuses) != expected_set:
         fail(page, f"card statuses {sorted(statuses)} do not match the "
                    f"canonical set {expected_set}")
+
+# --- the home page's layer bands hold the products tools/stack.py puts there --
+# The stack diagram at the top of the home page is generated from stack.py; the
+# "Seven products, one stack" bands under it are written by hand, because each
+# card carries its own copy. A product moved to another layer in stack.py, or a
+# card pasted into the wrong band, would leave the two drawings disagreeing on
+# one screen. Each band's cards must be exactly that layer's products, in order.
+_home = open("index.html").read() if os.path.isfile("index.html") else ""
+_bands = re.findall(r'<div class="lband" id="layer-([a-z]+)">(.*?)(?=<div class="lband"|\n    </div>\n  </div>\n</section>)', _home, re.S)
+if _home and not _bands:
+    fail("index.html", "has no layer bands -- the stack check would silently do nothing")
+_want = {key: [v[1] for v in _STACK.values() if v[4] == key] for key, *_ in _LAYERS}
+_seen = set()
+for _layer, _body in _bands:
+    _seen.add(_layer)
+    _got = re.findall(r'<a class="card pcard" id="[^"]+" href="([^"]+)"', _body)
+    if _got != _want.get(_layer):
+        fail("index.html", f"layer band “{_layer}” holds {_got}, tools/stack.py "
+                           f"puts {_want.get(_layer)} there")
+for _layer in _want:
+    if _bands and _layer not in _seen:
+        fail("index.html", f"has no band for the {_layer} layer")
 
 # --- two links with nothing between them ----------------------------------
 # Automated link insertion produced "<a>FAQ</a> <a>Glossary</a>", which reads

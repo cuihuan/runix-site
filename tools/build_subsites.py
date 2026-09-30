@@ -18,7 +18,8 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIN = "https://runixcloud.io"
 MAP = {"gateway": "router.html", "comic": "comic.html",
-       "code": "code.html", "data": "data.html", "fs": "fs.html"}
+       "code": "code.html", "data": "data.html", "fs": "fs.html",
+       "models": "models.html"}
 PAGES = ["pricing", "security", "about", "careers", "router", "fs", "pipeline",
          "code", "comic", "terms", "privacy", "refund", "cancellation",
          "acceptable-use"]

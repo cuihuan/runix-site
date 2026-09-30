@@ -2111,3 +2111,5 @@ main a.pd-focus:not(.btn) {
   .um-idea { grid-row: auto; }
   .principles { grid-template-columns: minmax(0, 1fr); }
 }
+
+.unix-more { margin: 32px 0 0; }

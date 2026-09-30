@@ -6,7 +6,14 @@
     <atom:link href="https://runixcloud.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Engineering notes on LLM gateways, reliability, cost control and data pipelines, from the team building Runix.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 30 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Rebuild AI Unix: why Runix Lab is building an operating system for AI</title>
+      <link>https://runixcloud.io/blog/rebuild-ai-unix</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/rebuild-ai-unix</guid>
+      <description>Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.</description>
+      <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Introducing Runix FS: an AI file system for object storage</title>
       <link>https://runixcloud.io/blog/introducing-runix-fs</link>

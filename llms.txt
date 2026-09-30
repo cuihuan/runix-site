@@ -126,8 +126,9 @@ Seven products at different stages. The statuses below are literal.
 
 ## Writing
 
-All 30 posts, newest first. Descriptions are the pages' own.
+All 31 posts, newest first. Descriptions are the pages' own.
 
+- [Rebuild AI Unix: why Runix Lab is building an operating system for AI](https://runixcloud.io/blog/rebuild-ai-unix) — Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.
 - [Introducing Runix FS: an AI file system for object storage](https://runixcloud.io/blog/introducing-runix-fs) — Runix FS puts a POSIX file system and a multi-tier cache in front of object storage. Why the layer is missing, what it is built on, and how early access works.
 - [One key can drain a shared quota pool](https://runixcloud.io/blog/per-key-llm-quotas) — A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.
 - [The security review an LLM gateway should survive](https://runixcloud.io/blog/llm-gateway-security-review) — Eight questions a security review should ask any LLM gateway — key custody, logging, retention, tenant isolation, egress — and what good answers look like.

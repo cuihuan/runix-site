@@ -129,7 +129,7 @@ try "two navs sharing one name" \
 
 try "skip link that skips the page title" \
     router.html '</header>
-<main id="main">' '</header>' \
+<main id="main" class="has-pbar">' '</header>' \
     "skips the title of the page"
 
 try "a gap in the heading outline" \

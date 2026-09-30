@@ -101,7 +101,7 @@ def active_for(path):
         return "/about"
     if p in ("plans.html", "pricing.html", "code-plans.html"):
         return "/plans"
-    if p in PRODUCT_PAGES:
+    if p in PRODUCT_PAGES or p == "router-models.html":
         return "products"
     return None
 

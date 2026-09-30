@@ -10,15 +10,20 @@ plus a top-level as_of date. The page says where every number came from and
 when; a model whose vendor no longer publishes a price is left out of the
 data file rather than shown with a guess.
 
-The head, header and footer come from the Router product page; the page
-shell (page_shell.py) then adds this page's own bar, eyebrow and numbered
-heads, so this runs before it. Idempotent. Run from the site root.
+The head, header and footer come from the Router product page, and the page
+shell (page_shell.py, imported) adds this page's own bar, eyebrow and
+numbered heads, so the output is final. Idempotent. Run from the site root,
+after product_template.py.
 """
 import datetime
 import html
 import json
 import pathlib
 import re
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from page_shell import shell  # noqa: E402
 
 SITE = "https://runixcloud.io"
 DATA = pathlib.Path("tools/models_catalog.json")
@@ -199,18 +204,16 @@ def main():
 
     old = OUT.read_text(encoding="utf-8") if OUT.exists() else None
     if old:
-        # what point_og.py and page_shell.py added last time stays, so a rerun changes nothing
+        # the versioned card URL point_og.py wrote last time stays
         m = re.search(r'content="(https://runixcloud\.io/assets/og/router-models\.png[^"]*)"', old)
         if m:
             s = s.replace(card, m.group(1))
-        s_stripped = re.sub(r"[ \t]*<!--ps:bar-->.*?<!--/ps:bar-->\n?", "", old, flags=re.S)
-        s_stripped = re.sub(r"[ \t]*<!--ps:eyebrow-->.*?<!--/ps:eyebrow-->\n?", "", s_stripped, flags=re.S)
-        s_stripped = re.sub(r'[ \t]*<p class="sec-no">[^<]*</p>\n', "", s_stripped)
-        s_stripped = s_stripped.replace('<main id="main" class="has-pbar">\n\n', '<main id="main">\n', 1)
-        s_stripped = re.sub(r"\n{3,}", "\n\n", s_stripped)
-        if s_stripped == s:
-            print("models catalogue: unchanged")
-            return
+    # the page shell (bar, eyebrow, numbered heads) is applied here too, so
+    # this builder's output is final and page_shell.py's own run is a no-op
+    s = shell(OUT.name, s)
+    if s == old:
+        print("models catalogue: unchanged")
+        return
     OUT.write_text(s, encoding="utf-8")
     print(f"models catalogue: written ({len(rows)} rows, {len(vendors)} vendors)")
 

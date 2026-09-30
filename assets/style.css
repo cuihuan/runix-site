@@ -2260,3 +2260,48 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
   .pbar-name { white-space: nowrap; }
   main .pbar a.pbar-cta:not(.btn) { display: none; }
 }
+
+/* ---------- Docs shell (v3, design artboard 06) ----------
+   A sidebar of every guide grouped by layer on the left, the article in the
+   middle, the page's own contents on the right; a breadcrumb over the title;
+   the hub grouped by layer. */
+.doc-crumb { margin: 0 0 14px; font-size: 13.5px; color: var(--ink-3); }
+main .doc-crumb a:not(.btn) { color: var(--ink-3); font-weight: 500; text-decoration: none; }
+main .doc-crumb a:not(.btn):hover { color: var(--ink); }
+.doc-side { padding: 40px 24px 0; }
+.doc-side-h {
+  margin: 18px 0 8px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.doc-side > .doc-side-h:first-child { margin-top: 0; }
+.doc-side ul { list-style: none; margin: 0; padding: 0; }
+.doc-side li { margin: 0 0 4px; }
+main .doc-side a:not(.btn) {
+  display: block; padding: 7px 10px; border-radius: 8px; text-decoration: none;
+  color: var(--ink-2); font-weight: 500; font-size: 14px; line-height: 1.35;
+}
+.doc-side a b { display: block; font-weight: 600; color: var(--ink); }
+.doc-side a span { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+main .doc-side a:not(.btn):hover { background: var(--bg-alt); }
+main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 0.07); }
+.doc-side a[aria-current="page"] b { color: var(--indigo-ink); }
+@media (min-width: 1200px) {
+  .doc-wrap.has-side { grid-template-columns: 224px minmax(0, 1fr) 200px; gap: 40px; }
+  .doc-wrap.has-side .doc-side {
+    grid-column: 1; position: sticky; top: 92px; align-self: start;
+    padding: 56px 0 0; max-height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .doc-wrap.has-side .article { grid-column: 2; }
+  .doc-wrap.has-side .doc-toc { grid-column: 3; }
+}
+@media (max-width: 1199px) {
+  .doc-side ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 16px; }
+}
+.doc-hub { display: flex; flex-direction: column; gap: 20px; }
+.doc-hub-row {
+  display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px;
+  padding-top: 18px; border-top: 1px solid var(--line-2);
+}
+.doc-hub-layer p { margin: 0; color: var(--ink-3); font-size: 14px; line-height: 1.5; max-width: 26ch; }
+.doc-hub-layer .doc-side-h { margin: 0 0 6px; color: var(--ink); }
+@media (max-width: 920px) { .doc-hub-row { grid-template-columns: minmax(0, 1fr); } }

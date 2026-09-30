@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runix Data — Domain Data for Model Training and Evaluation</title>
+<meta name="description" content="Runix Data cleans and builds training and evaluation data for code, finance, cybersecurity, legal, embodied AI and AI for Science, with provenance per record.">
+<link rel="canonical" href="https://runixcloud.io/data">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<meta property="og:title" content="Runix Data — Domain Data for Model Training and Evaluation">
+<meta property="og:description" content="Runix Data cleans and builds training and evaluation data for code, finance, cybersecurity, legal, embodied AI and AI for Science, with provenance per record.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/data">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/data.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/data.png?v=0">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=64">
+<script src="assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Data",
+  "serviceType": "Training and evaluation data preparation",
+  "description": "Cleaning, structuring and building training and evaluation data for AI models in code, finance, cybersecurity, legal, embodied AI and AI for Science, delivered with per-record provenance and a quality report.",
+  "url": "https://runixcloud.io/data",
+  "provider": {
+    "@id": "https://runixcloud.io/#org"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which domains do you work in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Code, finance, cybersecurity, legal, embodied AI and AI for Science, where our work is limited to biological data: antibody and protein records. Code is our focus. If your field is not on the list, tell us what the data is and we will say plainly whether we can do it well."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you clean our data, or build new data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both. We clean and structure data you provide or have the rights to use, and we build task data, such as verified coding tasks, to a specification agreed with you in writing before work starts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to the data we send?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold. The details are in our Privacy Policy and on our Security page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is it priced?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Per project or by volume, quoted before any work starts. You see the scope and the number together, so there is nothing to reconcile afterwards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Runix Data relate to Runix Pipeline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Runix Pipeline is the tooling underneath: the stages every engagement runs through, from ingest to delivery. Runix Data is the service built on it, with the domain rules and judgement calls that differ from one field to the next."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Runix Data",
+      "item": "https://runixcloud.io/data"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Runix Data — Domain Data for Model Training and Evaluation">
+<meta name="twitter:description" content="Runix Data cleans and builds training and evaluation data for code, finance, cybersecurity, legal, embodied AI and AI for Science, with provenance per record.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top active" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Applications</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="split-hero">
+  <div class="container">
+    <div>
+      <span class="badge">Runix Data · Early access</span>
+      <h1><span class="line">Domain data,</span>
+<span class="line">cleaned and verified</span></h1>
+      <p class="sub">Runix Data cleans, structures and builds training and evaluation data in six domains: code, finance, cybersecurity, legal, embodied AI and AI for Science, with code as the focus. Every record ships with its source, its licence and the checks it passed.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Data%20early%20access">Request early access</a><!--/email_off-->
+        <a class="btn btn-ghost" href="#domains">See the domains</a>
+      </div>
+      <p class="hero-note">Built on <a href="/pipeline">Runix Pipeline</a>, the data tooling that every engagement runs through.</p>
+    </div>
+    <div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><b>example record</b></div>
+<pre><span class="c">// one accepted record, pretty-printed</span>
+{
+  "id": <span class="g">"code-task-000142"</span>,
+  "source": {
+    "repo": <span class="g">"example-org/example-parser"</span>,
+    "base_commit": <span class="g">"3f9c2e1"</span>,
+    "licence": <span class="g">"MIT"</span>
+  },
+  "dedup": { "cluster": <span class="g">"c-5521"</span>, "kept": <span class="g">"1 of 3"</span> },
+  "checks": {
+    "tests_with_reference_patch": <span class="g">"pass"</span>,
+    "tests_without_patch": <span class="g">"fail"</span>,
+    "secrets_scan": <span class="g">"clean"</span>,
+    "statement_matches_tests": <span class="a">true</span>
+  },
+  "verdict": <span class="a">"accepted"</span>,
+  "dropped_reason": <span class="a">null</span>
+}
+
+<span class="c">// and one that did not make it</span>
+{ "id": <span class="g">"code-task-000143"</span>, "verdict": <span class="a">"dropped"</span>,
+  "dropped_reason": <span class="g">"tests pass without the patch"</span> }</pre>
+      </div>
+      <p class="term-cap">An illustrative record. The repository, commit and IDs are placeholders.</p>
+    </div>
+  </div>
+</section>
+
+<div class="oss-strip" aria-label="Domains">
+  <div class="container">
+    <b>Six domains</b>
+    <span>Code</span>
+    <span>Finance</span>
+    <span>Cybersecurity</span>
+    <span>Legal</span>
+    <span>Embodied AI</span>
+    <span>AI for Science</span>
+  </div>
+</div>
+
+<section class="section" id="domains">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Six domains, six definitions of clean</h2>
+      <p>The stages are the same everywhere: ingest, clean, structure, mask, report. What counts as a duplicate, a valid record or a leak changes with the field, and that is where each domain gets its own rules.</p>
+    </div>
+    <div class="bento">
+      <div class="card bento-lg">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+        <p class="card-layer">Repositories <span class="card-new">Focus</span></p>
+        <h3>Code</h3>
+        <p>Repository and task data for code models and coding agents, from training examples to evaluation tasks that have to run.</p>
+        <ul>
+          <li>Licence and provenance recorded per file, and code whose licence does not allow the use left out</li>
+          <li>Secrets, credentials and personal data scrubbed before anything leaves the pipeline</li>
+          <li>Deduplication across forks, vendored dependencies and generated or minified code</li>
+          <li>Task statements that describe what the tests actually check</li>
+        </ul>
+        <p class="card-meta">Training data · evaluation tasks</p>
+      </div>
+      <div class="card bento-lg">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l6 6-6 6M12 18h8"/></svg></div>
+        <p class="card-layer">Code · verification</p>
+        <h3>Every task is run, not read</h3>
+        <p>A coding task only teaches or measures something if its tests can tell a right answer from a wrong one. Each task is executed in a clean container: the reference solution must make its tests pass, and the untouched repository must make the same tests fail.</p>
+        <div class="mini-arch" aria-hidden="true">
+          <div class="ma-row"><span>Repository at the base commit</span></div>
+          <div class="ma-row ma-core"><b>Reference patch</b><span>Tests pass</span></div>
+          <div class="ma-row ma-if"><span>Without the patch</span><span>Same tests fail</span></div>
+          <div class="ma-row ma-store"><span>Only then: into the dataset</span></div>
+        </div>
+        <p class="card-meta">A task whose tests pass without its patch is dropped, and the report says so</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M7 17v-6M12 17V7M17 17v-9"/></svg></div>
+        <p class="card-layer">Filings · transactions</p>
+        <h3>Finance</h3>
+        <p>Filings, statements, market data and transaction records, for models that have to read numbers as carefully as an analyst does.</p>
+        <ul>
+          <li>Units, currencies and fiscal periods normalised before any two figures are compared</li>
+          <li>Restated figures kept apart from the originals they replace</li>
+          <li>One entity across tickers, legal names and registry identifiers</li>
+          <li>Account numbers and personal data masked, failing closed</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.4-3 8-7 9-4-1-7-4.6-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <p class="card-layer">Advisories · logs</p>
+        <h3>Cybersecurity</h3>
+        <p>Advisories, vulnerability records, logs and threat reports, for models that triage, detect and explain.</p>
+        <ul>
+          <li>The same vulnerability, reported by several sources, merged into one record</li>
+          <li>Affected version ranges normalised so they can be compared and queried</li>
+          <li>Indicators defanged, so no live payload or working link ships in a dataset</li>
+          <li>Labels for detection tasks, each with the rule that assigned it</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M4 7h16M4 7l-2.5 6a2.5 2.5 0 0 0 5 0L4 7zM20 7l-2.5 6a2.5 2.5 0 0 0 5 0L20 7z"/></svg></div>
+        <p class="card-layer">Contracts · case law</p>
+        <h3>Legal</h3>
+        <p>Contracts, case law and regulation, for models that have to cite what they rely on.</p>
+        <ul>
+          <li>Clauses segmented so each can be retrieved, compared and labelled on its own</li>
+          <li>Citations normalised, so the same case is always the same case</li>
+          <li>Every document tagged with its jurisdiction and the date it took effect</li>
+          <li>Privileged material and personal data redacted before processing continues</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21h9M8.5 21v-4.5M8.5 16.5l4.5-6M13 10.5l5 2.5M18 13l2-2.5M18 13l1.5 3"/><circle cx="8.5" cy="16.5" r="1.5"/><circle cx="13" cy="10.5" r="1.5"/></svg></div>
+        <p class="card-layer">Trajectories · sensors</p>
+        <h3>Embodied AI</h3>
+        <p>Robot trajectories, teleoperation sessions and multi-sensor recordings, for policies that learn from demonstration.</p>
+        <ul>
+          <li>Cameras, joint states and force readings aligned on one clock</li>
+          <li>Calibration kept with every episode, not in a separate file nobody ships</li>
+          <li>Long recordings segmented into episodes, with failed or unsafe ones filtered out</li>
+          <li>Action spaces normalised across robots and controllers</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3c0 4.5 10 4.5 10 9s-10 4.5-10 9M17 3c0 4.5-10 4.5-10 9s10 4.5 10 9M9 6.5h6M9 17.5h6"/></svg></div>
+        <p class="card-layer">Antibodies · proteins</p>
+        <h3>AI for Science</h3>
+        <p>Antibody and protein records, where a bad merge changes the answer rather than the formatting. Our work here is limited to biological data.</p>
+        <ul>
+          <li>Sequence formats converted and validated, not just parsed</li>
+          <li>One numbering scheme applied across sources that use competing ones</li>
+          <li>Accession numbers reconciled where two databases disagree</li>
+          <li>Names, aliases and identifiers normalised to one entity</li>
+        </ul>
+        <p class="card-meta">We teach this work in a free course, CC BY-SA, taught in Chinese. <a href="https://ai4s.runixcloud.io/en/" target="_blank" rel="noopener">Read the English overview</a></p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div>
+        <p class="card-layer">Not listed</p>
+        <h3>Another domain</h3>
+        <p>The stages carry over from one field to the next; the rules do not. Tell us what the data is and what the model has to do with it, and we will say plainly whether we have the judgement for it.</p>
+        <!--email_off--><a class="read-more" href="mailto:sales@runixcloud.io?subject=Runix%20Data%20domain%20enquiry">Describe your data &rarr;</a><!--/email_off-->
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Domain judgement on shared tooling</h2>
+      <p>Runix Pipeline runs the stages the same way on every engagement. Runix Data is the layer of judgement on top of it: the rules that decide, field by field, what survives and what is dropped.</p>
+    </div>
+    <figure class="arch">
+      <div class="arch-stack">
+        <div class="arch-row">
+          <p class="arch-label">You receive</p>
+          <div class="arch-cells"><span>Training data<small>Files, a database or an endpoint</small></span><span>Evaluation data<small>Kept apart from training</small></span><span>Quality report<small>With every delivery</small></span></div>
+        </div>
+        <div class="arch-row">
+          <p class="arch-label">Runix Data</p>
+          <div class="arch-cells"><span>Code</span><span>Finance</span><span>Cybersecurity</span><span>Legal</span><span>Embodied AI</span><span>AI for Science</span></div>
+        </div>
+        <div class="arch-row arch-core">
+          <p class="arch-label">Runix Pipeline</p>
+          <div class="arch-cells"><span>Ingest</span><span>Clean &amp; dedupe</span><span>Structure</span><span>Mask</span><span>Report</span><span>Deliver</span></div>
+        </div>
+        <div class="arch-row arch-store">
+          <p class="arch-label">Your sources</p>
+          <div class="arch-cells"><span>Documents<small>PDF, HTML, scans</small></span><span>Databases<small>Exports and dumps</small></span><span>Repositories<small>Code and history</small></span><span>Recordings<small>Sensors and video</small></span></div>
+        </div>
+      </div>
+      <figcaption>Read it from the bottom up. Raw material goes in through Runix Pipeline, the domain rules of Runix Data decide what survives, and what reaches you carries its provenance and a report.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>What every delivery carries</h2>
+      <p>The data is half of a delivery. The other half is what lets you check it without taking our word for it.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">01</span>
+        <h3>Provenance per record</h3>
+        <p>Where each record came from, when it was collected and what was done to it, so a bad answer downstream can be traced back to the record that caused it.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">02</span>
+        <h3>A licence per record</h3>
+        <p>The licence or permission each record was used under. Material whose terms do not allow your use is left out, not flagged and shipped anyway.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">03</span>
+        <h3>A quality report</h3>
+        <p>Coverage, duplication, extraction confidence and the checks each record passed, plus what was dropped and why.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">04</span>
+        <h3>Personal data masked</h3>
+        <p>Identified and masked before it reaches a training set. Detection fails closed: a record we cannot clear is held back, not passed through.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">05</span>
+        <h3>Evaluation kept apart</h3>
+        <p>Evaluation data is split from training data by source rather than by row, so near-duplicates cannot sit on both sides of the split and inflate a score.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">06</span>
+        <h3>The schema, written down</h3>
+        <p>Every field defined and every known gap stated, so the next team to use the data does not have to reverse-engineer it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="early-access">
+  <div class="container">
+    <div class="section-head center">
+      <h2>How early access works</h2>
+      <p>Three steps, each with a person on the other end: Runix Data is scoped per engagement, not bought off a shelf.</p>
+    </div>
+    <div class="prun">
+      <div class="pstep">
+        <h3><span class="pstep-n">01</span>Send a sample and the task</h3>
+        <p>A slice of the real data, not a description of it, and what the model has to do with the result: train on it, be evaluated on it, or both. We reply within one business day.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">02</span>Get a scoped plan and a quote</h3>
+        <p>The rules we would apply, the checks each record has to pass, what we think is not worth doing, and the price, all agreed before any work starts.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">03</span>Receive the data and the report</h3>
+        <p>Batch or continuous, as files, a database or an endpoint, whichever your training and evaluation jobs actually consume. Every delivery comes with its quality report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>Which domains do you work in?</h3>
+        <p>Code, finance, cybersecurity, legal, embodied AI and AI for Science, where our work is limited to biological data: antibody and protein records. Code is our focus. If your field is not on the list, tell us what the data is and we will say plainly whether we can do it well.</p>
+      </div>
+      <div class="qa">
+        <h3>Do you clean our data, or build new data?</h3>
+        <p>Both. We clean and structure data you provide or have the rights to use, and we build task data, such as verified coding tasks, to a specification agreed with you in writing before work starts.</p>
+      </div>
+      <div class="qa">
+        <h3>What happens to the data we send?</h3>
+        <p>It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold. The details are in our <a href="/privacy">Privacy Policy</a> and on our <a href="/security">Security</a> page.</p>
+      </div>
+      <div class="qa">
+        <h3>How is it priced?</h3>
+        <p>Per project or by volume, quoted before any work starts. You see the scope and the number together, so there is nothing to reconcile afterwards.</p>
+      </div>
+      <div class="qa">
+        <h3>How does Runix Data relate to Runix Pipeline?</h3>
+        <p>Runix Pipeline is the tooling underneath: the stages every engagement runs through, from ingest to delivery. Runix Data is the service built on it, with the domain rules and judgement calls that differ from one field to the next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Send us a sample of the hard part</h2>
+      <p>A slice of the real data and what the model has to do with it. We reply within one business day, and the scoped plan that follows includes the parts we think are not worth doing.</p>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20Data%20early%20access">Request early access</a><!--/email_off-->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">AI, made effortless: Runix Router, Runix Pipeline, Runix Code and Runix Comic.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/router">Runix Router</a>
+        <a href="/models">Runix Models</a>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

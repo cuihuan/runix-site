@@ -2330,3 +2330,9 @@ main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 
 .pbar-links::-webkit-scrollbar { display: none; }
 .pbar-page .pbar-status { white-space: nowrap; }
 .page-hero .actions { margin-top: 28px; }
+/* On a phone the post's meta line flows as text, so the separator dot never
+   wraps onto a line of its own between the date and the read time. */
+@media (max-width: 560px) {
+  .post-meta { display: block; line-height: 2; }
+  .post-meta > span { margin-right: 6px; }
+}

@@ -167,7 +167,7 @@
 <span class="line">for object storage</span></h1>
       <p class="sub">Runix FS puts a POSIX file system and a multi-tier distributed cache in front of the S3-compatible storage you already run. Training jobs, inference servers and agents read the same data through a local path, with no copies and no rewritten I/O code.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="/about#contact">Request early access</a>
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20FS%20early%20access">Request early access</a><!--/email_off-->
         <a class="btn btn-ghost" href="/docs/fs">Read the quick start</a>
       </div>
       <p class="hero-note">Built on Curvine, an open-source CNCF Sandbox project under the Apache 2.0 licence. <a href="/blog/introducing-runix-fs">Read the launch post</a>.</p>
@@ -443,7 +443,30 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="early-access">
+  <div class="container">
+    <div class="section-head center">
+      <h2>How early access works</h2>
+      <p>Three steps, each with a person on the other end: Runix FS is not self-serve during early access.</p>
+    </div>
+    <div class="prun">
+      <div class="pstep">
+        <h3><span class="pstep-n">01</span>Tell us about your data</h3>
+        <p>Where it lives, roughly how big it is and what reads it: training jobs, inference servers, agents or analytics. We reply within one business day.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">02</span>Size it together</h3>
+        <p>How much of the working set the cache should hold, which tiers the workers get, which mounts run in cache mode and which in file-system mode. Pricing is quoted per deployment.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">03</span>Deploy into your account</h3>
+        <p>The cluster runs in your own AWS, Google Cloud or Azure account, next to your GPUs and your bucket, and our team supports it afterwards under a contract with Runix AI Inc.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
   <div class="container">
     <div class="section-head center">
       <h2>Common questions</h2>
@@ -482,7 +505,7 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
     <div class="cta-band">
       <h2>Put a file system in front of your bucket</h2>
       <p>Tell us where your data lives, how big it is and what reads it. We reply within one business day with a deployment plan.</p>
-      <a class="btn btn-grad" href="/about#contact">Request early access</a>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20FS%20early%20access">Request early access</a><!--/email_off-->
     </div>
   </div>
 </section>

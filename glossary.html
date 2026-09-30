@@ -161,7 +161,7 @@
     {
       "@type": "DefinedTerm",
       "name": "Multi-tier cache",
-      "description": "A cache spread over memory, SSD and HDD on the worker nodes, which promotes hot data to faster tiers and falls back to the bucket for anything it does not hold.",
+      "description": "A cache spread over memory, SSD and HDD on the worker nodes, which serves data from the fastest tier that holds it and falls back to the bucket for anything it does not hold.",
       "url": "https://runixcloud.io/glossary#multi-tier-cache",
       "inDefinedTermSet": "https://runixcloud.io/glossary"
     },
@@ -361,7 +361,7 @@
 <h2 id="ai-file-system">AI file system</h2>
 <p>A file system built for how AI workloads read data: many readers, large datasets and frequent checkpoints. It is usually layered over object storage with a cache in front, so data is read through a path instead of fetched object by object.</p>
 <p><strong>How you would check it.</strong> Point an existing data loader at the mount without changing its code, then compare the second epoch's read time with the first. The cache should make the difference visible.</p>
-<p><strong>Where people go wrong.</strong> Treating it as a replacement for the bucket. The bucket stays the durable copy; the file system is how the data is read.</p>
+<p><strong>Where people go wrong.</strong> Assuming every write is in the bucket the moment it returns. Some modes write to the file system first and synchronise to the bucket in the background; know which one each mount uses.</p>
 <p class="g-more"><a href="/fs">The AI file system for object storage</a></p>
 
 <h2 id="posix-semantics">POSIX semantics</h2>
@@ -371,8 +371,8 @@
 <p class="g-more"><a href="/docs/fs">Runix FS: quick start</a></p>
 
 <h2 id="multi-tier-cache">Multi-tier cache</h2>
-<p>A cache spread over memory, SSD and HDD on the worker nodes, which promotes hot data to faster tiers and falls back to the bucket for anything it does not hold.</p>
-<p><strong>How you would check it.</strong> Read the same large file twice. The second read should not reach the bucket at all, which the object store's own request metrics will show.</p>
+<p>A cache spread over memory, SSD and HDD on the worker nodes, which serves data from the fastest tier that holds it and falls back to the bucket for anything it does not hold.</p>
+<p><strong>How you would check it.</strong> Read a large file, give the cache a moment to fill in the background, then read it again. The second read should not reach the bucket at all, which the object store's own request metrics will show.</p>
 <p><strong>Where people go wrong.</strong> Sizing the cache to the whole dataset. It needs to hold the working set: what the job reads repeatedly.</p>
 <p class="g-more"><a href="/fs">The AI file system for object storage</a></p>
 

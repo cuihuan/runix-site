@@ -204,13 +204,13 @@
         <h3>Runix FS</h3>
         <p>A POSIX file system and a multi-tier cache over the object storage you already pay for, so training jobs, inference servers and agents stop waiting on the bucket.</p>
         <ul>
-          <li>Mount through FUSE, S3 or HDFS, with no I/O code rewritten</li>
+          <li>Mount through FUSE or a Hadoop-compatible client, with no I/O code rewritten</li>
           <li>Memory, SSD and HDD cache tiers in front of S3-compatible storage</li>
           <li>Built on Curvine, the open-source CNCF Sandbox file system</li>
         </ul>
         <div class="mini-arch" aria-hidden="true">
           <div class="ma-row"><span>Training</span><span>Inference</span><span>Agents</span></div>
-          <div class="ma-row ma-if"><span>POSIX</span><span>S3</span><span>HDFS</span><span>CSI</span></div>
+          <div class="ma-row ma-if"><span>POSIX</span><span>Hadoop</span><span>SDKs</span><span>CSI</span></div>
           <div class="ma-row ma-core"><b>Runix FS</b><span>Memory</span><span>SSD</span><span>HDD</span></div>
           <div class="ma-row ma-store"><span>Your object storage bucket</span></div>
         </div>

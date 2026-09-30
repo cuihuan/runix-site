@@ -13,11 +13,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Runix FS Docs — Quick Start on Object Storage</title>
-<meta name="description" content="Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and serve files over the S3 API.">
+<meta name="description" content="Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and manage the cache on its own.">
 <link rel="canonical" href="https://runixcloud.io/docs/fs">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="Runix FS Docs — Quick Start on Object Storage">
-<meta property="og:description" content="Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and serve files over the S3 API.">
+<meta property="og:description" content="Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and manage the cache on its own.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://runixcloud.io/docs/fs">
 <meta property="og:site_name" content="Runix">
@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "Runix FS Docs — Quick Start on Object Storage",
-  "description": "Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and serve files over the S3 API.",
+  "description": "Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and manage the cache on its own.",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://runixcloud.io/docs/fs"
@@ -79,7 +79,7 @@
 </script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix FS Docs — Quick Start on Object Storage">
-<meta name="twitter:description" content="Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and serve files over the S3 API.">
+<meta name="twitter:description" content="Try Runix FS in minutes: start a cluster, attach an S3 bucket, mount it with FUSE, give Kubernetes pods volumes and manage the cache on its own.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 </head>
 <body>
@@ -128,7 +128,7 @@
     <li><a href="#attach-a-bucket">3. Attach a bucket</a></li>
     <li><a href="#mount-it">4. Mount it</a></li>
     <li><a href="#kubernetes">5. Kubernetes volumes</a></li>
-    <li><a href="#s3-gateway">6. The S3 gateway</a></li>
+    <li><a href="#managing-the-cache">6. Managing the cache</a></li>
     <li><a href="#early-access">7. Early access with Runix</a></li>
   </ul>
 </nav>
@@ -141,12 +141,12 @@
 <ul>
 <li><strong>Masters</strong> hold the metadata: the namespace, the mount table and scheduling. They replicate it with Raft, so a highly available cluster runs several; the Kubernetes examples use three.</li>
 <li><strong>Workers</strong> hold the cache, in memory, SSD and HDD tiers, and serve data directly to clients. On a miss they read from the bucket.</li>
-<li><strong>Access</strong> is whichever of these your workloads need: the FUSE daemon for a POSIX mount, the S3-compatible gateway, the CSI driver for Kubernetes, or the Java, Python and Rust SDKs.</li>
+<li><strong>Access</strong> is whichever of these your workloads need: the FUSE daemon for a POSIX mount, the CSI driver for Kubernetes, the Hadoop-compatible client for Spark and Flink, or the Java, Python and Rust SDKs.</li>
 </ul>
 <p>File paths map one-to-one to object keys, so what is in the bucket keeps its original layout and stays readable without the cluster. How writes reach the bucket depends on the mount mode, in the next steps.</p>
 
 <h2 id="try-it-on-one-machine">2. Try it on one machine</h2>
-<p>Download a release package from the <a href="https://github.com/CurvineIO/curvine/releases" rel="noopener">Curvine releases page</a>, extract it, and start a local cluster from the extracted directory:</p>
+<p>Download a release package from the <a href="https://github.com/CurvineIO/curvine/releases" rel="noopener">Curvine releases page</a> (at the time of writing, v0.4.1 is the newest release with a prebuilt package, for Linux on x86_64) or build from source, then start a local cluster from the extracted directory:</p>
 <pre><code>export CURVINE_MASTER_HOSTNAME=localhost
 ./bin/restart-all.sh</code></pre>
 <p>This starts a master, a worker and the FUSE daemon, mounted at <code>/curvine-fuse</code> by default. Confirm the cluster is healthy and list the namespace:</p>
@@ -163,14 +163,16 @@ bin/cv fs ls /</code></pre>
   -c s3.region_name=us-east-1 \
   -c s3.credentials.access=$AWS_ACCESS_KEY_ID \
   -c s3.credentials.secret=$AWS_SECRET_ACCESS_KEY</code></pre>
-<p>By default the path inside the namespace mirrors the bucket and prefix, as above. Mounts are stored in the metadata, so they survive a restart. Two cautions from the Curvine documentation: in <code>cache_mode</code>, deleting a file through the mount deletes it from the bucket too; in <code>fs_mode</code>, a rename on object storage becomes a delete and a full copy, so avoid renaming large directories. To warm the cache before a job starts, load a path ahead of time:</p>
+<p>By default the path inside the namespace mirrors the bucket and prefix, as above. Mounts are stored in the metadata, so they survive a restart. Three cautions from the Curvine documentation: in <code>cache_mode</code>, deleting a file through the mount deletes it from the bucket too; in <code>fs_mode</code>, a rename on object storage becomes a delete and a full copy, so avoid renaming large directories; and changes made to the bucket by other tools are not picked up on their own: mount with <code>--read-verify-ufs true</code> in <code>cache_mode</code>, or run <code>bin/cv mount resync</code> in <code>fs_mode</code>. To warm the cache before a job starts, load a path ahead of time:</p>
 <pre><code>bin/cv load /training-data/imagenet/train/shard-00001.tar --watch</code></pre>
 
 <h2 id="mount-it">4. Mount it</h2>
-<p>The FUSE daemon exposes the namespace as a local directory, so existing code reads files by path:</p>
-<pre><code>bin/curvine-fuse.sh start --mnt-path /mnt/curvine
-ls /mnt/curvine/training-data/imagenet</code></pre>
-<p>Standard file operations work under the mount, including rename, permissions, symbolic links and extended attributes. Both FUSE 2 and FUSE 3 are supported.</p>
+<p>The single-machine start in step 2 already launched the FUSE daemon, mounted at <code>/curvine-fuse</code>, so existing code can read files by path straight away:</p>
+<pre><code>ls /curvine-fuse/training-data/imagenet</code></pre>
+<p>To mount it somewhere else, stop the daemon first, then start it with a mount path; starting a second daemon while one is running fails:</p>
+<pre><code>bin/curvine-fuse.sh stop
+bin/curvine-fuse.sh start --mnt-path /mnt/curvine</code></pre>
+<p>In <code>fs_mode</code>, and on paths that are not mounted from a bucket, standard file operations work, including rename, permissions, symbolic links and extended attributes. In <code>cache_mode</code> they depend on what the bucket itself supports; symbolic links and file locks, for example, may fail. FUSE 2 and FUSE 3 are both supported.</p>
 
 <h2 id="kubernetes">5. Kubernetes volumes</h2>
 <p>The CSI driver provisions a volume by creating a directory in the namespace, so claims bind without calling a cloud API. A StorageClass points the driver at the masters and names the directory new volumes are created under:</p>
@@ -187,10 +189,12 @@ parameters:
   path-type: "DirectoryOrCreate"</code></pre>
 <p>Claims against <code>curvine-sc</code> can be <code>ReadWriteMany</code>, so several pods can share one volume. The example manifests ship in the Curvine source tree under <code>curvine-csi/examples</code>.</p>
 
-<h2 id="s3-gateway">6. The S3 gateway</h2>
-<p>The gateway serves the same namespace over the S3 API, on port 9900 by default, so S3 tools and SDKs work against it:</p>
-<pre><code>bin/curvine-s3-gateway.sh start
-aws s3 ls s3://training-data/ --endpoint-url http://localhost:9900</code></pre>
+<h2 id="managing-the-cache">6. Managing the cache</h2>
+<p>List the mounts, check that the buckets behind them are reachable, and release cache space without touching the bucket:</p>
+<pre><code>bin/cv mount
+bin/cv mount --check
+bin/cv fs free -r /training-data/imagenet</code></pre>
+<p><code>free</code> only releases data that also exists in the bucket; anything not yet synchronised to it is skipped.</p>
 
 <h2 id="early-access">7. Early access with Runix</h2>
 <p>The steps above are enough to evaluate the engine. A production cluster is a sizing question: how much of the working set the cache should hold, which tiers the workers get, and where the masters run. In early access we answer it with you, deploy the cluster into your own cloud account, and support it afterwards under a contract with Runix AI Inc.</p>

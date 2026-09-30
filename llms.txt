@@ -21,7 +21,7 @@ Products at different stages. The statuses below are literal.
   https://runixcloud.io/router
 - **Runix FS** — *status: early access, launched September 2026.* An AI-native file system:
   a POSIX file system (FUSE) and a memory/SSD/HDD distributed cache in front of
-  S3-compatible object storage, with an S3-compatible gateway, an HDFS-compatible client,
+  S3-compatible object storage, with a Hadoop-compatible client,
   Java/Python/Rust SDKs and a Kubernetes CSI driver. File paths map one-to-one to object
   keys, so data in the bucket stays independently readable; a mount either keeps the bucket
   as the source of truth (cache mode, for read-heavy data) or completes writes in Runix FS
@@ -48,7 +48,7 @@ Products at different stages. The statuses below are literal.
 - [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
 - [Docs hub](https://runixcloud.io/docs/): guides for every product, honest about status.
 - [Router quickstart](https://runixcloud.io/docs/router): base URL and key, model selection, streaming, failover semantics, limits.
-- [FS quick start](https://runixcloud.io/docs/fs): start a cluster, attach an S3 bucket, FUSE mount, Kubernetes CSI volumes, S3 gateway.
+- [FS quick start](https://runixcloud.io/docs/fs): start a cluster, attach an S3 bucket, FUSE mount, Kubernetes CSI volumes, cache management.
 - [Pipeline engagement guide](https://runixcloud.io/docs/pipeline): scoping, the six stages, delivery and the quality report.
 - [Code rollout guide](https://runixcloud.io/docs/code): cohorts, seats and policies, the review-gated workflow.
 - [Comic workflow guide](https://runixcloud.io/docs/comic): the three production stages and how cohorts run.

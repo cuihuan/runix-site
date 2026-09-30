@@ -77,7 +77,7 @@
       "name": "Do we have to change our code?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Applications read and write through a FUSE mount as if it were a local directory, through the S3-compatible gateway, or through the HDFS-compatible client, so training scripts, Spark jobs and S3 tools keep working."
+        "text": "Usually not. Applications read and write through a FUSE mount as if it were a local directory, so training scripts keep working as they are. Hadoop-based jobs such as Spark use the Hadoop-compatible client, which takes configuration rather than code changes."
       }
     },
     {
@@ -212,8 +212,8 @@ $ ls /mnt/curvine/training-data/imagenet
     <dl class="stats">
       <div><dt>5 billion</dt><dd>small files in one cluster, the project's stated design capacity</dd></div>
       <div><dt>10,000</dt><dd>agent pods, each with its own volume, on 99 EKS nodes in the project's test</dd></div>
-      <div><dt>2.7&times;</dt><dd>the largest time-to-first-token speed-up measured in AWS's SageMaker HyperPod reference architecture</dd></div>
-      <div><dt>9.5 GiB/s</dt><dd>sequential read at 32 threads in the project's own benchmark</dd></div>
+      <div><dt>2.7&times;</dt><dd>the largest time-to-first-token speed-up in an AWS Machine Learning Blog walkthrough on SageMaker HyperPod</dd></div>
+      <div><dt>9.5 GiB/s</dt><dd>sequential read at 32 threads, as published in the project's README</dd></div>
     </dl>
     <p class="stats-src">Figures published by the Curvine project and by AWS, not Runix service levels. Sources are linked further down this page.</p>
   </div>
@@ -223,7 +223,7 @@ $ ls /mnt/curvine/training-data/imagenet
   <div class="container">
     <div class="section-head center">
       <h2>Object-storage economics, local-file semantics</h2>
-      <p>Object storage is where AI data lives because it is cheap and durable. It is also slow to list, slow to open and has no rename. Runix FS puts a file system and a cache in front of the bucket, and each mount picks how writes reach it: read-heavy data keeps the bucket as the source of truth, write-heavy work completes in Runix FS first and is synchronised to the bucket in the background.</p>
+      <p>Object storage is where AI data lives because it is cheap and durable. It is also slow to list, slow to open and poor at renames. Runix FS puts a file system and a cache in front of the bucket, and each mount picks how writes reach it: read-heavy data keeps the bucket as the source of truth, write-heavy work completes in Runix FS first and is synchronised to the bucket in the background.</p>
     </div>
     <div class="fgrid">
       <div class="fcell">
@@ -233,13 +233,13 @@ $ ls /mnt/curvine/training-data/imagenet
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">02</span>
-        <h3>A cache that tiers itself</h3>
-        <p>Workers hold memory, SSD and HDD tiers. Hot data is promoted to faster tiers automatically; anything not cached is read from the bucket on demand.</p>
+        <h3>A cache in three tiers</h3>
+        <p>Workers hold memory, SSD and HDD tiers and fill the fastest one with room first. Anything not cached is read straight from the bucket, and the cache fills in the background.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">03</span>
-        <h3>Every way in</h3>
-        <p>POSIX through FUSE, an S3-compatible gateway, an HDFS-compatible client for Spark and Flink, and SDKs for Java, Python and Rust, all on one namespace.</p>
+        <h3>One namespace, several ways in</h3>
+        <p>POSIX through FUSE, a Hadoop-compatible client for Spark and Flink, the native <code>cv</code> command line, and SDKs for Java, Python and Rust, all on the same files.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">04</span>
@@ -274,7 +274,7 @@ $ ls /mnt/curvine/training-data/imagenet
         </div>
         <div class="arch-row">
           <p class="arch-label">Interfaces</p>
-          <div class="arch-cells"><span>FUSE<small>POSIX mount</small></span><span>S3 gateway<small>S3 API</small></span><span>HDFS client<small>Spark, Flink</small></span><span>SDKs<small>Java, Python, Rust</small></span><span>CSI driver<small>Kubernetes</small></span></div>
+          <div class="arch-cells"><span>FUSE<small>POSIX mount</small></span><span>Hadoop client<small>Spark, Flink</small></span><span>CLI<small>cv: mount, load, free</small></span><span>SDKs<small>Java, Python, Rust</small></span><span>CSI driver<small>Kubernetes</small></span></div>
         </div>
         <div class="arch-row arch-core">
           <p class="arch-label">Runix FS cluster</p>
@@ -294,7 +294,7 @@ $ ls /mnt/curvine/training-data/imagenet
   <div class="container">
     <div class="section-head center">
       <h2>Your code does not change</h2>
-      <p>Four ways in, all against the same namespace. Every command below is from the Curvine documentation; hosts and bucket names are placeholders.</p>
+      <p>Four examples against the same namespace. Every command below is from the Curvine documentation; hosts and bucket names are placeholders.</p>
     </div>
     <div class="codegrid">
       <div class="codecell">
@@ -338,14 +338,13 @@ parameters:
         </div>
       </div>
       <div class="codecell">
-        <h3>Or speak S3 to it</h3>
-        <p>The gateway serves the same files to anything with an S3 client.</p>
+        <h3>Manage the cache, not the bucket</h3>
+        <p>List the mounts, check the buckets behind them are reachable, and release cache space without deleting anything from the bucket.</p>
         <div class="term">
           <div class="term-bar"><i></i><i></i><i></i><b>shell</b></div>
-<pre>$ aws s3 ls s3://training-data/ \
-    --endpoint-url http://localhost:9900
-$ aws s3 cp s3://training-data/labels.csv . \
-    --endpoint-url http://localhost:9900</pre>
+<pre>$ bin/cv mount
+$ bin/cv mount --check
+$ bin/cv fs free -r /training-data/imagenet</pre>
         </div>
       </div>
     </div>
@@ -369,7 +368,7 @@ $ aws s3 cp s3://training-data/labels.csv . \
         <h3>LLM inference</h3>
         <div>
           <p>A shared tier for the KV cache that outlives a single GPU's memory, so a prompt prefix computed on one replica can be reused on another.</p>
-          <p class="evidence">AWS published a reference architecture for this on SageMaker HyperPod with Curvine as the shared tier, reporting up to 2.7&times; faster time to first token at 2,500 tokens. <a href="https://aws.amazon.com/blogs/machine-learning/tiered-kv-cache-for-large-llms-on-amazon-sagemaker-hyperpod-with-curvine/" rel="noopener">Read the AWS post</a></p>
+          <p class="evidence">A post on the AWS Machine Learning Blog, written by AWS solutions architects with engineers from OPPO, where Curvine was started, walks through this on SageMaker HyperPod with Curvine as the shared tier and reports up to 2.7&times; faster time to first token at 2,500 tokens. <a href="https://aws.amazon.com/blogs/machine-learning/tiered-kv-cache-for-large-llms-on-amazon-sagemaker-hyperpod-with-curvine/" rel="noopener">Read the AWS post</a></p>
         </div>
       </div>
       <div class="use">
@@ -388,7 +387,7 @@ $ aws s3 cp s3://training-data/labels.csv . \
       <div class="use">
         <h3>Analytics on the lake</h3>
         <div>
-          <p>Spark, Flink and OLAP engines read hot tables through the HDFS-compatible client or the S3 gateway, with the cache absorbing repeated scans of the same files.</p>
+          <p>Spark and Flink read hot tables through the Hadoop-compatible client, with the cache absorbing repeated scans of the same files.</p>
         </div>
       </div>
     </div>
@@ -399,17 +398,17 @@ $ aws s3 cp s3://training-data/labels.csv . \
   <div class="container">
     <div class="section-head center">
       <h2>What the project has measured</h2>
-      <p>These figures are published by the Curvine project from its own benchmark runs. They are not a Runix service level. During early access we measure on your data, your instances and your access pattern.</p>
+      <p>These figures are published in the Curvine project's README. They are not a Runix service level. During early access we measure on your data, your instances and your access pattern.</p>
     </div>
     <div class="dsheet" tabindex="0" role="region" aria-label="Published Curvine benchmark figures">
       <table aria-label="Published Curvine benchmark figures">
         <thead><tr><th scope="col">Measure</th><th scope="col">Result</th><th scope="col">Conditions</th></tr></thead>
         <tbody>
           <tr class="grp"><th scope="colgroup" colspan="3">Metadata operations</th></tr>
-          <tr><th scope="row">Create</th><td>19,985 ops/s</td><td>40 concurrent clients</td></tr>
-          <tr><th scope="row">Open</th><td>60,376 ops/s</td><td>40 concurrent clients</td></tr>
-          <tr><th scope="row">Rename</th><td>43,009 ops/s</td><td>40 concurrent clients</td></tr>
-          <tr><th scope="row">Delete</th><td>39,013 ops/s</td><td>40 concurrent clients</td></tr>
+          <tr><th scope="row">Create</th><td>19,985 ops/s</td><td>Concurrency of 40</td></tr>
+          <tr><th scope="row">Open</th><td>60,376 ops/s</td><td>Concurrency of 40</td></tr>
+          <tr><th scope="row">Rename</th><td>43,009 ops/s</td><td>Concurrency of 40</td></tr>
+          <tr><th scope="row">Delete</th><td>39,013 ops/s</td><td>Concurrency of 40</td></tr>
           <tr class="grp"><th scope="colgroup" colspan="3">Throughput</th></tr>
           <tr><th scope="row">Sequential read, 256 KiB blocks</th><td>9.5 GiB/s</td><td>32 threads</td></tr>
           <tr><th scope="row">Random read, 256 KiB blocks</th><td>7.8 GiB/s</td><td>32 threads</td></tr>
@@ -418,7 +417,7 @@ $ aws s3 cp s3://training-data/labels.csv . \
         </tbody>
       </table>
     </div>
-    <p class="src-note">Source: the Curvine <a href="https://github.com/CurvineIO/curvine" rel="noopener">README</a> and <a href="https://curvineio.github.io/docs/category/benchmark" rel="noopener">benchmark documentation</a>, which also describe the hardware and the comparison systems.</p>
+    <p class="src-note">Source: the Curvine <a href="https://github.com/CurvineIO/curvine" rel="noopener">README</a>. The project's separate <a href="https://curvineio.github.io/docs/category/benchmark" rel="noopener">benchmark pages</a> report other runs, with somewhat different results, and describe the test setup.</p>
   </div>
 </section>
 
@@ -460,7 +459,7 @@ $ aws s3 cp s3://training-data/labels.csv . \
       </div>
       <div class="qa">
         <h3>Do we have to change our code?</h3>
-        <p>No. Applications read and write through a FUSE mount as if it were a local directory, through the S3-compatible gateway, or through the HDFS-compatible client, so training scripts, Spark jobs and S3 tools keep working.</p>
+        <p>Usually not. Applications read and write through a FUSE mount as if it were a local directory, so training scripts keep working as they are. Hadoop-based jobs such as Spark use the Hadoop-compatible client, which takes configuration rather than code changes.</p>
       </div>
       <div class="qa">
         <h3>Which storage does it work with?</h3>

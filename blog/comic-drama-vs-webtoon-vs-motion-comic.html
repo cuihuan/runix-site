@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Creators</span>
+    <span class="pbar-status">July 29, 2026</span>
+    <ul class="pbar-links"><li><a href="#webtoon-drawn-panels-vertical-scroll-no-clock">Webtoon: drawn panels, vertical scroll, no clock</a></li><li><a href="#motion-comic-panels-that-move-a-video-that-plays">Motion comic: panels that move, a video that plays</a></li><li><a href="#comic-drama-a-motion-comic-with-a-show-s-skeleton">Comic drama: a motion comic with a show's skeleton</a></li><li><a href="#the-ladder-and-where-ai-moves-it">The ladder, and where AI moves it</a></li><li><a href="#which-one-should-you-make">Which one should you make?</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Creators</span><span>July 29, 2026</span><span>·</span><span>5 min read</span></div>
     <h1 style="margin-top: 14px;">Comic Drama vs Webtoon vs Motion Comic, Explained</h1>
@@ -142,19 +153,19 @@
 
 <p>Three names keep circling the same territory (<strong>webtoon</strong>, <strong>motion comic</strong>, <strong>comic drama</strong>) and they get used interchangeably often enough that creators plan the wrong production for the format they actually want. The three are related, but they differ in what you make, where it lives, and what it costs per episode. Here is the field guide.</p>
 
-<h2>Webtoon: drawn panels, vertical scroll, no clock</h2>
+<h2 id="webtoon-drawn-panels-vertical-scroll-no-clock">Webtoon: drawn panels, vertical scroll, no clock</h2>
 <p>A webtoon is a <em>comic</em>: static panels arranged in a long vertical strip, read by scrolling on a phone. The reader controls pacing: they linger, skim and scroll back. That single fact drives the craft: panel-to-panel flow does the work that editing does in film, and a chapter is designed as one continuous spatial composition rather than a sequence of timed shots. Production is drawing plus lettering; there is no timeline, no sound, no render. Per episode it is the cheapest of the three formats, which is why it is where most serialised IP starts.</p>
 
-<h2>Motion comic: panels that move, a video that plays</h2>
+<h2 id="motion-comic-panels-that-move-a-video-that-plays">Motion comic: panels that move, a video that plays</h2>
 <p>A motion comic takes drawn panels and puts them on a <em>timeline</em>: camera pans and zooms across the art, layered parallax, timed transitions, usually music and sometimes voice. The output is a video file, and that changes who controls pacing: now the creator does, frame by frame. The name describes a production technique more than a market: motion comics appear as promotional material, as adaptations of existing comics, and as standalone shorts. The additional cost over a webtoon is real but bounded: motion design, sound, and an edit pass on top of art you may already have.</p>
 
-<h2>Comic drama: a motion comic with a show's skeleton</h2>
+<h2 id="comic-drama-a-motion-comic-with-a-show-s-skeleton">Comic drama: a motion comic with a show's skeleton</h2>
 <p>A comic drama is what happens when the motion-comic technique is used to make a <em>serialised show</em>: episodic, voice-acted, cut vertically for short-video feeds, written with a hook at the top of every episode and a cliffhanger at the end. The unit of work is not the chapter but the season, and the craft borrows as much from short-form drama as from comics: casting consistent voices, pacing an episode in under a couple of minutes, and shipping on a cadence the algorithmically-fed platforms reward. It is the most demanding of the three formats per episode, because it is all of webtoon production plus all of motion production plus <a href="/blog/how-to-make-a-comic-drama-with-ai">the publishing job</a> — formats, covers, metadata, uploads — repeated weekly.</p>
 
-<h2>The ladder, and where AI moves it</h2>
+<h2 id="the-ladder-and-where-ai-moves-it">The ladder, and where AI moves it</h2>
 <p>The three formats form a cost ladder: webtoon, then motion comic, then comic drama, each adding a layer of production on top of the last. Historically each rung priced out another tier of creators: a solo artist could sustain a webtoon, a small team a motion comic, and a comic drama needed a studio. AI generation compresses every rung: drafting and boards get faster, panels get cheaper, motion and voice stop requiring specialists. What it does not compress is the <em>seams between the rungs</em> — moving one story through art, motion, voice and publishing still means carrying state across four tool stacks by hand. That structural problem is what <a href="/comic">Runix Comic</a> is being built to close: one project that climbs the whole ladder, from script and character sheets to published, promoted episodes.</p>
 
-<h2>Which one should you make?</h2>
+<h2 id="which-one-should-you-make">Which one should you make?</h2>
 <ul>
 <li><strong>You have finished chapters already</strong> — adapt: a motion pass over existing art is the shortest path to video audiences, and it tests whether your IP travels before you commit to a season.</li>
 <li><strong>You are starting a new serialised story</strong> — write it as a comic drama from the script onward: episode-length scenes, a hook per episode, characters designed to be voice-cast. Retrofitting drama structure onto a story written for scroll is the expensive way around.</li>
@@ -165,7 +176,6 @@
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span><a href="/comic">Runix Comic</a> is an end-to-end AI studio for comic dramas, in development with a waitlist open. <a href="/about#contact">Tell us what you make</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

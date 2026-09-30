@@ -41,7 +41,7 @@ PAGES = {
     "access.html": ("Access", "Company", "/about", SALES),
     "faq.html": ("FAQ", "Company", "/about", SALES),
     "glossary.html": ("Glossary", "Company", "/about", SALES),
-    "careers.html": ("Careers", "Company", "/about", ("mailto:careers@runixcloud.io?subject=Runix%20careers", "Write to us")),
+    "careers.html": ("Careers", "Company", "/about", ("mailto:contact@runixcloud.io?subject=Runix%20-%20introduction", "Write to us")),
     "terms.html": ("Terms of Service", "Legal", "/terms", SUPPORT),
     "privacy.html": ("Privacy Policy", "Legal", "/terms", SUPPORT),
     "refund.html": ("Refund Policy", "Legal", "/terms", SUPPORT),
@@ -140,7 +140,9 @@ def post_meta(doc):
 
 
 def bar(page, doc, name, group, ghref, cta, status=None, layer_is_link=True):
-    title = " ".join(_html.unescape(re.sub(r"<[^>]+>", " ", re.search(r"<title>(.*?)</title>", doc, re.S).group(1))).split())
+    # The landmark's name: the bar's own name, which never carries a quote
+    # (a post title can, and a quote inside aria-label breaks the attribute).
+    title = "This post" if not layer_is_link else f"{_html.unescape(name)} on this page"
     links = "" if page in OWN_TOC else "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in sections(doc)[:MAX_LINKS])
     layer = (f'<a class="pbar-layer" href="{ghref}">{group}</a>' if layer_is_link
              else f'<span class="pbar-layer">{group}</span>')
@@ -149,7 +151,7 @@ def bar(page, doc, name, group, ghref, cta, status=None, layer_is_link=True):
     c = f'<a class="pbar-cta" href="{href}">{label}</a>'
     if href.startswith("mailto:"):
         c = f"<!--email_off-->{c}<!--/email_off-->"
-    return (f'<!--ps:bar-->\n<nav class="pbar pbar-page" aria-label="{_html.escape(title, quote=True)} on this page">\n'
+    return (f'<!--ps:bar-->\n<nav class="pbar pbar-page" aria-label="{_html.escape(title, quote=True)}">\n'
             f'  <div class="container pbar-inner">\n'
             f'    <a class="pbar-name" href="#overview">{name}</a>\n'
             f'    {layer}{st}\n'

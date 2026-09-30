@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 20, 2026</span>
+    <ul class="pbar-links"><li><a href="#why-retry-counts-go-wrong-for-model-traffic">Why retry counts go wrong for model traffic</a></li><li><a href="#sort-errors-before-you-spend-on-them">Sort errors before you spend on them</a></li><li><a href="#what-a-budget-looks-like-in-practice">What a budget looks like in practice</a></li><li><a href="#the-accounting-question">The accounting question</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 20, 2026</span><span>·</span><span>4 min read</span></div>
     <h1 style="margin-top: 14px;">Your LLM traffic needs a retry budget, not a retry count</h1>
@@ -147,7 +158,7 @@ the exact moment it is least able to serve it. The right mental model is not "ho
 should I retry" but "how much am I willing to spend on requests that have already failed
 once": a budget, not a count.</p>
 
-<h2>Why retry counts go wrong for model traffic</h2>
+<h2 id="why-retry-counts-go-wrong-for-model-traffic">Why retry counts go wrong for model traffic</h2>
 
 <p>Three properties of LLM requests break the standard advice:</p>
 
@@ -166,7 +177,7 @@ once": a budget, not a count.</p>
     the exact amount that hurts.</li>
 </ul>
 
-<h2>Sort errors before you spend on them</h2>
+<h2 id="sort-errors-before-you-spend-on-them">Sort errors before you spend on them</h2>
 
 <p>A budget is only spent on failures that a retry can actually fix. That sorting is the
 most valuable part of the whole exercise:</p>
@@ -186,7 +197,7 @@ most valuable part of the whole exercise:</p>
     view it is the same spend on the same failed intent.</li>
 </ul>
 
-<h2>What a budget looks like in practice</h2>
+<h2 id="what-a-budget-looks-like-in-practice">What a budget looks like in practice</h2>
 
 <p>Two limits, one global and one local:</p>
 
@@ -208,7 +219,7 @@ argument for routing model traffic through one layer — whether that is a
 <a href="/router">gateway</a> or something you built — and giving that layer, not each
 client, the retry policy.</p>
 
-<h2>The accounting question</h2>
+<h2 id="the-accounting-question">The accounting question</h2>
 
 <p>However you implement it, make retries visible in cost attribution. A request that
 succeeded on attempt three should carry the cost of all three attempts, including the partial

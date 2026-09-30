@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 20, 2026</span>
+    <ul class="pbar-links"><li><a href="#who-holds-the-provider-keys-and-how">Who holds the provider keys, and how?</a></li><li><a href="#what-do-gateway-keys-authorize-and-how-narrowly">What do gateway keys authorize, and how narrowly?</a></li><li><a href="#what-is-logged-and-does-the-operator-need-it">What is logged, and does the operator need it?</a></li><li><a href="#how-long-does-anything-live-and-can-you-make-it-shorter">How long does anything live, and can you make it shorter?</a></li><li><a href="#what-separates-you-from-the-operator-s-other-tenants">What separates you from the operator's other tenants?</a></li><li><a href="#where-does-traffic-go-and-where-is-it-processed">Where does traffic go, and where is it processed?</a></li><li><a href="#what-happens-on-the-operator-s-worst-day">What happens on the operator's worst day?</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 20, 2026</span><span>·</span><span>4 min read</span></div>
     <h1 style="margin-top: 14px;">The security review an LLM gateway should survive</h1>
@@ -146,7 +157,7 @@ That is true whether the gateway is a product you bought or a service you wrote 
 This is the review we think any gateway should survive: phrased as questions, because the
 point is that you can ask them of anyone, including us.</p>
 
-<h2>1. Who holds the provider keys, and how?</h2>
+<h2 id="who-holds-the-provider-keys-and-how">1. Who holds the provider keys, and how?</h2>
 
 <p>The whole premise of a gateway is key consolidation: your teams hold gateway keys, the
 gateway holds the provider keys. The questions that follow are mechanical. Where do provider
@@ -155,7 +166,7 @@ which processes, which logs? Can a gateway key holder ever extract a provider ke
 any API surface, error message or debug endpoint? The last one deserves an actual test, not
 an assurance: trigger errors and read what comes back.</p>
 
-<h2>2. What do gateway keys authorize, and how narrowly?</h2>
+<h2 id="what-do-gateway-keys-authorize-and-how-narrowly">2. What do gateway keys authorize, and how narrowly?</h2>
 
 <p>Per-key scoping is the security payoff of the whole arrangement. A key should be
 limitable to specific models and groups, carry its own quota so a leak has a bounded blast
@@ -163,7 +174,7 @@ radius, and be revocable in seconds without touching any other key. If disabling
 key requires rotating a shared credential, the gateway has recreated the problem it was
 bought to solve.</p>
 
-<h2>3. What is logged, and does the operator need it?</h2>
+<h2 id="what-is-logged-and-does-the-operator-need-it">3. What is logged, and does the operator need it?</h2>
 
 <p>There is a spectrum. Billing needs token counts, model ids, timestamps, key ids: pure
 metadata. Debugging sometimes wants request bodies. Those are different retention classes
@@ -173,7 +184,7 @@ tenant? "We keep metadata for accounting and do not persist message content" is 
 answer. "Logs are kept for quality purposes" is not an answer; it is a question that has not
 been answered yet.</p>
 
-<h2>4. How long does anything live, and can you make it shorter?</h2>
+<h2 id="how-long-does-anything-live-and-can-you-make-it-shorter">4. How long does anything live, and can you make it shorter?</h2>
 
 <p>Whatever is stored, the follow-ups are the same: what is the retention period, is it
 enforced by machinery (a TTL, a partition drop) or by intention (someone means to delete it),
@@ -181,7 +192,7 @@ and what happens on your deletion request? Ask specifically about backups and ab
 debug captures made during incident response: the ad-hoc copies are the ones that outlive
 every policy.</p>
 
-<h2>5. What separates you from the operator's other tenants?</h2>
+<h2 id="what-separates-you-from-the-operator-s-other-tenants">5. What separates you from the operator's other tenants?</h2>
 
 <p>Multi-tenancy is fine; undisclosed multi-tenancy is not. Can another tenant's key ever
 route to your dedicated upstream, read your logs, or exhaust the quota you paid for? If you
@@ -189,7 +200,7 @@ have negotiated a dedicated provider account or region for compliance reasons, w
 concretely, in configuration — prevents your traffic from ever using the shared pool, and
 can the operator show you that configuration's effect rather than describe it?</p>
 
-<h2>6. Where does traffic go, and where is it processed?</h2>
+<h2 id="where-does-traffic-go-and-where-is-it-processed">6. Where does traffic go, and where is it processed?</h2>
 
 <p>A gateway adds a hop, and the hop has a geography. Which jurisdictions do the gateway
 itself and its storage run in? Which upstream providers, and in which of <em>their</em>
@@ -198,7 +209,7 @@ data-residency promise dies silently — a failover target in another jurisdicti
 compliance event nobody scheduled. If residency matters to you, the answer must cover the
 failover path, not just the happy path.</p>
 
-<h2>7. What happens on the operator's worst day?</h2>
+<h2 id="what-happens-on-the-operator-s-worst-day">7. What happens on the operator's worst day?</h2>
 
 <p>Assume the gateway operator is compromised. What does the attacker get — live traffic,
 stored bodies, provider keys, all three? Now assume merely a bad deploy: does the gateway
@@ -206,7 +217,7 @@ fail closed (requests error) or open (requests bypass controls)? For billing con
 specifically, ask whether quota enforcement reads from a source that can lag, because a
 quota check against stale state is an overdraft mechanism with extra steps.</p>
 
-<h2>8. Can you verify any of this from the outside?</h2>
+<h2 id="can-you-verify-any-of-this-from-the-outside">8. Can you verify any of this from the outside?</h2>
 
 <p>The strongest answers are the ones you can test with a key and an afternoon: error
 responses that leak nothing, per-request token accounting you can recompute, a revocation

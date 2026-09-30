@@ -60,7 +60,6 @@
 <body>
 <!-- impeccable-disable flat-type-hierarchy -- the h1 is clamp(38px, 5vw, 58px) via .plan-hero, which static analysis cannot evaluate, so it counts only the literal px values and sees 12.5-19.5px. Measured in a browser at 1280px on 2026-09-04: the rendered scale runs 58 / 34 / 19.5 / 17.5 / 16 / 12.5px, a 4.6:1 range. -->
 
-
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
@@ -102,9 +101,19 @@
     </div>
   </nav>
 </header>
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Payment received on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Payment received</a>
+    <a class="pbar-layer" href="/pay">Payments</a>
+    <ul class="pbar-links"><li><a href="#two-emails-then-you-are-running">Two emails, then you are running</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off-->
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<section class="plan-hero thanks-hero">
+<section class="plan-hero thanks-hero" id="overview">
   <div class="container">
     <div>
       <h1>Thanks. <em data-t="head">We have your payment.</em></h1>
@@ -124,7 +133,7 @@
 <section class="psec">
   <div class="container">
     <div class="psec-head">
-      <h2>Two emails, then you are running</h2>
+      <h2 id="two-emails-then-you-are-running">Two emails, then you are running</h2>
     </div>
     <div class="prun">
       <div class="pstep">

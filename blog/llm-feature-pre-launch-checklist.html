@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Buyer's guide</span>
+    <span class="pbar-status">August 6, 2026</span>
+    <ul class="pbar-links"><li><a href="#money">Money</a></li><li><a href="#failure">Failure</a></li><li><a href="#change">Change</a></li><li><a href="#evidence">Evidence</a></li><li><a href="#what-this-list-deliberately-leaves-out">What this list deliberately leaves out</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Buyer's guide</span><span>August 6, 2026</span><span>·</span><span>4 min read</span></div>
     <h1 style="margin-top: 14px;">What to settle before an LLM feature carries real traffic</h1>
@@ -147,7 +158,7 @@ to retrofit once traffic is on it.</p>
 <p>Twelve things, grouped by the conversation each one belongs to. If an item makes you say
 "we should check that", that is the item.</p>
 
-<h2>Money</h2>
+<h2 id="money">Money</h2>
 
 <p><strong>1. A ceiling that stops spending, not one that emails you.</strong> Budget alerts
 tell you after the money is gone. What you want is a limit that refuses requests (per key,
@@ -163,7 +174,7 @@ attribution means reconstructing it from logs and arguing about the result.</p>
 A retry policy set without a budget can multiply spend during exactly the incident when
 nobody is watching the bill.</p>
 
-<h2>Failure</h2>
+<h2 id="failure">Failure</h2>
 
 <p><strong>4. A timeout chain, written on one line.</strong> Four numbers (connect, first
 byte, inter-token, total) that decrease as you move inward from the user.
@@ -183,7 +194,7 @@ they look</a>.</p>
 <p><strong>7. A degraded mode that is not an error page.</strong> A smaller model, a cached
 answer, a form. Something that keeps the feature usable when the ideal path is unavailable.</p>
 
-<h2>Change</h2>
+<h2 id="change">Change</h2>
 
 <p><strong>8. The model id out of your application code.</strong> Providers retire model
 versions on their own schedule — <a href="/blog/model-deprecation-without-a-redeploy">two
@@ -199,7 +210,7 @@ before retroactively.</p>
 <p><strong>10. A rollback you have actually run.</strong> Not a documented one. Flip back,
 confirm traffic serves, flip forward. A rollback nobody has exercised is a hypothesis.</p>
 
-<h2>Evidence</h2>
+<h2 id="evidence">Evidence</h2>
 
 <p><strong>11. Logs that answer the question you will be asked.</strong> The question is
 always "what happened to this request", so you need a request id you can quote, the model
@@ -212,7 +223,7 @@ to the content users send — internally before launch if you are lucky, by a cu
 security team if you are not. <a href="/blog/ai-vendor-data-questions">The questions worth
 being ready for</a> are known in advance.</p>
 
-<h2>What this list deliberately leaves out</h2>
+<h2 id="what-this-list-deliberately-leaves-out">What this list deliberately leaves out</h2>
 
 <p>Evaluation quality, prompt engineering and model choice are not here. Not because they do
 not matter — they are most of the product — but because they are the part teams already spend

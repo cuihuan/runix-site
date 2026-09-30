@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 20, 2026</span>
+    <ul class="pbar-links"><li><a href="#cached-tokens-have-their-own-prices-two-of-them">Cached tokens have their own prices: two of them</a></li><li><a href="#the-prompt-you-sent-is-not-the-prompt-you-paid-for">The prompt you sent is not the prompt you paid for</a></li><li><a href="#tokenizers-change-between-model-generations">Tokenizers change between model generations</a></li><li><a href="#tiered-off-peak-and-regional-prices">Tiered, off-peak and regional prices</a></li><li><a href="#models-leave-the-price-list">Models leave the price list</a></li><li><a href="#reconcile-one-request-by-hand">Reconcile one request by hand</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 20, 2026</span><span>·</span><span>5 min read</span></div>
     <h1 style="margin-top: 14px;">Why your LLM bill doesn't match the price list</h1>
@@ -146,7 +157,7 @@ rate tables against five vendors' published price lists, line by line, and then 
 result by billing a single live request and recomputing it by hand. The differences we found
 along the way fall into five mechanics, none of which appear in the headline price.</p>
 
-<h2>1. Cached tokens have their own prices: two of them</h2>
+<h2 id="cached-tokens-have-their-own-prices-two-of-them">1. Cached tokens have their own prices: two of them</h2>
 
 <p>Every major provider now prices cached prompt tokens separately, and the multipliers are
 not standardized. Reading a cached prefix typically costs about a tenth of the input rate: OpenAI lists cached input at 10% of the normal price, Anthropic at 0.1&times;, and some
@@ -166,7 +177,7 @@ full price for.</p>
 If your cost model multiplies total input tokens by one rate, it disagrees with the invoice
 on exactly the workloads caching was supposed to make cheap.</p>
 
-<h2>2. The prompt you sent is not the prompt you paid for</h2>
+<h2 id="the-prompt-you-sent-is-not-the-prompt-you-paid-for">2. The prompt you sent is not the prompt you paid for</h2>
 
 <p>Tools and agents inject context. System prompts, tool schemas, harness instructions,
 memory files: all of it is input tokens at full price. The starkest example from our own
@@ -181,7 +192,7 @@ everything else, because the injected prefix is large, repeated, and (if the pro
 client cooperate) cacheable. A model with a cheap output price and no cache discount can
 cost more in an agent loop than a nominally pricier model with 0.1&times; cache reads.</p>
 
-<h2>3. Tokenizers change between model generations</h2>
+<h2 id="tokenizers-change-between-model-generations">3. Tokenizers change between model generations</h2>
 
 <p>Prices are quoted per million tokens, but the tokenizer decides how many tokens your text
 is, and vendors revise tokenizers between model families. A recent Sonnet-generation change,
@@ -192,7 +203,7 @@ budgets, and the effective price of identical traffic, all without a price-list 
 <p><strong>Check it:</strong> never reuse token counts measured on one model to budget
 another. Count against the model you will bill on; the count endpoints are free.</p>
 
-<h2>4. Tiered, off-peak and regional prices</h2>
+<h2 id="tiered-off-peak-and-regional-prices">4. Tiered, off-peak and regional prices</h2>
 
 <p>Some price lists are not one number per model. Alibaba's Qwen coder models bill the whole
 request at a higher rate once the input crosses a context threshold (with three tiers, the
@@ -203,7 +214,7 @@ billing layers, ours included, can express — is therefore an approximation of 
 lists by construction. The honest options are to pin the rate to the tier most of your
 traffic lands in and say so, or to bill at the ceiling. Silence is the only wrong choice.</p>
 
-<h2>5. Models leave the price list</h2>
+<h2 id="models-leave-the-price-list">5. Models leave the price list</h2>
 
 <p>The strangest case we hit: a model that was still serving traffic but no longer on its
 vendor's price page at all — the line had been discontinued and replaced two weeks earlier,
@@ -212,7 +223,7 @@ such a model; whatever anyone charges for it is a policy, not an alignment. If y
 serves ids the upstream vendor has retired, ask what actually answers those requests, because
 the answer decides what the fair rate would be.</p>
 
-<h2>Reconcile one request by hand</h2>
+<h2 id="reconcile-one-request-by-hand">Reconcile one request by hand</h2>
 
 <p>All five mechanics reduce to one habit: take a single real request and recompute its cost
 from the raw numbers. The formula is the same everywhere:</p>

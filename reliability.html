@@ -111,23 +111,34 @@
     </div>
   </nav>
 </header>
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Reliability on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Reliability</a>
+    <a class="pbar-layer" href="/about">Company</a>
+    <ul class="pbar-links"><li><a href="#no-published-sla-during-early-access">No published SLA during early access</a></li><li><a href="#failure-is-expected-so-it-is-designed-for">Failure is expected, so it is designed for</a></li><li><a href="#why-the-key-matters-here">Why the key matters here</a></li><li><a href="#what-you-can-verify-yourself">What you can verify yourself</a></li><li><a href="#what-is-not-here-yet">What is not here yet</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Company</p><!--/ps:eyebrow-->
     <h1>What happens when a provider fails</h1>
     <p>A gateway earns its place on the bad days. This is the mechanism, described plainly, not a status page, and not a service level agreement.</p>
   </div>
 </div>
 <article class="article">
-<h2>No published SLA during early access</h2>
+<h2 id="no-published-sla-during-early-access">No published SLA during early access</h2>
 <p>Start with what this page is not. Runix Router is in early access, and there is no
 published SLA, no uptime percentage and no historical availability chart — because
 publishing one would mean standing behind a number we have not operated long enough to
 promise. What follows is how the system behaves, which is a different and more useful
 claim.</p>
 
-<h2>Failure is expected, so it is designed for</h2>
+<h2 id="failure-is-expected-so-it-is-designed-for">Failure is expected, so it is designed for</h2>
 <p>Model providers degrade. They rate-limit, they time out, they return errors in bursts,
 and they have bad hours that have nothing to do with your code. A router that simply
 forwards requests passes every one of those through to your users.</p>
@@ -142,19 +153,19 @@ edge cases are in <a href="/blog/streaming-llm-failover">how streaming failover 
 and comes back when health checks pass.</li>
 </ul>
 
-<h2>Why the key matters here</h2>
+<h2 id="why-the-key-matters-here">Why the key matters here</h2>
 <p>Failover is only safe if the alternative is one you would have chosen. Routing
 preferences are set per key server-side — cheapest acceptable, latency-first, provider
 allowlists — so when the router moves a request, it moves it inside the boundary you
 defined rather than to whatever happened to be up.</p>
 
-<h2>What you can verify yourself</h2>
+<h2 id="what-you-can-verify-yourself">What you can verify yourself</h2>
 <p>Every response carries a request id, and errors use a structured envelope, so a failure
 can be traced to a specific call rather than argued about. The
 <a href="/docs/router">Router quickstart</a> documents the error shape and the failover
 semantics in full.</p>
 
-<h2>What is not here yet</h2>
+<h2 id="what-is-not-here-yet">What is not here yet</h2>
 <p>A continuously updated public status feed is not live. When it is, it will report
 measured availability rather than an aspiration. Until then, the honest answer to "what is
 your uptime" is that we will tell you what we have measured for your workload, and we will
@@ -165,7 +176,7 @@ plainly whether early access fits.</p>
 <section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>Reliability requirements to check against</h2>
+      <h2 id="reliability-requirements-to-check-against">Reliability requirements to check against</h2>
       <p>If availability guarantees are part of your procurement, bring them to the intake. We will tell you plainly whether early access fits, before you spend time on an evaluation.</p>
       <a class="btn btn-grad" href="/about#contact">Talk to us about it</a>
     </div>

@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Compliance</span>
+    <span class="pbar-status">August 6, 2026</span>
+    <ul class="pbar-links"><li><a href="#the-hops-in-order">The hops, in order</a></li><li><a href="#trace-it-do-not-diagram-it">Trace it, do not diagram it</a></li><li><a href="#three-answers-worth-getting-in-writing">Three answers worth getting in writing</a></li><li><a href="#the-distinction-that-makes-this-tractable">The distinction that makes this tractable</a></li><li><a href="#what-a-good-answer-looks-like">What a good answer looks like</a></li><li><a href="#where-to-start-if-you-have-none-of-this">Where to start if you have none of this</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Compliance</span><span>August 6, 2026</span><span>·</span><span>4 min read</span></div>
     <h1 style="margin-top: 14px;">Where your prompts actually go</h1>
@@ -147,7 +158,7 @@ traced the path.</p>
 
 <p>This is how to trace it, and what each hop obliges you to be able to say.</p>
 
-<h2>The hops, in order</h2>
+<h2 id="the-hops-in-order">The hops, in order</h2>
 
 <p>For a typical integration the text crosses more boundaries than the architecture diagram
 suggests:</p>
@@ -170,7 +181,7 @@ suggests:</p>
 <p>A complete answer names every hop, says what is retained at each, and says for how long.
 If you cannot fill that table today, that is the finding, not the review.</p>
 
-<h2>Trace it, do not diagram it</h2>
+<h2 id="trace-it-do-not-diagram-it">Trace it, do not diagram it</h2>
 
 <p>Architecture diagrams describe intent. Find the actual path:</p>
 
@@ -190,7 +201,7 @@ governed by nobody's data policy in particular.</p>
 <p><strong>Ask the provider for its sub-processor list.</strong> It is a published document at
 every serious vendor. If asking feels like an unusual request, that is itself information.</p>
 
-<h2>Three answers worth getting in writing</h2>
+<h2 id="three-answers-worth-getting-in-writing">Three answers worth getting in writing</h2>
 
 <p><strong>1. Is content used for training?</strong> Ask specifically about the tier you are
 on — the answer often differs between consumer, standard API and enterprise agreements at the
@@ -204,7 +215,7 @@ is the number your auditor wants, and it is rarely on the front page.</p>
 Backups, audit logs and abuse-monitoring copies have their own clocks. "Deleted" and "gone"
 are different words.</p>
 
-<h2>The distinction that makes this tractable</h2>
+<h2 id="the-distinction-that-makes-this-tractable">The distinction that makes this tractable</h2>
 
 <p>Separate <strong>content</strong> from <strong>operational metadata</strong> and the
 conversation gets much easier.</p>
@@ -220,7 +231,7 @@ the shape most integrations start in. It is also the argument for
 <a href="/blog/llm-observability">deciding what to log deliberately</a> rather than logging
 whatever the framework does by default.</p>
 
-<h2>What a good answer looks like</h2>
+<h2 id="what-a-good-answer-looks-like">What a good answer looks like</h2>
 
 <p>Not "a major provider, and they hold SOC&nbsp;2". Something closer to:</p>
 
@@ -233,7 +244,7 @@ hold. Error tracking is configured to strip request bodies, and we verify that q
 <p>Every clause there is checkable, which is the point. The verifiability is what makes it a
 good answer, not the content of any individual claim.</p>
 
-<h2>Where to start if you have none of this</h2>
+<h2 id="where-to-start-if-you-have-none-of-this">Where to start if you have none of this</h2>
 
 <ol>
 <li>Write down the hops. Just the list — most teams discover one they had forgotten while

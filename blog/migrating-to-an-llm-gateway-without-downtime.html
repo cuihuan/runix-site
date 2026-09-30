@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 6, 2026</span>
+    <ul class="pbar-links"><li><a href="#before-you-start-make-the-endpoint-a-variable">Before you start: make the endpoint a variable</a></li><li><a href="#step-1-shadow-and-compare-what-you-can">Step 1: shadow, and compare what you can</a></li><li><a href="#step-2-a-percentage-chosen-by-blast-radius">Step 2: a percentage, chosen by blast radius</a></li><li><a href="#step-3-the-three-things-that-are-different-about-llm-traffic">Step 3: the three things that are different about LLM traffic</a></li><li><a href="#step-4-cut-over-and-keep-the-way-back-open">Step 4: cut over, and keep the way back open</a></li><li><a href="#what-to-keep-watching-for-a-month">What to keep watching for a month</a></li><li><a href="#the-short-version">The short version</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 6, 2026</span><span>·</span><span>5 min read</span></div>
     <h1 style="margin-top: 14px;">Migrating to a gateway without a maintenance window</h1>
@@ -146,7 +157,7 @@ assumptions, and those are where migrations go wrong.</p>
 
 <p>This is the sequence that works, and what to watch at each step.</p>
 
-<h2>Before you start: make the endpoint a variable</h2>
+<h2 id="before-you-start-make-the-endpoint-a-variable">Before you start: make the endpoint a variable</h2>
 
 <p>If the base URL is a string literal in your services, everything below requires a deploy,
 which means your rollback also requires a deploy, and a rollback you cannot perform in
@@ -158,7 +169,7 @@ whole migration in miniature; if it does not work, nothing after this matters.</
 a separate problem with the same solution: covered in
 <a href="/blog/model-deprecation-without-a-redeploy">a post of its own</a>.</p>
 
-<h2>Step 1: shadow, and compare what you can</h2>
+<h2 id="step-1-shadow-and-compare-what-you-can">Step 1: shadow, and compare what you can</h2>
 
 <p>Send a copy of real requests through the gateway while the original path continues to
 serve users. Discard the shadow response. You are not testing correctness yet — you are
@@ -181,7 +192,7 @@ model with the same prompt do not produce the same output, so a diff of response
 produces noise that looks like a problem and is not. Compare distributions later, on real
 traffic, with volume — not two responses side by side.</p>
 
-<h2>Step 2: a percentage, chosen by blast radius</h2>
+<h2 id="step-2-a-percentage-chosen-by-blast-radius">Step 2: a percentage, chosen by blast radius</h2>
 
 <p>Route a small share of production traffic through the gateway for real. Pick the share by
 what you can afford to have degraded, not by a round number — and pick the <em>route</em>
@@ -193,7 +204,7 @@ broken". The worst first candidate is the one your demo uses.</p>
 time-of-day shaped, because provider capacity is; a two-hour soak at 10% during your quiet
 period tells you very little about 10% at peak.</p>
 
-<h2>Step 3: the three things that are different about LLM traffic</h2>
+<h2 id="step-3-the-three-things-that-are-different-about-llm-traffic">Step 3: the three things that are different about LLM traffic</h2>
 
 <p><strong>Streaming is a second integration.</strong> A gateway that handles non-streamed
 requests perfectly can still break streaming: the framing, the terminator, tool-call deltas
@@ -215,7 +226,7 @@ signal that does not depend on reading outputs: the parse rate on structured rou
 share of <code>finish_reason: length</code>, refusal-shaped response rate. These move before
 anyone files a ticket.</p>
 
-<h2>Step 4: cut over, and keep the way back open</h2>
+<h2 id="step-4-cut-over-and-keep-the-way-back-open">Step 4: cut over, and keep the way back open</h2>
 
 <p>At 100%, the old path should still be one config change away for at least a full billing
 cycle. Two reasons: the failure you have not seen yet is the one that only appears at full
@@ -224,7 +235,7 @@ volume, and a rollback you have deleted is not a rollback.</p>
 <p>Before you call it done, actually exercise the reversal. Flip back, confirm traffic serves,
 flip forward. A rollback path nobody has run is a hypothesis.</p>
 
-<h2>What to keep watching for a month</h2>
+<h2 id="what-to-keep-watching-for-a-month">What to keep watching for a month</h2>
 
 <ol>
 <li><strong>Error rate by provider</strong>, not just overall — the aggregate hides one
@@ -239,7 +250,7 @@ flip forward. A rollback path nobody has run is a hypothesis.</p>
     accepting anyone's published figure, including ours.</li>
 </ol>
 
-<h2>The short version</h2>
+<h2 id="the-short-version">The short version</h2>
 
 <p>Make the endpoint a variable. Shadow to check shape, not text. Ramp on a route you can
 afford to have degraded, through a full traffic cycle. Treat streaming as its own migration.

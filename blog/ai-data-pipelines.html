@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">July 19, 2026</span>
+    <ul class="pbar-links"><li><a href="#ingestion-get-everything-into-one-boring-format">Ingestion: get everything into one boring format</a></li><li><a href="#cleaning-and-normalization">Cleaning and normalization</a></li><li><a href="#deduplication-three-tiers-three-price-points">Deduplication: three tiers, three price points</a></li><li><a href="#structured-extraction-with-llms">Structured extraction with LLMs</a></li><li><a href="#pii-detection-and-masking">PII detection and masking</a></li><li><a href="#quality-scoring-reject-don-t-ingest">Quality scoring: reject, don't ingest</a></li><li><a href="#batch-vs-incremental-architectures">Batch vs incremental architectures</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>July 19, 2026</span><span>·</span><span>8 min read</span></div>
     <h1 style="margin-top: 14px;">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</h1>
@@ -141,12 +152,12 @@
 <article class="article">
 <p>Most AI projects do not fail at the model. They fail at the data. The gap between "we have a folder of PDFs and a database dump" and "we have a clean, deduplicated, schema-validated dataset a model can actually use" is where the real engineering happens. This post walks through the stages we consider non-negotiable in a production data pipeline, and the tradeoffs at each one.</p>
 
-<h2>Ingestion: get everything into one boring format</h2>
+<h2 id="ingestion-get-everything-into-one-boring-format">Ingestion: get everything into one boring format</h2>
 <p>The goal of ingestion is not fidelity, it is uniformity. Every downstream stage gets simpler if the output of ingestion is a single normalized record format, typically JSONL with a body field, a source identifier, a content hash, and fetch metadata.</p>
 <p>Encodings are the first trap. Never trust declared charsets; detect them (chardet-style libraries are fine) and transcode everything to UTF-8 at the boundary. A single mojibake document that slips through will surface as a confusing bug three stages later.</p>
 <p>For parsing, the 80/20 rule dominates. For PDFs, a plain text-layer extractor handles the large majority of digitally-born documents; reserve OCR and layout-aware models for the scanned or multi-column minority, because they are one to two orders of magnitude more expensive per page. For HTML, a readability-style main-content extractor gets you most of the way; write custom selectors only for the handful of high-value sites that resist generic extraction. Do not build the perfect universal parser first. Build the cheap one, measure what it fails on, then pay for the hard cases selectively.</p>
 
-<h2>Cleaning and normalization</h2>
+<h2 id="cleaning-and-normalization">Cleaning and normalization</h2>
 <p>Raw extracted text is full of noise that models will happily learn or hallucinate around. The standard cleaning passes are:</p>
 <ul>
 <li><strong>Boilerplate stripping.</strong> Navigation menus, cookie banners, footers, and repeated headers. Frequency-based detection works well: a line that appears verbatim across many documents from the same source is boilerplate.</li>
@@ -155,13 +166,13 @@
 </ul>
 <p>Cleaning should be deterministic and idempotent: running the pipeline twice on the same input must produce byte-identical output. That property makes debugging and reprocessing tractable.</p>
 
-<h2>Deduplication: three tiers, three price points</h2>
+<h2 id="deduplication-three-tiers-three-price-points">Deduplication: three tiers, three price points</h2>
 <p>Duplicates skew training distributions, inflate storage, and cause retrieval systems to return the same answer five times. There are three tiers, and each is worth deploying at a different scale.</p>
 <p><strong>Exact hashing</strong> (SHA-256 over normalized text) is nearly free and should always be on. It catches re-crawls, mirrored files, and repeated uploads.</p>
 <p><strong>Near-duplicate detection</strong> with MinHash plus locality-sensitive hashing catches documents that differ by a timestamp, a byline, or a template variation. It runs comfortably on millions of documents on a single machine and is worth it as soon as your corpus has more than one source, because cross-source duplication is invisible to exact hashing.</p>
 <p><strong>Semantic deduplication</strong> using embedding similarity catches paraphrases and rewrites. It requires an embedding pass over the corpus plus an approximate nearest-neighbor index, so it costs real money. Deploy it when duplicated meaning, not duplicated text, is the problem — RAG corpora and fine-tuning sets, mainly. For general bulk collection it is usually not worth the spend.</p>
 
-<h2>Structured extraction with LLMs</h2>
+<h2 id="structured-extraction-with-llms">Structured extraction with LLMs</h2>
 <p>Turning free text into typed fields used to mean brittle regex stacks. LLM-powered extraction has largely replaced them, but it only works in production with guardrails:</p>
 <ol>
 <li>Define a strict JSON Schema for the target record, including enums and required fields.</li>
@@ -171,19 +182,19 @@
 </ol>
 <p>Log the model, prompt version, and token cost per record. Extraction is usually the most expensive stage per document, and routing it through a gateway that handles retries, fallback models, and cost attribution keeps it operable. This is precisely the workload our <a href="/#products">LLM gateway</a> was built for: the same extraction prompt can run against 20+ models through one OpenAI-compatible API, so you can benchmark a cheap model against a strong one on your own data before committing.</p>
 
-<h2>PII detection and masking</h2>
+<h2 id="pii-detection-and-masking">PII detection and masking</h2>
 <p>PII handling must happen inside the pipeline, before data reaches any external system — including the LLM used for extraction, if that model is third-party. Once a name or card number has left your boundary, no downstream deletion fixes it.</p>
 <p>The workable pattern is layered: deterministic detectors (regexes and checksums for emails, phone numbers, card numbers, national IDs) as a first pass, then an NER model for names and addresses that patterns miss. Replace detected spans with typed placeholders such as <code>[EMAIL_1]</code> rather than deleting them, so references stay consistent within a document and masking is reversible in a controlled vault if the business requires it. Fail closed: if the PII stage errors on a record, the record does not proceed.</p>
 
-<h2>Quality scoring: reject, don't ingest</h2>
+<h2 id="quality-scoring-reject-don-t-ingest">Quality scoring: reject, don't ingest</h2>
 <p>Every record should exit the pipeline with a score covering at least completeness (required fields present, body above a minimum length), consistency (dates parse, numerics in range, language matches expectation), and duplication rate within its batch.</p>
 <p>The operating principle is <strong>reject, don't ingest</strong>. A record below threshold goes to quarantine with a reason code — it does not enter the dataset "for now" with a plan to clean it later. Datasets accumulate; cleanup plans do not. Quarantine with reason codes also gives you a free feedback loop: a spike in one rejection reason points directly at an upstream regression.</p>
 
-<h2>Batch vs incremental architectures</h2>
+<h2 id="batch-vs-incremental-architectures">Batch vs incremental architectures</h2>
 <p>Batch pipelines reprocess a full snapshot on a schedule. They are simpler, trivially reproducible, and self-healing — a bug fix plus a rerun repairs everything. Incremental pipelines process only new or changed records, keyed by content hash. They deliver fresh data in minutes and cost far less per run, but you must version every stage, because records processed under different pipeline versions will coexist in the same dataset.</p>
 <p>The pragmatic answer for most teams is both: incremental for freshness, plus a periodic full batch rebuild to flush out drift and apply accumulated fixes. Start batch-only; add the incremental path when latency requirements force it, not before.</p>
 
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table aria-label="Pipeline stages, their goal, and the usual tooling approach">
 <tr><th scope="col">Stage</th><th scope="col">Goal</th><th scope="col">Common tooling approach</th></tr>

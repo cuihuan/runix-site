@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">July 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#how-streams-fail">How streams fail</a></li><li><a href="#the-restart-problem">The restart problem</a></li><li><a href="#what-a-proxy-in-the-path-must-preserve">What a proxy in the path must preserve</a></li><li><a href="#degradation-beats-failure">Degradation beats failure</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
     <h1 style="margin-top: 14px;">Streaming LLM Responses Without Breaking Failover</h1>
@@ -142,7 +153,7 @@
 
 <p>Failover before the first token is easy: nothing has been observed, so you can quietly try somewhere else. Failover <em>after</em> the first token is a product decision disguised as an infrastructure one, because the user has already seen output that you are now considering contradicting.</p>
 
-<h2>How streams fail</h2>
+<h2 id="how-streams-fail">How streams fail</h2>
 <p>Four distinct modes, each needing a different response:</p>
 <ul>
 <li><strong>Connection drop mid-stream.</strong> Bytes stop. Often indistinguishable at first from a model that is thinking.</li>
@@ -152,7 +163,7 @@
 </ul>
 <p>The detection primitive that covers most of these is a <strong>token-rate floor</strong>: if the stream produces fewer than N tokens in M seconds after having started, treat it as failed. It catches stalls and slow degradation that a single overall timeout misses entirely.</p>
 
-<h2>The restart problem</h2>
+<h2 id="the-restart-problem">The restart problem</h2>
 <p>Suppose you detect a failure after 200 tokens have reached the user. Three options exist, and only three:</p>
 <ol>
 <li><strong>Fail the request.</strong> Honest, simple, and the user loses the partial answer.</li>
@@ -161,7 +172,7 @@
 </ol>
 <p>The right default for interactive traffic is to fail over invisibly <em>only</em> before the first token, and after that to surface the failure to the client and let the application decide. Which means the practical goal is to make the pre-first-token window as informative as possible: time-to-first-token is your best early health signal, and treating a slow TTFT as a routing failure lets you switch providers while it is still free.</p>
 
-<h2>What a proxy in the path must preserve</h2>
+<h2 id="what-a-proxy-in-the-path-must-preserve">What a proxy in the path must preserve</h2>
 <p>A gateway that terminates and re-emits streams can break things that clients depend on. The checklist:</p>
 <ul>
 <li><strong>No buffering.</strong> Collecting the full response and forwarding it at the end technically works and destroys the reason for streaming. Any buffer that is not flushed per chunk is a bug.</li>
@@ -171,16 +182,14 @@
 <li><strong>Errors after 200.</strong> HTTP status is committed as soon as streaming starts, so a mid-stream failure cannot be a 500. It has to be an in-band error frame, and clients have to be written to expect one.</li>
 </ul>
 
-<h2>Degradation beats failure</h2>
+<h2 id="degradation-beats-failure">Degradation beats failure</h2>
 <p>When failover is not available, the interesting question is what the user gets instead of a spinner. Options that work in practice: switch to a smaller, faster model on the same provider; drop optional context to shorten the prompt and get under a stressed provider's limits; or return the partial answer with an explicit marker that it is incomplete. All three are better than a blank screen, and all three require the application to have been designed with a degraded mode — which is a decision nobody makes during an incident.</p>
 <p>The infrastructure layer can only enable those choices, not make them. What it should guarantee is that a stream never silently becomes wrong: partial output is labelled partial, cancellations stop the meter, and a failure that happens after the first token is reported rather than papered over. That last property is the one to ask a vendor about, and it is the one we hold ourselves to in <a href="/router">Runix Router</a>.</p>
-
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span>Mid-stream behaviour is worth asking any gateway about. <a href="/router">Runix Router</a> is in early access — <a href="/about#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

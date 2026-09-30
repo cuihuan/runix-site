@@ -171,7 +171,17 @@
     </div>
   </nav>
 </header>
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Payments on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Payments</a>
+    <a class="pbar-layer" href="/pay">Payments</a>
+    <ul class="pbar-links"><li><a href="#what-happens-when-you-press-enter">What happens when you press enter</a></li><li><a href="#pick-the-throughput-not-the-feature-list">Pick the throughput, not the feature list</a></li><li><a href="#or-pay-once-and-keep-what-you-buy">Or pay once, and keep what you buy</a></li><li><a href="#the-differences-side-by-side">The differences, side by side</a></li><li><a href="#how-the-other-products-are-priced">How the other products are priced</a></li><li><a href="#before-you-subscribe">Before you subscribe</a></li><li><a href="#start-on-basic-move-up-when-the-queue-gets-long">Start on Basic. Move up when the queue gets long.</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off-->
+  </div>
+</nav>
+<!--/ps:bar-->
 <div class="pay-notice">
   <div class="container">
     <div class="callout">
@@ -181,8 +191,7 @@
   </div>
 </div>
 
-
-<section class="plan-hero">
+<section class="plan-hero" id="overview">
   <div class="container">
     <div>
       <h1>An agent that ships the fix, <em>not a suggestion.</em></h1>
@@ -221,7 +230,7 @@
 <section class="psec" id="run">
   <div class="container">
     <div class="psec-head">
-      <h2>What happens when you press enter</h2>
+      <h2 id="what-happens-when-you-press-enter">What happens when you press enter</h2>
     </div>
     <div class="prun">
       <div class="pstep">
@@ -257,7 +266,7 @@
 <section class="psec" id="plans">
   <div class="container">
     <div class="psec-head">
-      <h2>Pick the throughput, not the feature list</h2>
+      <h2 id="pick-the-throughput-not-the-feature-list">Pick the throughput, not the feature list</h2>
     </div>
     <div class="plans plans-4">
         <div class="plan" id="plan-basic">
@@ -314,7 +323,7 @@
 <section class="psec" id="topup">
   <div class="container">
     <div class="psec-head">
-      <h2>Or pay once, and keep what you buy</h2>
+      <h2 id="or-pay-once-and-keep-what-you-buy">Or pay once, and keep what you buy</h2>
     </div>
 
     <div class="topup">
@@ -430,7 +439,7 @@
 <section class="psec" id="specs">
   <div class="container">
     <div class="psec-head">
-      <h2>The differences, side by side</h2>
+      <h2 id="the-differences-side-by-side">The differences, side by side</h2>
     </div>
     <!-- Every cell below is taken from the product description a buyer sees on
          the Stripe checkout page for that tier, or is arithmetic on the price.
@@ -474,7 +483,7 @@
 <section class="psec" id="other-products">
   <div class="container">
     <div class="psec-head">
-      <h2>How the other products are priced</h2>
+      <h2 id="how-the-other-products-are-priced">How the other products are priced</h2>
     </div>
     <div class="dsheet plain" tabindex="0" role="region" aria-label="How the other Runix products are priced">
       <table aria-label="How the other Runix products are priced">
@@ -497,7 +506,7 @@
 <section class="psec" id="faq">
   <div class="container">
     <div class="psec-head">
-      <h2>Before you subscribe</h2>
+      <h2 id="before-you-subscribe">Before you subscribe</h2>
     </div>
     <div class="qas">
       <div class="qa">
@@ -531,7 +540,7 @@
 <section class="psec" style="padding-top:0">
   <div class="container">
     <div class="pclose">
-      <h2>Start on Basic. Move up when the queue gets long.</h2>
+      <h2 id="start-on-basic-move-up-when-the-queue-gets-long">Start on Basic. Move up when the queue gets long.</h2>
       <div class="cta">
         <a class="btn btn-grad" href="https://buy.stripe.com/eVqbIU9YsgR58Ff2DF5J607">Get 10X &mdash; $69.90/mo</a>
         <a class="btn btn-ghost" href="https://buy.stripe.com/4gMdR2gmQcAP3kV0vx5J605">Get Basic &mdash; $9.90/mo</a>

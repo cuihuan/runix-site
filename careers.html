@@ -114,10 +114,21 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Careers on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Careers</a>
+    <a class="pbar-layer" href="/about">Company</a>
+    <ul class="pbar-links"><li><a href="#how-we-work">How we work</a></li><li><a href="#open-roles">Open roles</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:contact@runixcloud.io?subject=Runix%20-%20introduction">Write to us</a><!--/email_off-->
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Company</p><!--/ps:eyebrow-->
     <h1>Build infrastructure people can rely on</h1>
     <p>We are a remote-first engineering team working on the unglamorous, essential problems behind production AI.</p>
   </div>
@@ -126,7 +137,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>How we work</h2>
+      <p class="sec-no">02 &middot; How we work</p>
+      <h2 id="how-we-work">How we work</h2>
       <p>Runix is remote-first and built to work across time zones, so almost everything important happens in writing: design docs, decision logs, and postmortems rather than meetings. We are building a small, senior team where everyone owns a real slice of production and carries the consequences of their design choices. We optimize for infrastructure craft over feature churn: fewer things, kept up, measured honestly. If you like calm, deep work on systems that other teams depend on, you will probably like it here.</p>
     </div>
     <div class="grid cols-2">
@@ -153,7 +165,8 @@
 <section class="section" style="padding-top: 0;">
   <div class="container">
     <div class="section-head">
-      <h2>Open roles</h2>
+      <p class="sec-no">03 &middot; Roles</p>
+      <h2 id="open-roles">Open roles</h2>
       <p>All roles are remote. We hire globally and default to async collaboration with a few hours of overlap.</p>
     </div>
     <div class="grid">
@@ -229,7 +242,7 @@
 <section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>None of these quite you?</h2>
+      <h2 id="none-of-these-quite-you">None of these quite you?</h2>
       <p>We would still rather hear from you than not. Tell us what you have built and what you want to work on — a short note about real work beats a formatted CV here.</p>
       <a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20-%20introduction">Write to us</a>
     </div>

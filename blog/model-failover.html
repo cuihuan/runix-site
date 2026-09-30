@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">July 15, 2026</span>
+    <ul class="pbar-links"><li><a href="#the-real-failure-taxonomy">The real failure taxonomy</a></li><li><a href="#why-naive-retry-makes-outages-worse">Why naive retry makes outages worse</a></li><li><a href="#knowing-when-a-provider-is-unhealthy">Knowing when a provider is unhealthy</a></li><li><a href="#circuit-breakers-per-provider-and-per-model">Circuit breakers, per provider and per model</a></li><li><a href="#failover-is-not-free">Failover is not free</a></li><li><a href="#graceful-degradation-tiers">Graceful degradation tiers</a></li><li><a href="#test-it-with-game-days">Test it with game days</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>July 15, 2026</span><span>·</span><span>9 min read</span></div>
     <h1 style="margin-top: 14px;">Designing for Model Failover: Lessons from Production LLM Traffic</h1>
@@ -141,14 +152,14 @@
 <article class="article">
 <p>Every team that ships an LLM-backed product eventually learns the same lesson: model providers fail, and they fail in ways that traditional infrastructure playbooks don't fully cover. The team behind Runix has spent years running high-volume LLM traffic through gateways in production, and most of what we know about failover we learned by watching real traffic misbehave. This post is a condensed version of those lessons.</p>
 
-<h2>The real failure taxonomy</h2>
+<h2 id="the-real-failure-taxonomy">The real failure taxonomy</h2>
 <p>It helps to be precise about what "the provider is down" actually means, because each failure class needs a different response.</p>
 <p><strong>Hard errors.</strong> These are the easy ones: <code>429</code> rate limits, <code>500</code>/<code>502</code>/<code>503</code> from the provider, connection resets. They are unambiguous, cheap to detect, and safe to act on immediately. A <code>429</code> means back off or route elsewhere; a <code>5xx</code> means the request never produced value and can usually be retried somewhere else.</p>
 <p><strong>Timeouts.</strong> Harder than they look. LLM inference latency is highly variable by design: a long completion legitimately takes longer than a short one. A fixed 30-second timeout will misclassify healthy long generations as failures, and a generous 5-minute timeout will hold user connections open while a provider quietly falls over. In practice you want two separate timeouts: time-to-first-token, which is fairly stable per provider and a strong health signal, and a token-rate floor for streaming (if throughput drops below some tokens-per-second threshold mid-stream, something upstream is degrading even though bytes are still trickling in).</p>
 <p><strong>Silent degradation.</strong> This is the nastiest class, and the one that gets no attention until it bites you. The provider returns <code>200 OK</code>, latency looks normal, and the output is wrong: completions truncated at a suspicious power-of-two token count, a model quietly serving degraded quality under load, malformed JSON from a model that reliably produced valid JSON yesterday, or empty tool-call arguments. None of your standard dashboards catch this. Your error rate is 0% while your product is broken.</p>
 <p>Detecting silent degradation requires looking at the response body, not just the status code. Useful cheap checks: <code>finish_reason</code> distribution (a spike in <code>length</code> finishes when your traffic mix hasn't changed is a red flag), output-token histograms per model (truncation shows up as a wall in the distribution), JSON-parse success rate for structured-output routes, and refusal-phrase rates. These are aggregate signals: no single response proves anything, but a shifted distribution over ten minutes does.</p>
 
-<h2>Why naive retry makes outages worse</h2>
+<h2 id="why-naive-retry-makes-outages-worse">Why naive retry makes outages worse</h2>
 <p>The default instinct, wrap the call in a retry loop, is exactly how you turn a provider brownout into a full outage. When a provider starts shedding load with <code>429</code>s, every client retrying immediately multiplies the offered load right when capacity is lowest. The provider sheds harder, more clients retry, and you get a retry storm. You also burn your own capacity: threads, connections, and user patience are all held hostage by requests that were never going to succeed.</p>
 <p>Three rules keep retries safe:</p>
 <ul>
@@ -158,12 +169,12 @@
 </ul>
 <p>Also decide up front which requests are retryable at all. Idempotent completions are; anything with side effects (a tool call that already executed) is not, and replaying it is a correctness bug, not resilience.</p>
 
-<h2>Knowing when a provider is unhealthy</h2>
+<h2 id="knowing-when-a-provider-is-unhealthy">Knowing when a provider is unhealthy</h2>
 <p>There are two sources of health signal, and you need both.</p>
 <p><strong>Passive signals</strong> come from live traffic: error rates, time-to-first-token percentiles, token throughput, and the silent-degradation aggregates above. They are free, they reflect your real workload (your prompts, your regions, your API features), and they are the fastest detector when you have volume. Their weakness is low-traffic routes: a model that gets ten requests an hour gives you statistics too thin to act on.</p>
 <p><strong>Active probes</strong> fill that gap: a small synthetic request per provider+model every 30–60 seconds, with a known-good expected output so you can verify content, not just status. Probes catch failures on cold routes before a user does, and they are the only way to confirm recovery without gambling user traffic. Their weakness is that a tiny canned prompt does not exercise long contexts, streaming, or tool use, so probes can pass while your real workload fails. Treat probes as a floor, passive signals as the truth.</p>
 
-<h2>Circuit breakers, per provider and per model</h2>
+<h2 id="circuit-breakers-per-provider-and-per-model">Circuit breakers, per provider and per model</h2>
 <p>Once you can detect unhealth, you need a mechanism that acts on it faster than a human can. The classic circuit breaker works well here with one crucial adjustment: the breaker key must be <strong>provider + model</strong>, not just provider. Providers rarely fail uniformly: one model family degrades while others on the same API are fine. A provider-level breaker turns a partial failure into a self-inflicted total one.</p>
 <pre><code># Per (provider, model) breaker — illustrative config
 breaker:
@@ -191,13 +202,13 @@ failover_order:
 </code></pre>
 <p>Two details matter in production. First, <code>min_samples</code>: tripping a breaker on three requests of thin data causes flapping, which is its own outage. Second, the half-open phase must use a small capped trickle of real traffic: recovery detected only by synthetic probes will happily close the breaker into a provider that still can't handle your actual workload.</p>
 
-<h2>Failover is not free</h2>
+<h2 id="failover-is-not-free">Failover is not free</h2>
 <p>Routing around a failure sounds like a pure win. It isn't; three costs show up immediately.</p>
 <p><strong>Semantic drift.</strong> Models are not interchangeable. A prompt tuned on one model produces different tone, different formatting, and different tool-calling behavior on another. If your product parses model output, failover can break parsing even though every request "succeeded." The fix is to qualify fallback pairs in advance: run your evaluation suite against the fallback model with your production prompts, and only put pre-qualified pairs in the failover chain.</p>
 <p><strong>Prompt-cache warmth.</strong> If you rely on provider-side prompt caching for long shared prefixes, a failover means every request pays full input price and full prefill latency on the new target until its cache warms. Model this in your cost projections: a one-hour failover on a cache-heavy workload can cost several times its normal hourly spend. It is also a reason to fail over decisively rather than flapping — every flap re-pays the warm-up twice.</p>
 <p><strong>Cost asymmetry.</strong> Your fallback may cost 3–5x your primary per token. That is usually the right trade during an incident, but it should be a decision someone made ahead of time, with a spend alert attached, not a surprise on the invoice.</p>
 
-<h2>Graceful degradation tiers</h2>
+<h2 id="graceful-degradation-tiers">Graceful degradation tiers</h2>
 <p>Failover to an equivalent model is only the first rung. A complete design defines what happens when that fails too, in order of decreasing capability:</p>
 <ol>
 <li><strong>Equivalent model, different provider.</strong> Full capability, costs the trade-offs above.</li>
@@ -207,11 +218,11 @@ failover_order:
 </ol>
 <p>The key property: each tier is a deliberate product decision made calmly in advance, not an improvisation at 3 a.m.</p>
 
-<h2>Test it with game days</h2>
+<h2 id="test-it-with-game-days">Test it with game days</h2>
 <p>A failover path that has never run is a failover path that does not work. The failure modes hide in the details: the fallback API key that expired, the secondary provider that rejects a request parameter the primary accepted, the breaker that trips correctly but whose alert routes to a channel nobody reads.</p>
 <p>Run game days quarterly. Inject faults at the gateway layer — force <code>429</code>s from the primary, add artificial time-to-first-token latency, truncate responses to simulate silent degradation — and verify the whole chain: breaker trips within the expected window, traffic shifts to the qualified fallback, output quality on the fallback passes your evals, cost alerts fire, and recovery closes the breaker without flapping. Measure time-to-detect and time-to-mitigate, and track them like the reliability metrics they are. The first game day is always humbling; that is the point of running it before your provider does it for you.</p>
 
-<h2>The takeaway</h2>
+<h2 id="the-takeaway">The takeaway</h2>
 <p>Treat model providers the way you treat any external dependency with a 99.9% ceiling: assume failure, detect it from both live traffic and probes, contain it with per-model breakers and retry budgets, and degrade through pre-qualified tiers instead of falling off a cliff. None of these mechanisms is exotic — the work is in the details, and the details only get validated by real traffic and deliberate practice.</p>
 
   <div class="notice">

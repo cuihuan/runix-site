@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Compliance</span>
+    <span class="pbar-status">July 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#content-and-retention">Content and retention</a></li><li><a href="#sub-processors-and-geography">Sub-processors and geography</a></li><li><a href="#security-posture">Security posture</a></li><li><a href="#contracts-and-continuity">Contracts and continuity</a></li><li><a href="#two-answers-that-should-stop-the-process">Two answers that should stop the process</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Compliance</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
     <h1 style="margin-top: 14px;">12 Data Questions to Ask an AI Vendor</h1>
@@ -142,37 +153,35 @@
 
 <p>Most AI procurement reviews stall on the same handful of unanswered questions. Here they are, with what a defensible answer sounds like — useful whether you are the buyer asking or the vendor preparing.</p>
 
-<h2>Content and retention</h2>
+<h2 id="content-and-retention">Content and retention</h2>
 <p><strong>1. Is prompt and completion content stored, and for how long?</strong> A good answer distinguishes content from metadata and gives a number. "We do not store your data" without that distinction is almost always inaccurate, because nobody bills or debugs without keeping something.</p>
 <p><strong>2. What operational metadata is kept?</strong> Expect: timestamps, token counts, model ids, latency, error codes, key identifiers. That set is normal and necessary. What matters is that it is enumerated rather than described as "some technical logs".</p>
 <p><strong>3. Is anything used to train models?</strong> The answer should be unambiguous and cover sub-processors. "We do not train on your data, and our upstream providers are configured not to either" is the shape you want, with the second half in writing.</p>
 <p><strong>4. Who internally can read content, and is that access logged?</strong> "Nobody" is rarely true — support engineers usually can, under a break-glass procedure. A vendor who admits that and describes the control is more credible than one who claims perfect isolation.</p>
 
-<h2>Sub-processors and geography</h2>
+<h2 id="sub-processors-and-geography">Sub-processors and geography</h2>
 <p><strong>5. Who else touches the data?</strong> Model providers, cloud hosts, observability vendors, payment processors. Ask for the list, and ask how you will be told when it changes.</p>
 <p><strong>6. Where is data processed?</strong> Region matters for regulated workloads, and the honest answer is often "wherever the provider serves the model", which may not be the same region as the vendor's own infrastructure.</p>
 <p><strong>7. What happens on termination?</strong> Deletion timelines for content, metadata, and backups — backups are the part usually forgotten, and the part with the longest tail.</p>
 
-<h2>Security posture</h2>
+<h2 id="security-posture">Security posture</h2>
 <p><strong>8. What certifications are actually held?</strong> Note the word <em>held</em>. "SOC 2 in progress" and "SOC 2 certified" are different statements, and a vendor blurring them is telling you how they handle other claims. A young company with none, stated plainly, is more trustworthy than one implying otherwise.</p>
 <p><strong>9. How are credentials stored and access controlled?</strong> Especially relevant for anything holding your provider keys — see <a href="/blog/llm-api-key-management">key management</a> for what to probe.</p>
 <p><strong>10. Is there a disclosure channel and a track record?</strong> A published security contact and a stated response window. Nothing exotic; its absence is the signal.</p>
 
-<h2>Contracts and continuity</h2>
+<h2 id="contracts-and-continuity">Contracts and continuity</h2>
 <p><strong>11. What can be signed?</strong> MSA, DPA, and whether an order form can override standard terms. Also: which legal entity, in which jurisdiction, and can it invoice in your currency.</p>
 <p><strong>12. What is the exit path?</strong> Export of usage history, notice period, and whether the integration is standard enough that leaving is a configuration change. A gateway speaking a standard API is a base-URL change to replace; a proprietary SDK is a migration project.</p>
 
-<h2>Two answers that should stop the process</h2>
+<h2 id="two-answers-that-should-stop-the-process">Two answers that should stop the process</h2>
 <p>The first is <strong>a specific claim that cannot be evidenced</strong> — a certification without a report, an uptime figure without a status page, a "zero retention" claim that dissolves when you ask about metadata. If a checkable claim turns out to be decorative, treat the uncheckable ones accordingly.</p>
 <p>The second is <strong>a refusal to put an answer in writing</strong>. Everything above should survive being pasted into a contract schedule. A vendor comfortable saying something on a call but not in a document has told you which version they intend to be bound by.</p>
 <p>For our own answers, the <a href="/security">security page</a> and <a href="/privacy">privacy policy</a> are written to be quotable, and where we hold nothing we say so.</p>
-
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span>Sending us this questionnaire is welcome. <a href="/router">Runix Router</a> is in early access — <a href="/about#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

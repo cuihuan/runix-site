@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 6, 2026</span>
+    <ul class="pbar-links"><li><a href="#four-timeouts-not-one">Four timeouts, not one</a></li><li><a href="#streaming-changes-which-number-matters">Streaming changes which number matters</a></li><li><a href="#stacked-timeouts-are-where-outages-come-from">Stacked timeouts are where outages come from</a></li><li><a href="#what-a-timeout-should-do">What a timeout should do</a></li><li><a href="#numbers-to-start-from">Numbers to start from</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 6, 2026</span><span>·</span><span>5 min read</span></div>
     <h1 style="margin-top: 14px;">How long should an LLM request be allowed to take?</h1>
@@ -149,7 +160,7 @@ minute, and the two are indistinguishable until one of them ends.</p>
 your dashboard says the provider is fine, the provider's status page says the provider is
 fine, and your users are staring at spinners.</p>
 
-<h2>Four timeouts, not one</h2>
+<h2 id="four-timeouts-not-one">Four timeouts, not one</h2>
 
 <p>"The timeout" is almost always four separate things, and conflating them is the root of
 most of the trouble.</p>
@@ -173,7 +184,7 @@ is then set low enough to catch hangs, which means it also kills legitimate long
 which shows up as sporadic failures on exactly your most valuable requests: the long,
 complex ones.</p>
 
-<h2>Streaming changes which number matters</h2>
+<h2 id="streaming-changes-which-number-matters">Streaming changes which number matters</h2>
 
 <p>On a non-streamed request you cannot distinguish slow from stuck, so the total timeout is
 all you have and it has to accommodate your longest legitimate response.</p>
@@ -188,7 +199,7 @@ seconds to find out.</p>
 <p>This is the strongest practical argument for streaming even when the interface does not
 show tokens as they arrive: you get a failure signal you cannot otherwise have.</p>
 
-<h2>Stacked timeouts are where outages come from</h2>
+<h2 id="stacked-timeouts-are-where-outages-come-from">Stacked timeouts are where outages come from</h2>
 
 <p>A request typically crosses several hops, each with its own timeout: browser, your API,
 your gateway, the provider. The rule that keeps this sane is that <strong>timeouts must
@@ -213,7 +224,7 @@ of a first that is still running.</p>
     rather than to volume.</li>
 </ol>
 
-<h2>What a timeout should do</h2>
+<h2 id="what-a-timeout-should-do">What a timeout should do</h2>
 
 <p>Not "retry immediately with identical parameters". A timeout means something is slow, and
 the most common reason is load, so an immediate identical retry adds load to a system that is
@@ -236,7 +247,7 @@ still running upstream when you start the second, you will be billed for both. C
 original — actually closing the connection, not just abandoning the promise — is the part
 people skip.</p>
 
-<h2>Numbers to start from</h2>
+<h2 id="numbers-to-start-from">Numbers to start from</h2>
 
 <p>These are starting points to be replaced by your own measurements, not recommendations
 dressed as facts. Measure your own <a href="/blog/llm-observability">time to first token

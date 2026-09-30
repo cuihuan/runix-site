@@ -113,10 +113,22 @@
     </div>
   </nav>
 </header>
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Shipping &amp; Delivery on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Shipping &amp; Delivery</a>
+    <a class="pbar-layer" href="/terms">Legal</a>
+    <span class="pbar-status">Version 1.1 &middot; updated September 30, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-is-delivered">What is delivered</a></li><li><a href="#when-it-is-delivered">When it is delivered</a></li><li><a href="#how-you-receive-it">How you receive it</a></li><li><a href="#where-we-deliver">Where we deliver</a></li><li><a href="#delivery-charges-and-taxes">Delivery charges and taxes</a></li><li><a href="#if-delivery-does-not-happen">If delivery does not happen</a></li><li><a href="#changes">Changes</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off-->
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Legal</p><!--/ps:eyebrow-->
     <h1>Shipping &amp; Delivery Policy</h1>
     <p>What you receive when you pay, how quickly it arrives, and where we can deliver it.</p>
   </div>
@@ -129,7 +141,7 @@
     <p><strong>Runix sells digital services only.</strong> Nothing is physically shipped, so there is no delivery address to enter, no carrier, no shipping fee, and no customs step. This page is our shipping policy: it sets out how a purchase reaches you instead. It forms part of our <a href="/terms">Terms of Service</a> and works together with the <a href="/refund">Refund Policy</a> and <a href="/cancellation">Cancellation Policy</a>.</p>
   </div>
 
-  <h2>1. What is delivered</h2>
+  <h2 id="what-is-delivered">1. What is delivered</h2>
   <ul>
     <li><strong>Access to the Runix Router API</strong>: an OpenAI-compatible endpoint at <code>api.router.runixcloud.io</code>, reached with API keys our team issues to your account after a short intake.</li>
     <li><strong>Prepaid credits</strong> — the balance your requests draw down against, held on your account.</li>
@@ -137,7 +149,7 @@
     <li><strong>Project deliverables</strong> for Runix Data, Runix Models, Runix FS and Runix Pipeline engagements — the outputs and the accompanying reports, in the format named in your order form or statement of work.</li>
   </ul>
 
-  <h2>2. When it is delivered</h2>
+  <h2 id="when-it-is-delivered">2. When it is delivered</h2>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table>
     <caption>Delivery timing by purchase type</caption>
@@ -170,14 +182,14 @@
 </div>
   <p>Products still in development (Runix Code and Runix Comic) are not sold self-serve today; joining a waitlist is free and delivers nothing chargeable. Where an early cohort is invited under individually agreed terms, delivery follows that agreement.</p>
 
-  <h2>3. How you receive it</h2>
+  <h2 id="how-you-receive-it">3. How you receive it</h2>
   <ul>
     <li><strong>Set up by our team.</strong> Your account, keys and entitlements are configured by our engineers and confirmed to you by email. Balance, keys and per-request usage are then visible in the console Runix operates, at the address in that email.</li>
     <li><strong>By email.</strong> An itemized receipt is sent for every payment. Enterprise accounts also receive formal invoices on their billing cycle.</li>
     <li><strong>Agreed before it is paid for.</strong> Plans and top-ups are agreed with our team first, and card payments are made on a link we send, so what you pay for is already set up to run.</li>
   </ul>
 
-  <h2>4. Where we deliver</h2>
+  <h2 id="where-we-deliver">4. Where we deliver</h2>
   <p>Services are delivered electronically and are available worldwide, with two exceptions we apply strictly:</p>
   <ul>
     <li>We do not provide the Services to individuals or entities in countries or regions subject to comprehensive sanctions, or to parties on applicable restricted-party lists.</li>
@@ -185,20 +197,20 @@
   </ul>
   <p>Where a specific upstream model or provider is unavailable in your region, that limitation is stated before you rely on it — see our <a href="/acceptable-use">Acceptable Use Policy</a>.</p>
 
-  <h2>5. Delivery charges and taxes</h2>
+  <h2 id="delivery-charges-and-taxes">5. Delivery charges and taxes</h2>
   <p>There are no delivery, shipping or handling charges, because nothing is shipped. Prices are quoted in <strong>USD</strong>. Applicable taxes are shown at checkout or on your invoice where required. Full details on how billing works are on the <a href="/plans">pricing page</a>.</p>
 
-  <h2>6. If delivery does not happen</h2>
+  <h2 id="if-delivery-does-not-happen">6. If delivery does not happen</h2>
   <ul>
     <li>If a payment succeeded but your balance or entitlement did not appear within one hour, email <!--email_off--><a data-cfg-mail="billingEmail" href="mailto:billing@runixcloud.io">billing@runixcloud.io</a><!--/email_off--> with the payment reference. We investigate and correct verified errors, including a full refund where the service was never delivered.</li>
     <li>If the Services are unavailable beyond the thresholds of an agreed SLA, the remedies in that SLA apply.</li>
     <li>Undelivered purchases are refundable in full under the <a href="/refund">Refund Policy</a>. Please contact us before disputing a charge with your bank — it is almost always faster, and a chargeback may suspend the account while it is investigated.</li>
   </ul>
 
-  <h2>7. Changes</h2>
+  <h2 id="changes">7. Changes</h2>
   <p>We may update this Policy; the "Last updated" date reflects the current version, and material changes will be posted on this page.</p>
 
-  <h2>8. Contact</h2>
+  <h2 id="contact">8. Contact</h2>
   <p>Questions about delivery: <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off-->. Billing and payment references: <!--email_off--><a data-cfg-mail="billingEmail" href="mailto:billing@runixcloud.io">billing@runixcloud.io</a><!--/email_off-->. We aim to reply within one business day.</p>
 </article>
 </main>

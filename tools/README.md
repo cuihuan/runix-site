@@ -132,6 +132,7 @@ is idempotent and `check_idempotent.sh` proves it.
 | `product_template.py` (`PRODUCTS`: at-a-glance rows, specs, neighbours, start steps) | `product_template.py` | the product bar, the split hero with its panel, the example band, numbered section heads, the specifications table, works-with, how-to-start |
 | `domains.py` | `build_domain_pages.py` | the six domain pages, on the same shell |
 | `docs_shell.py` (`GUIDES`) | `docs_shell.py` | the docs sidebar by layer, breadcrumbs, the hub grouped by layer |
+| `page_shell.py` (`PAGES`, `LABELS`) | `page_shell.py` | the page bar, eyebrow and numbered section heads on every non-product page: pricing, company, legal, blog, docs hub, payments |
 
 The design the shell implements is the canvas "Runix Lab Site Redesign"
 (private; the person who owns the account can share it). Its rules in one

@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">July 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#why-reconstruction-after-the-fact-fails">Why reconstruction after the fact fails</a></li><li><a href="#attribute-at-call-time-or-not-at-all">Attribute at call time or not at all</a></li><li><a href="#count-tokens-from-the-response-not-your-estimate">Count tokens from the response, not your estimate</a></li><li><a href="#attach-price-at-write-time">Attach price at write time</a></li><li><a href="#budgets-are-the-part-people-actually-want">Budgets are the part people actually want</a></li><li><a href="#where-this-lands-architecturally">Where this lands architecturally</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
     <h1 style="margin-top: 14px;">Per-Team LLM Cost Attribution That Survives Audit</h1>
@@ -142,7 +153,7 @@
 
 <p>The provider invoice is one number. Your finance team wants it split by product line, your engineering manager wants it split by feature, and somebody in the middle wants to know why it tripled in March. If you did not attribute cost at call time, none of those questions have honest answers.</p>
 
-<h2>Why reconstruction after the fact fails</h2>
+<h2 id="why-reconstruction-after-the-fact-fails">Why reconstruction after the fact fails</h2>
 <p>The usual attempt is to take application logs, join them against provider usage exports, and allocate. It fails for boring, structural reasons.</p>
 <ul>
 <li><strong>Timing.</strong> Provider usage is aggregated on their clock in their timezone; your logs are on yours. Requests near a boundary land in different buckets and the totals never quite match.</li>
@@ -152,7 +163,7 @@
 </ul>
 <p>Each of these is a few percent. Together they are enough that nobody trusts the resulting spreadsheet, which means it stops being maintained, which is how organisations end up with an unexplained six-figure line item.</p>
 
-<h2>Attribute at call time or not at all</h2>
+<h2 id="attribute-at-call-time-or-not-at-all">Attribute at call time or not at all</h2>
 <p>The workable model is to decide the dimensions before the request leaves your infrastructure, and to record them on the same record that carries the token counts:</p>
 <ul>
 <li><strong>Key</strong> — the credential used. This should be per service or per team, never shared.</li>
@@ -162,26 +173,24 @@
 </ul>
 <p>Three of those four cost nothing to add and are impossible to add later.</p>
 
-<h2>Count tokens from the response, not your estimate</h2>
+<h2 id="count-tokens-from-the-response-not-your-estimate">Count tokens from the response, not your estimate</h2>
 <p>Client-side estimation with a tokeniser is useful for guardrails and useless for billing: it does not know about system prompts injected downstream, cached prefixes, tool schemas, or provider-side reformatting. The number that matters is the usage block the provider returns with the response.</p>
 <p>For streaming, that block arrives at the end, and it is the single most commonly dropped field in a streaming implementation. If your stream handler does not persist final usage, your cost data has a hole exactly where your most expensive requests live. Distinguish input, output, and cached-input tokens: they are priced differently, and in cache-heavy workloads the difference between them is most of the bill.</p>
 
-<h2>Attach price at write time</h2>
+<h2 id="attach-price-at-write-time">Attach price at write time</h2>
 <p>Store the rate you applied alongside the token counts, rather than computing cost later by joining against a current price table. Prices change; when they do, a "current price" join silently rewrites history and your March number stops matching what March actually cost. Recording rate-at-time-of-call also makes your internal numbers reconcilable against the provider invoice line by line, which is what turns an argument into an audit.</p>
 
-<h2>Budgets are the part people actually want</h2>
+<h2 id="budgets-are-the-part-people-actually-want">Budgets are the part people actually want</h2>
 <p>Attribution answers "where did it go". The follow-up is always "stop it from going there". Once cost is attached per key, enforcement becomes possible: a monthly ceiling per key, an alert at a percentage of it, and a defined behaviour at the limit — throttle, downgrade to a cheaper model, or reject.</p>
 <p>Decide that behaviour deliberately. Silently downgrading a model changes output quality without telling anyone, which is a support ticket wearing a cost control's clothing. Rejecting is honest but breaks the feature. Throttling is usually the least bad default for interactive traffic, and hard rejection is right for batch jobs.</p>
 
-<h2>Where this lands architecturally</h2>
+<h2 id="where-this-lands-architecturally">Where this lands architecturally</h2>
 <p>All of the above is per-request bookkeeping on the hot path, which means it belongs in the component every request already passes through. Doing it in each service means implementing it four times and getting three different answers. That is the practical argument for a gateway — see <a href="/router">how we handle usage and quotas</a>, or the wider write-up on <a href="/blog/llm-cost-control">controlling LLM cost</a>.</p>
-
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span>Cost per key, per team, per feature — from the first call. <a href="/router">Runix Router</a> is in early access — <a href="/about#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

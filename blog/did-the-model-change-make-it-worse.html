@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 6, 2026</span>
+    <ul class="pbar-links"><li><a href="#why-the-obvious-approach-does-not-work">Why the obvious approach does not work</a></li><li><a href="#four-signals-that-do-not-require-reading-the-output">Four signals that do not require reading the output</a></li><li><a href="#establish-the-baseline-before-you-need-it">Establish the baseline before you need it</a></li><li><a href="#run-both-models-but-not-on-the-same-request">Run both models, but not on the same request</a></li><li><a href="#what-to-do-when-a-signal-moves">What to do when a signal moves</a></li><li><a href="#the-short-version">The short version</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 6, 2026</span><span>·</span><span>5 min read</span></div>
     <h1 style="margin-top: 14px;">How to tell whether a model change made things worse</h1>
@@ -150,7 +161,7 @@ own schedule, <a href="/blog/model-deprecation-without-a-redeploy">two months' n
 normal</a>, so you will be moved off a model that works, on a date somebody else chose. The
 question is not whether to change models. It is how you will know if the change hurt.</p>
 
-<h2>Why the obvious approach does not work</h2>
+<h2 id="why-the-obvious-approach-does-not-work">Why the obvious approach does not work</h2>
 
 <p>The instinct is to run both models on the same prompts and compare the outputs. That fails
 for a specific reason: identical inputs do not produce identical outputs, so a diff of two
@@ -161,7 +172,7 @@ concluding "seems fine", and shipping on a sample of thirty.</p>
 misread instruction, but it does not scale and it cannot run continuously. It belongs at the
 end, on the cases the automated signals flag, not at the start on a random sample.</p>
 
-<h2>Four signals that do not require reading the output</h2>
+<h2 id="four-signals-that-do-not-require-reading-the-output">Four signals that do not require reading the output</h2>
 
 <p>Each of these is cheap, computable on live traffic, and moves before a human notices
 anything.</p>
@@ -190,7 +201,7 @@ generated code that gets committed. If your product has any such action, it is w
 than the other three combined, because it measures what users did rather than what the
 response looked like.</p>
 
-<h2>Establish the baseline before you need it</h2>
+<h2 id="establish-the-baseline-before-you-need-it">Establish the baseline before you need it</h2>
 
 <p>All four are only useful against a before. Two weeks of the old model's numbers is worth
 more than any amount of pre-launch evaluation, and you cannot collect it retroactively.</p>
@@ -199,7 +210,7 @@ more than any amount of pre-launch evaluation, and you cannot collect it retroac
 retired, not the day you switch. Sixty days' notice is enough time to build a baseline; it is
 not enough time to build a baseline after you have already migrated.</p>
 
-<h2>Run both models, but not on the same request</h2>
+<h2 id="run-both-models-but-not-on-the-same-request">Run both models, but not on the same request</h2>
 
 <p>Rather than shadowing every request through both models — which doubles your spend and
 still leaves you diffing non-deterministic text — split traffic. Send a slice to the new
@@ -214,7 +225,7 @@ rather than anecdotal, and it keeps running after you have stopped paying attent
 measured over a few hundred requests moves around enough to hide a change worth acting on.
 If your volume is low, hold the split for longer rather than reading a small sample early.</p>
 
-<h2>What to do when a signal moves</h2>
+<h2 id="what-to-do-when-a-signal-moves">What to do when a signal moves</h2>
 
 <ol>
 <li><strong>Confirm it is the model.</strong> Check whether the same signal moved on routes
@@ -233,7 +244,7 @@ If your volume is low, hold the split for longer rather than reading a small sam
     application</a> in the first place.</li>
 </ol>
 
-<h2>The short version</h2>
+<h2 id="the-short-version">The short version</h2>
 
 <p>You will be moved off a working model on someone else's schedule. Output diffs cannot tell
 you whether the replacement is worse, because output varies anyway. Parse rate, length

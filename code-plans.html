@@ -170,10 +170,21 @@
     </div>
   </nav>
 </header>
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Code plans on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Code plans</a>
+    <a class="pbar-layer" href="/plans">Pricing</a>
+    <ul class="pbar-links"><li><a href="#one-credit-every-model">One credit, every model</a></li><li><a href="#team-plans">Team plans</a></li><li><a href="#how-usage-stays-predictable">How usage stays predictable</a></li><li><a href="#common-questions">Common questions</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero center">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Pricing</p><!--/ps:eyebrow-->
     <h1><span class="line">Coding plans for</span>
 <span class="line">your whole team</span></h1>
     <span class="badge">Runix Code · In development</span>
@@ -188,7 +199,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head center">
-      <h2>One credit, every model</h2>
+      <p class="sec-no">02 &middot; Credits</p>
+      <h2 id="one-credit-every-model">One credit, every model</h2>
       <p>No tokens to reason about, no per-model price lists. Everything your team runs (frontier models, lighter models, and search / fetch / data tools) is metered in a single credit. You buy seats; seats carry credits; credits do the rest.</p>
     </div>
     <div class="grid cols-3">
@@ -215,7 +227,8 @@
 <section class="section alt" id="plans">
   <div class="container">
     <div class="section-head center">
-      <h2>Team plans</h2>
+      <p class="sec-no">03 &middot; Plans</p>
+      <h2 id="team-plans">Team plans</h2>
       <p>Indicative tiers while the product is in development. Credits pool across your team; joining the waitlist gets you a cohort slot and a quote for your seat count.</p>
     </div>
     <div class="plans plans-4">
@@ -286,7 +299,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head center">
-      <h2>How usage stays predictable</h2>
+      <p class="sec-no">04 &middot; Usage</p>
+      <h2 id="how-usage-stays-predictable">How usage stays predictable</h2>
       <p>Every seat runs against three rolling limits at once. It is the difference between "we lost a month's budget to one bad agent loop" and a plan that lasts exactly as long as it should.</p>
     </div>
     <div class="windows">
@@ -340,7 +354,8 @@
 <!-- FAQ -->
 <section class="section">
   <div class="container">
-    <div class="section-head center"><h2>Common questions</h2></div>
+    <div class="section-head center">      <p class="sec-no">05 &middot; Questions</p>
+<h2 id="common-questions">Common questions</h2></div>
     <div class="qas">
       <div class="qa"><h3>What is a credit?</h3><p>A fixed unit of usage that covers any model or tool at one published rate. You never reason about tokens or per-model dollar prices — frontier models, lighter models, and search / fetch / data tools all meter in the same credit.</p></div>
       <div class="qa"><h3>What happens at the limit?</h3><p>Usage pauses until the window resets. Each seat runs against a rolling 5-hour cap, a weekly cap and a monthly allowance — so no runaway agent, no surprise bill. Need more? Top up the pool.</p></div>
@@ -353,7 +368,7 @@
 <section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>Put a coding agent in front of your team</h2>
+      <h2 id="put-a-coding-agent-in-front-of-your-team">Put a coding agent in front of your team</h2>
       <p>Runix Code is still being built. Tell us your team size and stack and we will put you in the next onboarding cohort — and price the seats before you commit.</p>
       <!--email_off--><a class="btn btn-grad" href="mailto:contact@runixcloud.io?subject=Runix%20Code%20waitlist">Join the waitlist</a><!--/email_off-->
     </div>

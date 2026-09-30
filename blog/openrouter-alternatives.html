@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Buyer's guide</span>
+    <span class="pbar-status">July 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#who-is-the-counterparty">Who is the counterparty?</a></li><li><a href="#what-happens-to-prompt-content">What happens to prompt content?</a></li><li><a href="#where-do-the-credentials-live">Where do the credentials live?</a></li><li><a href="#what-does-failover-really-do">What does failover really do?</a></li><li><a href="#can-you-attribute-cost-without-a-spreadsheet">Can you attribute cost without a spreadsheet?</a></li><li><a href="#what-is-the-pricing-model-exactly">What is the pricing model, exactly?</a></li><li><a href="#what-is-the-added-latency-measured-how">What is the added latency, measured how?</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Buyer's guide</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
     <h1 style="margin-top: 14px;">OpenRouter Alternatives: A Buyer's Checklist</h1>
@@ -143,18 +154,18 @@
 <p>Search traffic for "OpenRouter alternative" is mostly people who have outgrown one specific thing: aggregation is easy to adopt and hard to defend in a procurement review. If you are shopping, the useful exercise is not comparing feature grids (vendors write those) but writing down the questions whose answers you would have to show someone else.</p>
 <p>What follows is that checklist. It is deliberately vendor-neutral: run it against every candidate, including <a href="/router">Runix Router</a>, and including "keep building it ourselves".</p>
 
-<h2>1. Who is the counterparty?</h2>
+<h2 id="who-is-the-counterparty">1. Who is the counterparty?</h2>
 <p>Ask which legal entity you are contracting with, where it is incorporated, and whether it can issue an invoice your finance team can pay. This sounds bureaucratic until a security review stalls for six weeks because nobody can produce a signable MSA.</p>
 <p>Follow-ups worth asking: is there a DPA available, and does the vendor sub-process your data through anyone you have not been told about?</p>
 
-<h2>2. What happens to prompt content?</h2>
+<h2 id="what-happens-to-prompt-content">2. What happens to prompt content?</h2>
 <p>Get this in writing, and get the distinction right, because most vague answers hide it: <strong>content</strong> (prompts, completions, files) is not the same as <strong>operational metadata</strong> (token counts, latency, error codes, model ids). Almost every gateway keeps the second — you cannot bill or debug without it. The questions that matter are whether the first is stored at all, for how long, who can read it, and whether it is ever used to train anything.</p>
 <p>"We do not store your data" is not an answer. "Content is not persisted beyond the request; metadata is retained for N days for billing and support; nothing is used for training" is.</p>
 
-<h2>3. Where do the credentials live?</h2>
+<h2 id="where-do-the-credentials-live">3. Where do the credentials live?</h2>
 <p>There are two models, and they have different blast radii. Either you hand the gateway your provider keys, or the gateway holds its own provider relationships and issues you keys. Both are defensible. What matters is that gateway keys can be scoped and revoked per team or per service without redeploying anything, and that revocation actually takes effect immediately.</p>
 
-<h2>4. What does failover really do?</h2>
+<h2 id="what-does-failover-really-do">4. What does failover really do?</h2>
 <p>Every vendor says "automatic failover". Push on the specifics:</p>
 <ul>
 <li>Does a mid-stream failure fail over, or only a failure before the first token? Failing over after tokens have been emitted requires deciding what the client sees — silently restarting a stream produces duplicated text.</li>
@@ -162,30 +173,28 @@
 <li>Are tool calls and structured outputs preserved across a failover to a different provider, whose schema handling may differ?</li>
 </ul>
 
-<h2>5. Can you attribute cost without a spreadsheet?</h2>
+<h2 id="can-you-attribute-cost-without-a-spreadsheet">5. Can you attribute cost without a spreadsheet?</h2>
 <p>Ask to see what a statement looks like. Specifically: can you break spend down by key, by team and by model, and does the vendor's number reconcile with your own request logs? A gateway that cannot answer "which feature spent this" is a billing pass-through, not a cost control.</p>
 
-<h2>6. What is the pricing model, exactly?</h2>
+<h2 id="what-is-the-pricing-model-exactly">6. What is the pricing model, exactly?</h2>
 <p>Three shapes are common: a margin on provider rates, a flat platform fee, or a per-request charge. All three are fine. What is not fine is not being told which one you are on. Ask what happens when the underlying provider changes its prices, and whether your rate is fixed for a term.</p>
 
-<h2>7. What is the added latency, measured how?</h2>
+<h2 id="what-is-the-added-latency-measured-how">7. What is the added latency, measured how?</h2>
 <p>A gateway on the hot path adds overhead. Ask how it is measured — added time-to-first-token is the number that matters for streaming UX, and it is the number vendors are least likely to publish. Be suspicious of a single global figure with no percentiles and no region.</p>
 
-<h2>8. What happens when the gateway itself is down?</h2>
+<h2 id="what-happens-when-the-gateway-itself-is-down">8. What happens when the gateway itself is down?</h2>
 <p>You have added a dependency in front of every AI feature. Ask about the failure mode: is there a documented way to bypass it, do keys keep working if the control plane is unavailable, and what is the actual availability record — not the target.</p>
 
-<h2>9. Can you leave?</h2>
+<h2 id="can-you-leave">9. Can you leave?</h2>
 <p>Exit cost is the cheapest thing to check and the most expensive to discover late. If the gateway speaks a standard API, leaving is a base-URL change. If it requires a proprietary SDK, a custom prompt format, or holds the only copy of your usage history, you are buying a migration project you have not scheduled.</p>
 
-<h2>10. Is the honest answer "build it"?</h2>
+<h2 id="is-the-honest-answer-build-it">10. Is the honest answer "build it"?</h2>
 <p>Sometimes. One provider, one team, modest volume — a hundred lines of retry logic is genuinely cheaper than a vendor relationship. The calculus changes at the second provider, the second team, or the first compliance questionnaire, because that is when the work stops being a library and starts being an operated service.</p>
-
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span>Running this checklist against us is fair game. <a href="/router">Runix Router</a> is in early access — <a href="/about#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

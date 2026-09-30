@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 25, 2026</span>
+    <ul class="pbar-links"><li><a href="#rate-limits-do-not-solve-this">Rate limits do not solve this</a></li><li><a href="#failed-requests-spend-too">Failed requests spend too</a></li><li><a href="#hard-stop-or-overage-pick-deliberately">Hard stop or overage — pick deliberately</a></li><li><a href="#alert-on-runway-not-on-balance">Alert on runway, not on balance</a></li><li><a href="#reserve-before-you-allocate">Reserve before you allocate</a></li><li><a href="#what-to-check-on-your-own-setup">What to check on your own setup</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 25, 2026</span><span>·</span><span>5 min read</span></div>
     <h1 style="margin-top: 14px;">One key can drain a shared quota pool</h1>
@@ -146,7 +157,7 @@ capacity with no per-key ceiling is first-come-first-served: whoever sends the m
 gets the most capacity, and the question of who runs out is settled by traffic rather than by
 you. That is fine right up until one consumer starts a backfill.</p>
 
-<h2>Rate limits do not solve this</h2>
+<h2 id="rate-limits-do-not-solve-this">Rate limits do not solve this</h2>
 
 <p>The reflex is to point at the rate limiter, but a rate limit and a quota control different
 things and you need both. A rate limit is about <em>instantaneous</em> load (requests per
@@ -158,7 +169,7 @@ a marathon.</p>
 consume more capacity than a client that briefly bursts past it and gets throttled. The
 limiter will report a clean week. The pool will still be empty.</p>
 
-<h2>Failed requests spend too</h2>
+<h2 id="failed-requests-spend-too">Failed requests spend too</h2>
 
 <p>The arithmetic gets worse once errors enter it. An upstream failure that arrives after the
 provider has already processed the prompt is billed, and the client retries, so the
@@ -173,7 +184,7 @@ The gap between them is the number worth alerting on: see
 <a href="/blog/llm-retry-budget">retry budgets</a> for the client-side half of the same
 problem.</p>
 
-<h2>Hard stop or overage — pick deliberately</h2>
+<h2 id="hard-stop-or-overage-pick-deliberately">Hard stop or overage — pick deliberately</h2>
 
 <p>Prepaid pools fail in one of two ways when they empty, and the choice matters more than it
 looks:</p>
@@ -193,7 +204,7 @@ looks:</p>
 two demand opposite monitoring: hard stop needs a <em>runway</em> alarm, overage needs a
 <em>rate</em> alarm.</p>
 
-<h2>Alert on runway, not on balance</h2>
+<h2 id="alert-on-runway-not-on-balance">Alert on runway, not on balance</h2>
 
 <p>The most common quota alert is a percentage of the balance: tell me when the pool drops
 below twenty percent. It is the wrong threshold, because the same balance means completely
@@ -214,7 +225,7 @@ the faster of the two — the recent daily average and the last hour extrapolate
 divide by that. It stays calm during normal variation and reacts within an hour to a step
 change, which is the behaviour you actually want from something that pages you.</p>
 
-<h2>Reserve before you allocate</h2>
+<h2 id="reserve-before-you-allocate">Reserve before you allocate</h2>
 
 <p>If any of the traffic on a shared pool is <em>yours</em> — internal tooling, evaluation
 jobs, the assistant your own engineers use — that traffic deserves a floor rather than a fair
@@ -228,7 +239,7 @@ unallocated as headroom. The ceilings are not there to be hit in normal operatio
 there so that one consumer's mistake is bounded by their own allocation rather than by the
 pool.</p>
 
-<h2>What to check on your own setup</h2>
+<h2 id="what-to-check-on-your-own-setup">What to check on your own setup</h2>
 
 <ul>
 <li>Does any single key have an enforced ceiling, or does the pool limit apply only in

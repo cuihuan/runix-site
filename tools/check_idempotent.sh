@@ -25,7 +25,7 @@ fi
 # re-running any of them would regress it. flagship_nav owns the header nav.
 BUILDERS="add_closing_ctas add_docs_nav add_router_diagram
           expand_about fix_orphans wrap_tables sync_schema add_related add_glossary
-          credits_on_request flagship_nav stack_build build_domain_pages product_template docs_shell"
+          credits_on_request flagship_nav stack_build build_domain_pages product_template docs_shell page_shell"
 
 fail=0
 for t in $BUILDERS; do

@@ -138,9 +138,20 @@
     </div>
   </nav>
 </header>
-<main id="main">
-<div class="page-hero center">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Pricing on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Pricing</a>
+    <a class="pbar-layer" href="/plans">Pricing</a>
+    <ul class="pbar-links"><li><a href="#how-each-product-is-priced">How each product is priced</a></li><li><a href="#why-there-is-no-checkout">Why there is no checkout</a></li><li><a href="#common-questions">Common questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%20pricing">Talk to sales</a><!--/email_off-->
+  </div>
+</nav>
+<!--/ps:bar-->
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Pricing</p><!--/ps:eyebrow-->
     <h1><span class="line">Pricing starts</span>
 <span class="line">with a conversation</span></h1>
     <p>Every Runix Lab product is sold to teams through a person, not a checkout. Tell us what you are building and the volume you expect, and we reply within one business day with a plan and a price in writing.</p>
@@ -154,7 +165,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head center">
-      <h2>How each product is priced</h2>
+      <p class="sec-no">02 &middot; Products</p>
+      <h2 id="how-each-product-is-priced">How each product is priced</h2>
       <p>Listed top to bottom as the stack is drawn. The statuses are the same literal ones used everywhere on the site, and every price is stated in writing before you commit.</p>
     </div>
     <div class="dsheet plain" tabindex="0" role="region" aria-label="How each Runix Lab product is priced">
@@ -177,7 +189,8 @@
 <section class="section alt">
   <div class="container">
     <div class="section-head center">
-      <h2>Why there is no checkout</h2>
+      <p class="sec-no">03 &middot; Why</p>
+      <h2 id="why-there-is-no-checkout">Why there is no checkout</h2>
       <p>A checkout suits a product that works the moment it is paid for. Ours are configured for the team that uses them, so the conversation comes first and the wait disappears.</p>
     </div>
     <div class="grid cols-3">
@@ -200,7 +213,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head center">
-      <h2>Common questions</h2>
+      <p class="sec-no">04 &middot; Questions</p>
+      <h2 id="common-questions">Common questions</h2>
     </div>
     <div class="qas">
       <div class="qa">
@@ -226,7 +240,7 @@
 <section class="section section-end">
   <div class="container">
     <div class="cta-band">
-      <h2>Tell us what you are building</h2>
+      <h2 id="tell-us-what-you-are-building">Tell us what you are building</h2>
       <p>The models, the data and the volume you expect. A real person replies within one business day with a plan and a price.</p>
       <div class="cta-actions">
         <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20pricing">Talk to sales</a><!--/email_off-->

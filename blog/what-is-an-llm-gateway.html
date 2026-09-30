@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Concepts</span>
+    <span class="pbar-status">July 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-a-gateway-actually-does">What a gateway actually does</a></li><li><a href="#what-a-gateway-is-not">What a gateway is not</a></li><li><a href="#proxy-gateway-router-the-words-people-use">Proxy, gateway, router: the words people use</a></li><li><a href="#when-a-team-actually-needs-one">When a team actually needs one</a></li><li><a href="#self-host-or-managed">Self-host or managed</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Concepts</span><span>July 27, 2026</span><span>·</span><span>6 min read</span></div>
     <h1 style="margin-top: 14px;">What Is an LLM Gateway? A Plain Definition</h1>
@@ -143,7 +154,7 @@
 <p>An <strong>LLM gateway</strong> is a service that sits between your application and the model providers you call, so that requests, credentials, limits and cost accounting are handled in one place instead of in every service that happens to talk to a model.</p>
 <p>That is the whole definition. The rest of this post is about what follows from it, because the interesting part is not what a gateway <em>is</em>, it is which problems disappear once you have one and which ones stubbornly do not.</p>
 
-<h2>What a gateway actually does</h2>
+<h2 id="what-a-gateway-actually-does">What a gateway actually does</h2>
 <p>Four responsibilities show up in every serious implementation:</p>
 <ul>
 <li><strong>One interface across providers.</strong> Your code speaks a single API — in practice usually the OpenAI schema, because that is what most SDKs and frameworks already emit — and the gateway translates to whatever the target provider expects. Switching a model becomes a configuration change rather than a code change.</li>
@@ -152,13 +163,13 @@
 <li><strong>Accounting.</strong> Token counts and cost attached to every request, attributable to a key, a team, or a feature. Without this, an LLM bill is a single number nobody can explain.</li>
 </ul>
 
-<h2>What a gateway is not</h2>
+<h2 id="what-a-gateway-is-not">What a gateway is not</h2>
 <p>Three things get confused with gateways often enough to be worth separating.</p>
 <p><strong>It is not a model.</strong> A gateway does not make answers better. If a model is wrong for your task, routing it through anything will not fix that.</p>
 <p><strong>It is not an agent framework.</strong> Orchestration, tool loops, memory and planning live in your application or in a framework you choose. A gateway that starts making those decisions for you becomes a dependency you cannot debug.</p>
 <p><strong>It is not a cache by default.</strong> Caching LLM responses is legitimate for some workloads and dangerous for others: see <a href="/blog/llm-cost-control">our post on cost control</a> for where the line sits. Gateways can offer caching; conflating the two leads to surprising correctness bugs.</p>
 
-<h2>Proxy, gateway, router: the words people use</h2>
+<h2 id="proxy-gateway-router-the-words-people-use">Proxy, gateway, router: the words people use</h2>
 <p>The vocabulary in this category is loose, and vendors use it inconsistently. A rough map:</p>
 <ul>
 <li>A <strong>proxy</strong> forwards requests, usually with minimal transformation. Useful for logging and key hiding, not much else.</li>
@@ -167,7 +178,7 @@
 </ul>
 <p>The distinction matters when buying. If your problem is "we want the cheapest token", a router is enough. If your problem is "we cannot tell which team spent $40,000 last month and our provider keys are in six places", you want a gateway.</p>
 
-<h2>When a team actually needs one</h2>
+<h2 id="when-a-team-actually-needs-one">When a team actually needs one</h2>
 <p>Not immediately. A single service calling a single provider with one key does not need a control plane, and adding one early buys latency and an extra dependency for no benefit.</p>
 <p>The signals that it is time are consistent:</p>
 <ul>
@@ -177,16 +188,14 @@
 <li><strong>The first procurement review.</strong> Somebody asks where keys are stored, what is logged, and how long it is retained. Answering per-service is painful; answering once is not.</li>
 </ul>
 
-<h2>Self-host or managed</h2>
+<h2 id="self-host-or-managed">Self-host or managed</h2>
 <p>Both are reasonable. Self-hosting keeps traffic inside your perimeter and gives you the source; it also means you own a component on the hot path of every AI feature you ship, including its upgrades, its failover behaviour and its 3am pages. A managed gateway trades that for a dependency you do not control.</p>
 <p>The honest way to decide is to ask who will own the on-call rotation for it in six months. If the answer is "nobody has volunteered", self-hosting is a decision to accumulate risk rather than to save money.</p>
-
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span>Weighing whether you need a gateway at all? <a href="/router">Runix Router</a> is in early access — <a href="/about#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

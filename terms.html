@@ -114,10 +114,22 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Terms of Service on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Terms of Service</a>
+    <a class="pbar-layer" href="/terms">Legal</a>
+    <span class="pbar-status">Version 1.2 &middot; updated September 30, 2026</span>
+    <ul class="pbar-links"><li><a href="#the-services">The Services</a></li><li><a href="#accounts-and-api-keys">Accounts and API keys</a></li><li><a href="#acceptable-use">Acceptable use</a></li><li><a href="#fees-payment-and-refunds">Fees, payment, and refunds</a></li><li><a href="#customer-content-and-data">Customer Content and data</a></li><li><a href="#intellectual-property">Intellectual property</a></li><li><a href="#service-changes-and-availability">Service changes and availability</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:support@runixcloud.io?subject=Runix%20support">Contact support</a><!--/email_off-->
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Legal</p><!--/ps:eyebrow-->
     <h1>Terms of Service</h1>
     <p>Please read these terms carefully before using our websites, APIs, and services.</p>
   </div>
@@ -131,17 +143,17 @@
     <p>These Terms of Service (the "Terms") are a binding agreement between you and Runix AI Inc ("Runix", "we", "us"). By accessing our websites, creating an account, or using any of our services (the "Services"), you agree to these Terms.</p>
   </div>
 
-  <h2>1. The Services</h2>
+  <h2 id="the-services">1. The Services</h2>
   <p>Runix provides AI infrastructure products and services, including a unified LLM gateway, managed data pipelines, application solutions, and related custom development and support. Specific scope, specifications, and service levels may be defined in an order form, statement of work, or separate agreement, which takes precedence over these Terms in case of conflict.</p>
 
-  <h2>2. Accounts and API keys</h2>
+  <h2 id="accounts-and-api-keys">2. Accounts and API keys</h2>
   <ol>
     <li>You agree to provide accurate, complete registration information and keep it up to date;</li>
     <li>Accounts and API keys are for your (or your organization's) use only. You are responsible for safeguarding your credentials and for all activity under your account;</li>
     <li>Notify us immediately at <!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off--> if you suspect unauthorized use of your account.</li>
   </ol>
 
-  <h2>3. Acceptable use</h2>
+  <h2 id="acceptable-use">3. Acceptable use</h2>
   <p>You agree not to use the Services to:</p>
   <ul>
     <li>Violate any applicable law or regulation, or infringe the rights of others, including intellectual-property and privacy rights;</li>
@@ -152,7 +164,7 @@
   </ul>
   <p>Detailed prohibited uses are listed in our <a href="/acceptable-use">Acceptable Use Policy</a>, which forms part of these Terms. We may warn, throttle, suspend, or terminate accounts that violate this section or that Policy, and we reserve all legal remedies.</p>
 
-  <h2>4. Fees, payment, and refunds</h2>
+  <h2 id="fees-payment-and-refunds">4. Fees, payment, and refunds</h2>
   <ol>
     <li><strong>Fees.</strong> Pricing is usage-based, subscription-based, or project-based, as published on our <a href="/plans">pricing page</a> or agreed in an order form;</li>
     <li><strong>Payment.</strong> Payments are processed by licensed third-party payment processors. Credits or service periods take effect upon payment confirmation;</li>
@@ -163,45 +175,45 @@
     <li><strong>Late payment.</strong> For invoiced accounts, we may suspend the Services for overdue balances and charge reasonable late fees where permitted by law.</li>
   </ol>
 
-  <h2>5. Customer Content and data</h2>
+  <h2 id="customer-content-and-data">5. Customer Content and data</h2>
   <ol>
     <li>You retain all rights to the data you submit to the Services ("Customer Content"). You grant us only the limited rights needed to provide the Services;</li>
     <li>We do not use Customer Content to train models, with one exception that you control: where you engage us under an order form or statement of work to fine-tune or train a model for you (Runix Models), we use the Customer Content you provide for that engagement only to train and evaluate the model you commissioned, and for no other model or customer. We do not disclose Customer Content to unrelated third parties. Our handling of personal information is described in the <a href="/privacy">Privacy Policy</a>, which forms part of these Terms;</li>
     <li>You represent that you have all rights necessary to submit the Customer Content and that its use with the Services does not violate any law or third-party right.</li>
   </ol>
 
-  <h2>6. Intellectual property</h2>
+  <h2 id="intellectual-property">6. Intellectual property</h2>
   <ol>
     <li>The Services, including software, documentation, and design, are owned by Runix or its licensors. No rights are granted except as expressly stated;</li>
     <li>You may not copy, modify, reverse-engineer, rent, or sell the Services except as permitted by law or our written consent;</li>
     <li>Deliverables of custom development are owned as specified in the applicable statement of work.</li>
   </ol>
 
-  <h2>7. Service changes and availability</h2>
+  <h2 id="service-changes-and-availability">7. Service changes and availability</h2>
   <ol>
     <li>We work to keep the Services continuously available and will give advance notice of planned maintenance;</li>
     <li>We are not liable for interruptions caused by events beyond our reasonable control, including upstream provider failures, network outages, or force majeure, though we will make reasonable efforts to mitigate their impact;</li>
     <li>You may stop using the Services and close your account at any time. Sections that by their nature should survive (including fees owed, IP, disclaimers, and limitations of liability) survive termination.</li>
   </ol>
 
-  <h2>8. Disclaimers</h2>
+  <h2 id="disclaimers">8. Disclaimers</h2>
   <p>AI-generated output is probabilistic and may be inaccurate. Output is provided for your evaluation and use at your own discretion and does not constitute professional advice (legal, medical, financial, or otherwise). THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE." TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
 
-  <h2>9. Limitation of liability</h2>
+  <h2 id="limitation-of-liability">9. Limitation of liability</h2>
   <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, RUNIX WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR LOST PROFITS, REVENUE, OR DATA. OUR TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATING TO THE SERVICES WILL NOT EXCEED THE AMOUNTS YOU PAID US FOR THE SERVICES GIVING RISE TO THE CLAIM IN THE TWELVE (12) MONTHS BEFORE THE EVENT.</p>
 
-  <h2>10. Governing law and disputes</h2>
+  <h2 id="governing-law-and-disputes">10. Governing law and disputes</h2>
   <p>These Terms are governed by the laws of the State of Wyoming, United States, without regard to conflict-of-law rules. The parties will first attempt to resolve any dispute amicably; failing that, disputes will be resolved in the state or federal courts located in Wyoming, and each party consents to their jurisdiction.</p>
 
-  <h2>11. Changes to these Terms</h2>
+  <h2 id="changes-to-these-terms">11. Changes to these Terms</h2>
   <p>We may revise these Terms from time to time. Updated versions will be posted on this page with a revised "Last updated" date, and material changes will be announced prominently. Continued use of the Services after changes take effect constitutes acceptance.</p>
 
-  <h2>12. Who you are contracting with</h2>
+  <h2 id="who-you-are-contracting-with">12. Who you are contracting with</h2>
   <!--identity-terms-->
   <p>Runix AI Inc is a company incorporated in Wyoming, United States under company number 2026-002036618, with its registered office at 30 N Gould St Ste R, Sheridan, WY 82801, United States. You can reach us at <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> or <a href="tel:+13086890770">+1 (308) 689-0770</a>.</p>
   <!--/identity-terms-->
 
-  <h2>13. Contact</h2>
+  <h2 id="contact">13. Contact</h2>
   <p>Questions about these Terms: <!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off--></p>
 </article>
 

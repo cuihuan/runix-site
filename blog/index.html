@@ -221,10 +221,21 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Blog on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Blog</a>
+    <a class="pbar-layer" href="/blog/">Blog</a>
+    <ul class="pbar-links"><li><a href="#all-posts">All posts</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Blog</p><!--/ps:eyebrow-->
     <h1>Engineering notes &amp; announcements</h1>
     <p>What we learn running AI infrastructure, written for engineers who run it too.</p>
   </div>
@@ -232,7 +243,8 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head center"><h2>All posts</h2></div>
+    <div class="section-head center">      <p class="sec-no">02 &middot; Posts</p>
+<h2 id="all-posts">All posts</h2></div>
       <div class="blog-list">
       <div class="card">
         <div class="post-meta"><span class="cat">Announcement</span><span>September 30, 2026</span><span>·</span><span>6 min read</span></div>

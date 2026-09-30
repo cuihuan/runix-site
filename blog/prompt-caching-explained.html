@@ -129,9 +129,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">July 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#the-prefix-rule">The prefix rule</a></li><li><a href="#what-caching-does-not-do">What caching does not do</a></li><li><a href="#ways-caching-quietly-changes-behaviour">Ways caching quietly changes behaviour</a></li><li><a href="#deciding-whether-it-is-worth-it">Deciding whether it is worth it</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
     <h1 style="margin-top: 14px;">Prompt Caching: When It Pays and When It Bites</h1>
@@ -142,23 +153,23 @@
 
 <p>Prompt caching is the rare optimisation that reduces both latency and cost without touching output quality — when it hits. The gap between teams who benefit and teams who see nothing is almost entirely about prompt structure, not volume.</p>
 
-<h2>The prefix rule</h2>
+<h2 id="the-prefix-rule">The prefix rule</h2>
 <p>Provider-side caching works on a <strong>prefix</strong>: the model reuses computation for a leading span of tokens that is byte-identical to a previous request. Everything up to the first difference can be reused; everything after it cannot.</p>
 <p>That single rule explains most caching outcomes. If your prompt begins with a long, stable system message and a fixed tool schema, and the user's variable content comes last, you get hits. If you interpolate a timestamp, a request id, a shuffled list of retrieved documents, or the user's name into the top of the prompt, you have changed byte one and there is nothing to reuse.</p>
 <p>The practical instruction is therefore simple, and it is a prompt-engineering decision rather than an infrastructure one: <strong>stable content first, variable content last</strong>. Teams that reorganise their prompts around this typically see a large share of their input tokens become cached; teams that do not see essentially zero.</p>
 
-<h2>What caching does not do</h2>
+<h2 id="what-caching-does-not-do">What caching does not do</h2>
 <p>Three misunderstandings are worth separating out.</p>
 <p><strong>It does not cache the answer.</strong> Provider prompt caching reuses the encoded prefix, not the completion. The model still generates fresh output, and output tokens are still billed at the full rate. Caching helps most on prompt-heavy, completion-light workloads: long documents, big tool schemas, extensive few-shot examples.</p>
 <p><strong>It is not free.</strong> Cache writes are often billed at a premium over ordinary input tokens, and entries expire — typically in minutes unless refreshed. A workload with low request frequency against a given prefix can pay to populate a cache it never reads. Caching a huge prefix that is used twice an hour can cost more than not caching at all.</p>
 <p><strong>It is not the same as your own response cache.</strong> Storing "this exact question got this exact answer" in your own layer is a different mechanism with different risks — chiefly that answers become stale, and that two users with the same question but different permissions can receive each other's cached content. If you build one, key it by everything that affects the answer, including the identity of the caller.</p>
 
-<h2>Ways caching quietly changes behaviour</h2>
+<h2 id="ways-caching-quietly-changes-behaviour">Ways caching quietly changes behaviour</h2>
 <p>Two failure modes are worth naming, because they are hard to debug after the fact.</p>
 <p>First, <strong>metrics drift</strong>. Cached input tokens are usually reported in a separate field from ordinary input tokens. If your accounting sums only the ordinary field, cache adoption looks like a mysterious drop in usage; if it sums both at the same price, your cost model overstates spend. Track them separately — see the note on token fields in <a href="/blog/llm-cost-attribution">cost attribution</a>.</p>
 <p>Second, <strong>prompt churn</strong>. Once caching is load-bearing, an innocuous edit to the system prompt invalidates every cached prefix at once. Latency and cost jump, and nobody connects it to the one-word copy change deployed that morning. Treat the stable prefix as a versioned artefact: change it deliberately, and expect a warm-up period after you do.</p>
 
-<h2>Deciding whether it is worth it</h2>
+<h2 id="deciding-whether-it-is-worth-it">Deciding whether it is worth it</h2>
 <p>A quick screen, in order:</p>
 <ul>
 <li>Is your input-to-output token ratio high? If completions dominate, caching will not move your bill much.</li>
@@ -167,12 +178,10 @@
 </ul>
 <p>Three yeses means restructure prompts and measure. Any no means spend the effort on <a href="/blog/llm-cost-control">the other levers</a> — model selection and output length usually pay more.</p>
 
-
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
   <span>Caching behaviour differs per provider. <a href="/router">Runix Router</a> is in early access — <a href="/about#contact">tell us what you are building</a> and we reply within one business day.</span>
 </div>
-
 
 <aside class="related" aria-labelledby="related-reading">
   <h2 id="related-reading">Related reading</h2>

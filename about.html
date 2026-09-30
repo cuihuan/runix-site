@@ -114,10 +114,21 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="About on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">About</a>
+    <a class="pbar-layer" href="/about">Company</a>
+    <ul class="pbar-links"><li><a href="#what-runix-is">What Runix is</a></li><li><a href="#how-we-work">How we work</a></li><li><a href="#what-we-publish-openly">What we publish openly</a></li><li><a href="#what-we-do-not-claim">What we do not claim</a></li></ul>
+    <a class="pbar-cta" href="#contact">Contact us</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Company</p><!--/ps:eyebrow-->
     <h1>Engineers, obsessed with reliability</h1>
     <p>Our mission is to rebuild the operating system of AI, efficient, stable and enterprise-grade: <a href="/blog/rebuild-ai-unix">Rebuild AI Unix</a>. The name is the mission: Runix, from <strong>R</strong>ebuild and <strong>Unix</strong>. Runix Lab is the AI infrastructure brand of Runix AI Inc, a US-based technology company, and builds that system in five layers: storage (FS), data (Data and Pipeline), models (Models), a model gateway (Router), and the applications on top (Code and Comic).</p>
   </div>
@@ -125,7 +136,8 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head"><h2>What Runix is</h2>
+    <div class="section-head">      <p class="sec-no">02 &middot; Company</p>
+<h2 id="what-runix-is">What Runix is</h2>
       <p>The entity you would contract with, and what it actually operates today.</p></div>
     <div class="feature">
       <div>
@@ -180,7 +192,8 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head"><h2>How we work</h2></div>
+    <div class="section-head">      <p class="sec-no">03 &middot; How we work</p>
+<h2 id="how-we-work">How we work</h2></div>
       <div class="feature">
       <div>
         <h3>What we believe</h3>
@@ -213,7 +226,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head center">
-      <h2>What we publish openly</h2>
+      <p class="sec-no">04 &middot; In the open</p>
+      <h2 id="what-we-publish-openly">What we publish openly</h2>
       <p>Three of the tools we built to run a gateway are open source, under CC0 or MIT. They work against any OpenAI-compatible endpoint, including the ones we compete with.</p>
     </div>
     <div class="pillars">
@@ -242,7 +256,8 @@
 <section class="section section-alt">
   <div class="container">
     <div class="section-head center">
-      <h2>What we do not claim</h2>
+      <p class="sec-no">05 &middot; Not claimed</p>
+      <h2 id="what-we-do-not-claim">What we do not claim</h2>
       <p>A short list, kept deliberately. Every item on it is something we could quietly imply and have chosen not to.</p>
     </div>
     <div class="pillars">
@@ -274,7 +289,7 @@
 <section class="section" style="padding-top: 0;">
   <div class="container">
     <div class="cta-band">
-      <h2>Tell us what you're building</h2>
+      <h2 id="tell-us-what-you-re-building">Tell us what you're building</h2>
       <p>Include your use case, expected volume, and timeline — we'll come back with a concrete plan.</p>
       <!--email_off--><a class="btn btn-grad" href="mailto:contact@runixcloud.io">Email contact@runixcloud.io</a><!--/email_off-->
     </div>

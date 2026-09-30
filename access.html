@@ -132,38 +132,49 @@
     </div>
   </nav>
 </header>
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="Access on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Access</a>
+    <a class="pbar-layer" href="/about">Company</a>
+    <ul class="pbar-links"><li><a href="#ask-for-an-account">Ask for an account</a></li><li><a href="#your-key-arrives-configured">Your key arrives configured</a></li><li><a href="#evaluate-before-you-pay">Evaluate before you pay</a></li><li><a href="#then-you-integrate">Then you integrate</a></li><li><a href="#when-to-talk-to-us-instead">When to talk to us instead</a></li><li><a href="#common-questions">Common questions</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
+    <!--ps:eyebrow--><p class="page-eyebrow">Company</p><!--/ps:eyebrow-->
     <h1>How access works</h1>
     <p>Router is invite-only. Tell us what you are building and your account is set up within one business day; evaluation credits are issued on request. This page describes exactly what happens, from first message to first request.</p>
   </div>
 </div>
 <article class="article">
-<h2>1. Ask for an account</h2>
+<h2 id="ask-for-an-account">1. Ask for an account</h2>
 <p>Email <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> or use the <a href="/about#contact">contact form</a> with a line on what you are
 building: models, expected volume, latency needs. Access is invite-only; we reply and
 set the account up within one business day. No card, and nothing to install.</p>
 
-<h2>2. Your key arrives configured</h2>
+<h2 id="your-key-arrives-configured">2. Your key arrives configured</h2>
 <p>A key is not just a credential here. It carries its own quota and limits, the set of
 models it is allowed to call, and routing preferences applied server-side — so the
 controls are in place from the first call rather than bolted on later. Issue separate keys
 per team or product and the usage reporting splits along those lines.</p>
 
-<h2>3. Evaluate before you pay</h2>
+<h2 id="evaluate-before-you-pay">3. Evaluate before you pay</h2>
 <p>Evaluation credits are issued on request. Full router functionality, no card required.
 This is the stage where you find out whether the failover behaviour and the cost reporting
 match what you need.</p>
 
-<h2>4. Then you integrate</h2>
+<h2 id="then-you-integrate">4. Then you integrate</h2>
 <p>Integration is a base-URL change: point your existing OpenAI-compatible client at
 <code>https://api.router.runixcloud.io/v1</code> and swap the key. The
 <a href="/docs/router">Router quickstart</a> covers model selection, streaming, failover
 semantics and the error envelope.</p>
 
-<h2>5. When to talk to us instead</h2>
+<h2 id="when-to-talk-to-us-instead">5. When to talk to us instead</h2>
 <p>An account covers evaluation and normal production use. Come to
 <!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
 when you need custom routing across specific providers, limits above the standard
@@ -171,7 +182,7 @@ ceiling, invoicing or bank transfer instead of prepaid balance, or a signed MSA 
 Pricing is usage-based in USD and quotes are stated in writing — there is no published
 rate card because quotes depend on the models and volume you actually use.</p>
 
-<h2>Common questions</h2>
+<h2 id="common-questions">Common questions</h2>
 <h3>Do I need to talk to anyone to start?</h3>
 <p>Briefly, yes — access is invite-only. Send a line on what you are building and the
 account is set up within one business day; evaluation credits are issued on request.
@@ -188,7 +199,7 @@ immediate once you are in.</p>
 <section class="section">
   <div class="container">
     <div class="cta-band">
-      <h2>Request an account</h2>
+      <h2 id="request-an-account">Request an account</h2>
       <p>Tell us what you are building and your account is set up within one business day — then point a client at the endpoint. If you need custom routing, higher limits or invoicing, say so in the same message and we will answer concretely rather than stall.</p>
       <a class="btn btn-grad" href="/about#contact">Request access</a>
     </div>

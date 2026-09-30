@@ -130,9 +130,20 @@
   </nav>
 </header>
 
-<main id="main">
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">August 6, 2026</span>
+    <ul class="pbar-links"><li><a href="#which-endpoints-not-the-api">Which endpoints, not "the API"</a></li><li><a href="#parameters-that-are-accepted-and-ignored">Parameters that are accepted and ignored</a></li><li><a href="#whether-you-get-usage-back">Whether you get usage back</a></li><li><a href="#streaming-framing-exactly">Streaming framing, exactly</a></li><li><a href="#errors-status-codes-first-envelopes-second">Errors: status codes first, envelopes second</a></li><li><a href="#whether-the-request-id-survives">Whether the request id survives</a></li><li><a href="#tool-calling-if-you-use-it">Tool calling, if you use it</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
 
-<div class="page-hero">
+<div class="page-hero" id="overview">
   <div class="container">
     <div class="post-meta"><span class="cat">Engineering</span><span>August 6, 2026</span><span>·</span><span>6 min read</span></div>
     <h1 style="margin-top: 14px;">"OpenAI-compatible" is a surface, not a contract</h1>
@@ -149,7 +160,7 @@ everything after the happy path.</p>
 requests that answer each one. It takes about twenty minutes and is worth running before you
 migrate anything, including against us.</p>
 
-<h2>1. Which endpoints, not "the API"</h2>
+<h2 id="which-endpoints-not-the-api">1. Which endpoints, not "the API"</h2>
 
 <p>The OpenAI API is not one endpoint. Compatibility almost always means
 <code>POST /chat/completions</code>, sometimes embeddings, and much more rarely anything
@@ -160,7 +171,7 @@ to stop; the problem is that the claim does not say where it stopped.</p>
 completions works, the surface is one endpoint wide, and you now know that before you write
 code against anything else.</p>
 
-<h2>2. Parameters that are accepted and ignored</h2>
+<h2 id="parameters-that-are-accepted-and-ignored">2. Parameters that are accepted and ignored</h2>
 
 <p>This is the one that actually hurts, because it fails silently. A request carrying
 <code>temperature</code>, <code>top_p</code>, <code>seed</code>, <code>response_format</code>
@@ -178,7 +189,7 @@ prose.</p>
 <p>An implementation that rejects a parameter it does not support is being more honest than
 one that accepts it: a 400 is information; a 200 is a wrong answer you will not notice.</p>
 
-<h2>3. Whether you get usage back</h2>
+<h2 id="whether-you-get-usage-back">3. Whether you get usage back</h2>
 
 <p>The non-streamed response object carries <code>usage</code> alongside <code>id</code>,
 <code>choices</code>, <code>created</code>, <code>model</code> and <code>object</code>
@@ -197,7 +208,7 @@ request. Plenty of compatible implementations do not implement that chunk.</p>
 arrives before <code>[DONE]</code>. If your cost attribution depends on streamed traffic and
 that chunk never comes, you have found the gap before it becomes a billing dispute.</p>
 
-<h2>4. Streaming framing, exactly</h2>
+<h2 id="streaming-framing-exactly">4. Streaming framing, exactly</h2>
 
 <p>Streaming responses are server-sent events, and the stream ends with
 <code>data: [DONE]</code>. Three things go wrong often enough to check: the terminator is
@@ -210,7 +221,7 @@ measure your own client. Watch whether tokens arrive progressively, and that the
 is the terminator. Then make it fail: request a model that does not exist, or send an
 oversized prompt, and see what a mid-stream failure actually looks like on the wire.</p>
 
-<h2>5. Errors: status codes first, envelopes second</h2>
+<h2 id="errors-status-codes-first-envelopes-second">5. Errors: status codes first, envelopes second</h2>
 
 <p>The OpenAI SDKs map HTTP status codes to their exception classes. That means status codes
 are the part of the error contract you can rely on, and the JSON envelope is the part that
@@ -234,7 +245,7 @@ OpenAI-standard string. That is exactly the point: if your retry logic branches 
 not exist, and with a model id that does not exist. Four requests, four status codes. Write
 them down: that table is your error handling.</p>
 
-<h2>6. Whether the request id survives</h2>
+<h2 id="whether-the-request-id-survives">6. Whether the request id survives</h2>
 
 <p>When something goes wrong in production, the only useful question is "what happened to
 <em>this</em> request". That needs an identifier you can quote and the other side can find.
@@ -244,7 +255,7 @@ Some implementations return one in a header, some inside the error message, some
 headers included. If there is not one, every future support conversation starts with both
 sides guessing.</p>
 
-<h2>7. Tool calling, if you use it</h2>
+<h2 id="tool-calling-if-you-use-it">7. Tool calling, if you use it</h2>
 
 <p>Tool and function calling is the compatibility surface most likely to be partial, because
 it is several behaviours rather than one: the shape of <code>tools</code> in the request,
@@ -255,7 +266,7 @@ whether parallel tool calls are supported or silently collapsed to one.</p>
 many come back. Then force one with <code>tool_choice</code> and confirm it is the one you
 get.</p>
 
-<h2>The twenty-minute version</h2>
+<h2 id="the-twenty-minute-version">The twenty-minute version</h2>
 
 <ol>
 <li><code>GET /v1/models</code>: how wide is the surface?</li>

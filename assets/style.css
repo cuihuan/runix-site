@@ -2266,7 +2266,7 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
    middle, the page's own contents on the right; a breadcrumb over the title;
    the hub grouped by layer. */
 .doc-crumb { margin: 0 0 14px; font-size: 13.5px; color: var(--ink-3); }
-main .doc-crumb a:not(.btn) { color: var(--ink-3); font-weight: 500; text-decoration: none; }
+main .doc-crumb a:not(.btn) { color: var(--ink-2); font-weight: 500; }
 main .doc-crumb a:not(.btn):hover { color: var(--ink); }
 .doc-side { padding: 40px 24px 0; }
 .doc-side-h {
@@ -2275,7 +2275,7 @@ main .doc-crumb a:not(.btn):hover { color: var(--ink); }
 }
 .doc-side > .doc-side-h:first-child { margin-top: 0; }
 .doc-side ul { list-style: none; margin: 0; padding: 0; }
-.doc-side li { margin: 0 0 4px; }
+.doc-side li { margin: 0 0 8px; }
 main .doc-side a:not(.btn) {
   display: block; padding: 7px 10px; border-radius: 8px; text-decoration: none;
   color: var(--ink-2); font-weight: 500; font-size: 14px; line-height: 1.35;
@@ -2291,11 +2291,14 @@ main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 
     grid-column: 1; position: sticky; top: 92px; align-self: start;
     padding: 56px 0 0; max-height: calc(100vh - 120px); overflow-y: auto;
   }
+  /* All three pinned to row 1: with sparse auto-placement the article, whose
+     column is left of the rail placed before it, would otherwise drop to row 2. */
+  .doc-wrap.has-side .doc-side, .doc-wrap.has-side .article, .doc-wrap.has-side .doc-toc { grid-row: 1; }
   .doc-wrap.has-side .article { grid-column: 2; }
   .doc-wrap.has-side .doc-toc { grid-column: 3; }
 }
 @media (max-width: 1199px) {
-  .doc-side ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 16px; }
+  .doc-side ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
 }
 .doc-hub { display: flex; flex-direction: column; gap: 20px; }
 .doc-hub-row {

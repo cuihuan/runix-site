@@ -66,8 +66,17 @@ def main_html(d):
     faqs = [(q, a) for q, a in d["faq"]] + [(q.format(name=name), a) for q, a in SHARED_FAQ]
     qas = "\n".join(
         f'      <div class="qa">\n        <h3>{q}</h3>\n        <p>{a}</p>\n      </div>' for q, a in faqs)
-    return f'''<main id="main">
-<section class="split-hero">
+    return f'''<main id="main" class="has-pbar">
+<nav class="pbar" aria-label="{name} data on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/data">Runix Data</a>
+    <a class="pbar-layer" href="/#platform">02 &middot; Data</a>
+    <span class="pbar-status pbar-live">Early access</span>
+    <ul class="pbar-links"><li><a href="#covers">{name}</a></li><li><a href="#rules">Rules</a></li><li><a href="#refs">References</a></li><li><a href="#delivery">Delivery</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject={subject}">Request early access</a><!--/email_off-->
+  </div>
+</nav>
+<section class="split-hero" id="overview">
   <div class="container">
     <div>
       {eyebrow("data")}
@@ -90,9 +99,10 @@ def main_html(d):
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="covers">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">02 &middot; Covers</p>
       <h2>The data this covers</h2>
       <p>Cleaned and structured from what you provide or have the rights to use, or built to a specification agreed in writing.</p>
     </div>
@@ -102,9 +112,10 @@ def main_html(d):
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="rules">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">03 &middot; Rules</p>
       <h2>The rules, and where they come from</h2>
       <p>Each rule follows a public standard or an established practice in the field, named with it, so you can check the reasoning rather than take ours on trust.</p>
     </div>
@@ -114,9 +125,10 @@ def main_html(d):
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="refs">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">04 &middot; References</p>
       <h2>Public references</h2>
       <p>The standards and open sources these rules are built on. They are other organisations' work, linked so you can read them yourself.</p>
     </div>
@@ -126,9 +138,10 @@ def main_html(d):
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="delivery">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">05 &middot; Delivery</p>
       <h2>What every delivery carries</h2>
       <p>The same in every domain; the <a href="/data">Runix Data</a> page has the full list.</p>
     </div>
@@ -138,9 +151,10 @@ def main_html(d):
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="faq">
   <div class="container">
     <div class="section-head center">
+      <p class="sec-no">06 &middot; Questions</p>
       <h2>Common questions</h2>
     </div>
     <div class="qas">

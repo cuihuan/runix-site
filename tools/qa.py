@@ -427,6 +427,12 @@ for page in PAGES:
     doc = open(page).read()
     _head = doc[:doc.find("</header>")] if "</header>" in doc else ""
     _nav_hrefs = set(re.findall(r'<a\b[^>]*href="([^"#]+)"', _head))
+    # Each header link as (destination, label). The gate used to key on the
+    # words "sign in"; the header lost its Sign in link on 2026-09-30 and the
+    # gate could no longer fire at all (falsify_suite.sh caught it). The defect
+    # is the same destination under the same words, whichever link it is.
+    _nav_pairs = {(h, " ".join(re.sub(r"<[^>]+>", " ", t).split()).lower())
+                  for h, t in re.findall(r'<a\b[^>]*href="([^"#]+)[^"]*"[^>]*>(.*?)</a>', _head, re.S)}
     # The hero is <section class="hero"> on the home page and
     # <div class="page-hero"> on every product page. The first version of this
     # check only matched the former, so it never ran on the page whose defect
@@ -453,10 +459,14 @@ for page in PAGES:
     # the condition was always false and the gate could never fire.
     for _a in re.findall(r'<a\b[^>]*class="[^"]*\bbtn\b[^"]*"[^>]*>.*?</a>',
                          _hero.group(0), re.S):
-        _h = re.search(r'href="([^"#]+)"', _a)
-        if _h and _h.group(1) in _nav_hrefs and "sign in" in _a.lower():
+        # The destination without its fragment, like the header's: a pattern
+        # that required the closing quote right after it never matched an
+        # href with a #, so /about#contact could not be compared at all.
+        _h = re.search(r'href="([^"#]+)', _a)
+        _label = " ".join(re.sub(r"<[^>]+>", " ", _a).split()).lower()
+        if _h and (_h.group(1), _label) in _nav_pairs:
             fail(page, f"a hero button points at {_h.group(1)}, which the header "
-                       f"already links to on the same screen")
+                       f"already links to on the same screen, in the same words")
 
 # --- the pipeline stage count is one number, not a per-page opinion --------
 # /pipeline lists the stages; every other page states how many there are in

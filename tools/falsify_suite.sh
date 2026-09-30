@@ -61,7 +61,7 @@ try "same link text, two destinations" \
 
 try "hero button repeating a header link" \
     router.html '<a class="btn btn-ghost" href="/docs/router"' \
-    '<a class="btn btn-ghost" href="https://console.router.runixcloud.io">Sign in to console</a> <a class="btn btn-ghost" href="/docs/router"' \
+    '<a class="btn btn-ghost" href="/about#contact">Contact sales</a> <a class="btn btn-ghost" href="/docs/router"' \
     "the header already links to"
 
 try "pipeline stage count disagreeing" \

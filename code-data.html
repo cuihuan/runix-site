@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Data for AI Training and Evaluation — Runix Data</title>
+<meta name="description" content="Repository and task data for code models and coding agents: licence-checked, deduplicated, scrubbed of secrets, and verified by running the tests.">
+<link rel="canonical" href="https://runixcloud.io/code-data">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<meta property="og:title" content="Code Data for AI Training and Evaluation — Runix Data">
+<meta property="og:description" content="Repository and task data for code models and coding agents: licence-checked, deduplicated, scrubbed of secrets, and verified by running the tests.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/code-data">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/code-data.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/code-data.png?v=0">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=66">
+<script src="assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Data: Code",
+  "serviceType": "Code data preparation for AI training and evaluation",
+  "description": "Repository and task data for code models and coding agents, the focus of Runix Data: licence-checked file by file, deduplicated across forks, scrubbed of secrets, and verified by executing the tests rather than reading them.",
+  "provider": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "url": "https://runixcloud.io/code-data"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which licences do you accept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Permissive licences by default. Anything else only when you ask for it and the licence allows your use, and the licence identifier travels with every file either way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you know a coding task is fair?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is run: the reference patch must make its tests pass and the unpatched repository must make them fail, in a clean container, and the statement is checked against what the tests actually test."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you sell ready-made Code datasets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not off the shelf. Runix Data builds to a specification agreed in writing: from data you provide or have the rights to use, or from public sources whose licences permit your use. The rules on this page apply either way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to the data we send?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Runix Data",
+      "item": "https://runixcloud.io/data"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Code",
+      "item": "https://runixcloud.io/code-data"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Code Data for AI Training and Evaluation — Runix Data">
+<meta name="twitter:description" content="Repository and task data for code models and coding agents: licence-checked, deduplicated, scrubbed of secrets, and verified by running the tests.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top active" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Applications</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="split-hero">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i></span>Layer 02 · Data<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Data · Early access</span></div>
+      <h1><span class="line">Code data,</span>
+<span class="line">verified by running it</span></h1>
+      <p class="sub">Repository and task data for code models and coding agents, the focus of Runix Data: licence-checked file by file, deduplicated across forks, scrubbed of secrets, and verified by executing the tests rather than reading them.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Data%3A%20Code">Request early access</a><!--/email_off-->
+        <a class="btn btn-ghost" href="/data#domains">All six domains</a>
+      </div>
+      <p class="hero-note">Part of <a href="/data">Runix Data</a>. This page sets out the rules we apply in this domain and the public standards they follow.</p>
+    </div>
+    <div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><b>code: what each record is checked against</b></div>
+<pre><span class="a">licence     </span>SPDX identifier, detected per file
+<span class="a">provenance  </span>repository, commit, path
+<span class="a">secrets     </span>key and token patterns, entropy
+<span class="a">duplicates  </span>exact hash + MinHash near-dup
+<span class="a">tasks       </span>fail-to-pass, pass-to-pass
+<span class="a">evaluation  </span>split by repository, decontaminated</pre>
+      </div>
+      <p class="term-cap">A reference card. Each line names a public standard or convention; the rules below say how it is applied.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>The data this covers</h2>
+      <p>Cleaned and structured from what you provide or have the rights to use, or built to a specification agreed in writing.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Source code corpora</h3>
+        <p>Files with their repository, commit and licence, for pre-training and continued training of code models.</p>
+      </div>
+      <div class="card">
+        <h3>Repository tasks</h3>
+        <p>An issue, the patch that resolves it and the tests that prove it, for training and evaluating coding agents.</p>
+      </div>
+      <div class="card">
+        <h3>Review pairs</h3>
+        <p>A diff and the review comments it drew, for models that review code rather than write it.</p>
+      </div>
+      <div class="card">
+        <h3>Evaluation sets</h3>
+        <p>Tasks held back from training and checked against public benchmarks, so a score measures ability rather than memory.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>The rules, and where they come from</h2>
+      <p>Each rule follows a public standard or an established practice in the field, named with it, so you can check the reasoning rather than take ours on trust.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">01</span>
+        <h3>Licence first</h3>
+        <p>Every file carries a licence identifier detected by scanning the file, not trusted from a README. Files whose licence does not permit your use are left out, and the licence travels with every record that stays.</p>
+        <p class="basis"><b>Follows</b> The SPDX License List for identifiers; scanners such as ScanCode; public code corpora such as The Stack, built from permissively licensed code with an opt-out.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">02</span>
+        <h3>One copy of each file</h3>
+        <p>Forks, vendored dependencies and generated or minified files make up much of raw code. Exact hashing removes copies, and near-duplicate detection catches the files that differ by a header or a whitespace change.</p>
+        <p class="basis"><b>Follows</b> The MinHash near-deduplication used to build large public code corpora.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">03</span>
+        <h3>No secrets leave</h3>
+        <p>API keys, tokens, private keys and passwords are found with pattern and entropy rules and removed or replaced before anything leaves the pipeline.</p>
+        <p class="basis"><b>Follows</b> The rule sets of open-source scanners such as gitleaks and detect-secrets.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">04</span>
+        <h3>Run, not read</h3>
+        <p>A task counts only if the reference patch makes its tests pass and the unpatched repository makes the same tests fail, in a clean container. A task whose tests pass without the patch is dropped.</p>
+        <p class="basis"><b>Follows</b> SWE-bench's execution-based evaluation, with fail-to-pass and pass-to-pass tests.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">05</span>
+        <h3>Statements that match the tests</h3>
+        <p>A task statement describes what the tests actually check, so a model is not graded on behaviour the statement never asked for.</p>
+        <p class="basis"><b>Follows</b> The human review that produced SWE-bench Verified, which screened tasks for underspecified statements and unfair tests.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">06</span>
+        <h3>Evaluation kept clean</h3>
+        <p>Evaluation tasks are split from training data by repository, not by row, and checked for overlap with public benchmarks.</p>
+        <p class="basis"><b>Follows</b> Standard decontamination practice for code benchmarks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Public references</h2>
+      <p>The standards and open sources these rules are built on. They are other organisations' work, linked so you can read them yourself.</p>
+    </div>
+    <ul class="refs">
+      <li><a href="https://spdx.org/licenses/" rel="noopener">SPDX License List</a><span>Standard identifiers for open-source licences.</span></li>
+      <li><a href="https://github.com/aboutcode-org/scancode-toolkit" rel="noopener">ScanCode Toolkit</a><span>Open-source licence and copyright detection.</span></li>
+      <li><a href="https://huggingface.co/datasets/bigcode/the-stack" rel="noopener">The Stack (BigCode)</a><span>A public code corpus of permissively licensed source, with an opt-out.</span></li>
+      <li><a href="https://www.swebench.com/" rel="noopener">SWE-bench</a><span>Execution-based evaluation of coding agents on real repository issues.</span></li>
+      <li><a href="https://github.com/gitleaks/gitleaks" rel="noopener">gitleaks</a><span>Open-source secret scanning for repositories.</span></li>
+      <li><a href="https://github.com/Yelp/detect-secrets" rel="noopener">detect-secrets</a><span>Open-source detection of secrets in code.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>What every delivery carries</h2>
+      <p>The same in every domain; the <a href="/data">Runix Data</a> page has the full list.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Provenance and licence, per record</h3>
+        <p>Where each record came from, what was done to it, and the licence or permission it was used under.</p>
+      </div>
+      <div class="card">
+        <h3>A quality report</h3>
+        <p>Coverage, duplication and the checks each record passed, plus what was dropped and why.</p>
+      </div>
+      <div class="card">
+        <h3>Evaluation kept apart</h3>
+        <p>Evaluation data split from training data by source, so a score is not inflated by near-duplicates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>Which licences do you accept?</h3>
+        <p>Permissive licences by default. Anything else only when you ask for it and the licence allows your use, and the licence identifier travels with every file either way.</p>
+      </div>
+      <div class="qa">
+        <h3>How do you know a coding task is fair?</h3>
+        <p>It is run: the reference patch must make its tests pass and the unpatched repository must make them fail, in a clean container, and the statement is checked against what the tests actually test.</p>
+      </div>
+      <div class="qa">
+        <h3>Do you sell ready-made Code datasets?</h3>
+        <p>Not off the shelf. Runix Data builds to a specification agreed in writing: from data you provide or have the rights to use, or from public sources whose licences permit your use. The rules on this page apply either way.</p>
+      </div>
+      <div class="qa">
+        <h3>What happens to the data we send?</h3>
+        <p>It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Send us a sample of your code tasks</h2>
+      <p>A slice of the real data and what the model has to do with it. We reply within one business day, and the scoped plan that follows includes the parts we think are not worth doing.</p>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20Data%3A%20Code">Request early access</a><!--/email_off-->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/router">Runix Router</a>
+        <a href="/models">Runix Models</a>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

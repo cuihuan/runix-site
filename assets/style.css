@@ -2113,3 +2113,16 @@ main a.pd-focus:not(.btn) {
 }
 
 .unix-more { margin: 32px 0 0; }
+
+/* ---------- Runix Data domain pages (2026-09-30) ----------
+   Each rule names the public standard or practice it follows, and the
+   references are listed as a plain two-column index of other people's work. */
+.fcell p.basis { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink-3); }
+.fcell p.basis b { font: 600 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin-right: 6px; }
+.refs {
+  list-style: none; margin: 0; padding: 0; display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px;
+}
+.refs li { display: grid; gap: 4px; padding: 18px 0; border-top: 1px solid var(--line-2); }
+.refs li span { color: var(--ink-3); font-size: 14.5px; line-height: 1.5; }
+@media (max-width: 920px) { .refs { grid-template-columns: minmax(0, 1fr); } }

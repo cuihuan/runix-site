@@ -45,15 +45,14 @@ def home_stack(indent):
                        f'<span>{line}</span><em class="pmap-st">{status.capitalize()}</em></a></li>')
         out.append(f'{i2}</ul>')
         if key == "data":
-            # The domains the data layer works in, each a link to its card on
-            # /data. Drawn under the layer's products because they belong to the
+            # The domains the data layer works in, each a link to its own page. Drawn under the layer's products because they belong to the
             # layer's work, not to one product's tile.
             out.append(f'{i2}<div class="pmap-domains"><p class="pd-label">Domains</p>')
             out.append(f'{i3}<ul>')
-            for anchor, label, focus in DOMAINS:
+            for slug, label, focus in DOMAINS:
                 cls = "pd-chip pd-focus" if focus else "pd-chip"
                 tag = " <i>Focus</i>" if focus else ""
-                out.append(f'{i4}<li><a class="{cls}" href="/data#{anchor}">{label}{tag}</a></li>')
+                out.append(f'{i4}<li><a class="{cls}" href="/{slug}">{label}{tag}</a></li>')
             out.append(f'{i3}</ul>')
             out.append(f'{i2}</div>')
         out.append(f'{i1}</div>')

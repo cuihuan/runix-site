@@ -48,18 +48,12 @@ PRODUCTS = {
            "infrastructure", "early access", ""),
 }
 
-# The Data layer's domains, in the order the site lists them. Code is the
-# focus (2026-09-30: "coding data is an important part of the business") --
-# the one marked, not the largest; nothing on the site claims a size.
-# (anchor on /data, label, focus)
-DOMAINS = [
-    ("domain-code", "Code", True),
-    ("domain-finance", "Finance", False),
-    ("domain-cybersecurity", "Cybersecurity", False),
-    ("domain-legal", "Legal", False),
-    ("domain-embodied-ai", "Embodied AI", False),
-    ("domain-ai-for-science", "AI for Science", False),
-]
+# The Data layer's domains, from tools/domains.py (which also holds each
+# domain page's content). Code is the focus (2026-09-30: "coding data is an
+# important part of the business") -- the one marked, not the largest; nothing
+# on the site claims a size.  (page slug, label, focus)
+from domains import DOMAINS as _DOMAIN_PAGES  # noqa: E402
+DOMAINS = [(d["slug"], d["name"], d["key"] == "code") for d in _DOMAIN_PAGES]
 
 LAYER_OF = {key: (num, name) for key, num, name, _ in LAYERS}
 

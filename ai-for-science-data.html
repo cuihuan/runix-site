@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Science Data: Antibody and Protein Records — Runix Data</title>
+<meta name="description" content="Antibody and protein sequence and structure data for scientific models: formats validated, one numbering scheme, accessions reconciled, measurements kept apart.">
+<link rel="canonical" href="https://runixcloud.io/ai-for-science-data">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<meta property="og:title" content="AI for Science Data: Antibody and Protein Records — Runix Data">
+<meta property="og:description" content="Antibody and protein sequence and structure data for scientific models: formats validated, one numbering scheme, accessions reconciled, measurements kept apart.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/ai-for-science-data">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/ai-for-science-data.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/ai-for-science-data.png?v=0">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=66">
+<script src="assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Data: AI for Science",
+  "serviceType": "AI for Science data preparation for AI training and evaluation",
+  "description": "Sequence and structure records for models in antibody and protein work: formats validated, one numbering scheme applied across sources, accessions reconciled, and measured values kept apart from computed ones. Our scope here is biological data.",
+  "provider": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "url": "https://runixcloud.io/ai-for-science-data"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do you work on materials or chemistry data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Our scope here is biological data: antibody and protein records."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can we see how you approach this data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We teach it in a free course, released under CC BY-SA and taught in Chinese, with an English overview at ai4s.runixcloud.io."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you sell ready-made AI for Science datasets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not off the shelf. Runix Data builds to a specification agreed in writing: from data you provide or have the rights to use, or from public sources whose licences permit your use. The rules on this page apply either way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to the data we send?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Runix Data",
+      "item": "https://runixcloud.io/data"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI for Science",
+      "item": "https://runixcloud.io/ai-for-science-data"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="AI for Science Data: Antibody and Protein Records — Runix Data">
+<meta name="twitter:description" content="Antibody and protein sequence and structure data for scientific models: formats validated, one numbering scheme, accessions reconciled, measurements kept apart.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top active" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Applications</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="split-hero">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i></span>Layer 02 · Data<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Data · Early access</span></div>
+      <h1><span class="line">Antibody and protein data,</span>
+<span class="line">where a bad merge changes the answer</span></h1>
+      <p class="sub">Sequence and structure records for models in antibody and protein work: formats validated, one numbering scheme applied across sources, accessions reconciled, and measured values kept apart from computed ones. Our scope here is biological data.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Data%3A%20AI%20for%20Science">Request early access</a><!--/email_off-->
+        <a class="btn btn-ghost" href="/data#domains">All six domains</a>
+      </div>
+      <p class="hero-note">Part of <a href="/data">Runix Data</a>. This page sets out the rules we apply in this domain and the public standards they follow.</p>
+    </div>
+    <div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><b>ai for science: what each record is checked against</b></div>
+<pre><span class="a">sequences    </span>FASTA; alphabet and length checked
+<span class="a">numbering    </span>one scheme: IMGT, Kabat, Chothia
+<span class="a">structures   </span>PDB mmCIF, chains mapped
+<span class="a">identity     </span>UniProt accessions reconciled
+<span class="a">antibodies   </span>SAbDab and OAS conventions
+<span class="a">repertoires  </span>AIRR Community standards</pre>
+      </div>
+      <p class="term-cap">A reference card. Each line names a public standard or convention; the rules below say how it is applied.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>The data this covers</h2>
+      <p>Cleaned and structured from what you provide or have the rights to use, or built to a specification agreed in writing.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Antibody sequences</h3>
+        <p>Heavy and light chains, paired where the source pairs them, numbered under one scheme.</p>
+      </div>
+      <div class="card">
+        <h3>Protein sequences</h3>
+        <p>Sequences with their accession, organism and the evidence behind them.</p>
+      </div>
+      <div class="card">
+        <h3>Structures</h3>
+        <p>Experimental structures with their chains mapped to the sequences they contain.</p>
+      </div>
+      <div class="card">
+        <h3>Assay measurements</h3>
+        <p>Binding and activity values with their units and method, never mixed with predictions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>The rules, and where they come from</h2>
+      <p>Each rule follows a public standard or an established practice in the field, named with it, so you can check the reasoning rather than take ours on trust.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">01</span>
+        <h3>Formats validated, not just parsed</h3>
+        <p>Sequences are checked for their alphabet, length and truncation, not only read. A file that parses is not necessarily a sequence that makes sense.</p>
+        <p class="basis"><b>Follows</b> The FASTA format and the validation built into public sequence databases.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">02</span>
+        <h3>One numbering scheme</h3>
+        <p>IMGT, Kabat and Chothia number antibody residues differently and draw the loops in different places. One scheme is applied across every source, so a position means the same thing everywhere.</p>
+        <p class="basis"><b>Follows</b> IMGT numbering and tools such as ANARCI that number antibody sequences.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">03</span>
+        <h3>Accessions reconciled</h3>
+        <p>The same protein appears under different identifiers in sequence databases, structure archives and papers. They are mapped to one entity, and conflicts are reported rather than settled silently.</p>
+        <p class="basis"><b>Follows</b> UniProt accessions; cross-references between UniProt and the PDB.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">04</span>
+        <h3>Measured, not asserted</h3>
+        <p>Measured values keep their units and method, and computed properties are labelled as computed. A binding site that was predicted is not recorded as one that was observed.</p>
+        <p class="basis"><b>Follows</b> Structural antibody databases such as SAbDab, which record experimental sources.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">05</span>
+        <h3>Scope stated</h3>
+        <p>Our work in this domain is limited to biological data: antibody and protein records. Materials, climate and chemistry data are outside it.</p>
+        <p class="basis"><b>Follows</b> A course about spotting overstated data has no business overstating itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Public references</h2>
+      <p>The standards and open sources these rules are built on. They are other organisations' work, linked so you can read them yourself.</p>
+    </div>
+    <ul class="refs">
+      <li><a href="https://www.uniprot.org/" rel="noopener">UniProt</a><span>The reference database of protein sequences and function.</span></li>
+      <li><a href="https://www.rcsb.org/" rel="noopener">RCSB Protein Data Bank</a><span>Experimentally determined 3D structures.</span></li>
+      <li><a href="https://www.imgt.org/" rel="noopener">IMGT</a><span>The international ImMunoGeneTics information system and its numbering.</span></li>
+      <li><a href="https://github.com/oxpig/ANARCI" rel="noopener">ANARCI</a><span>Antibody numbering and receptor classification.</span></li>
+      <li><a href="https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab" rel="noopener">SAbDab</a><span>The Structural Antibody Database.</span></li>
+      <li><a href="https://opig.stats.ox.ac.uk/webapps/oas/" rel="noopener">Observed Antibody Space</a><span>A database of antibody repertoire sequences.</span></li>
+      <li><a href="https://www.antibodysociety.org/the-airr-community/" rel="noopener">AIRR Community</a><span>Standards for adaptive immune receptor repertoire data.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>What every delivery carries</h2>
+      <p>The same in every domain; the <a href="/data">Runix Data</a> page has the full list.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Provenance and licence, per record</h3>
+        <p>Where each record came from, what was done to it, and the licence or permission it was used under.</p>
+      </div>
+      <div class="card">
+        <h3>A quality report</h3>
+        <p>Coverage, duplication and the checks each record passed, plus what was dropped and why.</p>
+      </div>
+      <div class="card">
+        <h3>Evaluation kept apart</h3>
+        <p>Evaluation data split from training data by source, so a score is not inflated by near-duplicates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>Do you work on materials or chemistry data?</h3>
+        <p>No. Our scope here is biological data: antibody and protein records.</p>
+      </div>
+      <div class="qa">
+        <h3>Where can we see how you approach this data?</h3>
+        <p>We teach it in a free course, released under CC BY-SA and taught in Chinese, with an English overview at ai4s.runixcloud.io.</p>
+      </div>
+      <div class="qa">
+        <h3>Do you sell ready-made AI for Science datasets?</h3>
+        <p>Not off the shelf. Runix Data builds to a specification agreed in writing: from data you provide or have the rights to use, or from public sources whose licences permit your use. The rules on this page apply either way.</p>
+      </div>
+      <div class="qa">
+        <h3>What happens to the data we send?</h3>
+        <p>It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Send us a sample of your antibody or protein data</h2>
+      <p>A slice of the real data and what the model has to do with it. We reply within one business day, and the scoped plan that follows includes the parts we think are not worth doing.</p>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20Data%3A%20AI%20for%20Science">Request early access</a><!--/email_off-->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/router">Runix Router</a>
+        <a href="/models">Runix Models</a>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

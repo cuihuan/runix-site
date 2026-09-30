@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Data for AI Training and Evaluation — Runix Data</title>
+<meta name="description" content="Filings, statements, market and transaction data for models that must get the numbers right: units normalised, restatements kept apart, entities resolved.">
+<link rel="canonical" href="https://runixcloud.io/finance-data">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<meta property="og:title" content="Finance Data for AI Training and Evaluation — Runix Data">
+<meta property="og:description" content="Filings, statements, market and transaction data for models that must get the numbers right: units normalised, restatements kept apart, entities resolved.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runixcloud.io/finance-data">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/finance-data.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/finance-data.png?v=0">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=66">
+<script src="assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Runix Data: Finance",
+  "serviceType": "Finance data preparation for AI training and evaluation",
+  "description": "Filings, statements, market and transaction records for models that have to get the numbers right: units and periods normalised, restated figures kept apart, entities resolved across identifiers, and account data masked.",
+  "provider": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "url": "https://runixcloud.io/finance-data"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which accounting frameworks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "US GAAP and IFRS, kept apart. Figures are only combined across frameworks through a mapping you can inspect."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a model learn a number that was later restated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not from our data. Amended figures are linked to the ones they replace, and the delivery says which is current."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you sell ready-made Finance datasets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not off the shelf. Runix Data builds to a specification agreed in writing: from data you provide or have the rights to use, or from public sources whose licences permit your use. The rules on this page apply either way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to the data we send?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Runix Data",
+      "item": "https://runixcloud.io/data"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Finance",
+      "item": "https://runixcloud.io/finance-data"
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Finance Data for AI Training and Evaluation — Runix Data">
+<meta name="twitter:description" content="Filings, statements, market and transaction data for models that must get the numbers right: units normalised, restatements kept apart, entities resolved.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top active" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Applications</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>A reviewable AI agent in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>Scripts into published episodes</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-signin" href="https://console.router.runixcloud.io" target="_blank" rel="noopener">Sign in</a>
+      <a class="nav-cta" href="/about#contact">Request access</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="split-hero">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i></span>Layer 02 · Data<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Data · Early access</span></div>
+      <h1><span class="line">Finance data,</span>
+<span class="line">read the way an analyst reads it</span></h1>
+      <p class="sub">Filings, statements, market and transaction records for models that have to get the numbers right: units and periods normalised, restated figures kept apart, entities resolved across identifiers, and account data masked.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20Data%3A%20Finance">Request early access</a><!--/email_off-->
+        <a class="btn btn-ghost" href="/data#domains">All six domains</a>
+      </div>
+      <p class="hero-note">Part of <a href="/data">Runix Data</a>. This page sets out the rules we apply in this domain and the public standards they follow.</p>
+    </div>
+    <div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><b>finance: what each record is checked against</b></div>
+<pre><span class="a">filings      </span>XBRL: US GAAP and IFRS taxonomies
+<span class="a">entities     </span>LEI (ISO 17442), SEC CIK
+<span class="a">instruments  </span>ISIN (ISO 6166), FIGI
+<span class="a">venues       </span>MIC (ISO 10383)
+<span class="a">currency     </span>ISO 4217, with scale and sign
+<span class="a">periods      </span>fiscal period, as filed</pre>
+      </div>
+      <p class="term-cap">A reference card. Each line names a public standard or convention; the rules below say how it is applied.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>The data this covers</h2>
+      <p>Cleaned and structured from what you provide or have the rights to use, or built to a specification agreed in writing.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Regulatory filings</h3>
+        <p>Annual and quarterly reports and their amendments, with the tagged financial facts inside them.</p>
+      </div>
+      <div class="card">
+        <h3>Financial statements</h3>
+        <p>Income statements, balance sheets and cash-flow statements, figure by figure, with the period each belongs to.</p>
+      </div>
+      <div class="card">
+        <h3>Market and reference data</h3>
+        <p>Instruments, venues and prices, tied to the identifiers the market already uses.</p>
+      </div>
+      <div class="card">
+        <h3>Transaction records</h3>
+        <p>Ledgers and payment records, with account data masked before anything else happens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>The rules, and where they come from</h2>
+      <p>Each rule follows a public standard or an established practice in the field, named with it, so you can check the reasoning rather than take ours on trust.</p>
+    </div>
+    <div class="fgrid">
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">01</span>
+        <h3>The same unit before any comparison</h3>
+        <p>Scale, currency and sign are normalised before two figures are compared: a value reported in thousands is not a value reported in units, and a cost shown as positive in one filing is negative in another.</p>
+        <p class="basis"><b>Follows</b> XBRL facts carry their unit and precision; ISO 4217 currency codes.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">02</span>
+        <h3>Periods as filed</h3>
+        <p>Every figure keeps the reporting period it belongs to. Fiscal years rarely match the calendar, and a balance at a date is not a flow over a quarter.</p>
+        <p class="basis"><b>Follows</b> XBRL's instant and duration contexts.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">03</span>
+        <h3>Restatements kept apart</h3>
+        <p>An amended filing replaces figures in an earlier one. Both are kept, with which supersedes which, so a model never learns a number that was later corrected.</p>
+        <p class="basis"><b>Follows</b> Amendment forms such as 10-K/A in SEC EDGAR.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">04</span>
+        <h3>One entity, many identifiers</h3>
+        <p>Tickers change, companies rename and merge. Each record is tied to a stable identifier, the LEI where one exists and the SEC's CIK for US filers.</p>
+        <p class="basis"><b>Follows</b> The Legal Entity Identifier (ISO 17442) maintained through GLEIF; OpenFIGI for instruments.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">05</span>
+        <h3>Frameworks not mixed</h3>
+        <p>US GAAP and IFRS figures are kept apart, and are only combined through a mapping you can inspect.</p>
+        <p class="basis"><b>Follows</b> The separate US GAAP and IFRS XBRL taxonomies.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">06</span>
+        <h3>Account data masked</h3>
+        <p>Account and card numbers and personal data are masked before a record reaches a training set. A record that cannot be cleared is held back, not passed through.</p>
+        <p class="basis"><b>Follows</b> Standard masking of account identifiers in financial data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Public references</h2>
+      <p>The standards and open sources these rules are built on. They are other organisations' work, linked so you can read them yourself.</p>
+    </div>
+    <ul class="refs">
+      <li><a href="https://www.xbrl.org/" rel="noopener">XBRL International</a><span>The standard for tagged financial reporting.</span></li>
+      <li><a href="https://www.sec.gov/edgar/search/" rel="noopener">SEC EDGAR</a><span>US public company filings, including their XBRL data.</span></li>
+      <li><a href="https://www.ifrs.org/issued-standards/ifrs-taxonomy/" rel="noopener">IFRS Accounting Taxonomy</a><span>The XBRL taxonomy for IFRS financial statements.</span></li>
+      <li><a href="https://www.gleif.org/" rel="noopener">GLEIF</a><span>The global Legal Entity Identifier system.</span></li>
+      <li><a href="https://www.openfigi.com/" rel="noopener">OpenFIGI</a><span>Open identifiers for financial instruments.</span></li>
+      <li><a href="https://www.iso.org/iso-4217-currency-codes.html" rel="noopener">ISO 4217</a><span>Currency codes.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <h2>What every delivery carries</h2>
+      <p>The same in every domain; the <a href="/data">Runix Data</a> page has the full list.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Provenance and licence, per record</h3>
+        <p>Where each record came from, what was done to it, and the licence or permission it was used under.</p>
+      </div>
+      <div class="card">
+        <h3>A quality report</h3>
+        <p>Coverage, duplication and the checks each record passed, plus what was dropped and why.</p>
+      </div>
+      <div class="card">
+        <h3>Evaluation kept apart</h3>
+        <p>Evaluation data split from training data by source, so a score is not inflated by near-duplicates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>Which accounting frameworks?</h3>
+        <p>US GAAP and IFRS, kept apart. Figures are only combined across frameworks through a mapping you can inspect.</p>
+      </div>
+      <div class="qa">
+        <h3>Can a model learn a number that was later restated?</h3>
+        <p>Not from our data. Amended figures are linked to the ones they replace, and the delivery says which is current.</p>
+      </div>
+      <div class="qa">
+        <h3>Do you sell ready-made Finance datasets?</h3>
+        <p>Not off the shelf. Runix Data builds to a specification agreed in writing: from data you provide or have the rights to use, or from public sources whose licences permit your use. The rules on this page apply either way.</p>
+      </div>
+      <div class="qa">
+        <h3>What happens to the data we send?</h3>
+        <p>It is processed only to do the work you asked for. It is not used to train models, ours or anyone else's, and it is not sold.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Send us a sample of your financial data</h2>
+      <p>A slice of the real data and what the model has to do with it. We reply within one business day, and the scoped plan that follows includes the parts we think are not worth doing.</p>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%20Data%3A%20Finance">Request early access</a><!--/email_off-->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to applications.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <a href="/router">Runix Router</a>
+        <a href="/models">Runix Models</a>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

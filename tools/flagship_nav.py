@@ -38,6 +38,9 @@ CONSOLE = "https://console.router.runixcloud.io"
 
 TOP = [("/plans", "Pricing"), ("/docs/", "Docs"), ("/about", "Company")]
 PRODUCT_PAGES = set(product_pages())
+# The Runix Data domain pages sit under a product, so the menu marks Products.
+from domains import DOMAINS as _DOMAINS  # noqa: E402
+PRODUCT_PAGES |= {f"{d['slug']}.html" for d in _DOMAINS}
 
 NOSCRIPT_OLD = (".nav-toggle{display:none!important}}</style></noscript>")
 NOSCRIPT_NEW = (".nav-toggle{display:none!important}"

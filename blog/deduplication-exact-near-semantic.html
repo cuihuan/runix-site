@@ -229,12 +229,14 @@
 <p>The cost is a model call per record, an index, and the human review the false positives force, so it is usually run last, on what survived the first two tiers, and often only on fine-tuning and evaluation sets.</p>
 <h2 id="why-you-need-all-three">Why you need all three</h2>
 <p>The tiers target different relations and differ in precision and cost. A later tier would find most of what an earlier one finds, but at a price per record that only makes sense on what survived the cheaper pass, and with hits that need review rather than deletion.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table aria-label="Why you need all three">
 <tr><th scope="col">Tier</th><th scope="col">Catches</th><th scope="col">Misses</th><th scope="col">Cost</th></tr>
 <tr><td>Exact hash</td><td>Byte-identical copies</td><td>Any one-byte edit, repeated substrings</td><td>One pass, a hash set</td></tr>
 <tr><td>MinHash and LSH</td><td>Small edits, templates, forks</td><td>Paraphrase, translation, short records</td><td>Signatures, candidate checks</td></tr>
 <tr><td>Embeddings</td><td>Same meaning, different words</td><td>Materially different near-neighbours</td><td>A model call per record, review</td></tr>
 </table>
+</div>
 <p>Run them in that order: exact hashing shrinks the volume the near tier must sign, and the near tier shrinks what the embedding tier must encode. Each tier should emit a count and a sample of removed pairs, which is what <a href="/blog/what-a-data-quality-report-should-contain">a data quality report</a> should show, so a buyer can see whether "deduplicated" meant one hash pass or three.</p>
 <p>Two policy decisions sit outside the algorithms: which representative survives (the earliest, the longest, or the one whose licence is clearest), and what happens when a cluster straddles sources with different terms, where the answer is to keep the record whose <a href="/blog/training-data-provenance-and-licence">provenance and licence</a> permit the use and to record why. For code, where forks dominate, <a href="/code-data">the code domain rules</a> set out how exact and near-duplicate detection are applied across forks, vendored dependencies and generated files.</p>
 <h2 id="how-duplicates-inflate-evaluation-scores">How duplicates inflate evaluation scores</h2>

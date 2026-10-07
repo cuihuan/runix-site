@@ -66,7 +66,10 @@ for page in pages:
     if '"@graph"' in head:
         s = s.replace(block, "", 1)
         head = s[: s.index("</head>")]
-    if ("#org" in head or "#website" in head) and not defines_org(head):
+    # Every page gets the graph, referenced or not: the catalogue page copies
+    # the Router page's head and would otherwise carry it on one run and not
+    # the next (found by check_idempotent.sh).
+    if not defines_org(head):
         own = list(re.finditer(r'<script type="application/ld\+json">.*?</script>\n?', head, re.S))
         if own:
             at = own[-1].end()

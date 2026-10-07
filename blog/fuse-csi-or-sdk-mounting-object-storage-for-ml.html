@@ -245,12 +245,14 @@
 
 <h2 id="the-three-paths-side-by-side">The three paths side by side</h2>
 
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table aria-label="The three paths side by side">
 <tr><th scope="col">Path</th><th scope="col">What changes</th><th scope="col">Who owns it</th><th scope="col">Failure surface</th></tr>
 <tr><td>FUSE mount</td><td>Nothing in the code</td><td>Whoever runs the daemon</td><td>Daemon death hangs the mount; node memory contention</td></tr>
 <tr><td>CSI driver</td><td>The pod spec</td><td>The platform team</td><td>Node plugin crash can take the node's mounts; slow provisioning at scale</td></tr>
 <tr><td>SDK or Hadoop client</td><td>Every file access</td><td>Each application team</td><td>Version drift; retries and timeouts per application</td></tr>
 </table>
+</div>
 
 <h2 id="when-to-pick-which">When to pick which</h2>
 

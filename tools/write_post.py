@@ -163,7 +163,15 @@ def fix_tables(body):
             attrs = attrs + f' aria-label="{_html.escape(name, quote=True)}"'
         inner = re.sub(r"<th\b(?![^>]*scope=)([^>]*)>", r'<th scope="col"\1>', inner)
         out.append(body[pos:m.start()])
+        # The same scroll container tools/wrap_tables.py gives every article
+        # table, so a rendered post is what that builder would produce.
+        before = body[max(0, m.start() - 120):m.start()]
+        wrap = 'class="table-scroll"' not in before
+        if wrap:
+            out.append('<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">\n')
         out.append(f"<table{attrs}>{inner}</table>")
+        if wrap:
+            out.append("\n</div>")
         pos = m.end()
     out.append(body[pos:])
     return "".join(out)

@@ -230,6 +230,7 @@
 <p>This is the same verification that <a href="/code-data">the code domain of Runix Data</a> applies to every code task: run in a clean container, target tests pass with the patch and fail without it, and the rest of the suite still passes. If you also fine-tune on your own repository, the other rule from that layer matters too: evaluation data is split from training data by source, so that near-duplicates cannot sit on both sides.</p>
 <h2 id="how-to-evaluate-coding-agents-beyond-pass-rate">How to evaluate coding agents beyond pass rate</h2>
 <p>Pass rate is necessary, and it is the metric most likely to mislead on its own. Agents are not deterministic, so run each task more than once and report a distribution rather than a single number. Then add the measures a team actually pays for.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table, scrolls horizontally">
 <table aria-label="How to evaluate coding agents beyond pass rate">
 <tr><th scope="col">Measure</th><th scope="col">What it catches</th><th scope="col">How to get it</th></tr>
 <tr><td>Diff size relative to the human fix</td><td>Over-scoped changes that hide the real one</td><td>Lines and files changed, divided by the merged fix's</td></tr>
@@ -238,6 +239,7 @@
 <tr><td>Flakiness</td><td>Tasks the agent solves only sometimes</td><td>Variance of outcome across repeated runs of the same task</td></tr>
 <tr><td>Cost per merged change</td><td>Expensive successes and wasted failures</td><td>Tokens priced per model plus review time, divided by changes merged</td></tr>
 </table>
+</div>
 <p>Two more are cheap and telling. Whether the agent modified tests, which should be read as a separate signal rather than folded into pass rate. And how often it stopped without a diff, which is an honest failure and better than a wrong one.</p>
 <p>Cost per merged change needs cost attached at call time, per run and per task; <a href="/blog/llm-cost-attribution">cost attribution that survives audit</a> explains why it cannot be reconstructed later. Review time needs the changes to arrive as diffs, which is the subject of <a href="/blog/reviewable-by-default-agent-changes-as-diffs">why agent changes should land as reviewable diffs</a>.</p>
 <h2 id="run-it-again-every-time-the-model-changes">Run it again every time the model changes</h2>

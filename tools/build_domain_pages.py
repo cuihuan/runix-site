@@ -143,7 +143,7 @@ def main_html(d):
     <div class="section-head center">
       <p class="sec-no">05 &middot; Delivery</p>
       <h2>What every delivery carries</h2>
-      <p>The same in every domain; the <a href="/data">Runix Data</a> page has the full list.</p>
+      <p>The same in every domain; the <a href="/data">Runix Data</a> page has the full list. A model tuned on this data, evaluated against the one you run today, is <a href="/models">Runix Models</a>.</p>
     </div>
     <div class="grid cols-3">
 {delivery}
@@ -220,7 +220,10 @@ def page(shell, d):
         return f"{m.group(1)}{SITE}/assets/og/{d['slug']}.png?v=0{m.group(3)}"
     s = re.sub(r'(<meta (?:property="og:image"|name="twitter:image") content=")([^"]*)(")', card, s)
     # Structured data: the shell's blocks are replaced wholesale.
-    blocks = list(re.finditer(r'<script type="application/ld\+json">.*?</script>\n?', s, re.S))
+    # Only the page's own blocks are replaced; the shared Organization graph
+    # (tools/add_org_graph.py) sits after them and stays.
+    blocks = [m for m in re.finditer(r'<script type="application/ld\+json">.*?</script>\n?', s, re.S)
+              if '"@graph"' not in m.group(0)]
     if blocks:
         s = s[:blocks[0].start()] + structured(d) + "\n" + s[blocks[-1].end():]
     a, b = s.index('<main id="main"'), s.index("</main>") + len("</main>")

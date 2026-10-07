@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setting an LLM budget per team and per feature | Runix</title>
+<meta name="description" content="Turning an LLM bill into enforceable policy: per-key quotas, allowed models, hard stops versus alerts, what happens at the limit, and how retries draw on it.">
+<link rel="canonical" href="https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature">
+<meta property="og:title" content="Setting an LLM budget per team and per feature | Runix">
+<meta property="og:description" content="Turning an LLM bill into enforceable policy: per-key quotas, allowed models, hard stops versus alerts, what happens at the limit, and how retries draw on it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-llm-budgets-per-team-and-per-feature.png?v=d0639967">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-llm-budgets-per-team-and-per-feature.png?v=d0639967">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Turning an LLM bill into a policy: budgets per team and per feature",
+  "description": "Turning an LLM bill into enforceable policy: per-key quotas, allowed models, hard stops versus alerts, what happens at the limit, and how retries draw on it.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-llm-budgets-per-team-and-per-feature.png?v=d0639967",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Turning an LLM bill into a policy: budgets per team and per feature",
+      "item": "https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should an LLM budget be per team or per feature?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enforce on the dimension the gateway can see on every request, which is the key. Issue keys per team and feature, or per team with a mandatory feature tag for reporting, and report on both dimensions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should happen when a key reaches its limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Decide per class of traffic before launch: fail closed with a distinguishable error for batch work, degrade visibly or fail closed with a clear message for interactive traffic, and never queue interactive requests without a bound."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do retries count against the budget?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Every attempt is billed by the provider, so the budget must count attempts, including failover to another provider and streams that died after producing output."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Setting an LLM budget per team and per feature | Runix">
+<meta name="twitter:description" content="Turning an LLM bill into enforceable policy: per-key quotas, allowed models, hard stops versus alerts, what happens at the limit, and how retries draw on it.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Gateway">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#a-bill-is-a-report-a-budget-is-a-policy">A bill is a report, a budget is a policy</a></li><li><a href="#per-key-quotas-rate-limits-and-allowed-models">Per-key quotas, rate limits and allowed models</a></li><li><a href="#llm-budget-per-team-versus-per-feature">LLM budget per team versus per feature</a></li><li><a href="#hard-stops-alerts-and-what-happens-at-the-limit">Hard stops, alerts, and what happens at the limit</a></li><li><a href="#retries-and-failover-draw-from-the-same-budget">Retries and failover draw from the same budget</a></li><li><a href="#reporting-that-closes-the-loop">Reporting that closes the loop</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Turning an LLM bill into a policy: budgets per team and per feature</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>An invoice tells you what happened. A budget is a rule about what is allowed to happen, with an owner and a defined behaviour at the limit, enforced where a client cannot bypass it. Most teams have the first and believe they have the second. An LLM budget per team is the usual starting point, because it maps to how money is approved; a budget per feature is what engineers need, because it maps to what they can change. This post turns one bill into both.</p>
+
+<h2 id="a-bill-is-a-report-a-budget-is-a-policy">A bill is a report, a budget is a policy</h2>
+
+<p>A budget has four parts, and a dashboard number has one of them: a ceiling in currency or tokens, a period after which it resets, an owner who receives the alerts and can raise the ceiling, and a behaviour at the limit, decided before launch rather than during the incident.</p>
+
+<p>The unit of enforcement is the key, the only thing the gateway can see on every request before it leaves. A header or tag a client attaches voluntarily is useful for reporting and useless for enforcement, since the one client that forgets it is the one running the loop. <a href="/blog/per-key-llm-quotas">One key can drain a shared quota pool</a> covers a ceiling that exists only in aggregate.</p>
+
+<h2 id="per-key-quotas-rate-limits-and-allowed-models">Per-key quotas, rate limits and allowed models</h2>
+
+<p>Three controls on a key do three jobs, and a budget uses all of them.</p>
+
+<ul>
+<li><strong>A quota</strong> is cumulative: spend or tokens per period. It bounds the marathon.</li>
+<li><strong>A rate limit</strong> is instantaneous: requests or tokens per minute, concurrent streams. It bounds the spike; <a href="/blog/llm-rate-limits">surviving LLM rate limits</a> covers how the provider's own limits interact with yours.</li>
+<li><strong>Allowed models</strong> is the list of ids the key may send, and the outer boundary of any <code>auto</code> choice made on its behalf. It is also a price control: a key restricted to a class of models has a bounded worst-case rate per token, which no quota can give you.</li>
+</ul>
+
+<p>Issue one key per team, feature and environment, named so that all three are readable from the id. The evaluation harness, the staging deployment and the internal assistant each get their own; they are the consumers nobody remembers until the production key is empty. A key should be revocable without a redeploy: the kill switch for a runaway loop is revocation, not a hotfix.</p>
+
+<h2 id="llm-budget-per-team-versus-per-feature">LLM budget per team versus per feature</h2>
+
+<p>A team budget matches how money is approved: a team owns a ceiling, decides what to spend it on, and answers for it. A feature budget matches how the product is built: a feature has a unit cost, a quality bar, and a model choice an engineer can change this afternoon.</p>
+
+<p>They do not nest: a feature is served by several teams and a team runs many features, so a budget enforced on one dimension can only be reported on the other. Enforce on keys issued per team and feature, so that the key id carries both, and report along whichever dimension the reader needs. Where that produces too many keys, enforce per team and require a feature tag, knowing the tag is reporting, not enforcement.</p>
+
+<p>Set a feature ceiling from its unit cost and a team ceiling from the sum of its features plus headroom; when the two disagree, the disagreement is the finding, and a bill alone could not have shown it.</p>
+
+<h2 id="hard-stops-alerts-and-what-happens-at-the-limit">Hard stops, alerts, and what happens at the limit</h2>
+
+<p>An alert tells an owner; a hard stop acts on its own. A budget needs both: an alert during a quiet weekend reaches nobody, and a hard stop with no earlier alert is an outage of your own making. Alert on runway, remaining ceiling divided by current spend, when it is shorter than the days left in the period; a fixed fraction of the ceiling is a weaker second alert, since the same balance means different things at different rates. Stop at the ceiling.</p>
+
+<p>What stopping means is decided per class of traffic, and there are three honest answers:</p>
+
+<ul>
+<li><strong>Fail closed.</strong> The next request is rejected with an error the client can distinguish from a provider failure, so that it does not retry. Right for batch jobs, enrichment and anything that can resume next period.</li>
+<li><strong>Degrade.</strong> The request is served by a cheaper model from the allowed list. Right for interactive traffic where a worse answer beats no answer, but only if the degradation is visible in the logs, the model-mix report and ideally to the user. A silent downgrade is a quality regression dressed as a cost control.</li>
+<li><strong>Queue.</strong> The request waits for headroom or for the next period. Right only for asynchronous work with a bounded queue; for interactive traffic an unbounded queue is a timeout with extra steps.</li>
+</ul>
+
+<p>Write the chosen behaviour into the policy, next to the ceiling it belongs to:</p>
+
+<pre><code>key: TEAM/FEATURE/ENV
+period: monthly
+ceiling: AMOUNT_USD
+alert_when: runway_days below DAYS_LEFT_IN_PERIOD
+allowed_models: [MODEL_ID, MODEL_ID]
+at_limit: fail_closed     # or degrade | queue
+counts: attempts          # retries and failover included
+owner: TEAM_ALIAS</code></pre>
+
+<h2 id="retries-and-failover-draw-from-the-same-budget">Retries and failover draw from the same budget</h2>
+
+<p>The line most budgets get wrong is <code>counts: attempts</code>. A retried request re-sends the prompt at full price; a request that failed over was billed by the first provider if it had already processed the prompt; a stream that died after producing output was billed for that output. To the provider each is a separate request; to the budget they are the same intent, spent more than once.</p>
+
+<p>A budget that counts only successes under-counts in exactly the hour it exists for, when a provider is degrading and every client is retrying into it. Count attempts, and make <a href="/blog/llm-retry-budget">the retry budget</a> and the spend budget read from the same meter, so that retries cannot spend what the ceiling has refused.</p>
+
+<p>This is why the budget belongs in the gateway: client-side checks cannot see SDK retries, the second provider, or the other clients sharing a pool, and the hot path can. Treat it like load shedding in any other service: the <a href="https://sre.google/sre-book/handling-overload/" rel="noopener">SRE book's chapter on handling overload</a> is about CPU and queries, and the reasoning transfers to tokens.</p>
+
+<h2 id="reporting-that-closes-the-loop">Reporting that closes the loop</h2>
+
+<p>A budget is only maintained if the report reaches the owner named in it, on a schedule, in a form that leads to a decision. Per key and per period: spend against ceiling, runway, attempts against successes, the model mix, and the rate applied at call time, so that a line reconciles against an itemised statement. <a href="/blog/llm-cost-attribution">Cost attribution that survives audit</a> covers recording those fields; the report is the same records rolled up.</p>
+
+<p>Then review ceilings every period. A ceiling nobody has revised in a year is last year's traffic shape written as policy, and a budget that is always exactly spent was set by habit rather than cost. The review is where team and feature meet: a team raises a ceiling, and a feature justifies it with a unit cost.</p>
+
+<p><a href="/router">Runix Router</a>, in early access, enforces a quota, rate limits, allowed models and routing per key, revocable without a redeploy, and bills usage in USD on itemised statements. It is designed to be the single place a per-key ceiling is enforced and reported from; what a key's limit should mean for its traffic is a decision for the team that owns it, made before the key is issued.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Should an LLM budget be per team or per feature?</h3>
+<p>Enforce on the dimension the gateway can see on every request, which is the key. Issue keys per team and feature, or per team with a mandatory feature tag for reporting, and report on both dimensions.</p>
+<h3>What should happen when a key reaches its limit?</h3>
+<p>Decide per class of traffic before launch: fail closed with a distinguishable error for batch work, degrade visibly or fail closed with a clear message for interactive traffic, and never queue interactive requests without a bound.</p>
+<h3>Do retries count against the budget?</h3>
+<p>Yes. Every attempt is billed by the provider, so the budget must count attempts, including failover to another provider and streams that died after producing output.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/router">Runix Router</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/per-key-llm-quotas">One key can drain a shared quota pool</a></li>
+    <li><a href="/blog/llm-retry-budget">Your LLM traffic needs a retry budget, not a retry count</a></li>
+    <li><a href="/blog/auto-routing-versus-a-pinned-model-id">Auto routing versus a pinned model id: choosing an LLM routing policy</a></li>
+    <li><a href="/router">Runix Router: one OpenAI-compatible endpoint across providers</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

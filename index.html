@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -102,6 +103,7 @@
             <p class="nav-layer-name"><span>05</span>Agents</p>
             <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
             <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -123,6 +125,7 @@
           <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
         </div>
       </div>
+      <a href="/solutions">Solutions</a>
       <a href="/plans">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about">Company</a>
@@ -137,40 +140,47 @@
     <p class="hero-kicker-row"><a class="hero-kicker" href="/blog/rebuild-ai-unix"><span class="kicker-tag">Mission</span> Rebuild AI Unix <span aria-hidden="true">&rarr;</span></a></p>
     <h1><span class="line">Runix. The operating system</span>
 <span class="line">for enterprise AI.</span></h1>
-    <p class="sub">Five layers, from the file system that keeps GPUs fed to the agents on top, built by Runix Lab to be efficient, stable and enterprise-grade. Use one layer, or run the whole stack.</p>
+    <p class="sub">Most teams start at the gateway: one OpenAI-compatible endpoint in front of every model provider, running traffic today in early access. Beneath it, the file system, data and model layers are in early access; the agents on top are in development. Use one layer, or run the whole stack.</p>
     <div class="actions">
-      <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">Talk to sales</a><!--/email_off-->
-      <a class="btn btn-ghost" href="#products">Explore the stack</a>
+      <a class="btn btn-primary" href="/about#contact">Request access</a>
+      <a class="btn btn-ghost" href="/solutions">Find your team</a>
     </div>
   </div>
   <div class="container">
     <!--stack-->
     <div class="pmap pstack" id="platform">
       <div class="pmap-cap"><p>Runix Lab &middot; the AI operating system</p><p>Five layers, seven products</p></div>
-      <div class="pmap-row" id="layer-applications-map" data-layer="applications">
+      <div class="pmap-row has-domains" id="layer-applications-map" data-layer="applications">
         <p class="pmap-layer"><span class="pl-no">05</span><span class="pl-name">Agents</span><span class="pl-role">Domain agents, and the harnesses that run them</span></p>
         <ul class="pmap-cells">
-          <li><a class="pmap-cell" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span><em class="pmap-st">In development</em></a></li>
-          <li><a class="pmap-cell" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span><em class="pmap-st">In development</em></a></li>
+          <li><a class="pmap-cell" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span><em class="pmap-st">In development<span class="pmap-q">waitlist open</span></em></a></li>
+          <li><a class="pmap-cell" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span><em class="pmap-st">In development<span class="pmap-q">waitlist open</span></em></a></li>
         </ul>
+        <div class="pmap-domains"><p class="pd-label">Domains</p>
+          <ul>
+            <li><a class="pd-chip" href="/agents#engineering">Software engineering <i>Code</i></a></li>
+            <li><a class="pd-chip" href="/agents#media">Media and entertainment <i>Comic</i></a></li>
+            <li><a class="pd-chip pd-more" href="/agents">Agents by domain <span aria-hidden="true">&rarr;</span></a></li>
+          </ul>
+        </div>
       </div>
       <div class="pmap-row" id="layer-gateway-map" data-layer="gateway">
         <p class="pmap-layer"><span class="pl-no">04</span><span class="pl-name">Gateway</span><span class="pl-role">One way in to every model</span></p>
         <ul class="pmap-cells">
-          <li><a class="pmap-cell pmap-live" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span><em class="pmap-st">Early access</em></a></li>
+          <li><a class="pmap-cell pmap-live" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span><em class="pmap-st">Early access<span class="pmap-q">running traffic</span></em></a></li>
         </ul>
       </div>
       <div class="pmap-row" id="layer-models-map" data-layer="models">
         <p class="pmap-layer"><span class="pl-no">03</span><span class="pl-name">Models</span><span class="pl-role">Open-weight models, tuned and served</span></p>
         <ul class="pmap-cells">
-          <li><a class="pmap-cell pmap-live" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span><em class="pmap-st">Early access</em></a></li>
+          <li><a class="pmap-cell pmap-live" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span><em class="pmap-st">Early access<span class="pmap-q">by engagement</span></em></a></li>
         </ul>
       </div>
       <div class="pmap-row has-domains" id="layer-data-map" data-layer="data">
         <p class="pmap-layer"><span class="pl-no">02</span><span class="pl-name">Data</span><span class="pl-role">Domain data, cleaned for training and evaluation</span></p>
         <ul class="pmap-cells">
-          <li><a class="pmap-cell pmap-live" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span><em class="pmap-st">Early access</em></a></li>
-          <li><a class="pmap-cell" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span><em class="pmap-st">In development</em></a></li>
+          <li><a class="pmap-cell pmap-live" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span><em class="pmap-st">Early access<span class="pmap-q">by engagement</span></em></a></li>
+          <li><a class="pmap-cell" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span><em class="pmap-st">In development<span class="pmap-q">design partners</span></em></a></li>
         </ul>
         <div class="pmap-domains"><p class="pd-label">Domains</p>
           <ul>
@@ -186,7 +196,7 @@
       <div class="pmap-row" id="layer-infrastructure-map" data-layer="infrastructure">
         <p class="pmap-layer"><span class="pl-no">01</span><span class="pl-name">Infrastructure</span><span class="pl-role">Storage that keeps GPUs fed</span></p>
         <ul class="pmap-cells">
-          <li><a class="pmap-cell pmap-live" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span><em class="pmap-st">Early access</em></a></li>
+          <li><a class="pmap-cell pmap-live" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span><em class="pmap-st">Early access<span class="pmap-q">deployed per customer</span></em></a></li>
         </ul>
       </div>
       <div class="pmap-row pmap-base">
@@ -208,7 +218,36 @@
   </div>
 </div>
 
-<section class="section" id="connect">
+<section class="section" id="why">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Why an operating system, and why now</h2>
+      <p>The stack is a bet about where the hard part of AI moved: from the demo to the production run, and from one vendor to five.</p>
+    </div>
+    <div class="thesis">
+      <div>
+        <p class="k">Why now</p>
+        <h3>Three things changed at once</h3>
+        <p>Agents turned one user action into many model calls, so who holds the keys, what each key may spend and what happens when a provider degrades became production questions rather than operational details.</p>
+        <p>Open-weight models became good enough for narrow, repeated tasks, so the data a team owns and the GPUs it already rents started to matter more than which vendor it calls. And procurement caught up: a legal review now asks where prompts go before an engineer asks whether the model works.</p>
+      </div>
+      <div>
+        <p class="k">The bet</p>
+        <h3>These layers belong together, the way Unix's did</h3>
+        <p>The file system, the data, the models, the gateway and the agents are bought today from five vendors under five contracts, with scripts for glue. Runix draws them once and builds each as a product a team can adopt on its own.</p>
+        <p>The company that keeps the layers honest with each other, under one contract, one call interface and the customer's own storage and compute, earns the position an operating system has: everything above it can change without touching anything beneath.</p>
+      </div>
+      <div>
+        <p class="k">How we are doing it</p>
+        <h3>In the order the evidence allows</h3>
+        <p>The gateway is running traffic. The file system, the data and the models are in early access. The agents are in development. Nothing on this site is marked further along than it is, and a build check fails the site if any page disagrees with the product list.</p>
+        <p>What is in writing is linked, not promised: data terms, contracting, the price catalogue and the roadmap. Three of the tools we built to run a gateway are open source, including a benchmark you can run against us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="connect">
   <div class="container">
     <div class="section-head center">
       <h2>How the layers connect</h2>
@@ -228,21 +267,22 @@
         <p class="lpath-more"><a class="read-more" href="/data">Explore Runix Data &rarr;</a></p>
       </div>
     </div>
+    <p class="model-note compounds">What compounds is not your data: content sent through Router is never used to train anything. What compounds is the contract, the interface and the path. One MSA and DPA cover every layer. A model tuned by Runix Models answers at the same endpoint as the hosted providers, so moving a narrow, high-volume task to a model of your own is a routing change rather than a migration. And the bucket Runix FS mounts is the one Runix Data reads from and Runix Models trains on.</p>
   </div>
 </section>
 
-<section class="section alt" id="products">
+<section class="section" id="products">
   <div class="container">
     <div class="section-head center">
       <h2>Seven products, one stack</h2>
-      <p>Each product sits in one layer of the stack and works on its own. The statuses are literal: Router, Models, Data and FS are in early access; Pipeline, Code and Comic are in development.</p>
+      <p>Each product sits in one layer of the stack and works on its own. The statuses are literal: Router, Models, Data and FS are in early access; Pipeline, Code and Comic are in development. Early access means a team can be onboarded today, and the qualifier on each tile says what that looks like: a key for Router, a deployment for FS, a scoped engagement for Data and Models. In development means it cannot be bought yet.</p>
     </div>
     <div class="lbands">
       <div class="lband" id="layer-applications">
         <div class="lb-head">
           <p class="lb-no">Layer 05</p>
           <h3>Agents</h3>
-          <p>Where AI does the work: independent agents for a domain, and the harnesses that run them.</p>
+          <p>Where AI does the work: independent agents for a domain, and the harnesses that run them. Two domains far apart on purpose: Code is judged by a test suite, Comic by an audience. <a href="/agents">The layer by domain</a>.</p>
         </div>
         <div class="lb-cards">
           <a class="card pcard" id="code" href="/code" aria-label="Explore Runix Code">
@@ -364,6 +404,61 @@
   </div>
 </section>
 
+<section class="section alt" id="teams">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Built for the team that calls</h2>
+      <p>Six kinds of team, the problem each usually arrives with, and the product to start with. Every product is also sold on its own. <a href="/solutions">All solutions</a>.</p>
+    </div>
+    <!--teams-->
+    <div class="sol-grid">
+      <a class="solcard" href="/for-platform-teams" aria-label="Runix for platform teams">
+        <p class="sk">For platform teams</p>
+        <h3>One endpoint for every model, with the controls your team owns</h3>
+        <p>For the team that owns the integration between the company's products and the model providers. Runix Router puts one OpenAI-compatible endpoint in front of every provider, with key custody, per-key limits and failover beneath it. Where training or inference data lives in object storage, Runix FS gives the GPUs a file system over the bucket.</p>
+        <ul class="sol-products"><li class="first">Start: Runix Router</li><li>Runix FS</li></ul>
+        <span class="read-more">Runix for platform teams &rarr;</span>
+      </a>
+      <a class="solcard" href="/for-model-teams" aria-label="Runix for model teams">
+        <p class="sk">For model teams</p>
+        <h3>Data you can audit, a model you can measure</h3>
+        <p>For teams that train or tune models and have to show where the data came from and whether the result beats what they run today. Runix Data builds training and evaluation sets with provenance per record. Runix Models fine-tunes open-weight models and serves them single-tenant. Runix FS reads it all from the bucket you already have.</p>
+        <ul class="sol-products"><li class="first">Start: Runix Data</li><li>Runix Pipeline</li><li>Runix Models</li><li>Runix FS</li></ul>
+        <span class="read-more">Runix for model teams &rarr;</span>
+      </a>
+      <a class="solcard" href="/for-engineering-orgs" aria-label="Runix for engineering organisations">
+        <p class="sk">For engineering organisations</p>
+        <h3>AI coding rolled out, not smuggled in</h3>
+        <p>For organisations adopting AI coding across many developers and many repositories, where a pile of personal accounts and no visibility is the current state. Runix Code, in development, is being built so every change lands as a reviewable diff, with seats, per-key limits and attribution by developer. Runix Router gives the model calls one policy and one bill.</p>
+        <ul class="sol-products"><li class="first">Start: Runix Code</li><li>Runix Router</li></ul>
+        <span class="read-more">Runix for engineering organisations &rarr;</span>
+      </a>
+      <a class="solcard" href="/for-studios" aria-label="Runix for studios and creators">
+        <p class="sk">For studios and creators</p>
+        <h3>A studio for comic dramas, from script to episode</h3>
+        <p>For studios and independent creators making serialised visual stories, comic dramas in particular, where the work is the whole production line and not a single picture. Runix Comic, in development, is being built around pre-production, production and publishing, as an independent agent with its own harness. Runix Router is optional in front of its model calls.</p>
+        <ul class="sol-products"><li class="first">Start: Runix Comic</li><li>Runix Router</li></ul>
+        <span class="read-more">Runix for studios and creators &rarr;</span>
+      </a>
+      <a class="solcard" href="/for-regulated-industries" aria-label="Runix for regulated industries">
+        <p class="sk">For regulated industries</p>
+        <h3>Written answers for the review that never ends</h3>
+        <p>For finance, legal and security teams that have to answer a reviewer before anything carries traffic. Runix Router puts the data terms, the contracting entity and the failover mechanism in writing. Runix Data applies domain rules for finance, legal and cybersecurity data. Runix Models serves a model single-tenant, in your cloud account, trained on your data and nothing else.</p>
+        <ul class="sol-products"><li class="first">Start: Runix Router</li><li>Runix Data</li><li>Runix Models</li></ul>
+        <span class="read-more">Runix for regulated industries &rarr;</span>
+      </a>
+      <a class="solcard" href="/for-research-labs" aria-label="Runix for research labs">
+        <p class="sk">For research labs</p>
+        <h3>Datasets in the bucket, GPUs that stop waiting</h3>
+        <p>For AI for Science and embodied AI groups with datasets in object storage and records that need domain judgement before a model learns from them. Runix FS mounts the bucket as a file system, cached in front of the GPUs. Runix Data applies its rules for antibody, protein and embodied AI records. Runix Models tunes and serves open-weight models.</p>
+        <ul class="sol-products"><li class="first">Start: Runix FS</li><li>Runix Data</li><li>Runix Models</li></ul>
+        <span class="read-more">Runix for research labs &rarr;</span>
+      </a>
+    </div>
+    <!--/teams-->
+  </div>
+</section>
+
 <section class="section" id="data">
   <div class="container">
     <div class="section-head center">
@@ -402,29 +497,118 @@
   </div>
 </section>
 
+<section class="section alt" id="roadmap">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Where this is, and what comes next</h2>
+      <p>Drawn from the same product definitions as the stack above. No dates are published; a status changes when the thing changes.</p>
+    </div>
+    <!--roadmap-->
+    <div class="grid cols-3 rm-sum">
+      <div class="card">
+        <p class="card-layer"><b>Now</b> &middot; early access</p>
+        <h3>4 products a team can use today</h3>
+        <ul class="wlist">
+          <li><a href="/router">Runix Router</a><span>One compliant endpoint for every model</span></li>
+          <li><a href="/models">Runix Models</a><span>Fine-tune and serve open-weight models</span></li>
+          <li><a href="/data">Runix Data</a><span>Domain data for training and evaluation</span></li>
+          <li><a href="/fs">Runix FS</a><span>AI-native file system on your object storage</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card-layer">Building &middot; in development</p>
+        <h3>3 products with waitlists and design partners</h3>
+        <ul class="wlist">
+          <li><a href="/code">Runix Code</a><span>An independent coding agent, reviewable in your repository</span></li>
+          <li><a href="/comic">Runix Comic</a><span>An independent agent for comic dramas, script to episode</span></li>
+          <li><a href="/pipeline">Runix Pipeline</a><span>The tooling that makes data model-ready</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card-layer">Next &middot; at general availability</p>
+        <h3>What general availability adds</h3>
+        <ul class="wlist">
+          <li><b>A complete API reference</b></li>
+          <li><b>A published service level for Router</b></li>
+          <li><b>Self-serve signup and checkout</b></li>
+        </ul>
+        <a class="read-more" href="/roadmap">The roadmap, without dates &rarr;</a>
+      </div>
+    </div>
+    <!--/roadmap-->
+  </div>
+</section>
+
 <section class="section" id="writing">
   <div class="container">
     <div class="section-head center">
-      <h2>Latest writing</h2>
-      <p>Engineering notes on the mechanics behind the products, dated and signed. <a href="/blog/">All posts</a>.</p>
+      <h2>Writing, by layer</h2>
+      <p>Engineering notes on the mechanics behind each layer, dated and signed. <a href="/blog/">All posts</a>.</p>
     </div>
-    <div class="grid cols-3 posts">
-      <a class="card card-clickable post-card" href="/blog/rebuild-ai-unix" aria-label="Read Rebuild AI Unix: why Runix Lab is building an operating system for AI">
-        <p class="card-layer">Announcement</p>
-        <h3>Rebuild AI Unix: why Runix Lab is building an operating system for AI</h3>
-        <p class="card-meta">September 30, 2026 &middot; 6 min read</p>
-      </a>
-      <a class="card card-clickable post-card" href="/blog/introducing-runix-fs" aria-label="Read Introducing Runix FS: an AI file system for object storage">
-        <p class="card-layer">Announcement</p>
-        <h3>Introducing Runix FS: an AI file system for object storage</h3>
-        <p class="card-meta">September 29, 2026 &middot; 5 min read</p>
-      </a>
-      <a class="card card-clickable post-card" href="/blog/per-key-llm-quotas" aria-label="Read One key can drain a shared quota pool">
-        <p class="card-layer">Engineering</p>
-        <h3>One key can drain a shared quota pool</h3>
-        <p class="card-meta">August 25, 2026 &middot; 5 min read</p>
-      </a>
+    <!--writing-->
+    <div class="wgrid">
+      <div class="card wcard">
+        <p class="card-layer">Layer 05</p>
+        <h3>Agents</h3>
+        <ul class="wlist">
+          <li><a href="/blog/what-is-a-coding-agent">What is a coding agent? From autocomplete to pull requests</a></li>
+          <li><a href="/blog/the-harness-what-runs-an-ai-agent">The harness: what actually runs an AI agent</a></li>
+          <li><a href="/blog/reviewable-by-default-agent-changes-as-diffs">Reviewable by default: why an agent's changes should land as diffs</a></li>
+        </ul>
+        <a class="read-more" href="/blog/#agents">All 7 Agents posts &rarr;</a>
+      </div>
+      <div class="card wcard">
+        <p class="card-layer">Layer 04</p>
+        <h3>Gateway</h3>
+        <ul class="wlist">
+          <li><a href="/blog/llm-budgets-per-team-and-per-feature">Turning an LLM bill into a policy: budgets per team and per feature</a></li>
+          <li><a href="/blog/how-to-read-an-llm-price-list">How to read an LLM price list</a></li>
+          <li><a href="/blog/auto-routing-versus-a-pinned-model-id">Auto routing versus a pinned model id: choosing an LLM routing policy</a></li>
+        </ul>
+        <a class="read-more" href="/blog/#gateway">All 27 Gateway posts &rarr;</a>
+      </div>
+      <div class="card wcard">
+        <p class="card-layer">Layer 03</p>
+        <h3>Models</h3>
+        <ul class="wlist">
+          <li><a href="/blog/single-tenant-model-serving-explained">Single-tenant model serving explained: what a dedicated LLM inference endpoint changes</a></li>
+          <li><a href="/blog/lora-qlora-and-full-fine-tuning">LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights</a></li>
+          <li><a href="/blog/how-to-read-an-open-weight-model-licence">How to read an open-weight model licence before you fine-tune it</a></li>
+        </ul>
+        <a class="read-more" href="/blog/#models">All 6 Models posts &rarr;</a>
+      </div>
+      <div class="card wcard">
+        <p class="card-layer">Layer 02</p>
+        <h3>Data</h3>
+        <ul class="wlist">
+          <li><a href="/blog/what-a-data-quality-report-should-contain">What a data quality report should contain, and how to read one sceptically</a></li>
+          <li><a href="/blog/training-data-provenance-and-licence">Training data provenance: what every record should carry, and why a README is not proof</a></li>
+          <li><a href="/blog/split-by-source-not-by-row">Split by source, not by row: how benchmark contamination reaches your own evaluation set</a></li>
+        </ul>
+        <a class="read-more" href="/blog/#data">All 8 Data posts &rarr;</a>
+      </div>
+      <div class="card wcard">
+        <p class="card-layer">Layer 01</p>
+        <h3>Infrastructure</h3>
+        <ul class="wlist">
+          <li><a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth: AI file system cache mode versus file-system mode</a></li>
+          <li><a href="/blog/small-files-problem-in-ml-training">The small files problem in machine learning: millions of samples, one metadata bill</a></li>
+          <li><a href="/blog/object-storage-is-not-a-file-system">Object storage is not a file system, and what POSIX on object storage adds</a></li>
+        </ul>
+        <a class="read-more" href="/blog/#infrastructure">All 7 Infrastructure posts &rarr;</a>
+      </div>
+      <div class="card wcard">
+        <p class="card-layer">Company</p>
+        <h3>Company</h3>
+        <ul class="wlist">
+          <li><a href="/blog/why-five-layers">Why five layers: how Runix drew its AI infrastructure stack</a></li>
+          <li><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></li>
+          <li><a href="/blog/introducing-runix">Introducing Runix</a></li>
+        </ul>
+        <a class="read-more" href="/blog/#company">All 3 Company posts &rarr;</a>
+      </div>
     </div>
+    <!--/writing-->
   </div>
 </section>
 
@@ -452,7 +636,9 @@
       </div>
       <div>
         <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
         <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
@@ -470,6 +656,7 @@
       <div>
         <p class="footer-heading">Company</p>
         <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
         <a href="/reliability">Reliability</a>

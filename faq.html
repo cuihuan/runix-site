@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,7 +16,7 @@
 <link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css?v=72">
 <script src="assets/site-config.js?v=15" defer></script>
-<title>LLM Gateway FAQ: Billing, Access, Models and Support | Runix</title>
+<title>Runix FAQ: Access, Billing, Data Terms and Contracts | Runix</title>
 <meta name="description" content="Straight answers on access, billing, data handling, contracting and certifications for Runix Router and the rest of the product line.">
 <link rel="canonical" href="https://runixcloud.io/faq">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
@@ -59,7 +60,7 @@
       "name": "How does billing work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Usage-based in USD, metered per token or per request depending on the model, with itemised statements. You can draw down a prepaid balance or be invoiced. There is no published rate card: quotes are per workload, and the rate table is stated in writing before you commit."
+        "text": "Usage-based in USD, metered per token or per request depending on the model, with itemised statements. You can draw down a prepaid balance or be invoiced. Router bills every model at its vendor's public list price on the catalogue and quotes everything else per workload, stated in writing before you commit."
       }
     },
     {
@@ -149,6 +150,30 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Frequently asked questions — Runix">
 <meta name="twitter:description" content="Straight answers on access, billing, data handling, contracting and certifications for Runix Router and the rest of the product line.">
@@ -168,6 +193,7 @@
             <p class="nav-layer-name"><span>05</span>Agents</p>
             <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
             <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -189,6 +215,7 @@
           <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
         </div>
       </div>
+      <a href="/solutions">Solutions</a>
       <a href="/plans">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about" class="active">Company</a>
@@ -238,7 +265,7 @@
 <h2 id="how-do-i-get-access-to-the-router">How do I get access to the Router?</h2>
 <p>Access is invite-only: send a line on what you are building and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. Mention custom routing, higher limits, invoicing or a signed agreement in the same message.</p>
 <h2 id="how-does-billing-work">How does billing work?</h2>
-<p>Usage-based in USD, metered per token or per request depending on the model, with itemised statements. You can draw down a prepaid balance or be invoiced. There is no published rate card: quotes are per workload, and the rate table is stated in writing before you commit.</p>
+<p>Usage-based in USD, metered per token or per request depending on the model, with itemised statements. You can draw down a prepaid balance or be invoiced. Router bills every model at its vendor's public list price on <a href="/router-models">the catalogue</a> and quotes everything else per workload, stated in writing before you commit.</p>
 <h2 id="is-there-a-free-way-to-evaluate-it">Is there a free way to evaluate it?</h2>
 <p>Yes. Evaluation credits are issued on request, with full router functionality and no card required to start.</p>
 <h2 id="what-happens-to-our-prompt-and-response-data">What happens to our prompt and response data?</h2>
@@ -269,7 +296,9 @@
       </div>
       <div>
         <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
         <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
@@ -287,6 +316,7 @@
       <div>
         <p class="footer-heading">Company</p>
         <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
         <a href="/reliability">Reliability</a>

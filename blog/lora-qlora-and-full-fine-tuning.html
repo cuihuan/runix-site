@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoRA vs QLoRA vs full fine-tuning: what each changes | Runix</title>
+<meta name="description" content="What LoRA and QLoRA change in the weights, the memory and quality trade-offs, merging versus adapter serving, and when full fine-tuning is still warranted.">
+<link rel="canonical" href="https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning">
+<meta property="og:title" content="LoRA vs QLoRA vs full fine-tuning: what each changes | Runix">
+<meta property="og:description" content="What LoRA and QLoRA change in the weights, the memory and quality trade-offs, merging versus adapter serving, and when full fine-tuning is still warranted.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-lora-qlora-and-full-fine-tuning.png?v=94671764">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-lora-qlora-and-full-fine-tuning.png?v=94671764">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights",
+  "description": "What LoRA and QLoRA change in the weights, the memory and quality trade-offs, merging versus adapter serving, and when full fine-tuning is still warranted.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-lora-qlora-and-full-fine-tuning.png?v=94671764",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights",
+      "item": "https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is QLoRA lower quality than LoRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not necessarily, but it is a different starting point: the adapter is trained against a 4-bit base. The QLoRA authors report matching 16-bit fine-tuning in their experiments; confirm it on your own held-out set."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a LoRA adapter be served without merging it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Some serving engines load adapters next to a shared base and switch per request, at a small cost in computation per token. Merging gives a plain model with no adapter path."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When is full fine-tuning worth the memory?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When the change is large, such as a new language or domain, when you add tokens, when the model is small enough to fit anyway, or when adapters have plateaued on your evaluation."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="LoRA vs QLoRA vs full fine-tuning: what each changes | Runix">
+<meta name="twitter:description" content="What LoRA and QLoRA change in the weights, the memory and quality trade-offs, merging versus adapter serving, and when full fine-tuning is still warranted.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Models">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-full-fine-tuning-changes">What full fine-tuning changes</a></li><li><a href="#what-lora-changes-instead">What LoRA changes instead</a></li><li><a href="#what-qlora-adds-and-what-it-costs">What QLoRA adds, and what it costs</a></li><li><a href="#lora-vs-qlora-in-memory-compute-and-quality">LoRA vs QLoRA in memory, compute and quality</a></li><li><a href="#merge-the-adapter-or-serve-it-separately">Merge the adapter or serve it separately</a></li><li><a href="#when-full-fine-tuning-is-still-warranted">When full fine-tuning is still warranted</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>LoRA vs QLoRA is a question about memory first and quality second, and the honest answer depends on which one you are short of. Both are ways of fine-tuning a model without updating all of its weights. This post sets out what each one changes, what that does to the GPU bill, what it costs in quality, and when training every weight is still the right call.</p>
+
+<h2 id="what-full-fine-tuning-changes">What full fine-tuning changes</h2>
+<p>Full fine-tuning updates every parameter in the model. For each trainable parameter, training keeps the weight itself, its gradient, and the optimiser state; with the Adam family of optimisers that state is two extra values per parameter. Activations for the backward pass sit on top.</p>
+<p>That is why the memory needed to train a model is a multiple of the memory needed to run it. For a small model on a large accelerator it is fine. For a mid-size model it is the reason teams reach for adapters before they reach for more hardware.</p>
+
+<h2 id="what-lora-changes-instead">What LoRA changes instead</h2>
+<p>LoRA, from <a href="https://arxiv.org/abs/2106.09685" rel="noopener">the paper LoRA: Low-Rank Adaptation of Large Language Models</a>, freezes the pretrained weights and trains a small update beside them. For a weight matrix <code>W</code>, the update is written as the product of two thin matrices, <code>B</code> and <code>A</code>, with a shared inner dimension called the rank. The effective weight at inference is <code>W + BA</code>.</p>
+<p>The rank is small compared with the matrix it adapts, so the number of trainable parameters falls by orders of magnitude. The paper reports that, against GPT-3 175B fine-tuned with Adam, LoRA cut trainable parameters by a factor of about ten thousand and GPU memory by about three times. Only the adapter needs gradients and optimiser state; the frozen base still has to be in memory, but at inference precision, and activations are still kept for the backward pass, which is why the memory saving is a few times rather than ten thousand.</p>
+<p>Two details matter in practice. <code>B</code> starts at zero, so the model begins training as exactly the base model. And the adapter can be applied to some weight matrices and not others; the paper's experiments adapt the attention projections, and the choice of which matrices to adapt, together with the rank, is most of the tuning space.</p>
+<pre><code># illustrative LoRA configuration with the PEFT library
+from peft import LoraConfig, get_peft_model
+from transformers import AutoModelForCausalLM
+
+base_model = AutoModelForCausalLM.from_pretrained("your-base-model")
+config = LoraConfig(
+    r=16, lora_alpha=32, lora_dropout=0.05,
+    target_modules=["q_proj", "v_proj"],
+    task_type="CAUSAL_LM",
+)
+model = get_peft_model(base_model, config)
+model.print_trainable_parameters()</code></pre>
+
+<h2 id="what-qlora-adds-and-what-it-costs">What QLoRA adds, and what it costs</h2>
+<p>QLoRA, from <a href="https://arxiv.org/abs/2305.14314" rel="noopener">the paper QLoRA: Efficient Finetuning of Quantized LLMs</a>, keeps the LoRA idea and shrinks the one thing LoRA leaves large: the frozen base. The base weights are stored in a 4-bit format the authors call NormalFloat, with a second quantisation pass over the quantisation constants themselves, and gradients flow through the quantised base into ordinary LoRA adapters kept at higher precision. The paper reports fine-tuning a 65B parameter model on a single 48GB GPU this way.</p>
+<p>The cost is compute. The 4-bit weights are dequantised on every forward and backward pass, so a QLoRA step does more work than a LoRA step on the same hardware, and training runs take longer. The paper also introduces paged optimiser state to survive memory spikes rather than crash on them.</p>
+
+<h2 id="lora-vs-qlora-in-memory-compute-and-quality">LoRA vs QLoRA in memory, compute and quality</h2>
+<ul>
+<li><strong>Trainable weights:</strong> all of them for full fine-tuning; the adapters only for LoRA and QLoRA.</li>
+<li><strong>Base weights in memory:</strong> at training precision with gradients and optimiser state for full fine-tuning; frozen at inference precision for LoRA; frozen at 4-bit for QLoRA.</li>
+<li><strong>Step time:</strong> LoRA steps are cheaper than full fine-tuning steps; QLoRA steps cost more than LoRA steps because of the dequantisation.</li>
+<li><strong>Artefact:</strong> a new full model for full fine-tuning; an adapter file for LoRA and QLoRA.</li>
+</ul>
+<p>On quality, LoRA's low rank limits how far the weights can move. That is a feature when you want to keep the base model's general ability and a limitation when the task needs a lot that the base does not have. The LoRA paper reports results on par with full fine-tuning on its benchmarks; whether that holds for your task is an empirical question, which is why <a href="/blog/evaluate-the-tuned-model-against-your-baseline">the held-out evaluation</a> is not optional.</p>
+<p>QLoRA's authors report matching 16-bit fine-tuning quality in their experiments. Treat that as a claim to verify on your data rather than a property: the quantised base is not the same model as the full-precision base, and the adapter learned to work with the quantised one.</p>
+
+<h2 id="merge-the-adapter-or-serve-it-separately">Merge the adapter or serve it separately</h2>
+<p>An adapter can be merged into the base by computing <code>W + BA</code> once and saving the result. The merged model serves like any other, with no extra computation per token, which is the property the LoRA paper highlights. The price is one full model per task.</p>
+<p>Kept separate, one base can carry many adapters, and some serving engines can switch adapters per request. That suits a fleet of narrow tasks on one base and costs a small amount of extra computation on the adapter path.</p>
+<p>One caveat for QLoRA: merging an adapter trained against the 4-bit base into the full-precision weights changes what it was trained against. Evaluate the merged model again rather than assuming the training numbers carry over, and if you intend to serve a quantised variant, evaluate that variant too. Where the model ends up is covered in <a href="/blog/single-tenant-model-serving-explained">single-tenant model serving</a>.</p>
+
+<h2 id="when-full-fine-tuning-is-still-warranted">When full fine-tuning is still warranted</h2>
+<ul>
+<li><strong>The change is large.</strong> A new language, a domain the base barely saw, or continued pretraining on a corpus rather than a task. Adapters have a ceiling and this is where it shows.</li>
+<li><strong>New tokens.</strong> Extending the vocabulary means training embeddings, which adapters on attention layers do not touch.</li>
+<li><strong>The model is small.</strong> If every weight fits with room to spare, the memory argument for adapters disappears and the only question is quality.</li>
+<li><strong>The adapter plateaued.</strong> If raising the rank and adapting more matrices stops helping and the evaluation says you are still short, the remaining lever is all of the weights.</li>
+</ul>
+<p>Full fine-tuning has its own failure, which is forgetting: a model trained hard on a narrow set can lose general ability it had before. Mixing in general data and checking behaviours you did not tune are part of the job. Whether you should be tuning at all, rather than prompting or retrieving, is the question <a href="/blog/fine-tune-prompt-or-retrieve">the fine-tuning versus RAG versus prompting guide</a> is for. The tooling most teams start from is the <a href="https://github.com/huggingface/peft" rel="noopener">PEFT library</a>.</p>
+
+<p><a href="/models">Runix Models</a> offers supervised fine-tuning, LoRA and QLoRA on open-weight families, with the method chosen per engagement and the result evaluated on a held-out set against the model you run today. It is in early access, by engagement, and quantised variants are served only where that evaluation shows quality holds.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is QLoRA lower quality than LoRA?</h3>
+<p>Not necessarily, but it is a different starting point: the adapter is trained against a 4-bit base. The QLoRA authors report matching 16-bit fine-tuning in their experiments; confirm it on your own held-out set.</p>
+<h3>Can a LoRA adapter be served without merging it?</h3>
+<p>Yes. Some serving engines load adapters next to a shared base and switch per request, at a small cost in computation per token. Merging gives a plain model with no adapter path.</p>
+<h3>When is full fine-tuning worth the memory?</h3>
+<p>When the change is large, such as a new language or domain, when you add tokens, when the model is small enough to fit anyway, or when adapters have plateaued on your evaluation.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/models">Runix Models</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/fine-tune-prompt-or-retrieve">Fine-tuning vs RAG vs prompting: a decision guide by failure mode</a></li>
+    <li><a href="/blog/preference-tuning-with-dpo-explained">DPO fine-tuning explained: what preference tuning changes and what it cannot</a></li>
+    <li><a href="/blog/single-tenant-model-serving-explained">Single-tenant model serving explained: what a dedicated LLM inference endpoint changes</a></li>
+    <li><a href="/models">Runix Models: fine-tune and serve open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

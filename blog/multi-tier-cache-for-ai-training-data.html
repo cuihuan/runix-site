@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A multi-tier cache for AI training data, tier by tier | Runix</title>
+<meta name="description" content="Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.">
+<link rel="canonical" href="https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data">
+<meta property="og:title" content="A multi-tier cache for AI training data, tier by tier | Runix">
+<meta property="og:description" content="Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-multi-tier-cache-for-ai-training-data.png?v=73b1a9ae">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-multi-tier-cache-for-ai-training-data.png?v=73b1a9ae">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A multi-tier cache for AI training data: what goes where",
+  "description": "Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-multi-tier-cache-for-ai-training-data.png?v=73b1a9ae",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "A multi-tier cache for AI training data: what goes where",
+      "item": "https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between the page cache and a distributed cache for training data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The page cache is per node, memory only, unmanaged and unaware of the bucket. A distributed cache is shared across nodes, has explicit capacity on memory, SSD and HDD tiers, survives restarts and tracks which blocks it holds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How big should a cache for AI training data be?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Large enough to hold the working set an epoch touches. Because shuffled training has almost no temporal locality, a cache that holds only part of the working set can miss on most reads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When does a cache not help a training job?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When the data is read once and never again, when the loader is CPU-bound on decoding, when the working set cannot fit, or when the data already sits on local NVMe that is large enough."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="A multi-tier cache for AI training data, tier by tier | Runix">
+<meta name="twitter:description" content="Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Infrastructure">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#why-the-cache-sits-in-front-of-the-bucket">Why the cache sits in front of the bucket</a></li><li><a href="#what-a-multi-tier-cache-for-ai-training-holds-on-each-tier">What a multi-tier cache for AI training holds on each tier</a></li><li><a href="#eviction-for-an-access-pattern-with-no-locality">Eviction for an access pattern with no locality</a></li><li><a href="#warming-the-first-epoch-is-the-whole-problem">Warming: the first epoch is the whole problem</a></li><li><a href="#page-cache-versus-distributed-cache">Page cache versus distributed cache</a></li><li><a href="#when-a-cache-is-pointless">When a cache is pointless</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">A multi-tier cache for AI training data: what goes where</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>A <strong>multi-tier cache for AI training</strong> is a set of storage tiers, usually memory, SSD and HDD on the nodes near the GPUs, holding copies of data whose durable home is an object store. The point is to make the second read of a sample local, and the first read local for every node except the one that fetched it. This post covers what belongs on each tier, how eviction and warming should work for training, how this differs from the page cache every node already has, and when a cache does nothing useful.</p>
+
+<h2 id="why-the-cache-sits-in-front-of-the-bucket">Why the cache sits in front of the bucket</h2>
+
+<p>Object storage is the right durable home for training data: cheap, durable and shared. It is the wrong place to read from on every step, because each read is a network request with its own cost and latency, paid once per sample. A cache near the GPUs changes the arithmetic: the bucket is read once per block, and later reads are served from local or near-local media.</p>
+
+<p>This is not the <a href="/blog/prompt-caching-explained">prompt cache on the inference side</a>, which stores attention state and is governed by prefix matching; here the cached thing is bytes, and correctness is about staleness, whether the cache still matches the bucket.</p>
+
+<h2 id="what-a-multi-tier-cache-for-ai-training-holds-on-each-tier">What a multi-tier cache for AI training holds on each tier</h2>
+
+<p>Tiers differ in capacity, cost and random-read behaviour, and the assignment follows from that.</p>
+
+<ul>
+<li><strong>Memory</strong> holds what is being read right now: the blocks of the current and next few batches, and the metadata needed to find them. It is the only tier where random access to small items is effectively free, so hot small files belong here.</li>
+<li><strong>SSD</strong> holds the working set: the part of the dataset an epoch will touch. Random reads are cheap enough to serve a shuffled loader, and capacity is large enough that a dataset bigger than memory still fits.</li>
+<li><strong>HDD</strong> holds the long tail and the cold copy: data cheaper to keep nearby than to fetch again, read in large blocks where its poor random-read behaviour matters least.</li>
+</ul>
+
+<p>The write path should land on the fastest tier that has room and demote from there, so that a block written once and read soon after never touches the slower media.</p>
+
+<h2 id="eviction-for-an-access-pattern-with-no-locality">Eviction for an access pattern with no locality</h2>
+
+<p>General-purpose caches assume temporal locality: what was read recently will be read again soon. A shuffled epoch has almost none, because every sample is read exactly once per epoch, in a random order, and again next epoch in a different order. Under that pattern, least-recently-used eviction with a cache smaller than the working set degenerates into evicting each block just before it is needed again.</p>
+
+<p>Two rules follow. First, size the cache to the working set, not to a hit-rate target: a cache that holds the whole epoch hits on every read after the first, and one that holds most of it can still miss on most reads. Second, protect the working set from scans: a validation run or a checkpoint write should not push the training set out, which scan-resistant policies, pinned directories or a capacity budget per job all address.</p>
+
+<p>Eviction between tiers is a separate decision from eviction out of the cache: demotion from memory to SSD keeps a block close, while eviction from HDD sends the next read back to the bucket.</p>
+
+<h2 id="warming-the-first-epoch-is-the-whole-problem">Warming: the first epoch is the whole problem</h2>
+
+<p>A cold cache does not help the first epoch at all, and for a short fine-tuning run the first epoch may be most of the job. Warming pulls the working set into the cache before the loader asks for it, and is cheaper than it looks: one read of the dataset from the bucket in large sequential requests, instead of the loader's many small random ones.</p>
+
+<p>It is worth doing when the dataset is known ahead of time, which for training it almost always is; trigger it from the job definition, not by hand, and make it idempotent so that a retried job does not fetch twice. With a shared cache, warming once serves every node in the job.</p>
+
+<h2 id="page-cache-versus-distributed-cache">Page cache versus distributed cache</h2>
+
+<p>Every Linux node already has a cache: the kernel's <a href="https://www.kernel.org/doc/html/latest/admin-guide/mm/concepts.html" rel="noopener">page cache</a>, which keeps recently read file pages in otherwise unused memory. It is free, automatic and effective for one node whose dataset fits in memory, and the wrong tool for a cluster, for four reasons.</p>
+
+<ul>
+<li>It is per node. Every node holds its own copy and fetches from the bucket separately.</li>
+<li>It is unmanaged. The training process's own memory pressure evicts it, and there is no way to reserve capacity for the dataset.</li>
+<li>It is memory only. There is no SSD or HDD tier behind it, so anything larger than free memory is not cached at all.</li>
+<li>It knows nothing about the bucket, so a miss goes to the network every time, with no shared record of what was fetched.</li>
+</ul>
+
+<p>A distributed cache fixes all four: it is shared across nodes, has explicit capacity on each tier, survives process restarts, and knows which blocks it holds and which are still only in the bucket. It costs a network hop on a hit served by another node and a metadata lookup to find the block, which is why local memory remains the first tier even in a distributed design.</p>
+
+<h2 id="when-a-cache-is-pointless">When a cache is pointless</h2>
+
+<p>A cache earns its keep on rereads. Where there are none, it adds a hop and a bill.</p>
+
+<ul>
+<li><strong>Single-pass data.</strong> A streaming run that reads each sample once gets nothing from a cache except the warming cost; the fix there is packing and parallel reads.</li>
+<li><strong>A working set that cannot fit.</strong> If the cache holds a small fraction of what an epoch touches and the order is random, the hit rate is at best roughly that fraction.</li>
+<li><strong>A CPU-bound loader.</strong> If decode and augmentation are the limit, faster reads change nothing; the GPU is waiting on workers, not on storage.</li>
+<li><strong>Data already on local NVMe that fits.</strong> A copy step before the job is a one-tier cache with no software, and sometimes the right answer.</li>
+<li><strong>Write-once outputs.</strong> Checkpoints and logs benefit from write buffering and an asynchronous path to the bucket, a different mechanism from a read cache, to be evaluated separately.</li>
+</ul>
+
+<p>The honest test is to measure the hit rate on the second epoch and the step time on the first. If the second epoch is not faster, the cache is not doing anything; if the first epoch is the whole job, warming is the feature to evaluate, not the tiers.</p>
+
+<p><a href="/fs">Runix FS</a> is a cache of this kind: memory, SSD and HDD tiers on the workers, written to the fastest available tier first, in front of an S3-compatible bucket whose layout stays unchanged, built on the <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a> project. It is in early access, sized with each customer for their working set and deployed in their own cloud account; the <a href="/docs/fs">quick start</a> brings up a single-node cluster, and the <a href="/blog/introducing-runix-fs">introduction</a> covers what we will and will not claim about it.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What is the difference between the page cache and a distributed cache for training data?</h3>
+<p>The page cache is per node, memory only, unmanaged and unaware of the bucket. A distributed cache is shared across nodes, has explicit capacity on memory, SSD and HDD tiers, survives restarts and tracks which blocks it holds.</p>
+<h3>How big should a cache for AI training data be?</h3>
+<p>Large enough to hold the working set an epoch touches. Because shuffled training has almost no temporal locality, a cache that holds only part of the working set can miss on most reads.</p>
+<h3>When does a cache not help a training job?</h3>
+<p>When the data is read once and never again, when the loader is CPU-bound on decoding, when the working set cannot fit, or when the data already sits on local NVMe that is large enough.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/fs">Runix FS</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/keeping-gpus-fed-data-loading-bottleneck">Keeping GPUs fed: where the GPU data loading bottleneck comes from</a></li>
+    <li><a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth: AI file system cache mode versus file-system mode</a></li>
+    <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+    <li><a href="/fs">Runix FS: an AI-native file system on your object storage</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

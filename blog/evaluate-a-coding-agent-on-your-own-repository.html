@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluate Coding Agents on Your Own Repository | Runix</title>
+<meta name="description" content="Leaderboard scores do not transfer to your codebase. How to build a task set from closed issues with fail-to-pass tests, and what to measure beyond pass rate.">
+<link rel="canonical" href="https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository">
+<meta property="og:title" content="Evaluate Coding Agents on Your Own Repository | Runix">
+<meta property="og:description" content="Leaderboard scores do not transfer to your codebase. How to build a task set from closed issues with fail-to-pass tests, and what to measure beyond pass rate.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-evaluate-a-coding-agent-on-your-own-repository.png?v=bccf6473">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-evaluate-a-coding-agent-on-your-own-repository.png?v=bccf6473">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Evaluate coding agents on your own repository, not on a leaderboard",
+  "description": "Leaderboard scores do not transfer to your codebase. How to build a task set from closed issues with fail-to-pass tests, and what to measure beyond pass rate.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-evaluate-a-coding-agent-on-your-own-repository.png?v=bccf6473",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Evaluate coding agents on your own repository, not on a leaderboard",
+      "item": "https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why not just use SWE-bench scores to pick a coding agent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Leaderboard tasks come from a fixed set of public repositories and may have been seen in training. They are useful for a shortlist; only tasks built from your own repository tell you how an agent will do on your code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What makes a closed issue usable as an evaluation task?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It was fixed by a merged change that added or modified tests, and in a clean container those tests fail on the pre-fix snapshot and pass with the fix while the rest of the suite still passes. Issues fixed without a test cannot be checked."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should the evaluation be re-run?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Whenever the model version or the harness changes, and on a schedule in between, since providers replace models on their own calendar. Keep previous results so the comparison is between populations of runs rather than single runs."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Evaluate Coding Agents on Your Own Repository | Runix">
+<meta name="twitter:description" content="Leaderboard scores do not transfer to your codebase. How to build a task set from closed issues with fail-to-pass tests, and what to measure beyond pass rate.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Agents">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-a-leaderboard-measures-and-what-it-cannot">What a leaderboard measures and what it cannot</a></li><li><a href="#build-a-task-set-from-your-own-closed-issues">Build a task set from your own closed issues</a></li><li><a href="#how-to-evaluate-coding-agents-beyond-pass-rate">How to evaluate coding agents beyond pass rate</a></li><li><a href="#run-it-again-every-time-the-model-changes">Run it again every time the model changes</a></li><li><a href="#what-to-do-with-the-result">What to do with the result</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">Evaluate coding agents on your own repository, not on a leaderboard</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Most teams evaluate coding agents by reading a leaderboard, and a leaderboard answers a different question from the one being asked. It says how an agent did on tasks drawn from a fixed set of public repositories. The question a team has is how it will do on theirs, with their build, their test suite and their conventions, and the only way to answer that is to build an evaluation from the repository itself.</p>
+<p>This post is the procedure: what public benchmarks measure, how to build a task set from your own closed issues, what to measure beyond pass rate, and why the evaluation has to run again every time the model underneath changes.</p>
+<h2 id="what-a-leaderboard-measures-and-what-it-cannot">What a leaderboard measures and what it cannot</h2>
+<p>The dominant format comes from <a href="https://arxiv.org/abs/2310.06770" rel="noopener">SWE-bench</a>: a task is a real issue from a public repository plus a snapshot of the code before the fix, and the agent's patch is accepted if the tests that failed before the fix now pass and the tests that passed before still do. Earlier benchmarks such as <a href="https://arxiv.org/abs/2107.03374" rel="noopener">HumanEval</a> work at the level of a single function with a specification, which measures something narrower.</p>
+<p>Repository-level benchmarks are a real improvement, and they still cannot tell you about your repository. The language mix, the build system, how long the suite takes, how the code is organised and what a reviewer there will accept are all specific. Public tasks can also have been seen during training, which inflates scores in a way nobody can measure from outside.</p>
+<p>Use the leaderboard to shortlist. Use your repository to decide.</p>
+<h2 id="build-a-task-set-from-your-own-closed-issues">Build a task set from your own closed issues</h2>
+<p>The recipe mirrors how repository benchmarks are constructed, applied to code only you have.</p>
+<ol>
+<li>Select closed issues that were resolved by a merged change which added or modified tests. Issues fixed without a test are not usable as tasks, because there is nothing to check.</li>
+<li>Snapshot the repository at the parent of the fix. That snapshot plus the issue text is the task.</li>
+<li>Take the tests from the fix. In a clean container, confirm they fail on the snapshot and pass with the fix applied, and that the tests which pass on the snapshot still pass with the fix. Discard any task where that does not hold.</li>
+<li>Strip the fix. The agent gets the snapshot, the issue text and the ability to run the suite, not the solution and not the held-out tests.</li>
+<li>Label each task by area of the codebase and by the size of the human fix, so results can be read per area rather than as one number.</li>
+<li>Keep the set private. A task set that is published becomes training data.</li>
+</ol>
+<p>This is the same verification that <a href="/code-data">the code domain of Runix Data</a> applies to every code task: run in a clean container, target tests pass with the patch and fail without it, and the rest of the suite still passes. If you also fine-tune on your own repository, the other rule from that layer matters too: evaluation data is split from training data by source, so that near-duplicates cannot sit on both sides.</p>
+<h2 id="how-to-evaluate-coding-agents-beyond-pass-rate">How to evaluate coding agents beyond pass rate</h2>
+<p>Pass rate is necessary, and it is the metric most likely to mislead on its own. Agents are not deterministic, so run each task more than once and report a distribution rather than a single number. Then add the measures a team actually pays for.</p>
+<table aria-label="How to evaluate coding agents beyond pass rate">
+<tr><th scope="col">Measure</th><th scope="col">What it catches</th><th scope="col">How to get it</th></tr>
+<tr><td>Diff size relative to the human fix</td><td>Over-scoped changes that hide the real one</td><td>Lines and files changed, divided by the merged fix's</td></tr>
+<tr><td>Files touched outside the labelled area</td><td>Changes a reviewer did not expect to read</td><td>Compare paths in the diff with the task's label</td></tr>
+<tr><td>Review time</td><td>The true cost of a passing diff</td><td>Reviewer minutes, or rounds of review before approval</td></tr>
+<tr><td>Flakiness</td><td>Tasks the agent solves only sometimes</td><td>Variance of outcome across repeated runs of the same task</td></tr>
+<tr><td>Cost per merged change</td><td>Expensive successes and wasted failures</td><td>Tokens priced per model plus review time, divided by changes merged</td></tr>
+</table>
+<p>Two more are cheap and telling. Whether the agent modified tests, which should be read as a separate signal rather than folded into pass rate. And how often it stopped without a diff, which is an honest failure and better than a wrong one.</p>
+<p>Cost per merged change needs cost attached at call time, per run and per task; <a href="/blog/llm-cost-attribution">cost attribution that survives audit</a> explains why it cannot be reconstructed later. Review time needs the changes to arrive as diffs, which is the subject of <a href="/blog/reviewable-by-default-agent-changes-as-diffs">why agent changes should land as reviewable diffs</a>.</p>
+<h2 id="run-it-again-every-time-the-model-changes">Run it again every time the model changes</h2>
+<p>An evaluation is a baseline, not a verdict. Providers retire and replace model versions on their own schedule, harnesses change their tools and prompts, and either can move the results without any error appearing. <a href="/blog/model-deprecation-without-a-redeploy">Your model id has an expiry date</a>, and when it expires the evaluation is how you find out what the replacement did.</p>
+<p>The same reasoning that applies to <a href="/blog/did-the-model-change-make-it-worse">telling whether a model change made things worse</a> applies here, with agent-shaped signals: whether the patch applies at all, the diff size distribution, the rate of runs that end without a change, and the share of diffs that reviewers merge. Compare populations of runs, not single runs, and keep the old numbers.</p>
+<p>Refresh the task set as well. Issues closed since the last build are new tasks the model has not seen, and retiring the oldest keeps the set close to the code as it is now.</p>
+<h2 id="what-to-do-with-the-result">What to do with the result</h2>
+<p>The output is not a score but a map: per area of the codebase, how often the agent produces a mergeable change, how much it costs, and how much review it needs. That map decides where the agent may run on tasks unattended, where it should only assist, and where it should not be pointed yet. It also sets the spend ceiling with evidence rather than a guess, and gives the review gate a prior for how closely to read.</p>
+<p>Runix Code is in development. It is designed as <a href="/code">a coding agent grounded in your repository</a> that lands every change as a reviewable diff, which is what makes diff size, review time and merge rate measurable in the first place. A <a href="/blog/what-is-a-coding-agent">coding agent</a> that writes silently cannot be evaluated this way, and that is a reason to prefer one that does not.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Why not just use SWE-bench scores to pick a coding agent?</h3>
+<p>Leaderboard tasks come from a fixed set of public repositories and may have been seen in training. They are useful for a shortlist; only tasks built from your own repository tell you how an agent will do on your code.</p>
+<h3>What makes a closed issue usable as an evaluation task?</h3>
+<p>It was fixed by a merged change that added or modified tests, and in a clean container those tests fail on the pre-fix snapshot and pass with the fix while the rest of the suite still passes. Issues fixed without a test cannot be checked.</p>
+<h3>How often should the evaluation be re-run?</h3>
+<p>Whenever the model version or the harness changes, and on a schedule in between, since providers replace models on their own calendar. Keep previous results so the comparison is between populations of runs rather than single runs.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/code">Runix Code</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/did-the-model-change-make-it-worse">How to tell whether a model change made things worse</a></li>
+    <li><a href="/blog/reviewable-by-default-agent-changes-as-diffs">Reviewable by default: why an agent's changes should land as diffs</a></li>
+    <li><a href="/blog/what-is-a-coding-agent">What is a coding agent? From autocomplete to pull requests</a></li>
+    <li><a href="/code">Runix Code: an independent coding agent, reviewable in your repository</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUSE, CSI or SDK: mount object storage in Kubernetes | Runix</title>
+<meta name="description" content="FUSE mount, CSI driver or SDK: three ways to get a bucket into ML pods on Kubernetes, what each changes in your code, how each fails, and when to pick which.">
+<link rel="canonical" href="https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml">
+<meta property="og:title" content="FUSE, CSI or SDK: mount object storage in Kubernetes | Runix">
+<meta property="og:description" content="FUSE mount, CSI driver or SDK: three ways to get a bucket into ML pods on Kubernetes, what each changes in your code, how each fails, and when to pick which.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-fuse-csi-or-sdk-mounting-object-storage-for-ml.png?v=57c44dc3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-fuse-csi-or-sdk-mounting-object-storage-for-ml.png?v=57c44dc3">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "FUSE, CSI or SDK: three ways to mount object storage in Kubernetes for ML workloads",
+  "description": "FUSE mount, CSI driver or SDK: three ways to get a bucket into ML pods on Kubernetes, what each changes in your code, how each fails, and when to pick which.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-fuse-csi-or-sdk-mounting-object-storage-for-ml.png?v=57c44dc3",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "FUSE, CSI or SDK: three ways to mount object storage in Kubernetes for ML workloads",
+      "item": "https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is a CSI driver the same as a FUSE mount?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. CSI is the Kubernetes contract for provisioning and attaching volumes; a CSI driver for object storage usually performs the actual mount with FUSE, so it adds cluster-managed provisioning on top of the FUSE mechanism and inherits its failure modes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which option needs no code changes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A FUSE mount and a CSI volume both present a path, so existing loaders and tools work unchanged. An SDK or Hadoop-compatible client replaces every file access with a library call."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to a FUSE mount when the daemon crashes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Processes with open files see transport errors and the mount point stops answering until it is remounted. Kubernetes does not remount it on its own, so the recovery path has to be planned."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="FUSE, CSI or SDK: mount object storage in Kubernetes | Runix">
+<meta name="twitter:description" content="FUSE mount, CSI driver or SDK: three ways to get a bucket into ML pods on Kubernetes, what each changes in your code, how each fails, and when to pick which.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Infrastructure">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#three-ways-to-mount-object-storage-in-kubernetes">Three ways to mount object storage in Kubernetes</a></li><li><a href="#fuse-a-path-at-the-price-of-a-daemon">FUSE: a path, at the price of a daemon</a></li><li><a href="#csi-the-same-mount-owned-by-the-cluster">CSI: the same mount, owned by the cluster</a></li><li><a href="#sdk-or-hadoop-compatible-client-no-mount-your-code-changes">SDK or Hadoop-compatible client: no mount, your code changes</a></li><li><a href="#the-three-paths-side-by-side">The three paths side by side</a></li><li><a href="#when-to-pick-which">When to pick which</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">FUSE, CSI or SDK: three ways to mount object storage in Kubernetes for ML workloads</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>There are three ways to get a bucket in front of a training job or an agent on Kubernetes: mount it with FUSE, provision it through a CSI driver, or skip the mount and call an SDK or a Hadoop-compatible client from the code. Each changes a different thing, your code, your pod spec or your operations, and each fails in its own way. This post is about how to <strong>mount object storage in Kubernetes</strong> for ML work, and when not to mount it at all.</p>
+
+<h2 id="three-ways-to-mount-object-storage-in-kubernetes">Three ways to mount object storage in Kubernetes</h2>
+
+<p>The three are not alternatives at the same level. FUSE is a mechanism: a kernel interface that lets a user-space process answer file system calls. CSI is a Kubernetes contract for provisioning storage and attaching it to pods, and a CSI driver often uses FUSE underneath. An SDK is a library, with no kernel or cluster involvement.</p>
+
+<p>So the question of which one is really three questions: who manages the mount, what the code sees, and where failures surface.</p>
+
+<h2 id="fuse-a-path-at-the-price-of-a-daemon">FUSE: a path, at the price of a daemon</h2>
+
+<p>With a FUSE mount, a user-space process registers with the kernel through <a href="https://github.com/libfuse/libfuse" rel="noopener">libfuse</a> or an equivalent, and every open, read, readdir and stat on the mount point is forwarded to that process, which answers from a cache or from the bucket. The code does not change: a loader that opens a path keeps opening a path, and shell tools, notebooks and libraries all work.</p>
+
+<p>What you pay for that is the daemon. Every file operation crosses from the kernel to user space and back, a fixed cost per call that small files and metadata-heavy workloads feel most. The daemon runs on every node that mounts, needs access to the FUSE device, and holds both the cache and the credentials.</p>
+
+<p>The failure modes are specific. If the daemon dies, processes with open files see errors such as "transport endpoint is not connected", and the mount point has to be remounted, which Kubernetes does not do on its own. If the bucket is slow, a read blocks inside the kernel and often cannot be interrupted cleanly. And a daemon that caches aggressively competes with the training job for the node's memory, in exactly the place you cannot afford contention.</p>
+
+<h2 id="csi-the-same-mount-owned-by-the-cluster">CSI: the same mount, owned by the cluster</h2>
+
+<p>The <a href="https://kubernetes-csi.github.io/docs/" rel="noopener">Container Storage Interface</a> is the contract that lets a storage system provision volumes and mount them into pods without changes to Kubernetes itself. A driver for a file system over object storage typically runs a node plugin on each node, which performs the mount, and a controller that handles provisioning. The pod spec declares a PersistentVolumeClaim; the code, again, sees a path.</p>
+
+<p>What changes is ownership and scale. The platform team installs and upgrades the driver, application teams request volumes in YAML, and a ReadWriteMany volume lets many pods on many nodes share one namespace. For workloads that start thousands of pods, the provisioning path matters: a driver that creates a volume by calling a cloud API inherits that API's rate limits and, for block volumes, the per-node attachment limits, while one that provisions by creating a directory in an existing file system does not.</p>
+
+<p>The failure modes move with ownership. A driver upgrade can require draining nodes or remounting every volume, and a node plugin that runs the FUSE processes in its own pod takes every mount on that node with it when it crashes, so the blast radius is the node rather than the process. Provisioning or mounting that is slow at scale shows up as pods stuck in Pending or ContainerCreating with no error from the application, which is hard to alert on. And since most such drivers mount with FUSE, every FUSE failure mode is inherited.</p>
+
+<h2 id="sdk-or-hadoop-compatible-client-no-mount-your-code-changes">SDK or Hadoop-compatible client: no mount, your code changes</h2>
+
+<p>The third path drops the mount. A Python, Java or Rust SDK, or a Hadoop-compatible FileSystem implementation for Spark and Flink, lets the application open, read and list through library calls, with the client handling caching, parallelism and retries inside the process.</p>
+
+<p>Nothing runs in the kernel or as a daemon, so there is no privileged pod, no remount after a crash and no competition for node memory outside the process's own. Parallel reads are explicit rather than hidden behind a blocking <code>read()</code>, and errors arrive as exceptions the application can handle, with timeouts it chose. For jobs already on Spark, the <a href="https://hadoop.apache.org/docs/stable/" rel="noopener">Hadoop FileSystem API</a> is the interface they expect anyway.</p>
+
+<p>The cost is that every tool which expects a path stops working: image decoders, tokenisers, checkpoint writers, notebooks and the long tail of scripts all assume <code>open()</code>. Each team carries its own client version, so an upgrade is a code change in every repository rather than a driver roll-out, and retries and timeouts become the application's responsibility, which each team gets wrong in its own way.</p>
+
+<h2 id="the-three-paths-side-by-side">The three paths side by side</h2>
+
+<table aria-label="The three paths side by side">
+<tr><th scope="col">Path</th><th scope="col">What changes</th><th scope="col">Who owns it</th><th scope="col">Failure surface</th></tr>
+<tr><td>FUSE mount</td><td>Nothing in the code</td><td>Whoever runs the daemon</td><td>Daemon death hangs the mount; node memory contention</td></tr>
+<tr><td>CSI driver</td><td>The pod spec</td><td>The platform team</td><td>Node plugin crash can take the node's mounts; slow provisioning at scale</td></tr>
+<tr><td>SDK or Hadoop client</td><td>Every file access</td><td>Each application team</td><td>Version drift; retries and timeouts per application</td></tr>
+</table>
+
+<h2 id="when-to-pick-which">When to pick which</h2>
+
+<ul>
+<li>Pick a <strong>FUSE mount</strong> when the code cannot change and the mount is run by the same people who run the job: a research team with its own nodes, a notebook host, a single training cluster.</li>
+<li>Pick a <strong>CSI driver</strong> when more than one team shares a cluster, when pods need a volume declared in YAML, and when the platform team will own the driver's lifecycle. Check how provisioning scales first.</li>
+<li>Pick an <strong>SDK or Hadoop client</strong> when the workload is already a Spark or Flink job, when the loader is purpose-built and the team controls every read, or when a daemon with device access on the node is not acceptable.</li>
+<li>Pick <strong>more than one</strong> when the same data serves different consumers: a CSI volume for the training pods and the Hadoop client for the <a href="/blog/ai-data-pipelines">preprocessing job</a> are a normal pairing, provided both see the same namespace.</li>
+</ul>
+
+<p>The deciding question for all three applies to every file system layer over a bucket: where does the truth live, and what does a delete through this path do to the bucket? That is a property of the file system behind the mount, not of the mount mechanism; the <a href="/blog/introducing-runix-fs">introduction to Runix FS</a> describes how one layer defines it.</p>
+
+<p><a href="/fs">Runix FS</a> exposes all three paths over one namespace: a FUSE mount, a Kubernetes CSI driver that provisions ReadWriteMany volumes by creating a directory rather than calling a cloud API, a Hadoop-compatible client, and SDKs for Java, Python and Rust, with paths mapping one-to-one to object keys so the bucket stays independently readable. It is in early access and deployed per customer in their own cloud account; the <a href="/docs/fs">quick start</a> brings up a single-node cluster, attaches a bucket and mounts it.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is a CSI driver the same as a FUSE mount?</h3>
+<p>No. CSI is the Kubernetes contract for provisioning and attaching volumes; a CSI driver for object storage usually performs the actual mount with FUSE, so it adds cluster-managed provisioning on top of the FUSE mechanism and inherits its failure modes.</p>
+<h3>Which option needs no code changes?</h3>
+<p>A FUSE mount and a CSI volume both present a path, so existing loaders and tools work unchanged. An SDK or Hadoop-compatible client replaces every file access with a library call.</p>
+<h3>What happens to a FUSE mount when the daemon crashes?</h3>
+<p>Processes with open files see transport errors and the mount point stops answering until it is remounted. Kubernetes does not remount it on its own, so the recovery path has to be planned.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/fs">Runix FS</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/object-storage-is-not-a-file-system">Object storage is not a file system, and what POSIX on object storage adds</a></li>
+    <li><a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth: AI file system cache mode versus file-system mode</a></li>
+    <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+    <li><a href="/fs">Runix FS: an AI-native file system on your object storage</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

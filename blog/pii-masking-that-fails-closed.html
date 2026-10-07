@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PII masking for training data should fail closed | Runix</title>
+<meta name="description" content="Pattern, NER and context detection, masking versus pseudonymisation versus dropping, why uncleared records are held back, and how to measure recall honestly.">
+<link rel="canonical" href="https://runixcloud.io/blog/pii-masking-that-fails-closed">
+<meta property="og:title" content="PII masking for training data should fail closed | Runix">
+<meta property="og:description" content="Pattern, NER and context detection, masking versus pseudonymisation versus dropping, why uncleared records are held back, and how to measure recall honestly.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/pii-masking-that-fails-closed">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-pii-masking-that-fails-closed.png?v=5acf8d02">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-pii-masking-that-fails-closed.png?v=5acf8d02">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "PII masking for training data that fails closed: detect, mask, measure, hold back",
+  "description": "Pattern, NER and context detection, masking versus pseudonymisation versus dropping, why uncleared records are held back, and how to measure recall honestly.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/pii-masking-that-fails-closed"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-pii-masking-that-fails-closed.png?v=5acf8d02",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PII masking for training data that fails closed: detect, mask, measure, hold back",
+      "item": "https://runixcloud.io/blog/pii-masking-that-fails-closed"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does fail closed mean for PII masking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When the masking stage cannot clear a record, because detection is uncertain, the detector errored, or a record-level rule could not be evaluated, the record is held back rather than passed through. Held records are counted and reviewed instead of silently continuing unmasked."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is pseudonymisation the same as masking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Masking replaces a span with a placeholder and keeps nothing that could reverse it, while pseudonymisation keeps a separate mapping so the data can be re-linked, which means it is still personal data under the GDPR definition."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should recall be measured?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "From a labelled sample drawn at random from the delivery and annotated by people, reported with the sample size per entity type and per source. A detector cannot measure its own recall, and canaries only measure what was planted."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="PII masking for training data should fail closed | Runix">
+<meta name="twitter:description" content="Pattern, NER and context detection, masking versus pseudonymisation versus dropping, why uncleared records are held back, and how to measure recall honestly.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Data">
+<meta property="article:section" content="Compliance">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Compliance</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-pii-is-and-why-training-data-is-the-hard-case">What PII is, and why training data is the hard case</a></li><li><a href="#three-detection-methods-and-what-each-misses">Three detection methods and what each misses</a></li><li><a href="#masking-pseudonymisation-or-dropping">Masking, pseudonymisation or dropping</a></li><li><a href="#why-pii-masking-for-training-data-fails-closed">Why PII masking for training data fails closed</a></li><li><a href="#measuring-recall-honestly">Measuring recall honestly</a></li><li><a href="#domain-differences-finance-legal-health">Domain differences: finance, legal, health</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Compliance</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">PII masking for training data that fails closed: detect, mask, measure, hold back</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>PII masking for training data has one property that masking for a live request does not: there is no second chance. A record that reaches a training run with a name or an account number in it can be memorised by the model, emitted later, and cannot be recalled by deleting the file. That asymmetry is the whole argument for failing closed.</p>
+<p>This post compares the three detection methods and the three things that can be done with a detected span, explains what fail-closed means mechanically, and says how to measure recall without flattering yourself. Domain differences come last, because that is where general rules stop working.</p>
+<h2 id="what-pii-is-and-why-training-data-is-the-hard-case">What PII is, and why training data is the hard case</h2>
+<p><a href="https://csrc.nist.gov/pubs/sp/800/122/final" rel="noopener">NIST SP 800-122</a> describes personally identifiable information as information that can be used to distinguish or trace an individual's identity, such as a name or a date and place of birth, together with any other information that is linked or linkable to that individual. The second half is the part detectors miss: a date of birth, a postcode and a job title are each harmless and together are a person.</p>
+<p>Training data makes this harder in three ways. Volume: a corpus is too large to read, so detection is statistical and recall is never complete. Persistence: a model can memorise and reproduce what it saw, and <a href="/blog/deduplication-exact-near-semantic">the duplicates that inflate memorisation</a> multiply the exposure. Irreversibility: once trained, the only remedy is to retrain. So the place to act is before the training set exists, and before the record reaches any third-party model used for extraction, one of the hops in <a href="/blog/where-your-prompts-actually-go">the path text takes through an LLM integration</a>.</p>
+<h2 id="three-detection-methods-and-what-each-misses">Three detection methods and what each misses</h2>
+<ul>
+<li><strong>Patterns and checksums.</strong> Regular expressions for emails, phone numbers and national identifiers, with a checksum where the format has one, such as the Luhn check on card numbers. High precision on what they target and no recall on anything else: a name in prose has no pattern.</li>
+<li><strong>Named entity recognition.</strong> A model that tags spans as person, organisation or location. It finds the names that patterns cannot, and misses unusual names, lower-case text, non-Latin scripts and domain jargon that looks like a name.</li>
+<li><strong>Context rules.</strong> A number near "account", "DOB" or "patient" is treated as sensitive even when the number alone is ambiguous. It fires falsely on templates and forms, which is acceptable: a false positive costs a placeholder, a false negative costs a record.</li>
+</ul>
+<p>Production detectors combine all three: <a href="https://github.com/microsoft/presidio" rel="noopener">Presidio</a>, an open-source example, describes its recognisers as named entity recognition, regular expressions, rule-based logic and checksums with relevant context. What none of them sees is the quasi-identifier, the combination of individually innocent fields that together identify someone, which needs a record-level rule rather than a span-level detector.</p>
+<h2 id="masking-pseudonymisation-or-dropping">Masking, pseudonymisation or dropping</h2>
+<p><strong>Masking</strong> replaces the span with a typed placeholder such as <code>[PERSON_1]</code>, numbered so that the same entity gets the same placeholder within a record and references still resolve. Structure survives, the identity does not, and nothing is kept that could reverse it.</p>
+<p><strong>Pseudonymisation</strong> replaces the span with a consistent surrogate and keeps the mapping somewhere else. The GDPR defines it as processing such that the data can no longer be attributed to a specific person without additional information that is kept separately; the data remains personal data, and the mapping table becomes the most sensitive object in the system. It is right when linkage across records matters for the task and wrong when nobody will ever need to reverse it.</p>
+<p><strong>Dropping</strong> removes the record. It loses data, which is why teams avoid it, and it is the only correct answer when the personal data is the content rather than an incident in it: a complaint letter, a medical narrative, a transcript of one identifiable person.</p>
+<h2 id="why-pii-masking-for-training-data-fails-closed">Why PII masking for training data fails closed</h2>
+<p>Fail closed means that when the masking stage cannot clear a record, the record does not continue. "Cannot clear" has three concrete cases: the detector returned a span with confidence below the threshold at which masking is applied; the detector errored or timed out on the record; or a record-level rule, such as a quasi-identifier check, could not be evaluated. In each case the record is held back with a reason code, routed to review, and counted.</p>
+<p>The default in most pipelines is the opposite: an exception in a stage is caught, logged and skipped, and the record flows on with nothing masked. That is fail open, and it is invisible until someone finds a name in a model's output. The fix is structural: the masking stage emits a verdict per record, and the only verdict that lets a record continue is "cleared"; everything else, including no verdict at all, holds.</p>
+<p>The cost is bounded: held records are a share of the delivery that a person has to look at or the buyer has to accept losing, and both counts belong in <a href="/blog/what-a-data-quality-report-should-contain">the quality report</a>. A record wrongly held costs one record; a record wrongly passed costs a retraining.</p>
+<h2 id="measuring-recall-honestly">Measuring recall honestly</h2>
+<p>Recall is the share of personal data actually present that the detector found. It cannot be computed from the detector's own output, because the denominator is exactly what the detector did not see. The only honest estimate comes from a labelled sample: records drawn at random from the delivery, stratified by source and document type, annotated by people, and compared with the detector's spans.</p>
+<ul>
+<li>Report recall and precision together, with the sample size and how the sample was drawn, per entity type and per source. One aggregate number hides the source where recall collapsed.</li>
+<li>Injected canaries, synthetic identifiers planted in the corpus, test the plumbing and measure only what was planted; they are not a recall estimate.</li>
+<li>A vendor's benchmark on another corpus is not your recall; re-measure when the sources, the detector or the domain change.</li>
+</ul>
+<h2 id="domain-differences-finance-legal-health">Domain differences: finance, legal, health</h2>
+<p>The general method holds; the entity lists and the definition of "the content" do not. In finance, the identifiers are account numbers, card numbers, tax identifiers and the counterparties named in transaction narratives, and a masked statement must still reconcile, so amounts and dates stay while the party goes.</p>
+<p>In legal text the parties are often the subject matter: a judgment is about named people, and rules on anonymisation vary by court and jurisdiction, so the rule is set per source rather than per corpus. In health, free-text clinical notes are the hard case: dates, small geographic units, institution names and ages above a threshold are treated as identifying on their own, which is why regulatory identifier lists for health data are long. Each domain therefore carries its own rules, as the pages for <a href="/finance-data">finance data</a> and <a href="/legal-data">legal data</a> set out.</p>
+<p>Runix Pipeline, the tooling behind Runix Data, is designed to identify and mask personal data before it reaches a model or a training set, and to fail closed when detection is uncertain, with held records counted in the quality report. <a href="/pipeline">Runix Pipeline</a> is in development with design partners; <a href="/data">Runix Data</a>, which runs on it, is in early access.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What does fail closed mean for PII masking?</h3>
+<p>When the masking stage cannot clear a record, because detection is uncertain, the detector errored, or a record-level rule could not be evaluated, the record is held back rather than passed through. Held records are counted and reviewed instead of silently continuing unmasked.</p>
+<h3>Is pseudonymisation the same as masking?</h3>
+<p>No. Masking replaces a span with a placeholder and keeps nothing that could reverse it, while pseudonymisation keeps a separate mapping so the data can be re-linked, which means it is still personal data under the GDPR definition.</p>
+<h3>How should recall be measured?</h3>
+<p>From a labelled sample drawn at random from the delivery and annotated by people, reported with the sample size per entity type and per source. A detector cannot measure its own recall, and canaries only measure what was planted.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/pipeline">Runix Pipeline</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></li>
+    <li><a href="/blog/where-your-prompts-actually-go">Where your prompts actually go</a></li>
+    <li><a href="/blog/training-data-provenance-and-licence">Training data provenance: what every record should carry, and why a README is not proof</a></li>
+    <li><a href="/pipeline">Runix Pipeline: the tooling that makes data model-ready</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

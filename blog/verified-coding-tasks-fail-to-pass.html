@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fail-to-pass tests: what makes a coding task valid | Runix</title>
+<meta name="description" content="Fail-to-pass and pass-to-pass tests, clean containers, why a task whose tests pass without the patch is invalid, and what SWE-bench Verified screened for.">
+<link rel="canonical" href="https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass">
+<meta property="og:title" content="Fail-to-pass tests: what makes a coding task valid | Runix">
+<meta property="og:description" content="Fail-to-pass and pass-to-pass tests, clean containers, why a task whose tests pass without the patch is invalid, and what SWE-bench Verified screened for.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-verified-coding-tasks-fail-to-pass.png?v=d645ded4">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-verified-coding-tasks-fail-to-pass.png?v=d645ded4">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid",
+  "description": "Fail-to-pass and pass-to-pass tests, clean containers, why a task whose tests pass without the patch is invalid, and what SWE-bench Verified screened for.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-verified-coding-tasks-fail-to-pass.png?v=d645ded4",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid",
+      "item": "https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are fail-to-pass tests?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tests tied to an issue that fail on the repository before the reference patch and pass after it. They are the executable form of the task statement and the only part of a task a grader can apply mechanically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do pass-to-pass tests matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They are the rest of the suite that was green before the patch and must stay green after it. Without them a patch can satisfy the target tests by breaking unrelated behaviour."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is a task invalid if its target tests pass without the patch?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the tests then cannot tell a solution from no solution, so any patch, including an empty one, resolves the task. Such tasks teach nothing in training and inflate every score equally in evaluation."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Fail-to-pass tests: what makes a coding task valid | Runix">
+<meta name="twitter:description" content="Fail-to-pass and pass-to-pass tests, clean containers, why a task whose tests pass without the patch is invalid, and what SWE-bench Verified screened for.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Data">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-execution-based-verification-means">What execution-based verification means</a></li><li><a href="#fail-to-pass-tests-define-the-task">Fail-to-pass tests define the task</a></li><li><a href="#pass-to-pass-tests-guard-the-rest-of-the-repository">Pass-to-pass tests guard the rest of the repository</a></li><li><a href="#clean-containers-every-run">Clean containers, every run</a></li><li><a href="#why-a-task-whose-target-tests-pass-without-the-patch-is-inva">Why a task whose target tests pass without the patch is invalid</a></li><li><a href="#underspecified-statements-and-what-swe-bench-verified-screen">Underspecified statements, and what SWE-bench Verified screened for</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>A coding task for training or evaluating an agent is a bundle: a repository at a fixed commit, a statement of what to change, a reference patch, and tests. Fail-to-pass tests are the tests that fail on the repository before the patch and pass after it, and they are the part of the bundle that makes the task checkable by execution rather than by reading. This post explains that mechanism, the companion pass-to-pass tests, why the runs need clean containers, and which tasks have to be thrown away.</p>
+<p>The reference point throughout is <a href="https://www.swebench.com/" rel="noopener">SWE-bench</a>, whose <a href="https://arxiv.org/abs/2310.06770" rel="noopener">paper introducing the benchmark</a> described execution-based evaluation on 2,294 problems drawn from real GitHub issues and pull requests across 12 Python repositories, and whose Verified subset is the human-validated selection.</p>
+<h2 id="what-execution-based-verification-means">What execution-based verification means</h2>
+<p>Verification by reading asks a reviewer whether a patch looks right. Verification by execution runs the tests and records the outcome, and the outcome is a fact about the repository rather than an opinion about the diff. The <a href="https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified" rel="noopener">SWE-bench Verified dataset card</a> defines the two test lists plainly: FAIL_TO_PASS is the set of tests resolved by the pull request and tied to the issue, and PASS_TO_PASS is the set of tests that should pass both before and after the pull request is applied.</p>
+<p>Three runs establish a task: the unpatched repository against the target tests, which must fail; the patched repository against the target tests, which must pass; and the patched repository against the rest of the suite, which must still pass. A task that meets all three is verified; a task that fails any of them is not a task yet, whatever the issue text says.</p>
+<h2 id="fail-to-pass-tests-define-the-task">Fail-to-pass tests define the task</h2>
+<p>The target tests are the executable form of the task statement. They come from the pull request that resolved the original issue: the tests the author added or changed, run before and after the change. Where a statement says that the parser should accept trailing commas, the fail-to-pass test is the one that feeds a trailing comma and asserts the result, and it is the only part of the task that a grader can apply mechanically to a model's patch.</p>
+<p>That gives the tests two jobs. They discriminate: a wrong patch must fail them. And they describe: a competent engineer, reading only the statement, should be able to write a patch that passes them. The first job is checked by running; the second is the subject of the Verified section below, and is where most invalid tasks hide.</p>
+<h2 id="pass-to-pass-tests-guard-the-rest-of-the-repository">Pass-to-pass tests guard the rest of the repository</h2>
+<p>A patch can make the target tests pass by breaking everything else: deleting a validation, special-casing the input the test uses, or changing a shared function so that the target test passes and unrelated tests fail. The pass-to-pass set is the rest of the suite that was green before the patch, and it must be green after. Without it, resolving the issue means satisfying one test, a weaker claim and an easier one to game.</p>
+<p>The set is built from the unpatched run and confirmed on the patched one. Tests that fail before the patch for reasons unrelated to the issue are excluded, as are flaky tests that fail intermittently on the same commit, because a flaky test in the pass-to-pass set turns a valid patch into a coin toss. Finding them means running the unpatched suite more than once, a cost paid once per task rather than once per evaluation.</p>
+<h2 id="clean-containers-every-run">Clean containers, every run</h2>
+<p>The three runs are only evidence if they are reproducible, and a developer's machine is not reproducible: cached builds, globally installed packages, environment variables and network access all leak into results. The SWE-bench harness runs its evaluations in Docker containers for this reason, and the same discipline applies to building tasks, not only to scoring them.</p>
+<p>Concretely: one image per repository and base commit, with dependencies pinned and the build recorded; a fresh container for every run, so that the unpatched run cannot leave state the patched run inherits; no network during the test run, so that a result cannot depend on an external service; and the image digest recorded in the task's provenance, so that a result can be rerun later on the same bits. Test output is captured in full, because a bare "passed" without the log is a claim again.</p>
+<h2 id="why-a-task-whose-target-tests-pass-without-the-patch-is-inva">Why a task whose target tests pass without the patch is invalid</h2>
+<p>If the target tests pass on the unpatched repository, they do not distinguish a solution from no solution. Any patch, including an empty one, resolves the task. Such a task teaches a training set nothing, and in an evaluation set it inflates every model's score equally, which hides differences between models and rewards nobody.</p>
+<p>It happens for mundane reasons: the pull request's test changes were unrelated to its code changes; the test already passed and was merely moved or renamed; the environment the task was built in differs from the one the original tests ran in, so the behaviour the issue describes is not reproduced; the patch is a refactor with no observable change.</p>
+<p>None of these are visible by reading; all of them are visible in the unpatched run, which is why that run comes first and why a task that fails it is dropped, with the reason recorded. Evaluation tasks also have to come from repositories that contribute nothing to training, which is <a href="/blog/split-by-source-not-by-row">the split-by-source rule</a> applied to code.</p>
+<h2 id="underspecified-statements-and-what-swe-bench-verified-screen">Underspecified statements, and what SWE-bench Verified screened for</h2>
+<p>The remaining failure is in the statement rather than the tests. An issue that says the program crashes on some inputs, with no example, or that asks for one behaviour while the tests assert another, cannot be solved from the statement alone. A model graded on such a task is graded on guessing which hidden test the author wrote. SWE-bench Verified is a subset of 500 tasks from the SWE-bench test set that human annotators validated for quality; the announcement the dataset card points to describes the screening as removing tasks whose issue descriptions were underspecified and tasks whose target tests checked behaviour the issue never asked for, along with other problems that made a task unfair.</p>
+<p>The check that produced it is one a data pipeline can run on every task: a reviewer reads the statement, reads the target tests, and answers whether the statement describes what the tests check. Where it does not, the task is either rewritten so that it does, with the rewrite recorded, or dropped. The decision and the reason travel with the task, so that <a href="/blog/what-a-data-quality-report-should-contain">the quality report</a> can say how many were cut and why.</p>
+<p>Runix Data's code domain applies these rules: each task is run in a clean container, the target tests must pass with the patch and fail without it, the rest of the suite must still pass, a task whose target tests pass without the patch is dropped and reported, and statements are checked against what the tests actually test. <a href="/code-data">Code data from Runix Data</a> is in early access, by engagement, with dropped tasks counted in the quality report that accompanies every <a href="/data">Runix Data</a> delivery.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What are fail-to-pass tests?</h3>
+<p>The tests tied to an issue that fail on the repository before the reference patch and pass after it. They are the executable form of the task statement and the only part of a task a grader can apply mechanically.</p>
+<h3>Why do pass-to-pass tests matter?</h3>
+<p>They are the rest of the suite that was green before the patch and must stay green after it. Without them a patch can satisfy the target tests by breaking unrelated behaviour.</p>
+<h3>Why is a task invalid if its target tests pass without the patch?</h3>
+<p>Because the tests then cannot tell a solution from no solution, so any patch, including an empty one, resolves the task. Such tasks teach nothing in training and inflate every score equally in evaluation.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/code-data">Code data, verified by running the tests</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/split-by-source-not-by-row">Split by source, not by row: how benchmark contamination reaches your own evaluation set</a></li>
+    <li><a href="/blog/deduplication-exact-near-semantic">Exact, near and semantic: why near-duplicate detection for training data needs all three</a></li>
+    <li><a href="/blog/what-a-data-quality-report-should-contain">What a data quality report should contain, and how to read one sceptically</a></li>
+    <li><a href="/code-data">Code data, verified by running the tests</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

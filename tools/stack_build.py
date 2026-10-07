@@ -16,7 +16,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from stack import LAYERS, PRODUCTS, LAYER_OF, DOMAINS, products_in  # noqa: E402
+from stack import LAYERS, PRODUCTS, LAYER_OF, DOMAINS, HUBS, AGENT_DOMAINS, QUALIFIER, products_in  # noqa: E402
 
 START, END = "<!--stack-->", "<!--/stack-->"
 GROUND = ("GPUs, power and cloud capacity in your own account, with the "
@@ -32,7 +32,7 @@ def home_stack(indent):
            f'{i1}<div class="pmap-cap"><p>Runix Lab &middot; the AI operating system</p>'
            f'<p>{words[len(LAYERS)].capitalize()} layers, {words[n_products]} products</p></div>']
     for key, num, name, role in LAYERS:
-        extra = " has-domains" if key == "data" else ""
+        extra = " has-domains" if key in ("data", "applications") else ""
         out.append(f'{i1}<div class="pmap-row{extra}" id="layer-{key}-map" data-layer="{key}">')
         out.append(f'{i2}<p class="pmap-layer"><span class="pl-no">{num:02d}</span>'
                    f'<span class="pl-name">{name}</span><span class="pl-role">{role}</span></p>')
@@ -41,8 +41,10 @@ def home_stack(indent):
             _, href, pname, line, _l, status, tag = PRODUCTS[pk]
             live = " pmap-live" if status == "early access" else ""
             new = f" <i>{tag}</i>" if tag else ""
+            q = QUALIFIER.get(pk)
+            qual = f'<span class="pmap-q">{q}</span>' if q else ""
             out.append(f'{i3}<li><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
-                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}</em></a></li>')
+                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a></li>')
         out.append(f'{i2}</ul>')
         if key == "data":
             # The domains the data layer works in, each a link to its own page. Drawn under the layer's products because they belong to the
@@ -53,6 +55,19 @@ def home_stack(indent):
                 cls = "pd-chip pd-focus" if focus else "pd-chip"
                 tag = " <i>Focus</i>" if focus else ""
                 out.append(f'{i4}<li><a class="{cls}" href="/{slug}">{label}{tag}</a></li>')
+            out.append(f'{i3}</ul>')
+            out.append(f'{i2}</div>')
+        if key == "applications":
+            # The Agents layer by professional domain (2026-10-07): each chip
+            # names the domain and the agent that serves it today, and the
+            # last one goes to the layer's hub, which says what comes next.
+            hub_href, hub_label, _ = HUBS["applications"]
+            out.append(f'{i2}<div class="pmap-domains"><p class="pd-label">Domains</p>')
+            out.append(f'{i3}<ul>')
+            for anchor, label, pk in AGENT_DOMAINS:
+                short = PRODUCTS[pk][2].replace("Runix ", "")
+                out.append(f'{i4}<li><a class="pd-chip" href="{hub_href}#{anchor}">{label} <i>{short}</i></a></li>')
+            out.append(f'{i4}<li><a class="pd-chip pd-more" href="{hub_href}">{hub_label} <span aria-hidden="true">&rarr;</span></a></li>')
             out.append(f'{i3}</ul>')
             out.append(f'{i2}</div>')
         out.append(f'{i1}</div>')

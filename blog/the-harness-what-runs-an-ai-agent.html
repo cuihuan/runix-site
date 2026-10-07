@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Agent Harness: What Actually Runs an AI Agent | Runix</title>
+<meta name="description" content="An agent harness is the runtime around a model: tools, permissions, context, budgets and logs. Why it, not the model, decides if an agent is safe to run.">
+<link rel="canonical" href="https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent">
+<meta property="og:title" content="The Agent Harness: What Actually Runs an AI Agent | Runix">
+<meta property="og:description" content="An agent harness is the runtime around a model: tools, permissions, context, budgets and logs. Why it, not the model, decides if an agent is safe to run.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-the-harness-what-runs-an-ai-agent.png?v=86ea6ce3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-the-harness-what-runs-an-ai-agent.png?v=86ea6ce3">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The harness: what actually runs an AI agent",
+  "description": "An agent harness is the runtime around a model: tools, permissions, context, budgets and logs. Why it, not the model, decides if an agent is safe to run.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-the-harness-what-runs-an-ai-agent.png?v=86ea6ce3",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "The harness: what actually runs an AI agent",
+      "item": "https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an agent harness?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The runtime around a model that turns it into an agent: tool definitions and execution, permissions and sandboxing, context management, retries and budgets, logging and replay, and evaluation hooks. The model generates; the harness acts and enforces."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is an agent harness the same as an agent framework?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They overlap. A framework is a library for building the loop; the harness is the deployed runtime with the specific tools, permissions, budgets and logs that one agent runs under. The security properties live in the harness."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does an agent need an LLM gateway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. A gateway sits in front of the harness's model calls for key custody, quotas, failover and cost attribution; it does not execute tools or manage context. It is useful when an organisation already governs model traffic that way."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="The Agent Harness: What Actually Runs an AI Agent | Runix">
+<meta name="twitter:description" content="An agent harness is the runtime around a model: tools, permissions, context, budgets and logs. Why it, not the model, decides if an agent is safe to run.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Agents">
+<meta property="article:section" content="Concepts">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Concepts</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-an-agent-harness-contains">What an agent harness contains</a></li><li><a href="#tools-and-permissions-the-capability-boundary">Tools and permissions: the capability boundary</a></li><li><a href="#context-retries-and-budgets">Context, retries and budgets</a></li><li><a href="#logging-replay-and-evaluation-hooks">Logging, replay and evaluation hooks</a></li><li><a href="#why-the-harness-not-the-model-decides-whether-an-agent-is-sa">Why the harness, not the model, decides whether an agent is safe</a></li><li><a href="#where-a-gateway-fits">Where a gateway fits</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">The harness: what actually runs an AI agent</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>An agent harness is the software around a model that turns it into an agent: it defines the tools the model may call, executes those calls, decides what the model sees next, enforces limits on what it may do and spend, and records every step. The model generates text. The harness does everything else, including every part that can damage something.</p>
+<p>The distinction gets lost because products are named after models. When a team asks whether an agent is safe to run against its systems, it is asking about the harness, and a model card cannot answer it.</p>
+<h2 id="what-an-agent-harness-contains">What an agent harness contains</h2>
+<p>Implementations differ in shape but converge on the same components.</p>
+<ul>
+<li><strong>Tool definitions.</strong> A schema for each action the model may request: name, parameters, what it returns. The model never executes anything; it emits a request that matches a schema.</li>
+<li><strong>Tool execution and sandboxing.</strong> The code that validates a request, runs it and returns the result. Where it runs, as which user, with which filesystem and network: that is the sandbox.</li>
+<li><strong>Permissions.</strong> Which tools, on which resources, with which approvals. Read-only versus write, scoped paths, allowlisted commands, no credentials in the model's view.</li>
+<li><strong>Context management.</strong> What goes into the model's window on each step and what is dropped, truncated or summarised. This is where agents lose the thread.</li>
+<li><strong>Retries and budgets.</strong> How tool failures and model failures are retried, and ceilings on steps, tokens, wall-clock time and money.</li>
+<li><strong>Logging and replay.</strong> A trace of every prompt, tool call, result and decision, stored so the run can be inspected and replayed.</li>
+<li><strong>Evaluation hooks.</strong> Checks that run on intermediate and final outputs: tests, linters, policy rules, stop conditions.</li>
+</ul>
+<p>The <a href="https://arxiv.org/abs/2405.15793" rel="noopener">SWE-agent paper</a> calls the tool-facing part of this an agent-computer interface and shows that its design, with the model held constant, changes what the agent can complete. That is the harness thesis in one experiment.</p>
+<h2 id="tools-and-permissions-the-capability-boundary">Tools and permissions: the capability boundary</h2>
+<p>A tool definition is a contract. The model produces a structured call; the harness checks it against the schema, checks it against policy, executes it and returns the output. The <a href="https://modelcontextprotocol.io" rel="noopener">Model Context Protocol</a> is one widely used convention for describing tools so that the same definitions work across harnesses.</p>
+<p>Permissions are enforced at execution, not by instructing the model. A system prompt that says "do not delete files" is a request; a sandbox with no delete permission is a boundary. The two are not interchangeable, and a security review should be able to tell which one a product relies on.</p>
+<p>Tool output is untrusted input. A file the agent reads or a page it fetches can contain text that reads like instructions, and the model cannot reliably tell the difference. The <a href="https://genai.owasp.org/llm-top-10/" rel="noopener">OWASP Top 10 for LLM applications</a> lists this as prompt injection. The harness-level defences are scoping what tools can reach and requiring approval for consequential actions, not better wording in the prompt.</p>
+<h2 id="context-retries-and-budgets">Context, retries and budgets</h2>
+<p>The context window is finite and every tool result competes for it. The harness decides whether a long file is shown whole, truncated or summarised, and which earlier steps are kept when the window fills. A harness that truncates test output at the wrong point produces an agent that keeps fixing the wrong failure.</p>
+<p>Retries need two separate policies. A tool failure, such as a flaky test or a transient network error, can be retried immediately with a cap. A model failure, where the step produced nothing usable, needs a budget rather than a count, for the same reasons that <a href="/blog/llm-retry-budget">LLM traffic needs a retry budget</a>: each retry costs tokens and time precisely when things are already going badly.</p>
+<p>Budgets are the stop conditions a model cannot set for itself: maximum steps per task, maximum tokens, maximum wall-clock time, maximum spend. An agent without budgets does not fail; it loops. The harness ends the run, records why, and hands back whatever partial result exists.</p>
+<h2 id="logging-replay-and-evaluation-hooks">Logging, replay and evaluation hooks</h2>
+<p>Every step should be recorded: the prompt as sent, the tool call as emitted, the result as returned, and the decision that followed. The fields worth keeping and the ones to redact are the same as for any model traffic, covered in <a href="/blog/llm-observability">what to log for LLM traffic</a>, with tool calls and their results added.</p>
+<p>Replay is what makes the log useful. A recorded trace can be stepped through, with the recorded tool results, to find where a run went wrong, compared against another run of the same task, or turned into a regression test for the harness itself.</p>
+<p>Evaluation hooks are the harness's own checks on the model's work: run the tests before accepting a diff, validate structured output against a schema, apply a policy rule before an external action. They are the difference between an agent that reports success and an agent whose success was checked.</p>
+<h2 id="why-the-harness-not-the-model-decides-whether-an-agent-is-sa">Why the harness, not the model, decides whether an agent is safe</h2>
+<p>Take one model and two harnesses. The first gives it an unrestricted shell on a developer's machine with their credentials in the environment, no budget and no log. The second gives it scoped tools in a container, a spend ceiling, a trace, and a rule that its output <a href="/blog/reviewable-by-default-agent-changes-as-diffs">lands as a diff for a person to approve</a>. Same model, same quality of reasoning, completely different risk.</p>
+<p>The questions a company asks before letting an agent near its systems are all harness questions: what can it touch, what can it spend, what did it do, can we stop it, and can we prove all of that afterwards. Model choice moves quality. Harness design moves blast radius.</p>
+<h2 id="where-a-gateway-fits">Where a gateway fits</h2>
+<p>The harness makes model calls, and a gateway can sit in front of them. <a href="/blog/what-is-an-llm-gateway">An LLM gateway</a> handles key custody, per-key quotas, failover between providers and cost attribution for those calls. It does not execute tools, manage context or see the harness's decisions; it sees requests and responses.</p>
+<p>That makes the gateway optional from the harness's point of view and useful from the organisation's. A team that already holds provider keys centrally and attributes model spend per key can route an agent's calls through the same control plane. That is how <a href="/router">Runix Router</a> is positioned in front of the agents on the Runix stack: optional, with the agent running independently of it.</p>
+<p>Two agents exist on the <a href="/agents">agents layer</a> today, both in development: <a href="/code">Runix Code</a> for software engineering and <a href="/comic">Runix Comic</a> for comic dramas. Each is designed to run as an independent agent for its domain with its own harness, so the questions above, about tools, permissions, budgets and review gates, are answered per agent rather than by a shared runtime.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What is an agent harness?</h3>
+<p>The runtime around a model that turns it into an agent: tool definitions and execution, permissions and sandboxing, context management, retries and budgets, logging and replay, and evaluation hooks. The model generates; the harness acts and enforces.</p>
+<h3>Is an agent harness the same as an agent framework?</h3>
+<p>They overlap. A framework is a library for building the loop; the harness is the deployed runtime with the specific tools, permissions, budgets and logs that one agent runs under. The security properties live in the harness.</p>
+<h3>Does an agent need an LLM gateway?</h3>
+<p>No. A gateway sits in front of the harness's model calls for key custody, quotas, failover and cost attribution; it does not execute tools or manage context. It is useful when an organisation already governs model traffic that way.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/agents">The Agents layer, by professional domain</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/what-is-a-coding-agent">What is a coding agent? From autocomplete to pull requests</a></li>
+    <li><a href="/blog/ai-agents-by-domain">Domain-specific AI agents: why agents are built one profession at a time</a></li>
+    <li><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></li>
+    <li><a href="/agents">The Agents layer, by professional domain</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

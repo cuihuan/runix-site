@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading an open-weight model licence before you tune | Runix</title>
+<meta name="description" content="The clauses that decide whether you can fine-tune and ship an open-weight model: use restrictions, attribution, user thresholds, redistribution and patents.">
+<link rel="canonical" href="https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence">
+<meta property="og:title" content="Reading an open-weight model licence before you tune | Runix">
+<meta property="og:description" content="The clauses that decide whether you can fine-tune and ship an open-weight model: use restrictions, attribution, user thresholds, redistribution and patents.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-how-to-read-an-open-weight-model-licence.png?v=77df0aaf">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-how-to-read-an-open-weight-model-licence.png?v=77df0aaf">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to read an open-weight model licence before you fine-tune it",
+  "description": "The clauses that decide whether you can fine-tune and ship an open-weight model: use restrictions, attribution, user thresholds, redistribution and patents.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-how-to-read-an-open-weight-model-licence.png?v=77df0aaf",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to read an open-weight model licence before you fine-tune it",
+      "item": "https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is an open-weight model the same as an open-source model?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Open weight means the parameters are downloadable. Whether you may fine-tune, ship or redistribute them depends on the licence, which may be a standard permissive licence or a custom one with its own restrictions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a LoRA adapter count as a derivative of the base model?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Often, under custom licences, because their definitions of derivative are written broadly, and a merged model certainly contains the base weights. Read the definitions in the specific licence; this is not legal advice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should the licence be re-checked?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Every time the base checkpoint changes, and before any change in how the model is deployed, since terms vary by release and user thresholds depend on your product."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Reading an open-weight model licence before you tune | Runix">
+<meta name="twitter:description" content="The clauses that decide whether you can fine-tune and ship an open-weight model: use restrictions, attribution, user thresholds, redistribution and patents.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Models">
+<meta property="article:section" content="Compliance">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Compliance</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#open-weights-are-not-open-source-by-default">Open weights are not open source by default</a></li><li><a href="#the-clauses-in-an-open-weight-model-licence-that-matter">The clauses in an open-weight model licence that matter</a></li><li><a href="#what-the-main-families-have-been-known-to-use">What the main families have been known to use</a></li><li><a href="#adapters-merged-weights-and-what-counts-as-a-derivative">Adapters, merged weights and what counts as a derivative</a></li><li><a href="#a-reading-checklist-before-training-starts">A reading checklist before training starts</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Compliance</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">How to read an open-weight model licence before you fine-tune it</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>An open-weight model licence is the document that decides whether the model you are about to fine-tune can be shipped, to whom, under what name, and with what obligations attached. Many teams read it after training, if at all. This post is about reading it first: which clauses matter, what the main families have been known to use, and how adapters and merged weights fit in. It is not legal advice; for a decision that matters, involve counsel.</p>
+
+<h2 id="open-weights-are-not-open-source-by-default">Open weights are not open source by default</h2>
+<p>Open weight means the parameters are published and you can download them. It says nothing about what you may do with them. Some families release weights under a standard permissive software licence, with well-understood rights and obligations. Others publish under a custom licence written for that family, with terms a software licence never had: user-count thresholds, naming rules, policies about what the model may be used for.</p>
+<p>The same family can do both. A release can carry a different licence from the previous one, a research variant can sit beside a commercial one under the same model name, and a licence can be revised between versions. The unit of analysis is the exact checkpoint you are downloading, on the day you download it.</p>
+
+<h2 id="the-clauses-in-an-open-weight-model-licence-that-matter">The clauses in an open-weight model licence that matter</h2>
+<ul>
+<li><strong>Use restrictions and acceptable-use policies.</strong> A list of prohibited uses, sometimes in a separate document the licence incorporates by reference. Check whether it binds only you or must be passed on to the users of your product, and whether your use case is near any line on it.</li>
+<li><strong>Attribution and naming of derivatives.</strong> A required notice in documentation, a "built with" statement, or a rule that a derived model's name must include or begin with the family name. Cheap to comply with, expensive to discover after a launch.</li>
+<li><strong>User-count thresholds.</strong> A clause that grants the licence only below a stated number of monthly users, or requires a separate agreement above it, and may count users of the product rather than callers of the API.</li>
+<li><strong>Redistribution of weights.</strong> Whether you may publish the tuned weights, whether the original licence must travel with them, and whether an adapter counts as redistribution of the base.</li>
+<li><strong>Research-only variants.</strong> A non-commercial or research licence on some checkpoints of a family that has commercial terms on others. The model card, not the family name, tells you which you have.</li>
+<li><strong>Patent terms.</strong> Some standard permissive licences, Apache 2.0 among them, carry an explicit patent grant and a termination clause if you sue over the covered patents; others say nothing about patents, and custom licences vary. This is the clause for whoever handles intellectual property at your company.</li>
+<li><strong>Output clauses.</strong> Some licences have included terms about using the model's outputs to train other models. If your plan involves distillation, read for this specifically.</li>
+</ul>
+
+<h2 id="what-the-main-families-have-been-known-to-use">What the main families have been known to use</h2>
+<p>None of the following is a statement of current terms. Each family revises its licence, and the text on the licence page on the day you use the model is the only one that counts.</p>
+<ul>
+<li><strong>Llama</strong> has been known to use a custom community licence with an acceptable-use policy, attribution and naming requirements for derivatives, and a monthly-active-user threshold above which a separate licence is needed. The licence and use policy for each release are in <a href="https://github.com/meta-llama/llama-models" rel="noopener">Meta's llama-models repository</a>.</li>
+<li><strong>Qwen</strong> has shipped different models under different terms: some releases under a permissive software licence, others under a custom licence with a user threshold and attribution. Check the licence file on the specific model card under <a href="https://huggingface.co/Qwen" rel="noopener">the Qwen organisation on Hugging Face</a>.</li>
+<li><strong>Gemma</strong> has used its own terms of use with a prohibited-use policy that applies to derivatives and to redistribution. The terms are published on <a href="https://ai.google.dev/gemma/terms" rel="noopener">the Gemma Terms of Use page</a>.</li>
+<li><strong>Mistral</strong> has released some models under a permissive software licence and others under a research licence that limits production use. The licence is per model, not per family.</li>
+<li><strong>DeepSeek</strong> has published code and weights under separate licences for some releases, with use-based restrictions in the model licence, and a permissive licence for others. The licence files in each release's repository are the reference.</li>
+</ul>
+
+<h2 id="adapters-merged-weights-and-what-counts-as-a-derivative">Adapters, merged weights and what counts as a derivative</h2>
+<p>This is where fine-tuning teams get surprised. A LoRA adapter is a small set of weights trained against the base; a merged model is the base plus the adapter, folded into one set of weights. Most custom licences define a term along the lines of "derivative" or "model derivative" and attach obligations to it, and many of those definitions are written broadly enough to cover both the merged model and the adapter on its own.</p>
+<p>Under a permissive software licence the questions are simpler but not absent: the merged model contains the licensed weights, so notice and attribution obligations follow it, and any patent clause applies to it. The mechanics of adapters and merging are in <a href="/blog/lora-qlora-and-full-fine-tuning">LoRA, QLoRA and full fine-tuning</a>; the licence question is separate from the engineering one and should be settled before the engineering starts.</p>
+<p>Where the model is served changes little. A model in your own account behind a dedicated endpoint, as described in <a href="/blog/single-tenant-model-serving-explained">single-tenant model serving</a>, is still a use of the weights under the licence, and a product on top of it still has the users a threshold clause counts.</p>
+
+<h2 id="a-reading-checklist-before-training-starts">A reading checklist before training starts</h2>
+<ol>
+<li>Record the exact checkpoint, the licence file it ships with, and the date you read it.</li>
+<li>Read the definitions section first: what the licence calls the materials, a derivative, and commercial use.</li>
+<li>Describe your deployment in one line: internal tool, product feature, or redistributed weights. The obligations differ for each.</li>
+<li>Count your users the way the licence counts them, and check the result against any threshold.</li>
+<li>Check your use case, and your users' likely use cases, against the acceptable-use policy.</li>
+<li>Note every attribution and naming obligation and put it in the release checklist now.</li>
+<li>Check the patent terms with whoever handles intellectual property.</li>
+<li>Check the licences of your training data as well; <a href="/data">Runix Data</a> records provenance and licence for every record because the model's licence is only half of the picture.</li>
+<li>Repeat the whole list when the base model version changes.</li>
+</ol>
+<p>The questions a buyer would put to any AI vendor about data apply to a model supplier too; <a href="/blog/ai-vendor-data-questions">the data questions to ask an AI vendor</a> is a reasonable companion to this list.</p>
+
+<p><a href="/models">Runix Models</a> works with open-weight families whose licences permit your use, for example Qwen, Llama, Mistral, Gemma and DeepSeek, and the licence is read against your use case before any training starts, with weights and access set in the engagement contract. It is in early access, by engagement.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is an open-weight model the same as an open-source model?</h3>
+<p>No. Open weight means the parameters are downloadable. Whether you may fine-tune, ship or redistribute them depends on the licence, which may be a standard permissive licence or a custom one with its own restrictions.</p>
+<h3>Does a LoRA adapter count as a derivative of the base model?</h3>
+<p>Often, under custom licences, because their definitions of derivative are written broadly, and a merged model certainly contains the base weights. Read the definitions in the specific licence; this is not legal advice.</p>
+<h3>How often should the licence be re-checked?</h3>
+<p>Every time the base checkpoint changes, and before any change in how the model is deployed, since terms vary by release and user thresholds depend on your product.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/models">Runix Models</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/lora-qlora-and-full-fine-tuning">LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights</a></li>
+    <li><a href="/blog/single-tenant-model-serving-explained">Single-tenant model serving explained: what a dedicated LLM inference endpoint changes</a></li>
+    <li><a href="/blog/fine-tune-prompt-or-retrieve">Fine-tuning vs RAG vs prompting: a decision guide by failure mode</a></li>
+    <li><a href="/models">Runix Models: fine-tune and serve open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

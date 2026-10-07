@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training data provenance: what every record needs | Runix</title>
+<meta name="description" content="What a provenance entry should carry per record, from source and retrieval date to an SPDX licence identifier, and why a detected licence beats a README.">
+<link rel="canonical" href="https://runixcloud.io/blog/training-data-provenance-and-licence">
+<meta property="og:title" content="Training data provenance: what every record needs | Runix">
+<meta property="og:description" content="What a provenance entry should carry per record, from source and retrieval date to an SPDX licence identifier, and why a detected licence beats a README.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/training-data-provenance-and-licence">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-training-data-provenance-and-licence.png?v=fac164df">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-training-data-provenance-and-licence.png?v=fac164df">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Training data provenance: what every record should carry, and why a README is not proof",
+  "description": "What a provenance entry should carry per record, from source and retrieval date to an SPDX licence identifier, and why a detected licence beats a README.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/training-data-provenance-and-licence"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-training-data-provenance-and-licence.png?v=fac164df",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Training data provenance: what every record should carry, and why a README is not proof",
+      "item": "https://runixcloud.io/blog/training-data-provenance-and-licence"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is a licence in the README not enough?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A README describes the repository as a whole on the day it was written, while vendored files, relicensed files and per-file headers can carry different terms. Detection reads each file and returns an SPDX identifier per record, which can be reproduced and audited."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to a record whose licence cannot be determined?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is held back with the reason recorded, counted in the quality report, and left for the buyer to decide on. Unknown is treated as no permission, never rounded up to permissive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does provenance help with opt-outs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A per-record source identifier turns an opt-out into a query: every record from that source and every record derived from it can be found, removed and the removal dated. Without it the opt-out is a promise that cannot be executed."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Training data provenance: what every record needs | Runix">
+<meta name="twitter:description" content="What a provenance entry should carry per record, from source and retrieval date to an SPDX licence identifier, and why a detected licence beats a README.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Data">
+<meta property="article:section" content="Compliance">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Compliance</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#why-the-unit-is-the-record-not-the-dataset">Why the unit is the record, not the dataset</a></li><li><a href="#what-a-training-data-provenance-entry-should-contain">What a training data provenance entry should contain</a></li><li><a href="#why-a-detected-licence-beats-a-readme">Why a detected licence beats a README</a></li><li><a href="#opt-outs-and-why-provenance-makes-them-executable">Opt-outs, and why provenance makes them executable</a></li><li><a href="#what-to-do-with-records-whose-licence-is-unknown">What to do with records whose licence is unknown</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Compliance</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">Training data provenance: what every record should carry, and why a README is not proof</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Training data provenance is the record of where each training record came from, what was done to it, and under what terms it may be used. The W3C PROV definition is broader and worth keeping in mind: provenance is information about the entities, activities and people involved in producing a piece of data, used to form assessments about its quality, reliability or trustworthiness. For a training set the unit is the record, not the dataset, because the questions that matter later are asked about individual records.</p>
+<p>This post sets out what a per-record entry should contain, why a licence detected from the file beats one copied from a README, how opt-outs are honoured, and what to do with the records whose licence cannot be determined.</p>
+<h2 id="why-the-unit-is-the-record-not-the-dataset">Why the unit is the record, not the dataset</h2>
+<p>A dataset-level statement, such as "sourced from public repositories under permissive licences", answers none of the questions that arrive after delivery. Which records came from a source that has since withdrawn permission? Which records were transformed by a pipeline version later found to have a bug? Which records can a buyer in a given jurisdiction actually use? Each of those is a filter over records, and a filter needs a field per record to run on.</p>
+<p>It also makes the dataset auditable rather than trusted. An auditor who can pick a record at random, follow its source identifier to the original, and reproduce the transformation is checking evidence. One who can only read a summary is reading a claim. <a href="/blog/ai-vendor-data-questions">The data questions buyers put to AI vendors</a> are mostly requests for this evidence.</p>
+<h2 id="what-a-training-data-provenance-entry-should-contain">What a training data provenance entry should contain</h2>
+<p>The minimum is the set of fields that lets someone else reproduce, filter and revoke:</p>
+<ul>
+<li><strong>Source identifier.</strong> Precise enough to fetch the original again: a repository, commit and path for code; a URL and its canonical form for web text; a document id and page range for filings; a session id for recordings.</li>
+<li><strong>Retrieval date and method.</strong> When the source was read and how, because sources change and permissions change with them.</li>
+<li><strong>A hash of the original.</strong> So that a later copy can be shown to be the same bytes, or not.</li>
+<li><strong>Transformations applied.</strong> Each stage that touched the record, with the tool and version: cleaning, deduplication and the cluster it was kept from, extraction, masking.</li>
+<li><strong>Licence identifier.</strong> An identifier from the <a href="https://spdx.org/licenses/" rel="noopener">SPDX License List</a>, such as MIT or Apache-2.0, with how it was determined: detected from the file, declared by the repository, or asserted by the party that supplied the data.</li>
+<li><strong>Rights basis.</strong> The licence, a contract, or the supplier's own rights: the reason this record may be used for this purpose at all.</li>
+<li><strong>Opt-out check.</strong> When the source was last checked against the removal requests that apply to it.</li>
+</ul>
+<p>In practice this is a small structured block that travels with the record. An illustrative entry:</p>
+<pre><code>{
+  "source": {"repo": "example-org/example-parser",
+             "commit": "3f9c2e1", "path": "src/lexer.py"},
+  "retrieved": "2026-09-14",
+  "sha256": "hash-of-the-original-bytes",
+  "licence": {"spdx": "MIT", "basis": "detected"},
+  "transforms": ["clean", "dedup: kept from cluster c-5521", "mask"],
+  "optout_checked": "2026-09-30"
+}</code></pre>
+<h2 id="why-a-detected-licence-beats-a-readme">Why a detected licence beats a README</h2>
+<p>A README describes the repository as its maintainer understood it on the day it was written. It does not describe the file that was vendored in from another project under a different licence, the file added after a relicensing, the directory that carries its own LICENSE, or the header in one file that contradicts the rest. Dual-licensed projects and notices that say "see individual files" are common enough that a repository-level label is a prior, not a finding.</p>
+<p>Detection reads the file. Scanners such as <a href="https://github.com/aboutcode-org/scancode-toolkit" rel="noopener">ScanCode</a> match licence text and headers against a database of known licences and return an SPDX identifier with a match score, per file. That has three properties a README lacks: it is per record, it is reproducible, and it disagrees out loud. When the declared and detected licences differ, the disagreement is itself a field, and the record is held until a person has looked.</p>
+<p>The same logic applies outside code. A filings corpus carries terms of use per source, a legal corpus carries court-specific rules on reuse, and a recordings corpus carries consent per session. In each case the per-record basis is what survives an audit, which is why the domain pages, from <a href="/code-data">code</a> to <a href="/legal-data">legal data</a>, each name the public standards the basis follows.</p>
+<h2 id="opt-outs-and-why-provenance-makes-them-executable">Opt-outs, and why provenance makes them executable</h2>
+<p>An opt-out is a request from a rights holder that their material not be used, made before or after a dataset was built. Public code corpora set the precedent: <a href="https://huggingface.co/datasets/bigcode/the-stack" rel="noopener">The Stack</a> ships with a lookup so that a developer can check whether their code is included, and a removal process that the maintainers apply to later versions. Supplied data carries the same obligation through contract: a customer may withdraw a source, and a data subject may object.</p>
+<p>Without per-record source identifiers, an opt-out is a promise that cannot be kept. With them it is a query: every record whose source matches, plus every derived record that lists it among its inputs, is removed, the deduplication clusters it was kept from are recomputed, and the removal is dated. The opt-out check date in the entry is what tells a buyer how current that filter was at delivery.</p>
+<h2 id="what-to-do-with-records-whose-licence-is-unknown">What to do with records whose licence is unknown</h2>
+<p>Unknown is not permissive. Copyright applies to a work whether or not a licence file is present, so a file with no detectable licence is a file with no detectable permission. The honest classes are: no licence found, a licence found but not on the SPDX list, two licences found that conflict, and a licence found that does not permit the intended use.</p>
+<p>Each class gets the same treatment: the record is held back rather than passed through, it carries the reason as a field, and the counts per reason appear in <a href="/blog/what-a-data-quality-report-should-contain">the quality report for the delivery</a>. Held records are not deleted; the buyer may decide to seek permission, to accept a narrower use, or to leave them out. What a buyer should not receive is a dataset in which unknown licences were silently rounded up to permissive.</p>
+<p>Runix Data records provenance and licence for every record, builds only from data a customer provides or has the rights to use or from public sources whose licences permit the use, and reports what was dropped and why. <a href="/data">Runix Data</a> is in early access, by engagement, with the rules for each domain stated on its own page.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Why is a licence in the README not enough?</h3>
+<p>A README describes the repository as a whole on the day it was written, while vendored files, relicensed files and per-file headers can carry different terms. Detection reads each file and returns an SPDX identifier per record, which can be reproduced and audited.</p>
+<h3>What happens to a record whose licence cannot be determined?</h3>
+<p>It is held back with the reason recorded, counted in the quality report, and left for the buyer to decide on. Unknown is treated as no permission, never rounded up to permissive.</p>
+<h3>How does provenance help with opt-outs?</h3>
+<p>A per-record source identifier turns an opt-out into a query: every record from that source and every record derived from it can be found, removed and the removal dated. Without it the opt-out is a promise that cannot be executed.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/data">Runix Data</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/ai-vendor-data-questions">12 Data Questions to Ask an AI Vendor</a></li>
+    <li><a href="/blog/what-a-data-quality-report-should-contain">What a data quality report should contain, and how to read one sceptically</a></li>
+    <li><a href="/blog/where-your-prompts-actually-go">Where your prompts actually go</a></li>
+    <li><a href="/data">Runix Data: domain data for training and evaluation</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

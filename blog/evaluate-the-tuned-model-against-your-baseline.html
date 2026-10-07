@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluate a fine-tuned LLM against your baseline | Runix</title>
+<meta name="description" content="Held-out sets, task metrics versus generic benchmarks, regression checks on what you did not tune, contamination, and when a tuned model is ready to ship.">
+<link rel="canonical" href="https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline">
+<meta property="og:title" content="Evaluate a fine-tuned LLM against your baseline | Runix">
+<meta property="og:description" content="Held-out sets, task metrics versus generic benchmarks, regression checks on what you did not tune, contamination, and when a tuned model is ready to ship.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-evaluate-the-tuned-model-against-your-baseline.png?v=014ef14f">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-evaluate-the-tuned-model-against-your-baseline.png?v=014ef14f">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to evaluate a fine-tuned LLM against the model you run today",
+  "description": "Held-out sets, task metrics versus generic benchmarks, regression checks on what you did not tune, contamination, and when a tuned model is ready to ship.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-evaluate-the-tuned-model-against-your-baseline.png?v=014ef14f",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to evaluate a fine-tuned LLM against the model you run today",
+      "item": "https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should the fine-tuned model be compared with the base model or with the model in production?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both, for different reasons. Base versus tuned tells you whether training worked; tuned versus the model you run today tells you whether to ship."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are public benchmarks useful for a task-specific fine-tune?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As a canary for general capability loss, yes. As the target, no: they measure broad ability on public questions, not your task, and the base model may have seen them in pretraining."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What counts as contamination?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any route by which test items reached training: duplicate rows, near-duplicates split at random, evaluation prompts reused to generate training or preference data, or public benchmark items already in the base model's pretraining."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Evaluate a fine-tuned LLM against your baseline | Runix">
+<meta name="twitter:description" content="Held-out sets, task metrics versus generic benchmarks, regression checks on what you did not tune, contamination, and when a tuned model is ready to ship.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Models">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#evaluate-a-fine-tuned-llm-against-the-model-you-run-today">Evaluate a fine-tuned LLM against the model you run today</a></li><li><a href="#hold-out-a-set-before-training-starts">Hold out a set before training starts</a></li><li><a href="#task-specific-metrics-versus-generic-benchmarks">Task-specific metrics versus generic benchmarks</a></li><li><a href="#check-what-you-did-not-tune">Check what you did not tune</a></li><li><a href="#contamination-when-the-test-set-leaked-into-training">Contamination: when the test set leaked into training</a></li><li><a href="#when-to-roll-out">When to roll out</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">How to evaluate a fine-tuned LLM against the model you run today</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>To evaluate a fine-tuned LLM properly, the first decision is what to compare it with. The tempting comparison is the base model it started from, because that makes the training look good. The comparison that matters is the model you run in production today, on your task, with the prompt each one would actually get. This post covers that baseline, the held-out set, the metrics, the behaviours you did not tune, contamination, and the rollout decision.</p>
+
+<h2 id="evaluate-a-fine-tuned-llm-against-the-model-you-run-today">Evaluate a fine-tuned LLM against the model you run today</h2>
+<p>A fine-tuned model is a replacement, so the question is whether the replacement is better than the incumbent. The incumbent is usually a larger hosted model with a carefully built prompt. The tuned model may run with a shorter prompt, because the examples moved into the weights. Give each side its own production prompt rather than a shared one; the comparison is between two systems, not two sets of weights.</p>
+<p>Keep the base-versus-tuned comparison too, but for a different purpose. It tells you whether training did anything, which is useful for debugging the training run. It does not tell you whether to ship.</p>
+<p>Run both on identical inputs, with the decoding settings you intend to use in production, and more than once where the output is sampled. Output varies run to run; a single pass through the test set can show a difference that disappears on the second pass.</p>
+
+<h2 id="hold-out-a-set-before-training-starts">Hold out a set before training starts</h2>
+<p>The held-out set is the portion of your data the model never sees, during training or during the tuning of hyperparameters. The order matters: split first, then train. A set carved out after the fact has usually been looked at, and a set you looked at while iterating is a development set, not a test set.</p>
+<p>Split by something structural rather than by random row. Records from the same document, customer, repository or week are near-duplicates of each other; a random split puts one copy on each side and the score inflates. <a href="/data">Runix Data</a> splits evaluation from training data by source for this reason, and the same rule applies to data you build yourself.</p>
+<p>Size it for the decision. A proportion measured over a few dozen items moves around enough to hide a real change; <a href="/blog/did-the-model-change-make-it-worse">the same arithmetic</a> that applies to refusal rates on live traffic applies here. Report a range, not a point.</p>
+
+<h2 id="task-specific-metrics-versus-generic-benchmarks">Task-specific metrics versus generic benchmarks</h2>
+<p>Measure the task with the metric the task already has:</p>
+<ul>
+<li><strong>Classification and routing:</strong> accuracy with a per-class breakdown, because an average hides the class you care about.</li>
+<li><strong>Extraction:</strong> field-level exact match or overlap, and the share of outputs that parse against the schema at all.</li>
+<li><strong>Code:</strong> whether the target tests pass with the change and the rest of the suite still passes.</li>
+<li><strong>Generation without a gold answer:</strong> pairwise human judgement on a sample, with a model as judge only as a pre-filter and checked against the humans.</li>
+</ul>
+<p>Generic benchmarks measure something else: broad capability on public question sets. Harnesses such as <a href="https://github.com/EleutherAI/lm-evaluation-harness" rel="noopener">lm-evaluation-harness</a> make them cheap to run, and they are worth running, but as a canary for general drift rather than as a target. A model tuned for your extraction task that drops a little on a public benchmark may be fine; one that drops a lot has probably forgotten something.</p>
+
+<h2 id="check-what-you-did-not-tune">Check what you did not tune</h2>
+<p>Fine-tuning on a narrow set changes more than the narrow set. The behaviours most often damaged are the ones nobody wrote a test for: instruction following on other tasks, output in other languages, long-context handling, JSON for other schemas, and when the model declines.</p>
+<p>Keep a small regression suite of exactly those behaviours, drawn from real traffic across routes you did not tune, and run it on every candidate. This matters doubly after <a href="/blog/preference-tuning-with-dpo-explained">preference tuning</a>, which shifts refusals and format by design and can shift them further than intended. Decide the tolerated regression before you see the numbers, or the numbers will decide it for you.</p>
+
+<h2 id="contamination-when-the-test-set-leaked-into-training">Contamination: when the test set leaked into training</h2>
+<p>Contamination is any path by which test items reached the training process. The obvious one is a duplicate row. The less obvious ones are near-duplicates separated by random sampling, evaluation prompts reused to generate preference pairs or synthetic examples, and public benchmark items that were already in the base model's pretraining data.</p>
+<p>Check for the first three with exact and near-duplicate matching between the test set and everything that touched training, and keep a record of which prompts were used for what. The last one you cannot fix, which is another argument for weighting your own held-out set above public scores.</p>
+
+<h2 id="when-to-roll-out">When to roll out</h2>
+<ol>
+<li>The tuned model beats the current one on the task metric by more than the run-to-run spread.</li>
+<li>The regression suite is inside the tolerance you set beforehand.</li>
+<li>The variant you will actually serve is the one you evaluated. A quantised build is a different model; evaluate it separately, and serve it only if quality holds. <a href="/blog/lora-qlora-and-full-fine-tuning">Merged adapters</a> deserve the same re-check.</li>
+<li>Cost and latency were measured on the serving setup, as described in <a href="/blog/single-tenant-model-serving-explained">single-tenant model serving</a>, not estimated from the training run.</li>
+<li>A slice of live traffic goes to the new model first, with the live signals watched and the previous model one configuration change away. A gateway such as <a href="/router">Runix Router</a>, where routing is set per key, can hold that pin so the switch is not a deploy.</li>
+</ol>
+
+<p><a href="/models">Runix Models</a> evaluates every tuned model on a task-specific held-out set, before and after, against the model you run today, and serves quantised variants only where that evaluation shows quality holds. It is in early access, by engagement.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Should the fine-tuned model be compared with the base model or with the model in production?</h3>
+<p>Both, for different reasons. Base versus tuned tells you whether training worked; tuned versus the model you run today tells you whether to ship.</p>
+<h3>Are public benchmarks useful for a task-specific fine-tune?</h3>
+<p>As a canary for general capability loss, yes. As the target, no: they measure broad ability on public questions, not your task, and the base model may have seen them in pretraining.</p>
+<h3>What counts as contamination?</h3>
+<p>Any route by which test items reached training: duplicate rows, near-duplicates split at random, evaluation prompts reused to generate training or preference data, or public benchmark items already in the base model's pretraining.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/models">Runix Models</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/did-the-model-change-make-it-worse">How to tell whether a model change made things worse</a></li>
+    <li><a href="/blog/preference-tuning-with-dpo-explained">DPO fine-tuning explained: what preference tuning changes and what it cannot</a></li>
+    <li><a href="/blog/single-tenant-model-serving-explained">Single-tenant model serving explained: what a dedicated LLM inference endpoint changes</a></li>
+    <li><a href="/models">Runix Models: fine-tune and serve open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

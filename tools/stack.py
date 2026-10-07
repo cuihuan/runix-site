@@ -55,7 +55,35 @@ PRODUCTS = {
 from domains import DOMAINS as _DOMAIN_PAGES  # noqa: E402
 DOMAINS = [(d["slug"], d["name"], d["key"] == "code") for d in _DOMAIN_PAGES]
 
+# What the status looks like in practice, drawn under it on the home stack
+# (2026-10-07): "early access" covers a key, a deployment and a scoped
+# engagement, and an investor or a buyer should see which from the first screen.
+QUALIFIER = {
+    "router": "running traffic", "fs": "deployed per customer",
+    "models": "by engagement", "data": "by engagement",
+    "pipeline": "design partners", "code": "waitlist open", "comic": "waitlist open",
+}
+
 LAYER_OF = {key: (num, name) for key, num, name, _ in LAYERS}
+
+# A layer hub: one page that presents a whole layer, for the layer that is
+# asked about by domain rather than by product (2026-10-07: "the application
+# layer should be divided by professional domain, for coding, for work, ...").
+# layer key -> (href, label, one line)
+HUBS = {
+    "applications": ("/agents", "Agents by domain",
+                     "Software engineering, media, and what comes next"),
+}
+
+# The Agents layer's domains, the way a buyer asks for an agent. Each entry is
+# an anchor on the hub page, its label, and the product that serves it today.
+# Two domains have an agent; the hub says so literally and names the domains
+# the Data layer already has rules for as the candidates, without a promise.
+# (anchor, label, product key)
+AGENT_DOMAINS = [
+    ("engineering", "Software engineering", "code"),
+    ("media", "Media and entertainment", "comic"),
+]
 
 
 def products_in(layer):

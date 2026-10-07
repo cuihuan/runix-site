@@ -34,6 +34,10 @@ def main(slug):
                rf"\g<1>{human}\g<2>", s, count=1)
     s = re.sub(r'"datePublished": "[^"]*"', f'"datePublished": "{iso}"', s)
     s = re.sub(r'"dateModified": "[^"]*"', f'"dateModified": "{iso}"', s)
+    # The Open Graph article dates carry the same two values; a draft rendered
+    # by write_post.py leaves them as PENDING until this stamps them.
+    for attr in ("article:published_time", "article:modified_time"):
+        s = re.sub(rf'(<meta property="{attr}" content=")[^"]*(")', rf"\g<1>{iso}\g<2>", s, count=1)
     dst.write_text(s)
     src.unlink()
     print(f"published {slug} with date {human}")

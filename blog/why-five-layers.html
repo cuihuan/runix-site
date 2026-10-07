@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI infrastructure stack layers: why Runix drew five | Runix</title>
+<meta name="description" content="How Runix drew five layers over the customer's own compute, which Unix idea each layer rebuilds, why each must work alone, and what the layered view omits.">
+<link rel="canonical" href="https://runixcloud.io/blog/why-five-layers">
+<meta property="og:title" content="AI infrastructure stack layers: why Runix drew five | Runix">
+<meta property="og:description" content="How Runix drew five layers over the customer's own compute, which Unix idea each layer rebuilds, why each must work alone, and what the layered view omits.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/why-five-layers">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-why-five-layers.png?v=ba4c729d">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-why-five-layers.png?v=ba4c729d">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why five layers: how Runix drew its AI infrastructure stack",
+  "description": "How Runix drew five layers over the customer's own compute, which Unix idea each layer rebuilds, why each must work alone, and what the layered view omits.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/why-five-layers"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-why-five-layers.png?v=ba4c729d",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Why five layers: how Runix drew its AI infrastructure stack",
+      "item": "https://runixcloud.io/blog/why-five-layers"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I have to adopt all five layers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Each layer is a separate product with its own interface, price and status, and most teams start at the one where their problem is: the gateway, the data layer or the file system."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What sits under Layer 01?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Layer 00: the customer's own GPUs, cloud capacity, object storage and Kubernetes. Runix sells none of it; the stack runs on it and replaces none of it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which layers are available today?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Runix Router, Runix Models, Runix Data and Runix FS are in early access; Runix Pipeline, Runix Code and Runix Comic are in development. The statuses are literal."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="AI infrastructure stack layers: why Runix drew five | Runix">
+<meta name="twitter:description" content="How Runix drew five layers over the customer's own compute, which Unix idea each layer rebuilds, why each must work alone, and what the layered view omits.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Company">
+<meta property="article:section" content="Concepts">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Concepts</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#where-the-lines-come-from">Where the lines come from</a></li><li><a href="#five-ai-infrastructure-stack-layers-one-unix-idea-each">Five AI infrastructure stack layers, one Unix idea each</a></li><li><a href="#why-each-layer-must-be-usable-alone">Why each layer must be usable alone</a></li><li><a href="#the-two-paths-through-the-stack">The two paths through the stack</a></li><li><a href="#what-the-ai-infrastructure-stack-layers-leave-out">What the AI infrastructure stack layers leave out</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Why five layers: how Runix drew its AI infrastructure stack</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Runix Lab describes what it builds as five layers: agents, gateway, models, data and infrastructure, drawn on top of the compute the customer already owns. Each line between two AI infrastructure stack layers is drawn where an interface can be written down and the thing beneath it replaced without the thing above noticing, the test Unix applied to files, pipes, the kernel and system calls. This post explains where each line comes from, why each layer must stand alone, and what the diagram cannot show.</p>
+
+<h2 id="where-the-lines-come-from">Where the lines come from</h2>
+
+<p>Unix lasted because its layers were honest with each other. A program opened a path without knowing whether a disk or a terminal was behind it. A tool read standard input and wrote standard output, so any two could be joined. The kernel did the work for every program, and <a href="https://pubs.opengroup.org/onlinepubs/9699919799/" rel="noopener">POSIX</a> later wrote the call interface down so one program could run on machines from different vendors. Userland sat on top and changed freely. The original paper, The UNIX Time-Sharing System (Ritchie and Thompson, Communications of the ACM, 1974), still states the idea most clearly.</p>
+
+<p>The test behind each boundary is the same: can the interface be written down, and can the implementation below it change without the code above it changing? Applied to an AI system in production, it finds five such interfaces: a path, a stage boundary, a served model, one API, and the program on top. That is why five layers, not four or seven. <a href="/blog/rebuild-ai-unix">Rebuild AI Unix</a> gives the mission; this post gives the geometry.</p>
+
+<p>Below all five sits Layer 00: the customer's own GPUs, cloud capacity, object storage and Kubernetes. Runix sells none of it; the stack runs on it and replaces none of it.</p>
+
+<h2 id="five-ai-infrastructure-stack-layers-one-unix-idea-each">Five AI infrastructure stack layers, one Unix idea each</h2>
+
+<p>Each layer rebuilds one idea, and each is a product with a literal status.</p>
+
+<ul>
+<li><strong>Everything is a file: Layer 01, Infrastructure.</strong> <a href="/fs">Runix FS</a>, in early access, puts a file system and a multi-tier cache over the object storage a team already runs, so that training jobs, inference servers and agents read datasets, checkpoints and weights through one path, via a FUSE mount, a Hadoop-compatible client, SDKs or a Kubernetes CSI driver. It is built on <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a>, an Apache 2.0 project in the CNCF Sandbox.</li>
+<li><strong>Pipes: Layer 02, Data.</strong> Runix Pipeline, in development, is six stages, ingest, clean and dedupe, structure, mask, report and deliver, each leaving something you can inspect, which is what a pipe gave you: one stage's output is readable before it becomes the next one's input. <a href="/data">Runix Data</a>, in early access, is the service built on it, with the rules of six domains and code as the focus.</li>
+<li><strong>The kernel: Layer 03, Models.</strong> <a href="/models">Runix Models</a>, in early access, tunes open-weight models on the customer's own data, evaluates them on held-out sets against the model the customer runs today, and serves them single-tenant behind an OpenAI-compatible API: the kernel does the work, and here it is a model you commission rather than rent.</li>
+<li><strong>One call interface: Layer 04, Gateway.</strong> <a href="/router">Runix Router</a>, in early access and running traffic, is one OpenAI-compatible API in front of every provider, with central key custody, per-key quotas, and failover that fires mid-request with streaming preserved. The application does not learn which provider answered, as a program does not learn which disk it read.</li>
+<li><strong>Userland: Layer 05, Agents.</strong> <a href="/code">Runix Code</a> and Runix Comic, both in development, are independent agents for one domain each, with their own harnesses; they sit on top and change freely, and Router is optional in front of their model calls.</li>
+</ul>
+
+<h2 id="why-each-layer-must-be-usable-alone">Why each layer must be usable alone</h2>
+
+<p>A Unix tool is useful by itself; the pipe is a bonus. The same rule holds here as a design constraint: a layer that only works when the layers around it are also bought is a bundle, and a bundle hides which part is actually good.</p>
+
+<p>It shows up in three places. Each product has its own interface, written down: a mount or an SDK, a stage with inspectable output, an API, a diff in a repository. Each has its own price, per deployment, engagement, project, token or plan, not a share of a platform fee. And each has its own status, which is why the statuses differ: four of the seven products in early access, three in development, none described as more than it is.</p>
+
+<p>The handoffs are optional by construction. A model tuned by Runix Models can sit behind Router next to hosted providers, or be called directly. Runix Code can route its model calls through Router, or not. Most teams start at one layer, where their problem is.</p>
+
+<h2 id="the-two-paths-through-the-stack">The two paths through the stack</h2>
+
+<p>Layers are a static picture; what moves through them are two paths, and the <a href="/#platform">stack overview</a> draws both. The request path runs top down: an application or agent calls Router, which sends the request to a hosted provider or a model tuned by Runix Models. The data path runs bottom up: raw material is read from the bucket through Runix FS, cleaned in Pipeline's stages, given a domain's rules by Runix Data, and lands as training and evaluation sets for Models.</p>
+
+<p>The paths meet at Models, where the kernel analogy earns its place: a model is both what a request runs on and what the data path produces. Keeping the paths separate is the pipe idea applied across layers: cleaning data differently does not change how a request is routed, and a provider's bad hour does not reach a training job.</p>
+
+<h2 id="what-the-ai-infrastructure-stack-layers-leave-out">What the AI infrastructure stack layers leave out</h2>
+
+<p>A layered diagram is a claim about interfaces, and it is silent about things that decide whether the system works.</p>
+
+<ul>
+<li><strong>Compute and energy.</strong> Layer 00 is a line on the diagram, but it is the largest cost in the system and the part Runix does not sell; the diagram says where the stack stops, not how much GPU a team needs.</li>
+<li><strong>Evaluation.</strong> There is no evaluation layer, because evaluation cuts through every layer: Data splits evaluation from training by source, Models measures against the model the customer runs today, and a model change behind Router is only safe if someone watches the signals that move when it does harm.</li>
+<li><strong>Security and compliance.</strong> Key custody, data terms, masking and retention each live inside a layer, but the review that asks about them runs across all five.</li>
+<li><strong>The seams.</strong> The clean lines are where the hard engineering is: a file-system mode that syncs to the bucket asynchronously is eventually consistent, failover changes which model answered, and a stage boundary is only auditable if someone reads what the stage left.</li>
+<li><strong>People and time.</strong> The diagram implies an order; adoption does not follow it. Three of the seven products are in development, and there is no published SLA during early access.</li>
+</ul>
+
+<p>Runix Lab is the brand of Runix AI Inc, and the five layers are its answer to what an operating system for enterprise AI should consist of. <a href="/about">The company page</a> lists each product with its literal status and the terms a team would contract under; the layers are a map of the work, drawn to be adopted one at a time.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Do I have to adopt all five layers?</h3>
+<p>No. Each layer is a separate product with its own interface, price and status, and most teams start at the one where their problem is: the gateway, the data layer or the file system.</p>
+<h3>What sits under Layer 01?</h3>
+<p>Layer 00: the customer's own GPUs, cloud capacity, object storage and Kubernetes. Runix sells none of it; the stack runs on it and replaces none of it.</p>
+<h3>Which layers are available today?</h3>
+<p>Runix Router, Runix Models, Runix Data and Runix FS are in early access; Runix Pipeline, Runix Code and Runix Comic are in development. The statuses are literal.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/about">What Runix is, and how we work</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></li>
+    <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+    <li><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></li>
+    <li><a href="/about">What Runix is, and how we work</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

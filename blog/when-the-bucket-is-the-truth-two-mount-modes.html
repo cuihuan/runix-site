@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The bucket is the truth: AI file system cache mode | Runix</title>
+<meta name="description" content="Cache mode and fs mode: what each guarantees about the bucket behind an AI file system, which workloads fit which, and what to ask a vendor about truth.">
+<link rel="canonical" href="https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes">
+<meta property="og:title" content="The bucket is the truth: AI file system cache mode | Runix">
+<meta property="og:description" content="Cache mode and fs mode: what each guarantees about the bucket behind an AI file system, which workloads fit which, and what to ask a vendor about truth.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-when-the-bucket-is-the-truth-two-mount-modes.png?v=b5d77fed">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-when-the-bucket-is-the-truth-two-mount-modes.png?v=b5d77fed">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "When the bucket is the truth: AI file system cache mode versus file-system mode",
+  "description": "Cache mode and fs mode: what each guarantees about the bucket behind an AI file system, which workloads fit which, and what to ask a vendor about truth.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-when-the-bucket-is-the-truth-two-mount-modes.png?v=b5d77fed",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "When the bucket is the truth: AI file system cache mode versus file-system mode",
+      "item": "https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is cache mode in an AI file system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A mode in which the bucket is the only source of truth: writes pass through to the bucket before they are acknowledged, reads that miss the cache fetch from the bucket, and a delete through the mount deletes the object in the bucket."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between cache mode and fs mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In cache mode the bucket is authoritative and the cluster only holds copies. In fs mode operations complete in the cluster first and sync to the bucket asynchronously, so the bucket is eventually consistent and external changes to it need an explicit resync."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which mode should training data use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Data produced elsewhere and read many times fits cache mode, so that other tools and the pipeline see one consistent bucket. Outputs such as checkpoints and agent workspaces fit file-system mode, where writes complete in the cluster and sync later."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="The bucket is the truth: AI file system cache mode | Runix">
+<meta name="twitter:description" content="Cache mode and fs mode: what each guarantees about the bucket behind an AI file system, which workloads fit which, and what to ask a vendor about truth.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Infrastructure">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-source-of-truth-means-for-a-mount">What source of truth means for a mount</a></li><li><a href="#ai-file-system-cache-mode-the-bucket-is-the-only-truth">AI file system cache mode: the bucket is the only truth</a></li><li><a href="#file-system-mode-the-cluster-is-the-truth-the-bucket-follows">File-system mode: the cluster is the truth, the bucket follows</a></li><li><a href="#which-workloads-fit-which-mode">Which workloads fit which mode</a></li><li><a href="#questions-to-ask-any-ai-file-system-about-where-the-truth-li">Questions to ask any AI file system about where the truth lives</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">When the bucket is the truth: AI file system cache mode versus file-system mode</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Every file system in front of a bucket has to answer one question before any other: when the mount and the bucket disagree, which one is right? There are two honest answers, and they lead to two different behaviours. In <strong>cache mode</strong> the bucket is the only truth and the cluster holds copies; in file-system mode the cluster is the truth and the bucket follows behind. This post describes both as the <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a> project documents them, which workloads fit which, and what to ask a vendor whose page does not say.</p>
+
+<h2 id="what-source-of-truth-means-for-a-mount">What source of truth means for a mount</h2>
+
+<p>A source of truth is the place whose contents win: if a file exists there, it exists; if it was deleted there, it is gone; if two copies differ, that one is correct. For a plain object store the answer is trivial, because there is only the bucket. Once workers hold blocks, a metadata service holds a namespace and a client holds a write buffer, a file can be in several places, and the system has to declare which one counts.</p>
+
+<p>That declaration decides everything a user will notice: how long a write takes to acknowledge, whether another tool reading the bucket sees the new file, what a delete through the mount does, and what is lost if the cluster disappears. None of it shows in a benchmark, which is why it is the part of a product page most worth reading twice.</p>
+
+<h2 id="ai-file-system-cache-mode-the-bucket-is-the-only-truth">AI file system cache mode: the bucket is the only truth</h2>
+
+<p>In cache mode the cluster never holds the only copy of anything. A write through the mount passes through to the bucket and is acknowledged on the bucket's terms; the cached copy is invalidated, and the next read fetches the new bytes from the bucket. A read that misses goes to the bucket, fills the cache and returns, and a delete through the mount deletes the object in the bucket, because there is nowhere else for the file to be.</p>
+
+<p>The consequences follow directly. Anything else that reads the bucket, another cluster, a pipeline, a person with a console, sees the same state the mount sees, give or take the bucket's own consistency. The reverse is not automatic: a cached copy can be stale after another tool changes the object in the bucket, so a mount that must see external writes is configured to check the object's size and modification time against the bucket before each read. Losing the whole cluster loses nothing but cached copies, and there is no sync to monitor, because nothing is ever behind.</p>
+
+<p>What you pay is the bucket's write path on every write: a small write costs an object put, and a rename costs what a rename costs on an S3-style store, a copy and a delete per object. Cache mode is a read accelerator with a pass-through write path, and should be judged as one.</p>
+
+<h2 id="file-system-mode-the-cluster-is-the-truth-the-bucket-follows">File-system mode: the cluster is the truth, the bucket follows</h2>
+
+<p>In file-system mode an operation completes inside the cluster first and is acknowledged there. Writes land on the workers' cache tiers and the metadata service records them; a background process then syncs the result to the bucket. The bucket is eventually consistent with the cluster, where eventually means the sync lag under current load. In Curvine this is the default.</p>
+
+<p>This is what makes the file system behave like one. A rename is a metadata change in the cluster; on an S3-style store it becomes a delete plus a full copy, and the Curvine documentation warns against renaming large directories on such backends because the copy takes a long time, blocks subsequent operations and costs storage and bandwidth. Small and partial writes are absorbed by the cache and reach the bucket as whole objects when the sync runs; a checkpoint is written at cache speed and synced afterwards.</p>
+
+<p>The costs are the mirror image. Between the acknowledgement and the sync the bucket is behind, and any tool reading it directly sees old data or no file. Unsynced data depends on the cluster for its durability, so how the cluster protects it, by replicating metadata with Raft and by whatever the configuration does for data blocks, is a durability question rather than a performance one. And changes made to the bucket by other tools are not seen by the mount until an explicit resync, because the cluster, not the bucket, is the truth.</p>
+
+<h2 id="which-workloads-fit-which-mode">Which workloads fit which mode</h2>
+
+<p>The split is mostly about who writes and who else reads.</p>
+
+<ul>
+<li><strong>Cache mode fits</strong> data that is produced elsewhere and read many times: training corpora curated by a pipeline, evaluation sets, model weights served to inference nodes. It also fits data where the bucket is the system of record and no copy may exist that the bucket does not know about.</li>
+<li><strong>File-system mode fits</strong> workloads that write a lot and reread what they wrote: checkpoints, agent workspaces with one directory per agent, intermediate outputs of a preprocessing job, logs. It fits when nothing else writes to the bucket, whose role is then backup and hand-off rather than live shared state.</li>
+<li><strong>Both at once</strong> is the normal shape of a training cluster: the dataset mounted in cache mode, the output directory in file-system mode. The useful property is that the choice is per mount, not per cluster.</li>
+</ul>
+
+<p>The wrong choice fails quietly: a dataset in file-system mode that a pipeline keeps updating in the bucket trains on stale samples until someone resyncs, and checkpoints in cache mode write at bucket speed and turn every save into a pause. Neither produces an error.</p>
+
+<h2 id="questions-to-ask-any-ai-file-system-about-where-the-truth-li">Questions to ask any AI file system about where the truth lives</h2>
+
+<p>A vendor's page may describe POSIX, caching and tiers without stating the consistency model. These questions get to it, and belong next to the <a href="/blog/ai-vendor-data-questions">data-handling questions</a> a procurement review already asks.</p>
+
+<ol>
+<li>Which is the default mode, and can it differ per mount or per path?</li>
+<li>When a write is acknowledged, where is the data: in the bucket, in the cluster, or in a client buffer?</li>
+<li>What does a delete through the mount do to the bucket, and when?</li>
+<li>If the cluster is lost, what unsynced data goes with it, and how is it protected until the sync?</li>
+<li>How does the mount learn about objects written to the bucket by something else?</li>
+<li>What does a rename cost in the bucket, and when is that cost paid?</li>
+<li>What happens when a sync fails: retries, an alert, or silence?</li>
+<li>Does the bucket keep its layout, so that it stays readable without the cluster?</li>
+</ol>
+
+<p>Answers of the form "it depends on the mode" are the right ones, provided the vendor then says which mode; a product that answers with a throughput figure has answered a different question. The <a href="/glossary">glossary</a> defines the terms, and the <a href="/blog/introducing-runix-fs">introduction to Runix FS</a> gives our own answers.</p>
+
+<p><a href="/fs">Runix FS</a>, built on Curvine, offers both modes: cache mode, where the bucket is the source of truth and writes pass through, and file-system mode, where operations complete in the cluster and then sync to the bucket in the background, with paths mapping one-to-one to object keys in either case. It is in early access, deployed per customer in their own cloud account, and we publish no performance figures of our own for either mode; the <a href="/docs/fs">quick start</a> brings up a single-node cluster, attaches a bucket and mounts it.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What is cache mode in an AI file system?</h3>
+<p>A mode in which the bucket is the only source of truth: writes pass through to the bucket before they are acknowledged, reads that miss the cache fetch from the bucket, and a delete through the mount deletes the object in the bucket.</p>
+<h3>What is the difference between cache mode and fs mode?</h3>
+<p>In cache mode the bucket is authoritative and the cluster only holds copies. In fs mode operations complete in the cluster first and sync to the bucket asynchronously, so the bucket is eventually consistent and external changes to it need an explicit resync.</p>
+<h3>Which mode should training data use?</h3>
+<p>Data produced elsewhere and read many times fits cache mode, so that other tools and the pipeline see one consistent bucket. Outputs such as checkpoints and agent workspaces fit file-system mode, where writes complete in the cluster and sync later.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/fs">Runix FS</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/object-storage-is-not-a-file-system">Object storage is not a file system, and what POSIX on object storage adds</a></li>
+    <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+    <li><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></li>
+    <li><a href="/fs">Runix FS: an AI-native file system on your object storage</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

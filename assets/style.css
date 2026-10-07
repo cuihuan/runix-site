@@ -2358,3 +2358,153 @@ main .doc-side a[aria-current="page"]:not(.btn) { background: rgba(74, 91, 214, 
 .catalogue tbody th span { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 400; color: var(--ink-3); }
 .catalogue .num { text-align: right; font-variant-numeric: tabular-nums; }
 .catalogue td.src { white-space: normal; min-width: 260px; max-width: 420px; line-height: 1.5; }
+
+/* ---------- v5 (2026-10-07): solutions, the Agents hub, the roadmap, the blog by layer ----------
+   Two cross-cutting ways in beside the product stack: by what a team is trying
+   to do (/solutions, six audiences) and the Agents layer by professional domain
+   (/agents). The blog is grouped by layer and the home page draws one card per
+   layer from the same groups. Everything below uses the tokens already in :root. */
+main a.pd-more:not(.btn) { color: var(--indigo-ink); font-weight: 600; }
+.nav-links .nav-hub b { color: var(--indigo-ink); }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 22px 0 0; padding: 0; }
+.topic-chips li { display: flex; }
+
+/* The home page's writing section: one card per layer. */
+.wgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.wcard h3, .wcard .card-layer { padding-left: 0; min-height: 0; }
+.wcard h3 { margin-bottom: 4px; }
+.card .wlist { list-style: none; margin: 10px 0 0; padding: 0; max-width: none; }
+.card .wlist li { padding: 9px 0; border-top: 1px solid var(--line); font-size: 14.5px; line-height: 1.45; color: var(--ink); }
+.card .wlist li:first-child { border-top: 0; }
+.card .wlist li::before { display: none; content: none; }
+.card .wlist a { color: var(--ink); font-weight: 500; }
+.card .wlist a:hover { color: var(--indigo); text-decoration: underline; }
+
+/* The thesis, three columns divided by hairlines. */
+.thesis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line-2); }
+.thesis > div { padding: 30px 28px 6px 0; border-right: 1px solid var(--line); }
+.thesis > div + div { padding-left: 28px; }
+.thesis > div:last-child { border-right: 0; padding-right: 0; }
+.thesis .k { margin: 0 0 12px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan-text); }
+.thesis h3 { margin: 0 0 10px; font-size: 21px; font-weight: 650; letter-spacing: -0.02em; }
+.thesis p { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+.thesis p + p { margin-top: 10px; }
+
+/* Solutions: the audience cards on the home page and the hub. */
+.sol-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+main a.solcard:not(.btn) {
+  display: grid; align-content: start; padding: 24px 24px 22px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: #fff;
+  color: var(--ink); text-decoration: none; transition: border-color 0.18s;
+}
+main a.solcard:not(.btn):hover { border-color: var(--ink-3); }
+.solcard .sk { margin: 0 0 10px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.solcard h3 { margin: 0 0 8px; padding: 0; min-height: 0; font-size: 19px; font-weight: 650; letter-spacing: -0.02em; }
+.solcard p { margin: 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.6; max-width: none; }
+.solcard .sol-products { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+.solcard .sol-products li { padding: 6px 9px; border: 1px solid var(--line-2); border-radius: 999px; font: 500 12.5px/1 var(--mono); color: var(--ink-2); }
+.solcard .read-more { margin-top: 14px; }
+
+/* A solution page: the three problems, the products and the role each plays. */
+.sgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.stackrole { border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; background: #fff; }
+.srow { display: grid; grid-template-columns: 250px minmax(0, 1fr); border-top: 1px solid var(--line); }
+.srow:first-child { border-top: 0; }
+.srow .sp { padding: 18px 22px; background: var(--bg-alt); border-right: 1px solid var(--line); }
+.srow .sp a { font-size: 15.5px; font-weight: 650; color: var(--ink); }
+.srow .sp a:hover { color: var(--indigo); }
+.srow .sp span { display: block; margin-top: 4px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.srow .sp span.live { color: var(--cyan-text); }
+.srow .sr { padding: 18px 22px; color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+/* The Agents hub: one card per domain, then the candidates. */
+.agent-dom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.adom { padding: 28px; border: 1px solid var(--line-2); border-radius: var(--radius); background: #fff; }
+.adom .k { margin: 0 0 10px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan-text); }
+.adom h3 { margin: 0 0 4px; font-size: 22px; font-weight: 650; letter-spacing: -0.02em; }
+.adom .aud { margin: 0 0 14px; color: var(--ink-3); font-size: 14px; }
+.adom p { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+.adom .st { display: inline-flex; margin-top: 16px; font: 600 12px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.adom .actions { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+.next-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.next-grid .card h3 { padding-left: 0; min-height: 0; font-size: 17px; }
+.next-grid .card p { font-size: 14px; }
+.next-grid .card .read-more { margin-top: 10px; }
+
+/* The roadmap board: one row per product, three columns. */
+.rmap { border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; background: #fff; }
+.rm-legend { display: grid; grid-template-columns: 230px repeat(3, minmax(0, 1fr)); background: var(--bg-alt); border-bottom: 1px solid var(--line); }
+.rm-legend span { padding: 10px 20px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.rm-row { display: grid; grid-template-columns: 230px minmax(0, 1fr); border-top: 1px solid var(--line); }
+.rm-row:first-of-type { border-top: 0; }
+.rm-head { padding: 18px 20px; background: var(--bg-alt); border-right: 1px solid var(--line); }
+.rm-head a { display: block; font-size: 16px; font-weight: 650; color: var(--ink); }
+.rm-head a:hover { color: var(--indigo); }
+.rm-head span { display: block; margin-top: 4px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.rm-head span.live { color: var(--cyan-text); }
+.rm-cells { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.rm-cell { padding: 18px 20px; border-left: 1px solid var(--line); color: var(--ink-2); font-size: 14.5px; line-height: 1.6; }
+.rm-cell:first-child { border-left: 0; }
+.rm-cell .rk { display: none; }
+
+@media (max-width: 920px) {
+  .thesis, .sol-grid, .wgrid, .sgrid, .agent-dom { grid-template-columns: 1fr; }
+  .thesis > div { padding: 22px 0 4px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .thesis > div + div { padding-left: 0; }
+  .thesis > div:last-child { border-bottom: 0; }
+  .rm-row, .srow { grid-template-columns: 1fr; }
+  .rm-head, .srow .sp { border-right: 0; border-bottom: 1px solid var(--line); }
+  .rm-legend { display: none; }
+  .rm-cells { grid-template-columns: 1fr; }
+  .rm-cell { border-left: 0; border-top: 1px solid var(--line); }
+  .rm-cell:first-child { border-top: 0; }
+  .rm-cell .rk { display: block; margin-bottom: 6px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .next-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) { .next-grid { grid-template-columns: 1fr; } }
+.solcard .sol-products li.first { border-color: rgba(74, 91, 214, 0.45); background: rgba(74, 91, 214, 0.06); color: var(--indigo-ink); font-weight: 600; }
+.shipped { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-2); max-width: 900px; }
+.shipped li { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.shipped .when { font: 600 13px/1.6 var(--mono); letter-spacing: 0.03em; color: var(--cyan-text); }
+.shipped .what { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+.shipped .what a { color: var(--indigo); font-weight: 600; }
+.rm-sum .card h3 { padding-left: 0; min-height: 0; font-size: 18px; }
+.rm-sum .card-layer { padding-left: 0; }
+.rm-sum .wlist span { display: block; font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+.pmap-q { display: block; margin-top: 3px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink-3); text-align: right; }
+@media (max-width: 920px) { .shipped li { grid-template-columns: 1fr; gap: 4px; } }
+.compounds { margin-top: 28px; max-width: 72ch; text-align: left; margin-left: 0; }
+.shipped li:last-child { border-bottom: 0; }
+
+/* ---------- v5 visual audit (2026-10-07): the S-level fixes ----------
+   Phone rhythm: the 128px section padding had no phone override, so two
+   adjacent sections put 256px of nothing on a 390px screen. Measure: callouts,
+   the stack's ground row and figure captions ran past 90 characters a line.
+   Half-empty two-column rows read as missing content. Chains wrapped with an
+   arrow stranded at the end of a line. */
+@media (max-width: 920px) {
+  .section { padding: 88px 0; }
+  .section-head { margin-bottom: 44px; }
+}
+@media (max-width: 560px) {
+  .section { padding: 64px 0; }
+  .section-head { margin-bottom: 32px; }
+  .section-end { padding: 40px 0 64px; }
+  main.has-pbar .prod-eyebrow .badge { display: none; }
+  .post-meta > span { white-space: nowrap; }
+  .post-meta .cat { display: inline-block; margin-bottom: 4px; }
+  .chain { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .chain .pc-arrow { transform: rotate(90deg); margin-left: 10px; }
+}
+.callout > span, .callout > p { max-width: 68ch; }
+.pmap-ground { max-width: 64ch; }
+.arch figcaption, .diagram figcaption { max-width: 60ch; }
+p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
+.feature:has(> :only-child) { grid-template-columns: minmax(0, 68ch); }
+.doc-hub-row .grid.cols-2 > .card:only-child { grid-column: 1 / -1; }
+.section.section-alt { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.contact-card { box-shadow: none; }
+.rm-sum .wlist span { display: none; }
+.rm-sum .wlist li { display: inline; padding: 0; border: 0; font-size: 14.5px; }
+.rm-sum .wlist li + li::before { content: " · "; color: var(--ink-3); }
+.rm-sum .wlist { margin-top: 8px; }

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Model Teams: Data, Fine-Tuning and Serving | Runix</title>
+<meta name="description" content="How teams that train or tune models use Runix Data for training sets with provenance, Runix Models for open-weight tuning, and Runix FS to keep GPUs fed.">
+<meta property="og:title" content="For Model Teams: Data, Fine-Tuning and Serving | Runix">
+<meta property="og:description" content="How teams that train or tune models use Runix Data for training sets with provenance, Runix Models for open-weight tuning, and Runix FS to keep GPUs fed.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/for-model-teams.png?v=6be14962">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/for-model-teams.png?v=6be14962">
+<meta property="og:url" content="https://runixcloud.io/for-model-teams">
+<link rel="canonical" href="https://runixcloud.io/for-model-teams">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=72">
+<script src="assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "For Model Teams: Data, Fine-Tuning and Serving | Runix",
+  "description": "How teams that train or tune models use Runix Data for training sets with provenance, Runix Models for open-weight tuning, and Runix FS to keep GPUs fed.",
+  "url": "https://runixcloud.io/for-model-teams",
+  "isPartOf": {
+    "@id": "https://runixcloud.io/#website"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "Runix for model teams"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do you clean our data or build new data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both. Runix Data cleans and structures data you provide or have the rights to use, and builds task data, such as coding tasks verified by running their tests, to a scope agreed before work starts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you know the tuned model is better?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is evaluated on a task-specific held-out set, before and after, against the model you run today. Quantised variants are served only where that evaluation shows quality holds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which base models can you tune?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open-weight families whose licences permit your use, for example Qwen, Llama, Mistral, Gemma and DeepSeek. The licence is checked before any training starts."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Solutions",
+      "item": "https://runixcloud.io/solutions"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Model teams",
+      "item": "https://runixcloud.io/for-model-teams"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="For Model Teams: Data, Fine-Tuning and Serving | Runix">
+<meta name="twitter:description" content="How teams that train or tune models use Runix Data for training sets with provenance, Runix Models for open-weight tuning, and Runix FS to keep GPUs fed.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions" class="active">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<nav class="pbar" aria-label="Model teams on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Model teams</a>
+    <a class="pbar-layer" href="/solutions">Solutions</a>
+    <span class="pbar-status">By team</span>
+    <ul class="pbar-links"><li><a href="#situation">The situation</a></li><li><a href="#stack">The stack</a></li><li><a href="#start">How it starts</a></li><li><a href="#writing">In writing</a></li><li><a href="#reading">Reading</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Model%20teams">Talk to sales</a><!--/email_off-->
+  </div>
+</nav>
+<section class="split-hero" id="overview">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/solutions">Solutions<span class="visually-hidden">: every team the stack is built for</span></a></span><span class="badge">For model teams</span></div>
+      <h1><span class="line">Data you can audit,</span>
+<span class="line">a model you can measure</span></h1>
+      <p class="sub">For teams that train or tune models and have to show where the data came from and whether the result beats what they run today. Runix Data builds training and evaluation sets with provenance per record. Runix Models fine-tunes open-weight models and serves them single-tenant. Runix FS reads it all from the bucket you already have.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Model%20teams">Talk to sales</a><!--/email_off-->
+        <a class="btn btn-ghost" href="#stack">See the stack for this team</a>
+      </div>
+      <p class="hero-note">One of six <a href="/solutions">solution pages</a>. Statuses are literal: the products named below are in early access or in development, as marked.</p>
+    </div>
+    <div>
+      <div class="glance">
+        <p class="glance-title">The stack for model teams</p>
+        <dl>
+        <div><dt>Runix Data</dt><dd>Domain data for training and evaluation &middot; early access</dd></div>
+        <div><dt>Runix Pipeline</dt><dd>The tooling that makes data model-ready &middot; in development</dd></div>
+        <div><dt>Runix Models</dt><dd>Fine-tune and serve open-weight models &middot; early access</dd></div>
+        <div><dt>Runix FS</dt><dd>AI-native file system on your object storage &middot; early access</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="situation">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">02 &middot; Situation</p>
+      <h2 id="the-situation">The situation</h2>
+      <p>Three things this team is usually dealing with when it calls.</p>
+    </div>
+    <div class="sgrid">
+      <div class="card">
+        <h3>Raw data that nobody can vouch for</h3>
+        <p>Source material arrives duplicated, half-structured and with no record of its licence. A near-duplicate that lands on both sides of a split inflates the score, and nobody notices until the model ships. Cleaning it is a project of its own, and the rules differ by field.</p>
+      </div>
+      <div class="card">
+        <h3>A fine-tune with no baseline</h3>
+        <p>A tuned model is only worth deploying if it beats the model you run today on your task. Without a held-out set and a before-and-after comparison, the decision is a demo and a feeling. Licence terms on the base model are checked last, if at all.</p>
+      </div>
+      <div class="card">
+        <h3>Training jobs that wait on storage</h3>
+        <p>The datasets live in object storage because that is where they are cheap to keep. Each framework then brings its own way of reading the bucket, and the GPUs idle while the data arrives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="stack">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">03 &middot; Stack</p>
+      <h2 id="the-products">The products, and the role each plays</h2>
+      <p>Each one works on its own; together they are one path through the stack.</p>
+    </div>
+    <div class="stackrole">
+      <div class="srow">
+        <div class="sp"><a href="/data">Runix Data</a><span>Layer 02 &middot; Data</span><span class="live">Early access</span></div>
+        <div class="sr">Training and evaluation data in six domains, code first: every record carries its provenance and licence, personal data is masked before training and fails closed, and evaluation is split from training by source. Each delivery comes with a quality report: coverage, duplication, and what was dropped and why.</div>
+      </div>
+      <div class="srow">
+        <div class="sp"><a href="/pipeline">Runix Pipeline</a><span>Layer 02 &middot; Data</span><span>In development</span></div>
+        <div class="sr">The tooling Runix Data engagements run on: ingest, clean and dedupe, structure, mask, report, deliver, each stage leaving something you can inspect. Deduplication is exact, near and semantic, with counts you can check; it is in development with design partners.</div>
+      </div>
+      <div class="srow">
+        <div class="sp"><a href="/models">Runix Models</a><span>Layer 03 &middot; Models</span><span class="live">Early access</span></div>
+        <div class="sr">Supervised fine-tuning, LoRA and QLoRA, and preference tuning with DPO on open-weight families such as Qwen, Llama, Mistral, Gemma and DeepSeek, licence checked first. The result is evaluated on a held-out set against the model you run today, and served single-tenant behind an OpenAI-compatible API.</div>
+      </div>
+      <div class="srow">
+        <div class="sp"><a href="/fs">Runix FS</a><span>Layer 01 &middot; Infrastructure</span><span class="live">Early access</span></div>
+        <div class="sr">A file system over the S3-compatible bucket where the datasets live, mounted through FUSE, a Hadoop-compatible client or the Kubernetes CSI driver, with memory, SSD and HDD cache tiers. It runs in your own cloud account and the bucket stays independently readable.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="start">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">04 &middot; Start</p>
+      <h2 id="how-it-starts">How it starts</h2>
+      <p>A person on the other end at every step; nothing here is self-serve.</p>
+    </div>
+    <div class="prun">
+      <div class="pstep">
+        <h3><span class="pstep-n">01</span>Send a sample and the task</h3>
+        <p>A slice of the real data, not a description of it, and what the model has to do with the result: train on it, be evaluated on it, or both. We reply within one business day.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">02</span>Get a scoped plan and a quote</h3>
+        <p>Data engagements are priced per project or by volume and quoted before any work starts; the plan says which checks each record has to pass and what we think is not worth doing. Models engagements are quoted after scoping and before any training starts, with weights and access set in the contract.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">03</span>Train, evaluate, then serve</h3>
+        <p>Your data trains and evaluates the model you commission, and nothing else. Serving is dedicated and single-tenant, in your cloud account or on capacity arranged per engagement; Runix FS, if you use it, is sized and deployed with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="writing">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">05 &middot; In writing</p>
+      <h2 id="in-writing">What is in writing</h2>
+      <p>The parts a review asks for, stated once and linked to the page that holds them.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Data use</h3>
+        <p>The data you provide trains and evaluates the model you commission, and nothing else. Inputs are data you provide or have the rights to use, or public sources whose licences permit your use.</p>
+      </div>
+      <div class="card">
+        <h3>Weights, access and pricing</h3>
+        <p>Weights and access are set in the engagement contract before training starts. Data is priced per project or by volume and Models per engagement, both quoted first; an MSA and a DPA are available on request.</p>
+      </div>
+      <div class="card">
+        <h3>Statuses, literally</h3>
+        <p>Runix Data and Runix Models are in early access, by engagement, and Runix FS is in early access, per deployment. Runix Pipeline is in development with design partners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reading">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">06 &middot; Reading</p>
+      <h2 id="reading-for-this-team">Reading for this team</h2>
+      <p>Engineering notes that cover the mechanics behind this page.</p>
+    </div>
+    <ul class="refs">
+      <li><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></li>
+      <li><a href="/blog/did-the-model-change-make-it-worse">How to tell whether a model change made things worse</a></li>
+      <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+    </ul>
+    <p class="model-note">Other teams: <ul class="topic-chips">
+      <li><a class="pd-chip" href="/for-platform-teams">Platform teams</a></li>
+      <li><a class="pd-chip" href="/for-engineering-orgs">Engineering organisations</a></li>
+      <li><a class="pd-chip" href="/for-studios">Studios and creators</a></li>
+      <li><a class="pd-chip" href="/for-regulated-industries">Regulated industries</a></li>
+      <li><a class="pd-chip" href="/for-research-labs">Research labs</a></li>
+    </ul></p>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">07 &middot; Questions</p>
+      <h2 id="common-questions">Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>Do you clean our data or build new data?</h3>
+        <p>Both. Runix Data cleans and structures data you provide or have the rights to use, and builds task data, such as coding tasks verified by running their tests, to a scope agreed before work starts.</p>
+      </div>
+      <div class="qa">
+        <h3>How do you know the tuned model is better?</h3>
+        <p>It is evaluated on a task-specific held-out set, before and after, against the model you run today. Quantised variants are served only where that evaluation shows quality holds.</p>
+      </div>
+      <div class="qa">
+        <h3>Which base models can you tune?</h3>
+        <p>Open-weight families whose licences permit your use, for example Qwen, Llama, Mistral, Gemma and DeepSeek. The licence is checked before any training starts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Send a sample, and the task the model has to do</h2>
+      <p>Tell us what you run today and what you are trying to change. We reply within one business day with a concrete plan, and we say which parts we would not do.</p>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Model%20teams">Talk to sales</a><!--/email_off-->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

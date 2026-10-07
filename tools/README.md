@@ -147,6 +147,16 @@ and in a CSS grid where items have explicit columns but automatic rows,
 sparse auto-placement pushes an item whose column is left of the cursor to
 the next row (pin `grid-row` on all of them).
 
+## The cross-cutting pages and the blog by layer (2026-10-07, v5)
+
+| Source | Builder | What it draws |
+|---|---|---|
+| `stack.py` (`HUBS`, `AGENT_DOMAINS`, `QUALIFIER`) | `stack_build.py`, `flagship_nav.py` | the Agents row of the home stack by professional domain, a qualifier under every status ("running traffic", "by engagement"), the Agents hub in the Products menu, Solutions in the header and the footer, Roadmap in the footer |
+| `solutions.py` (`SOLUTIONS`, `AGENTS_HUB`, `ROADMAP`) | `build_solutions.py` | `/solutions` and the six `/for-*` audience pages, `/agents` (the layer by domain), `/roadmap` (statuses from `stack.py`, the shipped list with the dates the site already publishes, no forward dates); also the home page's "Built for the team that calls" grid and roadmap summary between their markers, and the sitemap entries for every page it renders. Runs after `product_template.py`; these pages draw their own bar, so `page_shell.py` leaves them alone |
+| each post's `<meta property="article:tag">` | `build_blog_index.py` | the blog index grouped by layer (Agents, Gateway, Models, Data, Infrastructure, Company) with a chip row, and the home page's "Writing, by layer" cards between its `<!--writing-->` markers. `tag_posts.py` tagged the posts written before the tag existed, once |
+| every page that references `#org` or `#website` by `@id` | `add_org_graph.py` | one compact `@graph` with the Organization and WebSite nodes on every page, placed directly after the page's own JSON-LD blocks (and a preconnect hint for the analytics origin). Before it, 75 pages pointed `author`, `publisher` and `provider` at nodes that existed only on the home page, so a parser reading one page saw an author with no name. Builders that replace a page's structured data skip the `@graph` block; keep it that way |
+| a JSON spec per post (`tools/posts/*.json`) | `write_post.py` | a draft in `scheduled/` with the Article, BreadcrumbList and FAQPage schema, the layer tag, the related-reading block and the closing callout. It refuses a spec that breaks the site's rules (a forbidden claim, a missing link, an em dash, a description over 160) before a gate ever sees it. `publish.py` stamps the date and rebuilds every surface |
+
 ## Superseded builders
 
 `open_self_serve_signup.py`, `numbered_product_system.py` and

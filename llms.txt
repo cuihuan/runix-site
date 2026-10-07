@@ -81,6 +81,34 @@ Seven products at different stages. The statuses below are literal.
   (export, multi-platform distribution, promotional assets). Not generally available.
   https://runixcloud.io/comic
 
+## Solutions, by team
+
+The other way in, beside the stack: six kinds of team, the problem each usually arrives
+with, the products that fit and how work starts. Every product is also sold on its own.
+Hub: https://runixcloud.io/solutions
+
+- Platform teams (Router first; FS where data lives in object storage): https://runixcloud.io/for-platform-teams
+- Model teams (Data, Pipeline, Models, FS): https://runixcloud.io/for-model-teams
+- Engineering organisations (Code, in development; Router for policy and attribution): https://runixcloud.io/for-engineering-orgs
+- Studios and creators (Comic, in development; Router optional): https://runixcloud.io/for-studios
+- Regulated industries (Router's written terms; Data's finance, legal and cybersecurity domains; single-tenant serving): https://runixcloud.io/for-regulated-industries
+- Research labs (FS for datasets in buckets; Data's AI for Science and embodied AI domains; Models): https://runixcloud.io/for-research-labs
+
+## The Agents layer, by domain
+
+The top layer is presented by professional domain. Two agents exist today, both in
+development with waitlists open: software engineering (Runix Code) and media and
+entertainment (Runix Comic). The domains the Data layer already has rules for (finance,
+cybersecurity, legal, AI for Science) are named as candidates; no agent is announced for
+them. https://runixcloud.io/agents
+
+## Roadmap
+
+Where each product is, drawn from the same product definitions as the home page, what
+general availability adds (a complete API reference, a published service level for Router,
+self-serve signup and checkout), and what has shipped with the date. No dates are published
+for anything forward-looking. https://runixcloud.io/roadmap
+
 ## Documentation
 
 - [Blog feed](https://runixcloud.io/feed.xml): RSS of the engineering notes.
@@ -134,8 +162,35 @@ Seven products at different stages. The statuses below are literal.
 
 ## Writing
 
-All 31 posts, newest first. Descriptions are the pages' own.
+All 58 posts, newest first. Descriptions are the pages' own.
 
+- [Domain-specific AI agents: why agents are built one profession at a time](https://runixcloud.io/blog/ai-agents-by-domain) — Why AI agents are built per profession: the domain supplies the tools, the data rules, the evaluation and the review gate, and a generic agent lacks all four.
+- [Auto routing versus a pinned model id: choosing an LLM routing policy](https://runixcloud.io/blog/auto-routing-versus-a-pinned-model-id) — Two routing policies behind one endpoint: auto, chosen by cost and health, or a pinned model id. When each is right, and what to log to keep both honest.
+- [Exact, near and semantic: why near-duplicate detection for training data needs all three](https://runixcloud.io/blog/deduplication-exact-near-semantic) — Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.
+- [Evaluate coding agents on your own repository, not on a leaderboard](https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository) — Leaderboard scores do not transfer to your codebase. How to build a task set from closed issues with fail-to-pass tests, and what to measure beyond pass rate.
+- [How to evaluate a fine-tuned LLM against the model you run today](https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline) — Held-out sets, task metrics versus generic benchmarks, regression checks on what you did not tune, contamination, and when a tuned model is ready to ship.
+- [Fine-tuning vs RAG vs prompting: a decision guide by failure mode](https://runixcloud.io/blog/fine-tune-prompt-or-retrieve) — When a prompt is enough, when retrieval fixes a knowledge or freshness gap, when fine-tuning is the right tool, and how the failure mode tells you which one.
+- [FUSE, CSI or SDK: three ways to mount object storage in Kubernetes for ML workloads](https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml) — FUSE mount, CSI driver or SDK: three ways to get a bucket into ML pods on Kubernetes, what each changes in your code, how each fails, and when to pick which.
+- [How to read an LLM price list](https://runixcloud.io/blog/how-to-read-an-llm-price-list) — Units, cached input, batch and tiered rates, context bands and media pricing: how to read a vendor's LLM price list and record a dated baseline to compare on.
+- [How to read an open-weight model licence before you fine-tune it](https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence) — The clauses that decide whether you can fine-tune and ship an open-weight model: use restrictions, attribution, user thresholds, redistribution and patents.
+- [Keeping GPUs fed: where the GPU data loading bottleneck comes from](https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck) — How input pipelines starve accelerators: dataloader workers, random reads, IOPS versus throughput, object storage latency, and honest utilisation metrics.
+- [Turning an LLM bill into a policy: budgets per team and per feature](https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature) — Turning an LLM bill into enforceable policy: per-key quotas, allowed models, hard stops versus alerts, what happens at the limit, and how retries draw on it.
+- [LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights](https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning) — What LoRA and QLoRA change in the weights, the memory and quality trade-offs, merging versus adapter serving, and when full fine-tuning is still warranted.
+- [A multi-tier cache for AI training data: what goes where](https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data) — Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.
+- [Object storage is not a file system, and what POSIX on object storage adds](https://runixcloud.io/blog/object-storage-is-not-a-file-system) — Object storage has no rename, no partial writes and no directories. What a POSIX layer over a bucket has to add, and what it still cannot promise.
+- [PII masking for training data that fails closed: detect, mask, measure, hold back](https://runixcloud.io/blog/pii-masking-that-fails-closed) — Pattern, NER and context detection, masking versus pseudonymisation versus dropping, why uncleared records are held back, and how to measure recall honestly.
+- [DPO fine-tuning explained: what preference tuning changes and what it cannot](https://runixcloud.io/blog/preference-tuning-with-dpo-explained) — How DPO fine-tuning learns from chosen and rejected pairs without a reward model, where preference tuning helps and where it cannot, and the data pitfalls.
+- [Reviewable by default: why an agent's changes should land as diffs](https://runixcloud.io/blog/reviewable-by-default-agent-changes-as-diffs) — Agent output should land as a diff a person can review, not a silent write. Blast radius, attribution, tests as the gate, and how reviewing an agent differs.
+- [Single-tenant model serving explained: what a dedicated LLM inference endpoint changes](https://runixcloud.io/blog/single-tenant-model-serving-explained) — What single-tenant serving means beside a shared endpoint: isolation, latency under your own load, capacity planning, quantised variants and operations.
+- [The small files problem in machine learning: millions of samples, one metadata bill](https://runixcloud.io/blog/small-files-problem-in-ml-training) — Why millions of small samples cost more than their bytes: per-object overhead, listing, metadata pressure, and packing formats versus a metadata service.
+- [Split by source, not by row: how benchmark contamination reaches your own evaluation set](https://runixcloud.io/blog/split-by-source-not-by-row) — Row splits put near-duplicates on both sides of an evaluation. Why to split by repository, document or entity, and how to decontaminate and report overlap.
+- [The harness: what actually runs an AI agent](https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent) — An agent harness is the runtime around a model: tools, permissions, context, budgets and logs. Why it, not the model, decides if an agent is safe to run.
+- [Training data provenance: what every record should carry, and why a README is not proof](https://runixcloud.io/blog/training-data-provenance-and-licence) — What a provenance entry should carry per record, from source and retrieval date to an SPDX licence identifier, and why a detected licence beats a README.
+- [Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid](https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass) — Fail-to-pass and pass-to-pass tests, clean containers, why a task whose tests pass without the patch is invalid, and what SWE-bench Verified screened for.
+- [What a data quality report should contain, and how to read one sceptically](https://runixcloud.io/blog/what-a-data-quality-report-should-contain) — What a data quality report should state about coverage, duplication, extraction confidence, drops and licences, and how a buyer reads one sceptically.
+- [What is a coding agent? From autocomplete to pull requests](https://runixcloud.io/blog/what-is-a-coding-agent) — A coding agent reads a repository, plans, edits files, runs tests and revises until they pass. What separates it from an assistant, and what it is not.
+- [When the bucket is the truth: AI file system cache mode versus file-system mode](https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes) — Cache mode and fs mode: what each guarantees about the bucket behind an AI file system, which workloads fit which, and what to ask a vendor about truth.
+- [Why five layers: how Runix drew its AI infrastructure stack](https://runixcloud.io/blog/why-five-layers) — How Runix drew five layers over the customer's own compute, which Unix idea each layer rebuilds, why each must work alone, and what the layered view omits.
 - [Rebuild AI Unix: why Runix Lab is building an operating system for AI](https://runixcloud.io/blog/rebuild-ai-unix) — Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.
 - [Introducing Runix FS: an AI file system for object storage](https://runixcloud.io/blog/introducing-runix-fs) — Runix FS puts a POSIX file system and a multi-tier cache in front of object storage. Why the layer is missing, what it is built on, and how early access works.
 - [One key can drain a shared quota pool](https://runixcloud.io/blog/per-key-llm-quotas) — A shared quota pool with no per-key ceiling is first-come-first-served — one client's batch job empties it. Why runway beats balance as an alert threshold.
@@ -162,11 +217,11 @@ All 31 posts, newest first. Descriptions are the pages' own.
 - [Prompt Caching: When It Pays and When It Bites](https://runixcloud.io/blog/prompt-caching-explained) — How provider-side prompt caching works, the prefix rule that decides whether you get hits, and the cases where caching quietly changes behaviour.
 - [Streaming LLM Responses Without Breaking Failover](https://runixcloud.io/blog/streaming-llm-failover) — Once tokens have reached the user, failover stops being free. Mid-stream failure modes, what a proxy must preserve, and how to degrade without duplicating text.
 - [What Is an LLM Gateway? A Plain Definition](https://runixcloud.io/blog/what-is-an-llm-gateway) — An LLM gateway is a control plane between your application and model providers. What it does, what it does not do, and when a team actually needs one.
-- [LLM Cost Control: Tokens, Caching and Budgets](https://runixcloud.io/blog/llm-cost-control) — Token pricing asymmetry, prompt caching, model routing, budgets and kill switches — and the waste patterns that quietly inflate an LLM bill.
-- [Building AI Data Pipelines: Raw to Model-Ready](https://runixcloud.io/blog/ai-data-pipelines) — A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.
-- [Model Failover for Production LLM Traffic](https://runixcloud.io/blog/model-failover) — Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.
-- [Choosing an LLM Gateway: 7 Things That Matter](https://runixcloud.io/blog/llm-gateway-guide) — How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.
-- [Introducing Runix](https://runixcloud.io/blog/introducing-runix) — Why we are building an OpenAI-compatible LLM gateway, managed data pipelines and ready-to-deploy solutions — and what comes next.
+- [LLM Cost Control: Tokens, Caching, and Budgets Explained](https://runixcloud.io/blog/llm-cost-control) — Token pricing asymmetry, prompt caching, model routing, budgets and kill switches — and the waste patterns that quietly inflate an LLM bill.
+- [From Raw to Model-Ready: A Practical Guide to AI Data Pipelines](https://runixcloud.io/blog/ai-data-pipelines) — A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.
+- [Designing for Model Failover: Lessons from Production LLM Traffic](https://runixcloud.io/blog/model-failover) — Keeping LLM-backed products up when providers degrade: failure taxonomy, retry budgets, circuit breakers, failover trade-offs and degradation tiers.
+- [Choosing an LLM Gateway: Seven Things That Actually Matter](https://runixcloud.io/blog/llm-gateway-guide) — How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.
+- [Introducing Runix](https://runixcloud.io/blog/introducing-runix) — Why we started Runix and what we set out to build: the gateway now called Runix Router, the pipelines now Runix Pipeline and Runix Data, and what came next.
 ## Legal
 
 - [Terms of Service](https://runixcloud.io/terms)

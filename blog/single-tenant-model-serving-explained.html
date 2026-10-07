@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What a dedicated LLM inference endpoint changes | Runix</title>
+<meta name="description" content="What single-tenant serving means beside a shared endpoint: isolation, latency under your own load, capacity planning, quantised variants and operations.">
+<link rel="canonical" href="https://runixcloud.io/blog/single-tenant-model-serving-explained">
+<meta property="og:title" content="What a dedicated LLM inference endpoint changes | Runix">
+<meta property="og:description" content="What single-tenant serving means beside a shared endpoint: isolation, latency under your own load, capacity planning, quantised variants and operations.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/single-tenant-model-serving-explained">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-single-tenant-model-serving-explained.png?v=493c395c">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-single-tenant-model-serving-explained.png?v=493c395c">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Single-tenant model serving explained: what a dedicated LLM inference endpoint changes",
+  "description": "What single-tenant serving means beside a shared endpoint: isolation, latency under your own load, capacity planning, quantised variants and operations.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/single-tenant-model-serving-explained"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-single-tenant-model-serving-explained.png?v=493c395c",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Single-tenant model serving explained: what a dedicated LLM inference endpoint changes",
+      "item": "https://runixcloud.io/blog/single-tenant-model-serving-explained"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is a dedicated endpoint always lower latency than a shared one?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not inherently. It makes latency a function of your own load instead of everyone else's, which makes it predictable and plannable. Under-provisioned dedicated capacity queues just like a busy shared endpoint."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are rate limits still needed on a dedicated endpoint?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. A shared provider's limits are the backpressure you lose when you run your own; without per-client limits and timeouts, one retrying client can saturate the endpoint."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a dedicated model and hosted models share one API?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, if the serving engine exposes an OpenAI-compatible API and a gateway presents both at one endpoint. Test the compatibility surface before switching traffic."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="What a dedicated LLM inference endpoint changes | Runix">
+<meta name="twitter:description" content="What single-tenant serving means beside a shared endpoint: isolation, latency under your own load, capacity planning, quantised variants and operations.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Models">
+<meta property="article:section" content="Concepts">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Concepts</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#shared-endpoint-dedicated-endpoint-the-definitions">Shared endpoint, dedicated endpoint: the definitions</a></li><li><a href="#isolation-what-a-dedicated-llm-inference-endpoint-separates">Isolation: what a dedicated LLM inference endpoint separates</a></li><li><a href="#latency-under-your-own-load-and-capacity-planning">Latency under your own load, and capacity planning</a></li><li><a href="#quantised-variants-and-the-batch-you-actually-run">Quantised variants and the batch you actually run</a></li><li><a href="#where-it-sits-an-openai-compatible-api-optionally-behind-a-g">Where it sits: an OpenAI-compatible API, optionally behind a gateway</a></li><li><a href="#what-it-costs-you-in-operations">What it costs you in operations</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">Single-tenant model serving explained: what a dedicated LLM inference endpoint changes</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>A dedicated LLM inference endpoint is one where the model, the serving engine and the accelerators behind the URL serve one tenant. A shared endpoint is one where a provider multiplexes many customers across one fleet and hands each of them a rate limit. The difference sounds administrative, but it changes who controls latency, when the model changes, where the data goes, and who is on call. This post sets out each of those without figures, because every one of them depends on your traffic.</p>
+
+<h2 id="shared-endpoint-dedicated-endpoint-the-definitions">Shared endpoint, dedicated endpoint: the definitions</h2>
+<p>On a shared endpoint you send requests to a model id and the provider decides which replica answers, how your requests are batched with everyone else's, and when the model behind the id is updated or retired. You pay per token, which means idle costs nothing and your peak competes with other customers' peaks.</p>
+<p>On a dedicated endpoint, capacity is reserved: specific accelerators run specific weights for you alone. You pay for the capacity whether or not it is busy, and your requests compete only with your own. Single-tenant is the same arrangement described from the isolation side rather than the capacity side.</p>
+
+<h2 id="isolation-what-a-dedicated-llm-inference-endpoint-separates">Isolation: what a dedicated LLM inference endpoint separates</h2>
+<p>Three kinds of isolation come with it, and they are worth separating because teams usually want one and get all three.</p>
+<ul>
+<li><strong>Compute isolation.</strong> No other tenant's burst lands in your batch. Latency under load becomes a function of your own concurrency, which you can measure and plan for.</li>
+<li><strong>Data isolation.</strong> Prompts and outputs stay inside one account or network boundary, and the logs are yours to keep or discard. For teams whose data cannot leave, this is usually the reason the conversation started.</li>
+<li><strong>Configuration isolation.</strong> You choose the model version, the context length, the default decoding settings and the upgrade date. Nobody retires the model under you; the other side of that is that <a href="/blog/model-deprecation-without-a-redeploy">the deprecation calendar</a> is now yours to keep.</li>
+</ul>
+
+<h2 id="latency-under-your-own-load-and-capacity-planning">Latency under your own load, and capacity planning</h2>
+<p>Modern serving engines batch requests continuously: new sequences join the batch as others finish, and the accelerator works on all of them at once. Throughput rises with concurrency, and so does per-request latency, until memory or compute saturates and requests start to queue. Where that knee sits depends on the model, the hardware, and the shape of your prompts and outputs.</p>
+<p>Capacity planning is the exercise of finding that knee for your traffic before your users do. The inputs are concrete:</p>
+<ul>
+<li>Peak concurrent requests, not average requests per minute.</li>
+<li>The distribution of prompt lengths and output lengths, because the key-value cache that holds each in-flight sequence grows with both, and for long contexts it, rather than the weights, is usually what exhausts accelerator memory first.</li>
+<li>What you want to happen at the knee: queue, shed, or fail over.</li>
+</ul>
+<p>The last point is where a dedicated endpoint differs most from a shared one. On a shared endpoint the provider's <a href="/blog/llm-rate-limits">rate limits</a> are the backpressure; on your own endpoint there are none until you set them, and a client that retries hard can take the endpoint down with its own traffic. Set per-client limits and timeouts as deliberately as you would for a hosted provider.</p>
+
+<h2 id="quantised-variants-and-the-batch-you-actually-run">Quantised variants and the batch you actually run</h2>
+<p>A quantised variant stores the weights, and sometimes the key-value cache, at lower precision. It needs less memory, so a larger batch fits on the same hardware and throughput per accelerator usually rises, although dequantisation has a cost of its own once the batch is large enough to be compute-bound. It is also a different model from the full-precision one, and the difference shows up unevenly: some tasks are unaffected, others degrade in ways a generic benchmark does not catch.</p>
+<p>The rule that follows is to <a href="/blog/evaluate-the-tuned-model-against-your-baseline">evaluate the exact variant you serve</a> on your own held-out set, and serve it only if quality holds. The memory saving is real; whether it is free is a question your evaluation answers, not the quantisation method's documentation.</p>
+
+<h2 id="where-it-sits-an-openai-compatible-api-optionally-behind-a-g">Where it sits: an OpenAI-compatible API, optionally behind a gateway</h2>
+<p>Serving engines such as <a href="https://github.com/vllm-project/vllm" rel="noopener">vLLM</a> and <a href="https://github.com/huggingface/text-generation-inference" rel="noopener">Text Generation Inference</a> expose an HTTP API shaped like the OpenAI chat completions endpoint, so an application that already calls a hosted model can call the dedicated one by changing a base URL and a model id. Since <a href="/blog/what-openai-compatible-actually-means">the compatibility surface is not a contract</a>, test the parameters you rely on, the usage fields and the way streams end before you switch.</p>
+<p>Putting a gateway in front adds one more hop and three things that hop can do: present hosted and dedicated models at one endpoint, fail over from the dedicated model to a hosted one when it is down or over capacity, and apply per-key limits and routing without touching the application. <a href="/router">Runix Router</a> is designed for that position, and a Runix Models endpoint can sit behind it next to hosted providers.</p>
+
+<h2 id="what-it-costs-you-in-operations">What it costs you in operations</h2>
+<p>A dedicated endpoint moves work from the provider's operations team to yours. The list is not exotic, but it is yours:</p>
+<ul>
+<li><strong>Keeping it running.</strong> Node failures, driver and runtime versions, serving engine upgrades, and the on-call rotation that handles them.</li>
+<li><strong>Monitoring.</strong> Queue depth, cache utilisation, time to first token and tokens per second per replica, alongside the usual request metrics.</li>
+<li><strong>Scaling.</strong> A new replica has to load the weights before it can answer, so scaling out is slower than for a stateless service, and accelerator procurement has lead times of its own.</li>
+<li><strong>Model lifecycle.</strong> Every upgrade of the weights is a re-evaluation and a rollout, on a schedule you now own.</li>
+<li><strong>Idle cost.</strong> Reserved capacity bills when nobody is calling it. The arithmetic favours dedicated serving at steady, substantial volume and a shared endpoint for spiky or small traffic.</li>
+</ul>
+<p>None of this argues against dedicated serving. It argues for choosing it when the data, the volume or the control actually require it, and for counting the operations when you do.</p>
+
+<p><a href="/models">Runix Models</a> serves tuned open-weight models single-tenant behind an OpenAI-compatible API, in your cloud account or on capacity arranged per engagement, optionally behind Runix Router, with quantised variants only where the evaluation shows quality holds. It is in early access, by engagement.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is a dedicated endpoint always lower latency than a shared one?</h3>
+<p>Not inherently. It makes latency a function of your own load instead of everyone else's, which makes it predictable and plannable. Under-provisioned dedicated capacity queues just like a busy shared endpoint.</p>
+<h3>Are rate limits still needed on a dedicated endpoint?</h3>
+<p>Yes. A shared provider's limits are the backpressure you lose when you run your own; without per-client limits and timeouts, one retrying client can saturate the endpoint.</p>
+<h3>Can a dedicated model and hosted models share one API?</h3>
+<p>Yes, if the serving engine exposes an OpenAI-compatible API and a gateway presents both at one endpoint. Test the compatibility surface before switching traffic.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/models">Runix Models</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/model-deprecation-without-a-redeploy">Your model id has an expiry date</a></li>
+    <li><a href="/blog/evaluate-the-tuned-model-against-your-baseline">How to evaluate a fine-tuned LLM against the model you run today</a></li>
+    <li><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></li>
+    <li><a href="/models">Runix Models: fine-tune and serve open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

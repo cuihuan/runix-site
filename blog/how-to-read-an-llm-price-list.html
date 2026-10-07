@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to read LLM pricing per million tokens | Runix</title>
+<meta name="description" content="Units, cached input, batch and tiered rates, context bands and media pricing: how to read a vendor's LLM price list and record a dated baseline to compare on.">
+<link rel="canonical" href="https://runixcloud.io/blog/how-to-read-an-llm-price-list">
+<meta property="og:title" content="How to read LLM pricing per million tokens | Runix">
+<meta property="og:description" content="Units, cached input, batch and tiered rates, context bands and media pricing: how to read a vendor's LLM price list and record a dated baseline to compare on.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/how-to-read-an-llm-price-list">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-how-to-read-an-llm-price-list.png?v=23c453ab">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-how-to-read-an-llm-price-list.png?v=23c453ab">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to read an LLM price list",
+  "description": "Units, cached input, batch and tiered rates, context bands and media pricing: how to read a vendor's LLM price list and record a dated baseline to compare on.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/how-to-read-an-llm-price-list"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-how-to-read-an-llm-price-list.png?v=23c453ab",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to read an LLM price list",
+      "item": "https://runixcloud.io/blog/how-to-read-an-llm-price-list"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is a price per million tokens comparable across vendors?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only after you check the unit, the tier and the tokenizer. Two models can list the same rate and bill differently for the same text because they count tokens differently."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which price should I use when comparing models?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The standard real-time pay-as-you-go rate for the base tier. Record batch, cached, off-peak and volume rates as separate notes that name their conditions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should a recorded price list be rechecked?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On a fixed schedule and whenever a vendor announces a new model or a retirement. Keep the URL and the date read with every number, and keep old rows rather than overwriting them."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="How to read LLM pricing per million tokens | Runix">
+<meta name="twitter:description" content="Units, cached input, batch and tiered rates, context bands and media pricing: how to read a vendor's LLM price list and record a dated baseline to compare on.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Gateway">
+<meta property="article:section" content="Buyer&#x27;s guide">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Buyer's guide</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#llm-pricing-per-million-tokens-the-unit-and-the-two-meters">LLM pricing per million tokens: the unit and the two meters</a></li><li><a href="#cached-input-has-its-own-column">Cached input has its own column</a></li><li><a href="#batch-tiered-and-context-band-prices">Batch, tiered and context-band prices</a></li><li><a href="#images-audio-and-other-units">Images, audio and other units</a></li><li><a href="#why-the-list-price-is-the-baseline-and-why-the-bill-still-di">Why the list price is the baseline, and why the bill still differs</a></li><li><a href="#reading-the-vendor-s-page-and-recording-the-date">Reading the vendor's page and recording the date</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Buyer's guide</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">How to read an LLM price list</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>A price list is a table of rates with a unit hidden in each column header, and most comparison mistakes come from reading the rate without the unit. LLM pricing per million tokens is the common currency of these lists, but the lists also carry cached rates, batch rates, tiers that depend on prompt length, and image and audio units that are not tokens at all. This guide is about reading one vendor's page correctly, recording it with its date, and knowing which number is the baseline.</p>
+
+<h2 id="llm-pricing-per-million-tokens-the-unit-and-the-two-meters">LLM pricing per million tokens: the unit and the two meters</h2>
+
+<p>Every text model has two meters. Input tokens are everything you send: system prompt, tool schemas, history and the user's message. Output tokens are everything the model generates, including reasoning tokens where a vendor bills them as output. The two are priced separately, and output is usually the dearer meter, so a model's price is at least two numbers.</p>
+
+<p>The unit is one million tokens, so a rate reads as currency per million input tokens and per million output tokens. Older pages quote per thousand; convert before you compare, and keep the original beside the converted figure.</p>
+
+<p>A token is not a word. Each model family counts text with its own tokenizer, so the same document is a different number of tokens on two models, and tokenizers change between generations without the price list changing. Two lines with the same rate can bill differently for the same text; the count that matters is the one in the response's usage object.</p>
+
+<h2 id="cached-input-has-its-own-column">Cached input has its own column</h2>
+
+<p>Most vendors now price a cached prefix separately. A cache read is billed at a fraction of the input rate when the start of a request matches a recent one; a cache write, where the vendor charges one, is billed at a premium on the request that creates the entry. The read rate is usually in the table; the write rate and the lifetime are often in a footnote or a separate page.</p>
+
+<p>Read the conditions, not only the rate: caching is prefix-based and expires after a window that varies by vendor. <a href="/blog/prompt-caching-explained">When prompt caching pays and when it bites</a> covers the mechanics. For a price list the rule is simpler: record the read rate, the write rate and the lifetime as three fields, with a blank where the vendor publishes none; a blank must never be read as a zero.</p>
+
+<h2 id="batch-tiered-and-context-band-prices">Batch, tiered and context-band prices</h2>
+
+<p>Three further kinds of rate change the arithmetic, and each belongs in its own field.</p>
+
+<ul>
+<li><strong>Batch.</strong> A discounted rate for requests submitted as a job and returned within a window of hours rather than seconds. It is a different service with a different latency contract, not a cheaper version of the same one.</li>
+<li><strong>Tiered and volume.</strong> Some vendors lower the rate above a committed monthly volume or under a contract; others publish an off-peak window for part of the day. They apply only if your traffic lands in the tier, which a comparison made before launch cannot know.</li>
+<li><strong>Context bands.</strong> Some models cost more per token once the prompt exceeds a length threshold. Read whether the higher rate applies to the whole request or only to the tokens above the line, and whether output is banded too; the two readings give different bills for the same prompt.</li>
+</ul>
+
+<p>The baseline for comparing models is the standard, real-time, pay-as-you-go rate for the base tier, with every other rate written beside it as a note that names its condition. Comparing one vendor's batch rate with another's real-time rate compares two services, not two models.</p>
+
+<h2 id="images-audio-and-other-units">Images, audio and other units</h2>
+
+<p>Beyond text, the unit in the column header changes, and the safe habit is to read it every time.</p>
+
+<ul>
+<li><strong>Image input</strong> is usually converted to tokens by a formula based on the image's dimensions, or charged per image; the vendor's page says which, and the formula decides whether a screenshot costs more than a paragraph.</li>
+<li><strong>Image generation</strong> is charged per image, at a rate that depends on size and quality settings.</li>
+<li><strong>Audio</strong> is charged per minute, or per audio token where the model treats sound as tokens; speech output may be charged per character.</li>
+<li><strong>Embeddings</strong> have an input meter only, and <strong>server-side tools</strong> such as web search are typically charged per call on top of the tokens they add to the context.</li>
+</ul>
+
+<p>None of these is comparable across vendors without the unit. Record the unit as a field next to the rate, and let a comparison fail when two units differ.</p>
+
+<h2 id="why-the-list-price-is-the-baseline-and-why-the-bill-still-di">Why the list price is the baseline, and why the bill still differs</h2>
+
+<p>The public list price is the baseline because it is the one number every buyer can see, dated and unconditional. Contract rates are private and conditional; an intermediary's price is that intermediary's policy. Compare at list, then negotiate, keeping the list in the comparison so that a discount reads as one.</p>
+
+<p>The bill will still differ from list times tokens, for mechanical reasons: cached reads and writes at their own rates, context injected by tools and agents, tokenizer changes between generations, tiers crossed without noticing, retries that billed the prompt twice, and streams that produced output before they failed. <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">Why your LLM bill does not match the price list</a> walks through the first four and recomputes a single request by hand; <a href="/blog/llm-retry-budget">the retry budget</a> covers the last two. The list price is not wrong; it is the first term of a longer sum.</p>
+
+<h2 id="reading-the-vendor-s-page-and-recording-the-date">Reading the vendor's page and recording the date</h2>
+
+<p>Read the vendor's own page, not a screenshot or a third-party table, because the page is the only thing the vendor stands behind; <a href="https://developers.openai.com/api/docs/pricing" rel="noopener">OpenAI's pricing page</a> and <a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="noopener">Anthropic's pricing page</a> are the kind of page meant. Then record, for every model you care about:</p>
+
+<ol>
+<li>the exact model id, since a dated snapshot and an alias can carry different prices and <a href="/blog/model-deprecation-without-a-redeploy">different retirement dates</a>;</li>
+<li>the unit, the currency, and the platform or region, since some vendors publish a different list per region;</li>
+<li>the input, output, cached-read and cached-write rates, each in its own field, with a blank where none is published;</li>
+<li>any batch, off-peak, volume or context-band condition, as a note that names the condition;</li>
+<li>the URL of the page and the date you read it.</li>
+</ol>
+
+<p>The date is not decoration. Vendors change prices without notice and retire models on a schedule, so a rate without a date cannot be reconciled against a given month's invoice. Re-read the page on a schedule and whenever a model is announced or retired, and keep the old rows: a <a href="/blog/llm-cost-attribution">ledger that stores the rate applied at call time</a> is only auditable if that rate still exists somewhere.</p>
+
+<p>Runix applies the same rule to its own catalogue. Every model on the <a href="/router-models">Runix Router catalogue</a> is listed at its vendor's public list price, with the source page and the date it was read; contract rates are quoted in writing rather than shown on the page. It is a dated snapshot of public lists, not a rate card of its own, and <a href="/router">Runix Router</a>, in early access, meters usage at those list prices on itemised statements in USD.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is a price per million tokens comparable across vendors?</h3>
+<p>Only after you check the unit, the tier and the tokenizer. Two models can list the same rate and bill differently for the same text because they count tokens differently.</p>
+<h3>Which price should I use when comparing models?</h3>
+<p>The standard real-time pay-as-you-go rate for the base tier. Record batch, cached, off-peak and volume rates as separate notes that name their conditions.</p>
+<h3>How often should a recorded price list be rechecked?</h3>
+<p>On a fixed schedule and whenever a vendor announces a new model or a retirement. Keep the URL and the date read with every number, and keep old rows rather than overwriting them.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/router-models">The Router models catalogue, at vendors' public list prices</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">Why your LLM bill doesn't match the price list</a></li>
+    <li><a href="/blog/prompt-caching-explained">Prompt Caching: When It Pays and When It Bites</a></li>
+    <li><a href="/blog/llm-cost-attribution">Per-Team LLM Cost Attribution That Survives Audit</a></li>
+    <li><a href="/router-models">The Router models catalogue, at vendors' public list prices</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

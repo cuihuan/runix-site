@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -34,7 +35,7 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Runix Router Docs — Quickstart and Integration Guide",
+  "headline": "Router quickstart & integration guide",
   "description": "Integrate Runix Router in minutes: base URL and key, model selection, streaming, failover semantics, limits and data handling. OpenAI-compatible.",
   "mainEntityOfPage": {
     "@type": "WebPage",
@@ -48,7 +49,7 @@
     "@id": "https://runixcloud.io/#org"
   },
   "datePublished": "2026-08-02",
-  "dateModified": "2026-08-02"
+  "dateModified": "2026-10-07"
 }
 </script>
 <script type="application/ld+json">
@@ -77,6 +78,30 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix Router Docs — Quickstart &amp; Integration Guide">
 <meta name="twitter:description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, failover semantics, limits and data handling. OpenAI-compatible.">
@@ -97,6 +122,7 @@
             <p class="nav-layer-name"><span>05</span>Agents</p>
             <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
             <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -118,6 +144,7 @@
           <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
         </div>
       </div>
+      <a href="/solutions">Solutions</a>
       <a href="/plans">Pricing</a>
       <a href="/docs/" class="active">Docs</a>
       <a href="/about">Company</a>
@@ -216,7 +243,7 @@ resp = client.chat.completions.create(
 <li><strong>Route automatically</strong>: pass <code>"model": "auto"</code> and Router selects by cost, health and your account's configuration. Routing preferences are set per key during onboarding; tell us your priorities (cheapest acceptable, latency-first, provider allowlists) and they are applied server-side.</li>
 <li><strong>Discover what a key can call</strong>, <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
 </ul>
-<p>Model ids are the vendors’ own. Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-4-6</code>), and other vendors’ models keep their catalogue names: there is no Runix-specific alias table to maintain, so an id copied from a vendor’s announcement works as-is. The authoritative list for your key is always <code>GET /v1/models</code>.</p>
+<p>Model ids are the vendors’ own. Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-5</code>), and other vendors’ models keep their catalogue names: there is no Runix-specific alias table to maintain, so an id copied from a vendor’s announcement works as-is. The authoritative list for your key is always <code>GET /v1/models</code>.</p>
 
 <h2 id="streaming">3. Streaming</h2>
 <p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed, including tool-call deltas, so the first token is forwarded as soon as the provider emits it rather than after the response completes. That is a statement about the mechanism, not a performance claim: measure time to first token against the provider directly and you will see what the router costs you.</p>
@@ -313,7 +340,9 @@ section 4 before an error reaches you.</p>
       </div>
       <div>
         <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
         <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
@@ -331,6 +360,7 @@ section 4 before an error reaches you.</p>
       <div>
         <p class="footer-heading">Company</p>
         <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
         <a href="/reliability">Reliability</a>

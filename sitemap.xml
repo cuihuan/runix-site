@@ -16,6 +16,15 @@
   <url><loc>https://runixcloud.io/comic</loc><lastmod>2026-09-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://runixcloud.io/code</loc><lastmod>2026-09-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://runixcloud.io/code-plans</loc><lastmod>2026-09-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://runixcloud.io/solutions</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/agents</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/roadmap</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/for-platform-teams</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/for-model-teams</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/for-engineering-orgs</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/for-studios</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/for-regulated-industries</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/for-research-labs</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
   <url><loc>https://runixcloud.io/docs/</loc><lastmod>2026-09-30</lastmod><priority>0.7</priority></url>
   <url><loc>https://runixcloud.io/docs/router</loc><lastmod>2026-09-30</lastmod><priority>0.7</priority></url>
   <url><loc>https://runixcloud.io/docs/fs</loc><lastmod>2026-09-30</lastmod><priority>0.7</priority></url>
@@ -26,7 +35,34 @@
   <url><loc>https://runixcloud.io/security</loc><lastmod>2026-09-30</lastmod><priority>0.7</priority></url>
   <url><loc>https://runixcloud.io/about</loc><lastmod>2026-09-30</lastmod><priority>0.7</priority></url>
   <url><loc>https://runixcloud.io/careers</loc><lastmod>2026-09-30</lastmod><priority>0.6</priority></url>
-  <url><loc>https://runixcloud.io/blog/</loc><lastmod>2026-07-23</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/blog/</loc><lastmod>2026-10-07</lastmod><priority>0.7</priority></url>
+  <url><loc>https://runixcloud.io/blog/why-five-layers</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/what-is-a-coding-agent</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/what-a-data-quality-report-should-contain</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/training-data-provenance-and-licence</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/small-files-problem-in-ml-training</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/split-by-source-not-by-row</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/single-tenant-model-serving-explained</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/reviewable-by-default-agent-changes-as-diffs</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/pii-masking-that-fails-closed</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/object-storage-is-not-a-file-system</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/how-to-read-an-llm-price-list</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/fine-tune-prompt-or-retrieve</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/deduplication-exact-near-semantic</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/ai-agents-by-domain</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/preference-tuning-with-dpo-explained</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/auto-routing-versus-a-pinned-model-id</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data</loc><lastmod>2026-10-07</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/rebuild-ai-unix</loc><lastmod>2026-09-30</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/introducing-runix-fs</loc><lastmod>2026-09-29</lastmod><priority>0.6</priority></url>
   <url><loc>https://runixcloud.io/blog/per-key-llm-quotas</loc><lastmod>2026-08-25</lastmod><priority>0.6</priority></url>

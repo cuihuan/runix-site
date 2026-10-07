@@ -30,7 +30,7 @@ DATA = pathlib.Path("tools/models_catalog.json")
 OUT = pathlib.Path("router-models.html")
 SHELL = pathlib.Path("router.html")
 
-TITLE = "Router Models Catalogue: Public List Prices per Model"
+TITLE = "Router Models Catalogue: Public List Prices per Model | Runix"
 DESC = ("Every model Runix Router routes to, at the vendor's public list price per million tokens, with "
         "context window and the vendor page each price was read from.")
 
@@ -99,7 +99,7 @@ def main():
     main_html = f'''<main id="main">
 <div class="page-hero" id="overview">
   <div class="container">
-    <h1><span class="line">Every model,</span>
+    <h1><span class="line">Every model on Router,</span>
 <span class="line">at its public price</span></h1>
     <p>The models Runix Router routes to, each at the price its vendor publishes per million tokens. Router's list price is the vendor's public price; contract rates are quoted in writing. Prices as published on {as_of}.</p>
     <div class="actions">
@@ -195,7 +195,10 @@ def main():
             {"@type": "ListItem", "position": 2, "name": "Runix Router", "item": f"{SITE}/router"},
             {"@type": "ListItem", "position": 3, "name": "Models catalogue", "item": f"{SITE}/router-models"}]},
     ]
-    blocks = list(re.finditer(r'<script type="application/ld\+json">.*?</script>\n?', s, re.S))
+    # Only the page's own blocks are replaced; the shared Organization graph
+    # (tools/add_org_graph.py) sits after them and stays.
+    blocks = [m for m in re.finditer(r'<script type="application/ld\+json">.*?</script>\n?', s, re.S)
+              if '"@graph"' not in m.group(0)]
     new_ld = "\n".join('<script type="application/ld+json">\n' + json.dumps(b, ensure_ascii=False, indent=2) + "\n</script>" for b in ld) + "\n"
     s = s[:blocks[0].start()] + new_ld + s[blocks[-1].end():]
     a, b = s.index('<main id="main"'), s.index("</main>") + len("</main>")

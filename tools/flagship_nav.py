@@ -32,10 +32,14 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from stack import LAYERS, PRODUCTS as STACK, products_in, product_pages  # noqa: E402
+from stack import LAYERS, PRODUCTS as STACK, HUBS, products_in, product_pages  # noqa: E402
 
 
-TOP = [("/plans", "Pricing"), ("/docs/", "Docs"), ("/about", "Company")]
+# 2026-10-07: "Solutions" sits first after Products -- the site is browsed by
+# what a team is trying to do as well as by product.
+TOP = [("/solutions", "Solutions"), ("/plans", "Pricing"), ("/docs/", "Docs"), ("/about", "Company")]
+SOLUTION_PAGES = {"solutions.html"} | {f"for-{k}.html" for k in (
+    "platform-teams", "model-teams", "engineering-orgs", "studios", "regulated-industries", "research-labs")}
 PRODUCT_PAGES = set(product_pages())
 # The Runix Data domain pages sit under a product, so the menu marks Products.
 from domains import DOMAINS as _DOMAINS  # noqa: E402
@@ -53,7 +57,7 @@ TAGLINE_NEW = ("Rebuild AI Unix: an efficient, stable, enterprise-grade AI "
                "operating system, in five layers from storage to agents.")
 
 
-COMPANY = [("/about", "About"), ("/about#contact", "Contact"), ("/security", "Security"),
+COMPANY = [("/about", "About"), ("/roadmap", "Roadmap"), ("/about#contact", "Contact"), ("/security", "Security"),
            ("/reliability", "Reliability"), ("/faq", "FAQ"), ("/glossary", "Glossary"),
            ("/access", "Access"), ("/careers", "Careers"), ("/blog/", "Blog")]
 LEGAL = [("/terms", "Terms of Service"), ("/privacy", "Privacy Policy"), ("/refund", "Refund Policy"),
@@ -78,8 +82,16 @@ def footer_products(indent, active_href):
     # Grouped under the layer's name, top to bottom, the way the stack is
     # drawn (2026-09-30 redesign): the footer is the site map in miniature.
     out = []
+    # The two cross-cutting ways in, above the layers: by what a team is
+    # trying to do, and the Agents layer by professional domain.
+    cls = ' class="active"' if active_href == "/solutions" else ""
+    out.append(f'{indent}<a href="/solutions"{cls}>Solutions</a>')
     for layer, _num, lname, _role in LAYERS:
         out.append(f'{indent}<span class="footer-sub">{lname}</span>')
+        if layer in HUBS:
+            href, label, _line = HUBS[layer]
+            cls = ' class="active"' if href == active_href else ""
+            out.append(f'{indent}<a href="{href}"{cls}>{label}</a>')
         for key in products_in(layer):
             _, href, name, *_rest = STACK[key]
             cls = ' class="active"' if href == active_href else ""
@@ -101,6 +113,12 @@ def active_for(path):
         return "/about"
     if p in ("plans.html", "pricing.html", "code-plans.html"):
         return "/plans"
+    if p in SOLUTION_PAGES:
+        return "/solutions"
+    if p == "roadmap.html":
+        return "/about"
+    if p == "agents.html":
+        return "products"
     if p in PRODUCT_PAGES or p == "router-models.html":
         return "products"
     return None
@@ -142,6 +160,10 @@ def build_nav(path, indent):
             badge = f" <i>{tag}</i>" if tag else ""
             lines.append(f'{i4}<a class="nav-prod" href="{href}"><b>{name}{badge}</b>'
                          f'<span>{line}</span></a>')
+        if layer in HUBS:
+            href, label, line = HUBS[layer]
+            lines.append(f'{i4}<a class="nav-prod nav-hub" href="{href}"><b>{label} '
+                         f'<span aria-hidden="true">&rarr;</span></b><span>{line}</span></a>')
         lines.append(f'{i3}</div>')
     lines.append(f'{i3}<a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack '
                  f'<span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>')

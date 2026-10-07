@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keeping GPUs fed: the GPU data loading bottleneck | Runix</title>
+<meta name="description" content="How input pipelines starve accelerators: dataloader workers, random reads, IOPS versus throughput, object storage latency, and honest utilisation metrics.">
+<link rel="canonical" href="https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck">
+<meta property="og:title" content="Keeping GPUs fed: the GPU data loading bottleneck | Runix">
+<meta property="og:description" content="How input pipelines starve accelerators: dataloader workers, random reads, IOPS versus throughput, object storage latency, and honest utilisation metrics.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-keeping-gpus-fed-data-loading-bottleneck.png?v=7efd582b">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-keeping-gpus-fed-data-loading-bottleneck.png?v=7efd582b">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Keeping GPUs fed: where the GPU data loading bottleneck comes from",
+  "description": "How input pipelines starve accelerators: dataloader workers, random reads, IOPS versus throughput, object storage latency, and honest utilisation metrics.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-keeping-gpus-fed-data-loading-bottleneck.png?v=7efd582b",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Keeping GPUs fed: where the GPU data loading bottleneck comes from",
+      "item": "https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I know whether my training job is bottlenecked on data loading?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Run the model on a synthetic batch held in device memory and compare that step time with the real one. If the real step is much slower and the loader's prefetch queue is empty when the GPU asks for a batch, the input pipeline is the limit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does adding more DataLoader workers always help?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. More workers help until the CPU cores, serial waits on storage or the depth of the prefetch queue become the limit, and past the core count they add contention rather than throughput."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is object storage slower for training than local disk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each sample read becomes a network request with its own latency and a per-request charge, and training reads are small and random, so the store's request rate rather than its bandwidth sets the ceiling."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Keeping GPUs fed: the GPU data loading bottleneck | Runix">
+<meta name="twitter:description" content="How input pipelines starve accelerators: dataloader workers, random reads, IOPS versus throughput, object storage latency, and honest utilisation metrics.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Infrastructure">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-a-gpu-data-loading-bottleneck-looks-like">What a GPU data loading bottleneck looks like</a></li><li><a href="#what-dataloader-workers-actually-do">What dataloader workers actually do</a></li><li><a href="#random-access-throughput-and-iops">Random access, throughput and IOPS</a></li><li><a href="#where-object-storage-latency-bites">Where object storage latency bites</a></li><li><a href="#how-to-measure-utilisation-honestly">How to measure utilisation honestly</a></li><li><a href="#what-to-change-in-order-of-cost">What to change, in order of cost</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Keeping GPUs fed: where the GPU data loading bottleneck comes from</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>A training cluster is bought by the GPU hour and billed whether or not the GPUs are computing. The <strong>GPU data loading bottleneck</strong> is the case where they are not: the accelerator finishes a step and waits for the next batch to arrive from the input pipeline. This post is about where that wait comes from, why object storage makes it worse, and how to measure it without fooling yourself.</p>
+
+<h2 id="what-a-gpu-data-loading-bottleneck-looks-like">What a GPU data loading bottleneck looks like</h2>
+
+<p>A training step has three parts: produce a batch (read, decode, augment, collate), move it to the device, and run the forward and backward passes. Frameworks overlap the first with the third, so the loader works on the next batch while the GPU computes the current one. That overlap hides loading time only while the loader produces batches at least as fast as the GPU consumes them.</p>
+
+<p>When it does not, the GPU idles for the difference on every step. A loader-bound job does not show up as an error anywhere; it shows up as a run that takes longer than the arithmetic says it should, and as a utilisation graph that looks like a comb.</p>
+
+<h2 id="what-dataloader-workers-actually-do">What dataloader workers actually do</h2>
+
+<p>In <a href="https://docs.pytorch.org/docs/stable/data.html" rel="noopener">PyTorch's DataLoader</a>, and in its equivalents elsewhere, a worker is a process that takes a list of sample indices, calls the dataset for each one, and hands the collated batch back over a queue. Each call typically opens a file, reads and decodes it, applies augmentations and converts the result to a tensor.</p>
+
+<p>Three things limit what workers can deliver. Decode and augmentation are CPU work, and a node has a fixed ratio of cores to GPUs, so adding workers past the core count only adds contention. Each worker's reads are mostly serial, so a worker waiting on storage cannot be rescued by more CPU. And the prefetch queue is finite: a stall long enough to drain it reaches the GPU no matter how many workers exist.</p>
+
+<p>The usual first fix is more workers, and it works exactly until one of those three limits is the real constraint. Finding out which one requires measurement, not a larger number in a config file.</p>
+
+<h2 id="random-access-throughput-and-iops">Random access, throughput and IOPS</h2>
+
+<p>Training reads are random by design: shuffling every epoch means consecutive samples come from unrelated places in the dataset, so the pipeline issues many small reads at scattered offsets rather than one sequential stream. The storage figure that predicts loader performance is therefore operations per second at the sample size, not megabytes per second on a sequential benchmark.</p>
+
+<p>Media differ most on exactly this axis. Memory and SSD handle random reads well; a disk array with high sequential throughput can collapse under random reads of small files, because each one costs a seek. The same dataset can keep a GPU busy from SSD and starve it from HDD, with identical throughput on paper.</p>
+
+<p>Whether the working set fits in local memory decides whether the page cache saves you. If it fits, the second epoch reads from memory and the problem disappears after the first; if not, every epoch pays the full cost, and the first epoch's numbers are the ones to plan from.</p>
+
+<h2 id="where-object-storage-latency-bites">Where object storage latency bites</h2>
+
+<p>When samples live in a bucket, every open becomes a network request, and the per-request latency of the object store is paid once per sample. The loader now has to hide a delay that is orders of magnitude larger than a local read, and the only tool it has for that is parallelism across workers.</p>
+
+<p>Three patterns make it worse. Small samples mean the request overhead dominates the transfer time, so the store's request rate rather than its bandwidth becomes the ceiling. Listing a large prefix to build the index of samples is itself a long paged operation that runs before the first step. And a cold first epoch pulls the whole dataset across the network while the GPUs wait, then does it again on the next node, because nothing shared remembers what was fetched.</p>
+
+<p>The remedies are structural: pack small samples into shards, put a cache with memory and SSD tiers between the loader and the bucket, and give every node a shared view so that a sample fetched once is served locally after that. The <a href="/blog/introducing-runix-fs">introduction to Runix FS</a> describes that layer; the <a href="/blog/ai-data-pipelines">data pipeline guide</a> covers the data before it reaches storage.</p>
+
+<h2 id="how-to-measure-utilisation-honestly">How to measure utilisation honestly</h2>
+
+<p>The number most people look at, the utilisation column in <code>nvidia-smi</code>, is a coarse signal: it reports whether a kernel was running during the sample period, not how much of the device that kernel used. A GPU can show high utilisation while running small kernels that leave most of the chip idle, and gaps shorter than the sampling interval disappear.</p>
+
+<p>Better signals, in the order worth collecting:</p>
+
+<ul>
+<li><strong>Step time with synthetic input.</strong> Feed the model the same batch from device memory in a loop and record the step time. That is the floor; the difference between it and the real step time is the loader's share.</li>
+<li><strong>A profiler timeline.</strong> The PyTorch profiler and similar tools show data-loading spans next to the kernels. Gaps between kernels that line up with loader activity are the bottleneck, seen rather than inferred.</li>
+<li><strong>Device-level counters.</strong> Tools such as <a href="https://github.com/NVIDIA/DCGM" rel="noopener">NVIDIA DCGM</a> expose metrics like SM activity and tensor-core activity, which separate a kernel being present from the device being busy.</li>
+<li><strong>Loader-side counters.</strong> Worker CPU time, time spent waiting on reads, queue depth over time, and the request latency distribution from the storage layer. If the queue is empty when the GPU asks, the loader lost.</li>
+</ul>
+
+<p>Record these for the first epoch and a later one separately, and record time to first batch, where listing and a cold cache show up before any step runs. A pipeline that is fine on the third epoch and starved on the first has a cold-cache problem, which is a different fix from a pipeline starved on every epoch.</p>
+
+<h2 id="what-to-change-in-order-of-cost">What to change, in order of cost</h2>
+
+<ol>
+<li>Match worker count to the CPU cores the job actually has, and measure decode cost per sample first.</li>
+<li>Move decode onto the GPU where a library supports the format.</li>
+<li>Pack small samples into shards, so reads are large and sequential within a shard.</li>
+<li>Put a cache in front of the bucket, so the working set is served from memory or SSD after the first read and shared across nodes.</li>
+<li>Only then buy more storage bandwidth, the most expensive option and the one least likely to be the actual constraint.</li>
+</ol>
+
+<p><a href="/fs">Runix FS</a> is designed for the fourth step: a file system and a cache with memory, SSD and HDD tiers in front of the S3-compatible bucket a team already has, so that loaders read through a local path and a block fetched once is served from the cache afterwards. It is in early access, sized and deployed per customer in their own cloud account; we publish no throughput figures of our own, and the <a href="/docs/fs">quick start</a> shows what a mount involves.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>How do I know whether my training job is bottlenecked on data loading?</h3>
+<p>Run the model on a synthetic batch held in device memory and compare that step time with the real one. If the real step is much slower and the loader's prefetch queue is empty when the GPU asks for a batch, the input pipeline is the limit.</p>
+<h3>Does adding more DataLoader workers always help?</h3>
+<p>No. More workers help until the CPU cores, serial waits on storage or the depth of the prefetch queue become the limit, and past the core count they add contention rather than throughput.</p>
+<h3>Why is object storage slower for training than local disk?</h3>
+<p>Each sample read becomes a network request with its own latency and a per-request charge, and training reads are small and random, so the store's request rate rather than its bandwidth sets the ceiling.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/fs">Runix FS</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/multi-tier-cache-for-ai-training-data">A multi-tier cache for AI training data: what goes where</a></li>
+    <li><a href="/blog/small-files-problem-in-ml-training">The small files problem in machine learning: millions of samples, one metadata bill</a></li>
+    <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+    <li><a href="/fs">Runix FS: an AI-native file system on your object storage</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

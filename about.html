@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -18,11 +19,11 @@
 <meta property="og:description" content="Runix AI Inc, as Runix Lab, builds the operating system for enterprise AI: seven products in five layers, from file system to gateway to agents.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Runix Lab">
-<meta property="og:image" content="https://runixcloud.io/assets/og/about.png?v=7fb4e247">
+<meta property="og:image" content="https://runixcloud.io/assets/og/about.png?v=6df558b7">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og/about.png?v=7fb4e247">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/about.png?v=6df558b7">
 <meta property="og:url" content="https://runixcloud.io/about">
 <link rel="canonical" href="https://runixcloud.io/about">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
@@ -65,6 +66,30 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="About Runix — US-Incorporated AI Infrastructure Company">
 <meta name="twitter:description" content="Runix AI Inc, as Runix Lab, builds the operating system for enterprise AI: seven products in five layers, from file system to gateway to agents.">
@@ -85,6 +110,7 @@
             <p class="nav-layer-name"><span>05</span>Agents</p>
             <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
             <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -106,6 +132,7 @@
           <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
         </div>
       </div>
+      <a href="/solutions">Solutions</a>
       <a href="/plans">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about" class="active">Company</a>
@@ -120,7 +147,7 @@
   <div class="container pbar-inner">
     <a class="pbar-name" href="#overview">About</a>
     <a class="pbar-layer" href="/about">Company</a>
-    <ul class="pbar-links"><li><a href="#what-runix-is">What Runix is</a></li><li><a href="#how-we-work">How we work</a></li><li><a href="#what-we-publish-openly">What we publish openly</a></li><li><a href="#what-we-do-not-claim">What we do not claim</a></li></ul>
+    <ul class="pbar-links"><li><a href="#what-runix-is">What Runix is</a></li><li><a href="#the-thesis">The thesis</a></li><li><a href="#how-we-work">How we work</a></li><li><a href="#what-we-publish-openly">What we publish openly</a></li><li><a href="#what-we-do-not-claim">What we do not claim</a></li></ul>
     <a class="pbar-cta" href="#contact">Contact us</a>
   </div>
 </nav>
@@ -129,7 +156,7 @@
 <div class="page-hero" id="overview">
   <div class="container">
     <!--ps:eyebrow--><p class="page-eyebrow">Company</p><!--/ps:eyebrow-->
-    <h1>Engineers, obsessed with reliability</h1>
+    <h1>AI infrastructure engineers, obsessed with reliability</h1>
     <p>Our mission is to rebuild the operating system of AI, efficient, stable and enterprise-grade: <a href="/blog/rebuild-ai-unix">Rebuild AI Unix</a>. The name is the mission: Runix, from <strong>R</strong>ebuild and <strong>Unix</strong>. Runix Lab is the AI infrastructure brand of Runix AI Inc, a US-based technology company, and builds that system in five layers: storage (FS), data (Data and Pipeline), models (Models), a model gateway (Router), and the agents on top (Code and Comic), each an independent agent for its domain with its own harness.</p>
   </div>
 </div>
@@ -143,8 +170,10 @@
       <div>
         <p>Runix AI Inc is a company incorporated in Wyoming, United States. It builds and
         operates infrastructure for teams putting AI into production, and sells it directly: there is no reseller between you and the people who run the service. The longer
-        version of why it exists is in <a href="/blog/introducing-runix">the announcement
-        post</a>.</p>
+        version of why it exists is <a href="/blog/rebuild-ai-unix">Rebuild AI Unix</a>. The
+        <a href="/blog/introducing-runix">original announcement</a> from July 2026 is kept as a record of
+        where the company started: a gateway and managed data pipelines, which became Router, Pipeline and Data.
+        Where each product is today, and what comes next, is on <a href="/roadmap">the roadmap</a>.</p>
         <p style="margin-top: 12px;">Seven products in five layers, at deliberately different stages. The
         statuses below are literal, and they are the same statuses used everywhere else on
         this site; none of them is aspirational.</p>
@@ -190,9 +219,36 @@
   </div>
 </section>
 
+<section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <p class="sec-no">03 &middot; The thesis</p>
+      <h2 id="the-thesis">The thesis</h2>
+      <p>Why one company builds all five layers, and why most teams start with one.</p>
+    </div>
+    <div class="thesis">
+      <div>
+        <p class="k">Why now</p>
+        <h3>Every team is now an AI team, and none has an operating system</h3>
+        <p>Model access, data preparation, tuning, storage and agents are bought from five vendors under five contracts, and the glue is scripts. The hard part of AI moved from the demo to the production run: keys, spend, failover, where prompts go, and what a model changed under you.</p>
+      </div>
+      <div>
+        <p class="k">The wedge</p>
+        <h3>Start with the layer that is on fire</h3>
+        <p>Most teams arrive through the gateway: one endpoint, central keys, written data terms, running traffic today. Some arrive through storage, because the bucket is starving their GPUs. The first layer earns the second; nothing requires the whole stack.</p>
+      </div>
+      <div>
+        <p class="k">Why it compounds</p>
+        <h3>Two paths, one set of interfaces</h3>
+        <p>Requests go down through Router; data comes up through FS, Pipeline and Data into Models, which answer through Router again. Each layer is a product on its own, and each hand-off is an interface the team already uses, so the next layer arrives without a migration. <a href="/solutions">Which layer, for which team</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
-    <div class="section-head">      <p class="sec-no">03 &middot; How we work</p>
+    <div class="section-head">      <p class="sec-no">04 &middot; How we work</p>
 <h2 id="how-we-work">How we work</h2></div>
       <div class="feature">
       <div>
@@ -208,6 +264,7 @@
       </div>
       <div class="contact-card" id="contact">
         <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 18px;">Contact us</h3>
+        <div class="row"><span class="k">Sales</span><span><!--email_off--><a href="mailto:sales@runixcloud.io?subject=Runix%20sales%20enquiry">sales@runixcloud.io</a><!--/email_off-->. Say what you run today, the models or data involved, and the volume.</span></div>
         <div class="row"><span class="k">Email</span><span><!--email_off--><a href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off--></span></div>
         <div class="row"><span class="k">Support</span><span><!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></span></div>
         <div class="row"><span class="k">Response time</span><span>Within 1 business day</span></div>
@@ -215,6 +272,7 @@
         <div class="row"><span class="k">Address</span><span>30 N Gould St Ste R, Sheridan, WY 82801, United States</span></div>
         <div class="row"><span class="k">Phone</span><span><a href="tel:+13086890770">+1 (308) 689-0770</a></span></div>
         <!--/identity-contact-->
+        <div class="row"><span class="k">Investors</span><span><!--email_off--><a href="mailto:contact@runixcloud.io?subject=Investor%20enquiry">contact@runixcloud.io</a><!--/email_off-->, subject &ldquo;Investor enquiry&rdquo;. The same literal statuses, catalogue and terms as this site; what is not published here is discussed in a meeting.</span></div>
         <div class="row"><span class="k">Entity</span><span>Runix AI Inc (Wyoming, USA)</span></div>
         <div class="row"><span class="k">Location</span><span>Remote-first · United States</span></div>
         <div class="row"><span class="k">Legal</span><span><a href="/privacy">Privacy</a>&nbsp;·&nbsp;<a href="/terms">Terms</a></span></div>
@@ -226,7 +284,7 @@
 <section class="section">
   <div class="container">
     <div class="section-head center">
-      <p class="sec-no">04 &middot; In the open</p>
+      <p class="sec-no">05 &middot; In the open</p>
       <h2 id="what-we-publish-openly">What we publish openly</h2>
       <p>Three of the tools we built to run a gateway are open source, under CC0 or MIT. They work against any OpenAI-compatible endpoint, including the ones we compete with.</p>
     </div>
@@ -256,7 +314,7 @@
 <section class="section section-alt">
   <div class="container">
     <div class="section-head center">
-      <p class="sec-no">05 &middot; Not claimed</p>
+      <p class="sec-no">06 &middot; Not claimed</p>
       <h2 id="what-we-do-not-claim">What we do not claim</h2>
       <p>A short list, kept deliberately. Every item on it is something we could quietly imply and have chosen not to.</p>
     </div>
@@ -307,7 +365,9 @@
       </div>
       <div>
         <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
         <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
@@ -325,6 +385,7 @@
       <div>
         <p class="footer-heading">Company</p>
         <a href="/about" class="active">About</a>
+        <a href="/roadmap">Roadmap</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
         <a href="/reliability">Reliability</a>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Near-duplicate detection for training data, explained | Runix</title>
+<meta name="description" content="Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.">
+<link rel="canonical" href="https://runixcloud.io/blog/deduplication-exact-near-semantic">
+<meta property="og:title" content="Near-duplicate detection for training data, explained | Runix">
+<meta property="og:description" content="Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/deduplication-exact-near-semantic">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-deduplication-exact-near-semantic.png?v=d0fb7d95">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-deduplication-exact-near-semantic.png?v=d0fb7d95">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Exact, near and semantic: why near-duplicate detection for training data needs all three",
+  "description": "Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/deduplication-exact-near-semantic"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-deduplication-exact-near-semantic.png?v=d0fb7d95",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Exact, near and semantic: why near-duplicate detection for training data needs all three",
+      "item": "https://runixcloud.io/blog/deduplication-exact-near-semantic"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is MinHash enough for near-duplicate detection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For edits that keep most of the text, yes: it catches re-crawls, forks and templated documents at a cost most teams can afford. It does not catch paraphrases or translations, which need embedding similarity, and it works best with exact hashing in front of it to cut the volume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does deduplication change evaluation scores?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If a near-copy of an evaluation item is in the training data, the model has seen the answer, so the score measures memory rather than ability. Deduplicating before the split, and checking across the split afterwards, removes that inflation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which copy of a duplicate should be kept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That is a policy decision rather than a technical one: the earliest, the longest, or the one with the clearest licence. Record which rule was applied so the choice can be audited later."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Near-duplicate detection for training data, explained | Runix">
+<meta name="twitter:description" content="Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Data">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-counts-as-a-duplicate">What counts as a duplicate</a></li><li><a href="#exact-hashing-cheap-and-blind-to-one-changed-byte">Exact hashing: cheap, and blind to one changed byte</a></li><li><a href="#near-duplicate-detection-for-training-data-with-minhash-and">Near-duplicate detection for training data with MinHash and LSH</a></li><li><a href="#semantic-duplicates-embeddings-and-the-cost-that-comes-with">Semantic duplicates: embeddings, and the cost that comes with them</a></li><li><a href="#why-you-need-all-three">Why you need all three</a></li><li><a href="#how-duplicates-inflate-evaluation-scores">How duplicates inflate evaluation scores</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Exact, near and semantic: why near-duplicate detection for training data needs all three</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>A duplicate is not one thing. Two records can be byte-identical, identical except for a header, or the same content in different words, and each of those relations needs a different detector. Near-duplicate detection for training data is the middle case, and the one most pipelines get wrong, either by running only the cheap tier or only the expensive one.</p>
+<p>This post defines the three tiers, what each catches, misses and costs, and why a corpus that has had only one of them applied still inflates evaluation scores. It assumes the pipeline described in <a href="/blog/ai-data-pipelines">the stage-by-stage guide to AI data pipelines</a> and goes deeper on one stage.</p>
+<h2 id="what-counts-as-a-duplicate">What counts as a duplicate</h2>
+<p>An exact duplicate is the same bytes after normalisation: encoding, line endings and trailing whitespace made uniform first. A near-duplicate shares most of its text with another record and differs by small edits: a timestamp, a licence year, a renamed variable, a changed paragraph. A semantic duplicate carries the same information in different words: a paraphrase, a translation, the same question asked twice.</p>
+<p>Which relation counts depends on what the data is for. In a pretraining corpus the second copy of a file adds weight and nothing else; in a question-answering set, two phrasings of one question are one item for evaluation but may both be wanted for training. A deduplication policy names the relation, the threshold and the rule for which copy survives, and keeps the counts so someone else can check.</p>
+<h2 id="exact-hashing-cheap-and-blind-to-one-changed-byte">Exact hashing: cheap, and blind to one changed byte</h2>
+<p>The mechanism is a hash, usually SHA-256, over the normalised bytes of each record, and a set of hashes already seen. The cost is one pass over the corpus and memory for the set. It catches re-crawls, mirrors, vendored copies, unchanged files across forks and repeated uploads.</p>
+<p>It misses anything that differs by a single byte: a copyright year, a generated id, a trailing newline the normaliser did not strip. It also misses repetition inside records. <a href="https://arxiv.org/abs/2107.06499" rel="noopener">Lee et al. (2021)</a> report removing from C4 a single 61-word English sentence that was repeated over 60,000 times; a whole-record hash never sees it, because the sentence sits inside longer documents. Their tool for that case matches repeated substrings with a suffix array, closer to exact hashing than to near-duplicate detection.</p>
+<h2 id="near-duplicate-detection-for-training-data-with-minhash-and">Near-duplicate detection for training data with MinHash and LSH</h2>
+<p>MinHash turns each record into a short signature. The record is shingled into overlapping n-grams of tokens or characters, each of k hash functions is applied to every shingle, and the minimum value per function is kept. The fraction of positions on which two signatures agree estimates the Jaccard similarity of the two shingle sets.</p>
+<p>Locality-sensitive hashing makes the comparison tractable. Each signature is cut into bands; two records that agree on every row of any one band become a candidate pair, so most pairs are never compared at all. Candidates are verified, clustered with union-find, and one representative per cluster is kept. The dataset card for <a href="https://huggingface.co/datasets/bigcode/the-stack" rel="noopener">The Stack</a> describes this: MinHash with 256 permutations and LSH to find clusters of duplicates across a public code corpus.</p>
+<p>This tier catches forks with a few changed lines, re-crawled pages with a new date, templated documents and, depending on the shingle unit, copied code with renamed identifiers. It misses paraphrases and translations, because they share few n-grams, and it is noisy on short records, which have too few shingles for a stable estimate. Its characteristic false positive is boilerplate: two files that share a long licence header and nothing else can look similar, which is why boilerplate is stripped before shingling.</p>
+<h2 id="semantic-duplicates-embeddings-and-the-cost-that-comes-with">Semantic duplicates: embeddings, and the cost that comes with them</h2>
+<p>The third tier embeds each record, or each chunk of a long record, with an embedding model, builds an approximate nearest-neighbour index, and treats pairs above a cosine similarity threshold as candidates. It catches what the first two cannot: paraphrases, translations, the same answer written twice, and rephrased copies of benchmark questions.</p>
+<p>Its failure mode is the opposite of MinHash. Embeddings are indifferent to the details that make two records different: two financial statements for different quarters, two bug reports with different stack traces, a question and its negation. A high-similarity pair is a candidate for review, not a deletion. Domain text such as code needs an embedding model that has seen code, or the similarities are noise.</p>
+<p>The cost is a model call per record, an index, and the human review the false positives force, so it is usually run last, on what survived the first two tiers, and often only on fine-tuning and evaluation sets.</p>
+<h2 id="why-you-need-all-three">Why you need all three</h2>
+<p>The tiers target different relations and differ in precision and cost. A later tier would find most of what an earlier one finds, but at a price per record that only makes sense on what survived the cheaper pass, and with hits that need review rather than deletion.</p>
+<table aria-label="Why you need all three">
+<tr><th scope="col">Tier</th><th scope="col">Catches</th><th scope="col">Misses</th><th scope="col">Cost</th></tr>
+<tr><td>Exact hash</td><td>Byte-identical copies</td><td>Any one-byte edit, repeated substrings</td><td>One pass, a hash set</td></tr>
+<tr><td>MinHash and LSH</td><td>Small edits, templates, forks</td><td>Paraphrase, translation, short records</td><td>Signatures, candidate checks</td></tr>
+<tr><td>Embeddings</td><td>Same meaning, different words</td><td>Materially different near-neighbours</td><td>A model call per record, review</td></tr>
+</table>
+<p>Run them in that order: exact hashing shrinks the volume the near tier must sign, and the near tier shrinks what the embedding tier must encode. Each tier should emit a count and a sample of removed pairs, which is what <a href="/blog/what-a-data-quality-report-should-contain">a data quality report</a> should show, so a buyer can see whether "deduplicated" meant one hash pass or three.</p>
+<p>Two policy decisions sit outside the algorithms: which representative survives (the earliest, the longest, or the one whose licence is clearest), and what happens when a cluster straddles sources with different terms, where the answer is to keep the record whose <a href="/blog/training-data-provenance-and-licence">provenance and licence</a> permit the use and to record why. For code, where forks dominate, <a href="/code-data">the code domain rules</a> set out how exact and near-duplicate detection are applied across forks, vendored dependencies and generated files.</p>
+<h2 id="how-duplicates-inflate-evaluation-scores">How duplicates inflate evaluation scores</h2>
+<p>If a near-copy of an evaluation item sits in the training data, the model has seen the answer, and the score measures memory. Lee et al. (2021) quantify it: train-test overlap affects over 4% of the validation set of standard datasets, and models trained on deduplicated data emit memorised text ten times less frequently.</p>
+<p>Duplication inside the evaluation set distorts scores a second way, by weighting the result towards whatever the repeated items test. And semantic duplicates evade n-gram checks entirely, which is why <a href="/blog/split-by-source-not-by-row">splitting by source rather than by row</a> is the rule that holds up: deduplicate first, split by the unit that generates correlated records, then run near-duplicate detection across the two sides as a check and report what it found.</p>
+<p>Runix Pipeline, the tooling Runix Data engagements run on, is designed to run deduplication at these three levels, exact, near and semantic, with counts you can check in the quality report. <a href="/pipeline">Runix Pipeline</a> is in development with design partners and <a href="/data">Runix Data</a> is in early access; the counts are there to be inspected rather than taken on trust.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is MinHash enough for near-duplicate detection?</h3>
+<p>For edits that keep most of the text, yes: it catches re-crawls, forks and templated documents at a cost most teams can afford. It does not catch paraphrases or translations, which need embedding similarity, and it works best with exact hashing in front of it to cut the volume.</p>
+<h3>Why does deduplication change evaluation scores?</h3>
+<p>If a near-copy of an evaluation item is in the training data, the model has seen the answer, so the score measures memory rather than ability. Deduplicating before the split, and checking across the split afterwards, removes that inflation.</p>
+<h3>Which copy of a duplicate should be kept?</h3>
+<p>That is a policy decision rather than a technical one: the earliest, the longest, or the one with the clearest licence. Record which rule was applied so the choice can be audited later.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/pipeline">Runix Pipeline</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></li>
+    <li><a href="/blog/split-by-source-not-by-row">Split by source, not by row: how benchmark contamination reaches your own evaluation set</a></li>
+    <li><a href="/blog/what-a-data-quality-report-should-contain">What a data quality report should contain, and how to read one sceptically</a></li>
+    <li><a href="/pipeline">Runix Pipeline: the tooling that makes data model-ready</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

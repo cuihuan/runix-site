@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Research Labs: Storage, Data and Models | Runix</title>
+<meta name="description" content="How AI for Science and embodied AI groups use Runix FS for datasets in buckets, Runix Data for antibody, protein and embodied AI data, and Runix Models.">
+<meta property="og:title" content="For Research Labs: Storage, Data and Models | Runix">
+<meta property="og:description" content="How AI for Science and embodied AI groups use Runix FS for datasets in buckets, Runix Data for antibody, protein and embodied AI data, and Runix Models.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/for-research-labs.png?v=ee37b2f2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/for-research-labs.png?v=ee37b2f2">
+<meta property="og:url" content="https://runixcloud.io/for-research-labs">
+<link rel="canonical" href="https://runixcloud.io/for-research-labs">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<link rel="icon" href="assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=72">
+<script src="assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "For Research Labs: Storage, Data and Models | Runix",
+  "description": "How AI for Science and embodied AI groups use Runix FS for datasets in buckets, Runix Data for antibody, protein and embodied AI data, and Runix Models.",
+  "url": "https://runixcloud.io/for-research-labs",
+  "isPartOf": {
+    "@id": "https://runixcloud.io/#website"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "Runix for research labs"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do we have to move the data out of the bucket?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Paths map one-to-one to object keys, and the bucket keeps its layout and stays independently readable. In cache mode the bucket is the source of truth and writes pass through; in file-system mode operations complete in the cluster and then sync to the bucket."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which scientific data do you handle?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Within AI for Science, biological data: antibody and protein records. Embodied AI is a separate domain with its own rules. For anything else, describe the data and we will say plainly whether we have the judgement for it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the tuned model run on our own cluster?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Serving is dedicated and single-tenant, in your cloud account or on capacity arranged per engagement, behind an OpenAI-compatible API. Weights and access are set in the engagement contract before training starts."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Solutions",
+      "item": "https://runixcloud.io/solutions"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Research labs",
+      "item": "https://runixcloud.io/for-research-labs"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="For Research Labs: Storage, Data and Models | Runix">
+<meta name="twitter:description" content="How AI for Science and embodied AI groups use Runix FS for datasets in buckets, Runix Data for antibody, protein and embodied AI data, and Runix Models.">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions" class="active">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<nav class="pbar" aria-label="Research labs on this page">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="#overview">Research labs</a>
+    <a class="pbar-layer" href="/solutions">Solutions</a>
+    <span class="pbar-status">By team</span>
+    <ul class="pbar-links"><li><a href="#situation">The situation</a></li><li><a href="#stack">The stack</a></li><li><a href="#start">How it starts</a></li><li><a href="#writing">In writing</a></li><li><a href="#reading">Reading</a></li><li><a href="#faq">Questions</a></li></ul>
+    <!--email_off--><a class="pbar-cta" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Research%20labs">Talk to sales</a><!--/email_off-->
+  </div>
+</nav>
+<section class="split-hero" id="overview">
+  <div class="container">
+    <div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/solutions">Solutions<span class="visually-hidden">: every team the stack is built for</span></a></span><span class="badge">For research labs</span></div>
+      <h1><span class="line">Datasets in the bucket,</span>
+<span class="line">GPUs that stop waiting</span></h1>
+      <p class="sub">For AI for Science and embodied AI groups with datasets in object storage and records that need domain judgement before a model learns from them. Runix FS mounts the bucket as a file system, cached in front of the GPUs. Runix Data applies its rules for antibody, protein and embodied AI records. Runix Models tunes and serves open-weight models.</p>
+      <div class="actions">
+        <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Research%20labs">Talk to sales</a><!--/email_off-->
+        <a class="btn btn-ghost" href="#stack">See the stack for this team</a>
+      </div>
+      <p class="hero-note">One of six <a href="/solutions">solution pages</a>. Statuses are literal: the products named below are in early access or in development, as marked.</p>
+    </div>
+    <div>
+      <div class="glance">
+        <p class="glance-title">The stack for research labs</p>
+        <dl>
+        <div><dt>Runix FS</dt><dd>AI-native file system on your object storage &middot; early access</dd></div>
+        <div><dt>Runix Data</dt><dd>Domain data for training and evaluation &middot; early access</dd></div>
+        <div><dt>Runix Models</dt><dd>Fine-tune and serve open-weight models &middot; early access</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="situation">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">02 &middot; Situation</p>
+      <h2 id="the-situation">The situation</h2>
+      <p>Three things this team is usually dealing with when it calls.</p>
+    </div>
+    <div class="sgrid">
+      <div class="card">
+        <h3>The data is in a bucket, the job wants files</h3>
+        <p>Sequence files, trajectories and sensor recordings sit in object storage because that is where they fit. Training code wants a path, and each framework brings its own client for the same bucket, so the GPUs wait while the data arrives.</p>
+      </div>
+      <div class="card">
+        <h3>Records where a bad merge changes the answer</h3>
+        <p>Antibody and protein records come from sources that disagree on identifiers, numbering and format. Merging them carelessly changes the science, not just the formatting, and a near-duplicate on both sides of a split inflates an evaluation.</p>
+      </div>
+      <div class="card">
+        <h3>A tuned model with no baseline and no home</h3>
+        <p>A model tuned on the group's data has to be compared with the model the group runs today, on a held-out set, before anyone trusts it. It then needs somewhere to run that is not a shared endpoint, with the licence on the base model checked first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="stack">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">03 &middot; Stack</p>
+      <h2 id="the-products">The products, and the role each plays</h2>
+      <p>Each one works on its own; together they are one path through the stack.</p>
+    </div>
+    <div class="stackrole">
+      <div class="srow">
+        <div class="sp"><a href="/fs">Runix FS</a><span>Layer 01 &middot; Infrastructure</span><span class="live">Early access</span></div>
+        <div class="sr">An AI-native file system over the S3-compatible bucket where the datasets live: FUSE mount, Hadoop-compatible client, Java, Python and Rust SDKs, and a Kubernetes CSI driver, with memory, SSD and HDD cache tiers on the workers and metadata replicated with Raft. Built on Curvine, Apache-licensed and a CNCF Sandbox project; it runs in your own cloud account.</div>
+      </div>
+      <div class="srow">
+        <div class="sp"><a href="/data">Runix Data</a><span>Layer 02 &middot; Data</span><span class="live">Early access</span></div>
+        <div class="sr">Domain data with its own rules for AI for Science, where the work is limited to biological data, antibody and protein records, and for embodied AI. Every record carries its provenance and licence, evaluation is split from training by source, and each delivery comes with a quality report.</div>
+      </div>
+      <div class="srow">
+        <div class="sp"><a href="/models">Runix Models</a><span>Layer 03 &middot; Models</span><span class="live">Early access</span></div>
+        <div class="sr">Supervised fine-tuning, LoRA and QLoRA, and DPO on open-weight families whose licences permit your use, evaluated on a held-out set against the model you run today. Served dedicated and single-tenant, in your cloud account or on capacity arranged per engagement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="start">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">04 &middot; Start</p>
+      <h2 id="how-it-starts">How it starts</h2>
+      <p>A person on the other end at every step; nothing here is self-serve.</p>
+    </div>
+    <div class="prun">
+      <div class="pstep">
+        <h3><span class="pstep-n">01</span>Tell us about the data</h3>
+        <p>Where it lives, roughly how big it is and what reads it, plus a sample of the records and what the model has to do with them. We reply within one business day.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">02</span>Get a scoped plan and a quote</h3>
+        <p>Runix FS is sized and deployed with you in your own AWS, Google Cloud or Azure account and quoted per deployment. Data is quoted per project or by volume and Models per engagement, both before any work starts.</p>
+      </div>
+      <div class="pstep">
+        <h3><span class="pstep-n">03</span>Mount, train, evaluate</h3>
+        <p>The bucket keeps its layout and stays independently readable, so nothing is migrated. Training and evaluation sets are split by source, and the tuned model is measured against the one you run today before it is served.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="writing">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">05 &middot; In writing</p>
+      <h2 id="in-writing">What is in writing</h2>
+      <p>The parts a review asks for, stated once and linked to the page that holds them.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Data use</h3>
+        <p>The data you provide to Runix Models trains and evaluates the model you commission, and nothing else. Inputs to Runix Data are data you provide or have the rights to use, or public sources whose licences permit your use.</p>
+      </div>
+      <div class="card">
+        <h3>Where it runs</h3>
+        <p>Runix FS runs in your AWS, Google Cloud or Azure account, supported under contract with Runix AI Inc. Model serving is single-tenant, in your cloud account or on capacity arranged per engagement; an MSA and a DPA are available on request.</p>
+      </div>
+      <div class="card">
+        <h3>Statuses, literally</h3>
+        <p>Runix FS is in early access, per deployment; Runix Data and Runix Models are in early access, by engagement. Performance figures on the FS page are the Curvine project's own measurements, labelled as such, not a Runix service level.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reading">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">06 &middot; Reading</p>
+      <h2 id="reading-for-this-team">Reading for this team</h2>
+      <p>Engineering notes that cover the mechanics behind this page.</p>
+    </div>
+    <ul class="refs">
+      <li><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></li>
+      <li><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></li>
+      <li><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></li>
+    </ul>
+    <p class="model-note">Other teams: <ul class="topic-chips">
+      <li><a class="pd-chip" href="/for-platform-teams">Platform teams</a></li>
+      <li><a class="pd-chip" href="/for-model-teams">Model teams</a></li>
+      <li><a class="pd-chip" href="/for-engineering-orgs">Engineering organisations</a></li>
+      <li><a class="pd-chip" href="/for-studios">Studios and creators</a></li>
+      <li><a class="pd-chip" href="/for-regulated-industries">Regulated industries</a></li>
+    </ul></p>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">07 &middot; Questions</p>
+      <h2 id="common-questions">Common questions</h2>
+    </div>
+    <div class="qas">
+      <div class="qa">
+        <h3>Do we have to move the data out of the bucket?</h3>
+        <p>No. Paths map one-to-one to object keys, and the bucket keeps its layout and stays independently readable. In cache mode the bucket is the source of truth and writes pass through; in file-system mode operations complete in the cluster and then sync to the bucket.</p>
+      </div>
+      <div class="qa">
+        <h3>Which scientific data do you handle?</h3>
+        <p>Within AI for Science, biological data: antibody and protein records. Embodied AI is a separate domain with its own rules. For anything else, describe the data and we will say plainly whether we have the judgement for it.</p>
+      </div>
+      <div class="qa">
+        <h3>Can the tuned model run on our own cluster?</h3>
+        <p>Serving is dedicated and single-tenant, in your cloud account or on capacity arranged per engagement, behind an OpenAI-compatible API. Weights and access are set in the engagement contract before training starts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-end">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Tell us where the data lives</h2>
+      <p>Tell us what you run today and what you are trying to change. We reply within one business day with a concrete plan, and we say which parts we would not do.</p>
+      <!--email_off--><a class="btn btn-grad" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Research%20labs">Talk to sales</a><!--/email_off-->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

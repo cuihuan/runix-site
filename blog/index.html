@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -18,11 +19,11 @@
 <meta property="og:description" content="Engineering notes on running LLMs in production: gateways, failover, retry budgets, token cost attribution, and AI data pipelines.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Runix Lab">
-<meta property="og:image" content="https://runixcloud.io/assets/og/blog-index.png?v=fa12ffe4">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-index.png?v=312cb3d7">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-index.png?v=fa12ffe4">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-index.png?v=312cb3d7">
 <meta property="og:url" content="https://runixcloud.io/blog/">
 <link rel="canonical" href="https://runixcloud.io/blog/">
 <link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
@@ -40,6 +41,168 @@
     "@id": "https://runixcloud.io/#org"
   },
   "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Why five layers: how Runix drew its AI infrastructure stack",
+      "url": "https://runixcloud.io/blog/why-five-layers",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "When the bucket is the truth: AI file system cache mode versus file-system mode",
+      "url": "https://runixcloud.io/blog/when-the-bucket-is-the-truth-two-mount-modes",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "What is a coding agent? From autocomplete to pull requests",
+      "url": "https://runixcloud.io/blog/what-is-a-coding-agent",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "What a data quality report should contain, and how to read one sceptically",
+      "url": "https://runixcloud.io/blog/what-a-data-quality-report-should-contain",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Turning an LLM bill into a policy: budgets per team and per feature",
+      "url": "https://runixcloud.io/blog/llm-budgets-per-team-and-per-feature",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Training data provenance: what every record should carry, and why a README is not proof",
+      "url": "https://runixcloud.io/blog/training-data-provenance-and-licence",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "The small files problem in machine learning: millions of samples, one metadata bill",
+      "url": "https://runixcloud.io/blog/small-files-problem-in-ml-training",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "The harness: what actually runs an AI agent",
+      "url": "https://runixcloud.io/blog/the-harness-what-runs-an-ai-agent",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Split by source, not by row: how benchmark contamination reaches your own evaluation set",
+      "url": "https://runixcloud.io/blog/split-by-source-not-by-row",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Single-tenant model serving explained: what a dedicated LLM inference endpoint changes",
+      "url": "https://runixcloud.io/blog/single-tenant-model-serving-explained",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Reviewable by default: why an agent's changes should land as diffs",
+      "url": "https://runixcloud.io/blog/reviewable-by-default-agent-changes-as-diffs",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "PII masking for training data that fails closed: detect, mask, measure, hold back",
+      "url": "https://runixcloud.io/blog/pii-masking-that-fails-closed",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Object storage is not a file system, and what POSIX on object storage adds",
+      "url": "https://runixcloud.io/blog/object-storage-is-not-a-file-system",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights",
+      "url": "https://runixcloud.io/blog/lora-qlora-and-full-fine-tuning",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Keeping GPUs fed: where the GPU data loading bottleneck comes from",
+      "url": "https://runixcloud.io/blog/keeping-gpus-fed-data-loading-bottleneck",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "How to read an open-weight model licence before you fine-tune it",
+      "url": "https://runixcloud.io/blog/how-to-read-an-open-weight-model-licence",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "How to read an LLM price list",
+      "url": "https://runixcloud.io/blog/how-to-read-an-llm-price-list",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "How to evaluate a fine-tuned LLM against the model you run today",
+      "url": "https://runixcloud.io/blog/evaluate-the-tuned-model-against-your-baseline",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Fine-tuning vs RAG vs prompting: a decision guide by failure mode",
+      "url": "https://runixcloud.io/blog/fine-tune-prompt-or-retrieve",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid",
+      "url": "https://runixcloud.io/blog/verified-coding-tasks-fail-to-pass",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "FUSE, CSI or SDK: three ways to mount object storage in Kubernetes for ML workloads",
+      "url": "https://runixcloud.io/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Exact, near and semantic: why near-duplicate detection for training data needs all three",
+      "url": "https://runixcloud.io/blog/deduplication-exact-near-semantic",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Evaluate coding agents on your own repository, not on a leaderboard",
+      "url": "https://runixcloud.io/blog/evaluate-a-coding-agent-on-your-own-repository",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Domain-specific AI agents: why agents are built one profession at a time",
+      "url": "https://runixcloud.io/blog/ai-agents-by-domain",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "DPO fine-tuning explained: what preference tuning changes and what it cannot",
+      "url": "https://runixcloud.io/blog/preference-tuning-with-dpo-explained",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Auto routing versus a pinned model id: choosing an LLM routing policy",
+      "url": "https://runixcloud.io/blog/auto-routing-versus-a-pinned-model-id",
+      "datePublished": "2026-10-07"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "A multi-tier cache for AI training data: what goes where",
+      "url": "https://runixcloud.io/blog/multi-tier-cache-for-ai-training-data",
+      "datePublished": "2026-10-07"
+    },
     {
       "@type": "BlogPosting",
       "headline": "Rebuild AI Unix: why Runix Lab is building an operating system for AI",
@@ -249,6 +412,30 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix Blog — LLM Gateway and AI Infrastructure Engineering">
 <meta name="twitter:description" content="Engineering notes on running LLMs in production: gateways, failover, retry budgets, token cost attribution, and AI data pipelines.">
@@ -270,6 +457,7 @@
             <p class="nav-layer-name"><span>05</span>Agents</p>
             <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
             <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
@@ -291,6 +479,7 @@
           <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
         </div>
       </div>
+      <a href="/solutions">Solutions</a>
       <a href="/plans">Pricing</a>
       <a href="/docs/">Docs</a>
       <a href="/about">Company</a>
@@ -305,7 +494,7 @@
   <div class="container pbar-inner">
     <a class="pbar-name" href="#overview">Blog</a>
     <a class="pbar-layer" href="/blog/">Blog</a>
-    <ul class="pbar-links"><li><a href="#all-posts">All posts</a></li></ul>
+    <ul class="pbar-links"><li><a href="#agents">Agents</a></li><li><a href="#gateway">Gateway</a></li><li><a href="#models">Models</a></li><li><a href="#data">Data</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#company">Company</a></li></ul>
     <a class="pbar-cta" href="/about#contact">Contact sales</a>
   </div>
 </nav>
@@ -314,27 +503,92 @@
 <div class="page-hero" id="overview">
   <div class="container">
     <!--ps:eyebrow--><p class="page-eyebrow">Blog</p><!--/ps:eyebrow-->
-    <h1>Engineering notes &amp; announcements</h1>
-    <p>What we learn running AI infrastructure, written for engineers who run it too.</p>
+    <h1>Engineering notes, by layer of the stack</h1>
+    <p>What we learn running AI infrastructure, written for the engineers who run it too. <!--count-->58 posts<!--/count-->, grouped by the layer of the stack each one is about, newest first within each.</p>
+    <!--chips--><ul class="topic-chips" aria-label="Posts by layer"><li><a class="pd-chip" href="#agents">Agents <i>7</i></a></li><li><a class="pd-chip" href="#gateway">Gateway <i>27</i></a></li><li><a class="pd-chip" href="#models">Models <i>6</i></a></li><li><a class="pd-chip" href="#data">Data <i>8</i></a></li><li><a class="pd-chip" href="#infrastructure">Infrastructure <i>7</i></a></li><li><a class="pd-chip" href="#company">Company <i>3</i></a></li></ul><!--/chips-->
   </div>
 </div>
 
-<section class="section">
+<!--posts-->
+<section class="section alt">
   <div class="container">
-    <div class="section-head center">      <p class="sec-no">02 &middot; Posts</p>
-<h2 id="all-posts">All posts</h2></div>
-      <div class="blog-list">
+    <div class="section-head center">
+      <p class="sec-no">02 &middot; Agents</p>
+      <h2 id="agents">Agents</h2>
+      <p>Layer 05 &middot; domain agents and the harnesses that run them. 7 posts, newest first. <a href="/agents">Agents on the stack</a>.</p>
+    </div>
+    <div class="blog-list">
       <div class="card">
-        <div class="post-meta"><span class="cat">Announcement</span><span>September 30, 2026</span><span>·</span><span>6 min read</span></div>
-        <h3><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></h3>
-        <p class="excerpt">Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.</p>
-        <a class="read-more" href="/blog/rebuild-ai-unix" aria-hidden="true" tabindex="-1">Read post →</a>
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/what-is-a-coding-agent">What is a coding agent? From autocomplete to pull requests</a></h3>
+        <p class="excerpt">A coding agent reads a repository, plans, edits files, runs tests and revises until they pass. What separates it from an assistant, and what it is not.</p>
+        <a class="read-more" href="/blog/what-is-a-coding-agent" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
       <div class="card">
-        <div class="post-meta"><span class="cat">Announcement</span><span>September 29, 2026</span><span>·</span><span>5 min read</span></div>
-        <h3><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></h3>
-        <p class="excerpt">Runix FS puts a POSIX file system and a multi-tier cache in front of object storage. Why the layer is missing, what it is built on, and how early access works.</p>
-        <a class="read-more" href="/blog/introducing-runix-fs" aria-hidden="true" tabindex="-1">Read post →</a>
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/the-harness-what-runs-an-ai-agent">The harness: what actually runs an AI agent</a></h3>
+        <p class="excerpt">An agent harness is the runtime around a model: tools, permissions, context, budgets and logs. Why it, not the model, decides if an agent is safe to run.</p>
+        <a class="read-more" href="/blog/the-harness-what-runs-an-ai-agent" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/reviewable-by-default-agent-changes-as-diffs">Reviewable by default: why an agent's changes should land as diffs</a></h3>
+        <p class="excerpt">Agent output should land as a diff a person can review, not a silent write. Blast radius, attribution, tests as the gate, and how reviewing an agent differs.</p>
+        <a class="read-more" href="/blog/reviewable-by-default-agent-changes-as-diffs" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/evaluate-a-coding-agent-on-your-own-repository">Evaluate coding agents on your own repository, not on a leaderboard</a></h3>
+        <p class="excerpt">Leaderboard scores do not transfer to your codebase. How to build a task set from closed issues with fail-to-pass tests, and what to measure beyond pass rate.</p>
+        <a class="read-more" href="/blog/evaluate-a-coding-agent-on-your-own-repository" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/ai-agents-by-domain">Domain-specific AI agents: why agents are built one profession at a time</a></h3>
+        <p class="excerpt">Why AI agents are built per profession: the domain supplies the tools, the data rules, the evaluation and the review gate, and a generic agent lacks all four.</p>
+        <a class="read-more" href="/blog/ai-agents-by-domain" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Creators</span><span>July 29, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/comic-drama-vs-webtoon-vs-motion-comic">Comic Drama vs Webtoon vs Motion Comic, Explained</a></h3>
+        <p class="excerpt">Three overlapping formats for drawn stories: how webtoons, motion comics and comic dramas differ in production, distribution and audience — and which to make.</p>
+        <a class="read-more" href="/blog/comic-drama-vs-webtoon-vs-motion-comic" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Creators</span><span>July 28, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/how-to-make-a-comic-drama-with-ai">How to Make a Comic Drama with AI: Script to Screen</a></h3>
+        <p class="excerpt">The full AI comic drama production line: script and characters, storyboards, styled panels, motion, voice and publishing — and where tools still fall short.</p>
+        <a class="read-more" href="/blog/how-to-make-a-comic-drama-with-ai" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">03 &middot; Gateway</p>
+      <h2 id="gateway">Gateway</h2>
+      <p>Layer 04 &middot; one way in to every model. 27 posts, newest first. <a href="/router">Gateway on the stack</a>.</p>
+    </div>
+    <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/llm-budgets-per-team-and-per-feature">Turning an LLM bill into a policy: budgets per team and per feature</a></h3>
+        <p class="excerpt">Turning an LLM bill into enforceable policy: per-key quotas, allowed models, hard stops versus alerts, what happens at the limit, and how retries draw on it.</p>
+        <a class="read-more" href="/blog/llm-budgets-per-team-and-per-feature" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Buyer's guide</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/how-to-read-an-llm-price-list">How to read an LLM price list</a></h3>
+        <p class="excerpt">Units, cached input, batch and tiered rates, context bands and media pricing: how to read a vendor's LLM price list and record a dated baseline to compare on.</p>
+        <a class="read-more" href="/blog/how-to-read-an-llm-price-list" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/auto-routing-versus-a-pinned-model-id">Auto routing versus a pinned model id: choosing an LLM routing policy</a></h3>
+        <p class="excerpt">Two routing policies behind one endpoint: auto, chosen by cost and health, or a pinned model id. When each is right, and what to log to keep both honest.</p>
+        <a class="read-more" href="/blog/auto-routing-versus-a-pinned-model-id" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>August 25, 2026</span><span>·</span><span>5 min read</span></div>
@@ -403,22 +657,10 @@
         <a class="read-more" href="/blog/what-openai-compatible-actually-means" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
       <div class="card">
-        <div class="post-meta"><span class="cat">Creators</span><span>July 29, 2026</span><span>·</span><span>5 min read</span></div>
-        <h3><a href="/blog/comic-drama-vs-webtoon-vs-motion-comic">Comic Drama vs Webtoon vs Motion Comic, Explained</a></h3>
-        <p class="excerpt">Three overlapping formats for drawn stories: how webtoons, motion comics and comic dramas differ in production, distribution and audience — and which to make.</p>
-        <a class="read-more" href="/blog/comic-drama-vs-webtoon-vs-motion-comic" aria-hidden="true" tabindex="-1">Read post →</a>
-      </div>
-      <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 28, 2026</span><span>·</span><span>6 min read</span></div>
         <h3><a href="/blog/llm-router-vs-llm-gateway">LLM Router vs LLM Gateway: What's the Difference?</a></h3>
         <p class="excerpt">The two names describe overlapping tools. What routing and gateway features actually do, when the difference matters, and how to choose on capabilities.</p>
         <a class="read-more" href="/blog/llm-router-vs-llm-gateway" aria-hidden="true" tabindex="-1">Read post →</a>
-      </div>
-      <div class="card">
-        <div class="post-meta"><span class="cat">Creators</span><span>July 28, 2026</span><span>·</span><span>6 min read</span></div>
-        <h3><a href="/blog/how-to-make-a-comic-drama-with-ai">How to Make a Comic Drama with AI: Script to Screen</a></h3>
-        <p class="excerpt">The full AI comic drama production line: script and characters, storyboards, styled panels, motion, voice and publishing — and where tools still fall short.</p>
-        <a class="read-more" href="/blog/how-to-make-a-comic-drama-with-ai" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 27, 2026</span><span>·</span><span>7 min read</span></div>
@@ -475,22 +717,10 @@
         <a class="read-more" href="/blog/build-vs-buy-llm-gateway" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
       <div class="card">
-        <div class="post-meta"><span class="cat">Compliance</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
-        <h3><a href="/blog/ai-vendor-data-questions">12 Data Questions to Ask an AI Vendor</a></h3>
-        <p class="excerpt">The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.</p>
-        <a class="read-more" href="/blog/ai-vendor-data-questions" aria-hidden="true" tabindex="-1">Read post →</a>
-      </div>
-      <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 22, 2026</span><span>·</span><span>7 min read</span></div>
         <h3><a href="/blog/llm-cost-control">LLM Cost Control: Tokens, Caching, and Budgets Explained</a></h3>
         <p class="excerpt">Token pricing asymmetry, prompt caching, model routing, budgets and kill switches — and the waste patterns that quietly inflate an LLM bill.</p>
         <a class="read-more" href="/blog/llm-cost-control" aria-hidden="true" tabindex="-1">Read post →</a>
-      </div>
-      <div class="card">
-        <div class="post-meta"><span class="cat">Engineering</span><span>July 19, 2026</span><span>·</span><span>8 min read</span></div>
-        <h3><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></h3>
-        <p class="excerpt">A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.</p>
-        <a class="read-more" href="/blog/ai-data-pipelines" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>July 15, 2026</span><span>·</span><span>9 min read</span></div>
@@ -504,6 +734,192 @@
         <p class="excerpt">How to evaluate an LLM gateway: API compatibility, failover behaviour, rate limits, cost tracking, observability, security and operational burden.</p>
         <a class="read-more" href="/blog/llm-gateway-guide" aria-hidden="true" tabindex="-1">Read post →</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">04 &middot; Models</p>
+      <h2 id="models">Models</h2>
+      <p>Layer 03 &middot; open-weight models, tuned and served. 6 posts, newest first. <a href="/models">Models on the stack</a>.</p>
+    </div>
+    <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/single-tenant-model-serving-explained">Single-tenant model serving explained: what a dedicated LLM inference endpoint changes</a></h3>
+        <p class="excerpt">What single-tenant serving means beside a shared endpoint: isolation, latency under your own load, capacity planning, quantised variants and operations.</p>
+        <a class="read-more" href="/blog/single-tenant-model-serving-explained" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/lora-qlora-and-full-fine-tuning">LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights</a></h3>
+        <p class="excerpt">What LoRA and QLoRA change in the weights, the memory and quality trade-offs, merging versus adapter serving, and when full fine-tuning is still warranted.</p>
+        <a class="read-more" href="/blog/lora-qlora-and-full-fine-tuning" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Compliance</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/how-to-read-an-open-weight-model-licence">How to read an open-weight model licence before you fine-tune it</a></h3>
+        <p class="excerpt">The clauses that decide whether you can fine-tune and ship an open-weight model: use restrictions, attribution, user thresholds, redistribution and patents.</p>
+        <a class="read-more" href="/blog/how-to-read-an-open-weight-model-licence" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/evaluate-the-tuned-model-against-your-baseline">How to evaluate a fine-tuned LLM against the model you run today</a></h3>
+        <p class="excerpt">Held-out sets, task metrics versus generic benchmarks, regression checks on what you did not tune, contamination, and when a tuned model is ready to ship.</p>
+        <a class="read-more" href="/blog/evaluate-the-tuned-model-against-your-baseline" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Buyer's guide</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/fine-tune-prompt-or-retrieve">Fine-tuning vs RAG vs prompting: a decision guide by failure mode</a></h3>
+        <p class="excerpt">When a prompt is enough, when retrieval fixes a knowledge or freshness gap, when fine-tuning is the right tool, and how the failure mode tells you which one.</p>
+        <a class="read-more" href="/blog/fine-tune-prompt-or-retrieve" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/preference-tuning-with-dpo-explained">DPO fine-tuning explained: what preference tuning changes and what it cannot</a></h3>
+        <p class="excerpt">How DPO fine-tuning learns from chosen and rejected pairs without a reward model, where preference tuning helps and where it cannot, and the data pitfalls.</p>
+        <a class="read-more" href="/blog/preference-tuning-with-dpo-explained" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">05 &middot; Data</p>
+      <h2 id="data">Data</h2>
+      <p>Layer 02 &middot; domain data, cleaned for training and evaluation. 8 posts, newest first. <a href="/data">Data on the stack</a>.</p>
+    </div>
+    <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Buyer's guide</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/what-a-data-quality-report-should-contain">What a data quality report should contain, and how to read one sceptically</a></h3>
+        <p class="excerpt">What a data quality report should state about coverage, duplication, extraction confidence, drops and licences, and how a buyer reads one sceptically.</p>
+        <a class="read-more" href="/blog/what-a-data-quality-report-should-contain" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Compliance</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/training-data-provenance-and-licence">Training data provenance: what every record should carry, and why a README is not proof</a></h3>
+        <p class="excerpt">What a provenance entry should carry per record, from source and retrieval date to an SPDX licence identifier, and why a detected licence beats a README.</p>
+        <a class="read-more" href="/blog/training-data-provenance-and-licence" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/split-by-source-not-by-row">Split by source, not by row: how benchmark contamination reaches your own evaluation set</a></h3>
+        <p class="excerpt">Row splits put near-duplicates on both sides of an evaluation. Why to split by repository, document or entity, and how to decontaminate and report overlap.</p>
+        <a class="read-more" href="/blog/split-by-source-not-by-row" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Compliance</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/pii-masking-that-fails-closed">PII masking for training data that fails closed: detect, mask, measure, hold back</a></h3>
+        <p class="excerpt">Pattern, NER and context detection, masking versus pseudonymisation versus dropping, why uncleared records are held back, and how to measure recall honestly.</p>
+        <a class="read-more" href="/blog/pii-masking-that-fails-closed" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/verified-coding-tasks-fail-to-pass">Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid</a></h3>
+        <p class="excerpt">Fail-to-pass and pass-to-pass tests, clean containers, why a task whose tests pass without the patch is invalid, and what SWE-bench Verified screened for.</p>
+        <a class="read-more" href="/blog/verified-coding-tasks-fail-to-pass" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/deduplication-exact-near-semantic">Exact, near and semantic: why near-duplicate detection for training data needs all three</a></h3>
+        <p class="excerpt">Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.</p>
+        <a class="read-more" href="/blog/deduplication-exact-near-semantic" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Compliance</span><span>July 27, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="/blog/ai-vendor-data-questions">12 Data Questions to Ask an AI Vendor</a></h3>
+        <p class="excerpt">The data-handling questions that decide an AI procurement review, what a good answer sounds like, and which vague replies should stop the process.</p>
+        <a class="read-more" href="/blog/ai-vendor-data-questions" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>July 19, 2026</span><span>·</span><span>8 min read</span></div>
+        <h3><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></h3>
+        <p class="excerpt">A stage-by-stage guide to AI data pipelines: ingestion, cleaning, deduplication, LLM-powered extraction, PII masking and quality scoring.</p>
+        <a class="read-more" href="/blog/ai-data-pipelines" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">06 &middot; Infrastructure</p>
+      <h2 id="infrastructure">Infrastructure</h2>
+      <p>Layer 01 &middot; storage that keeps GPUs fed. 7 posts, newest first. <a href="/fs">Infrastructure on the stack</a>.</p>
+    </div>
+    <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth: AI file system cache mode versus file-system mode</a></h3>
+        <p class="excerpt">Cache mode and fs mode: what each guarantees about the bucket behind an AI file system, which workloads fit which, and what to ask a vendor about truth.</p>
+        <a class="read-more" href="/blog/when-the-bucket-is-the-truth-two-mount-modes" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/small-files-problem-in-ml-training">The small files problem in machine learning: millions of samples, one metadata bill</a></h3>
+        <p class="excerpt">Why millions of small samples cost more than their bytes: per-object overhead, listing, metadata pressure, and packing formats versus a metadata service.</p>
+        <a class="read-more" href="/blog/small-files-problem-in-ml-training" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/object-storage-is-not-a-file-system">Object storage is not a file system, and what POSIX on object storage adds</a></h3>
+        <p class="excerpt">Object storage has no rename, no partial writes and no directories. What a POSIX layer over a bucket has to add, and what it still cannot promise.</p>
+        <a class="read-more" href="/blog/object-storage-is-not-a-file-system" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/keeping-gpus-fed-data-loading-bottleneck">Keeping GPUs fed: where the GPU data loading bottleneck comes from</a></h3>
+        <p class="excerpt">How input pipelines starve accelerators: dataloader workers, random reads, IOPS versus throughput, object storage latency, and honest utilisation metrics.</p>
+        <a class="read-more" href="/blog/keeping-gpus-fed-data-loading-bottleneck" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml">FUSE, CSI or SDK: three ways to mount object storage in Kubernetes for ML workloads</a></h3>
+        <p class="excerpt">FUSE mount, CSI driver or SDK: three ways to get a bucket into ML pods on Kubernetes, what each changes in your code, how each fails, and when to pick which.</p>
+        <a class="read-more" href="/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/multi-tier-cache-for-ai-training-data">A multi-tier cache for AI training data: what goes where</a></h3>
+        <p class="excerpt">Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.</p>
+        <a class="read-more" href="/blog/multi-tier-cache-for-ai-training-data" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Announcement</span><span>September 29, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/introducing-runix-fs">Introducing Runix FS: an AI file system for object storage</a></h3>
+        <p class="excerpt">Runix FS puts a POSIX file system and a multi-tier cache in front of object storage. Why the layer is missing, what it is built on, and how early access works.</p>
+        <a class="read-more" href="/blog/introducing-runix-fs" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <p class="sec-no">07 &middot; Company</p>
+      <h2 id="company">Company</h2>
+      <p>Announcements, and why the stack is drawn the way it is. 3 posts, newest first. <a href="/about">Company on the stack</a>.</p>
+    </div>
+    <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/why-five-layers">Why five layers: how Runix drew its AI infrastructure stack</a></h3>
+        <p class="excerpt">How Runix drew five layers over the customer's own compute, which Unix idea each layer rebuilds, why each must work alone, and what the layered view omits.</p>
+        <a class="read-more" href="/blog/why-five-layers" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
+      <div class="card">
+        <div class="post-meta"><span class="cat">Announcement</span><span>September 30, 2026</span><span>·</span><span>6 min read</span></div>
+        <h3><a href="/blog/rebuild-ai-unix">Rebuild AI Unix: why Runix Lab is building an operating system for AI</a></h3>
+        <p class="excerpt">Unix lasted on a few ideas: files, pipes, a kernel, one call interface. Runix Lab is rebuilding them for enterprise AI, in five layers.</p>
+        <a class="read-more" href="/blog/rebuild-ai-unix" aria-hidden="true" tabindex="-1">Read post →</a>
+      </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Announcement</span><span>July 8, 2026</span><span>·</span><span>4 min read</span></div>
         <h3><a href="/blog/introducing-runix">Introducing Runix</a></h3>
@@ -513,7 +929,7 @@
     </div>
   </div>
 </section>
-
+<!--/posts-->
 </main>
 
 <footer class="site-footer">
@@ -525,7 +941,9 @@
       </div>
       <div>
         <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
         <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
         <a href="/code">Runix Code</a>
         <a href="/code-plans">Code plans</a>
         <a href="/comic">Runix Comic</a>
@@ -543,6 +961,7 @@
       <div>
         <p class="footer-heading">Company</p>
         <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
         <a href="/about#contact">Contact</a>
         <a href="/security">Security</a>
         <a href="/reliability">Reliability</a>

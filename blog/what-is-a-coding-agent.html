@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is a Coding Agent? From Autocomplete to PRs | Runix</title>
+<meta name="description" content="A coding agent reads a repository, plans, edits files, runs tests and revises until they pass. What separates it from an assistant, and what it is not.">
+<link rel="canonical" href="https://runixcloud.io/blog/what-is-a-coding-agent">
+<meta property="og:title" content="What Is a Coding Agent? From Autocomplete to PRs | Runix">
+<meta property="og:description" content="A coding agent reads a repository, plans, edits files, runs tests and revises until they pass. What separates it from an assistant, and what it is not.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/what-is-a-coding-agent">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-what-is-a-coding-agent.png?v=7a3e8adf">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-what-is-a-coding-agent.png?v=7a3e8adf">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What is a coding agent? From autocomplete to pull requests",
+  "description": "A coding agent reads a repository, plans, edits files, runs tests and revises until they pass. What separates it from an assistant, and what it is not.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/what-is-a-coding-agent"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-what-is-a-coding-agent.png?v=7a3e8adf",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What is a coding agent? From autocomplete to pull requests",
+      "item": "https://runixcloud.io/blog/what-is-a-coding-agent"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is a coding agent the same as an AI coding assistant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. An assistant produces text that a person applies and verifies; an agent runs the read, edit and test loop itself and produces a change to the repository. The same model can play either role depending on the harness around it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a coding agent need access to a shell?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For anything beyond trivial edits, yes: it has to build the project and run tests to verify its own work. The shell is also the largest risk surface, so its permissions should be scoped by the harness rather than left open."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a coding agent merge its own changes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can be configured to, but it should not. The change should land as a diff that a person approves, so the team keeps its review habits and the blast radius of a wrong change stays bounded."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="What Is a Coding Agent? From Autocomplete to PRs | Runix">
+<meta name="twitter:description" content="A coding agent reads a repository, plans, edits files, runs tests and revises until they pass. What separates it from an assistant, and what it is not.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Agents">
+<meta property="article:section" content="Concepts">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Concepts</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-is-a-coding-agent-as-opposed-to-an-assistant">What is a coding agent, as opposed to an assistant</a></li><li><a href="#the-loop-read-plan-edit-run-tests-revise">The loop: read, plan, edit, run tests, revise</a></li><li><a href="#the-tools-a-coding-agent-needs">The tools a coding agent needs</a></li><li><a href="#grounding-in-the-repository">Grounding in the repository</a></li><li><a href="#where-humans-gate">Where humans gate</a></li><li><a href="#what-a-coding-agent-is-not">What a coding agent is not</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">What is a coding agent? From autocomplete to pull requests</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>What is a coding agent? The short answer: a program that takes a task described in words, produces a change to a repository, and gets there by running a loop of reading code, planning, editing files and running tests until a stopping condition is met. The model does the generating. A loop with tools does the rest, and an assistant stops at the generating.</p>
+<p>That definition hides most of the useful detail, so the rest of this post takes it apart: what separates an agent from an assistant, what the loop looks like, which tools it needs, why grounding in the repository matters, where humans keep control, and what a coding agent is not.</p>
+<h2 id="what-is-a-coding-agent-as-opposed-to-an-assistant">What is a coding agent, as opposed to an assistant</h2>
+<p>An assistant produces text. Autocomplete proposes the next few tokens; chat answers a question or drafts a function. In both cases a person reads the output, decides whether it is right, pastes it, runs it and fixes it. The human is the loop.</p>
+<p>An agent is the same model placed inside a loop that it drives itself. It reads files, decides what to change, applies the change, runs the tests, reads the failures and tries again. The output is not a suggestion but a change to the repository, plus a record of how it got there.</p>
+<p>The difference is not the size of the model. The same model can be an assistant or an agent depending on who executes the next step, and that is a property of the <a href="/blog/the-harness-what-runs-an-ai-agent">harness around the model</a>, not of the model.</p>
+<h2 id="the-loop-read-plan-edit-run-tests-revise">The loop: read, plan, edit, run tests, revise</h2>
+<p>Most coding agents run some version of the interleaved reasoning-and-acting pattern described in the <a href="https://arxiv.org/abs/2210.03629" rel="noopener">ReAct paper</a>: think, act with a tool, observe the result, think again. For a repository the steps are concrete.</p>
+<ul>
+<li><strong>Read.</strong> Locate the files the task touches, follow imports, read the existing tests, and look at how similar things were done nearby.</li>
+<li><strong>Plan.</strong> Decompose the task into edits, decide the order, and note which tests should change and which must not.</li>
+<li><strong>Edit.</strong> Apply the changes to files, usually as patches rather than whole-file rewrites, so the change stays small enough to review.</li>
+<li><strong>Run tests.</strong> Execute the build, the linter and the relevant test subset, then the wider suite.</li>
+<li><strong>Revise.</strong> Treat the failure output as the next input and go back to the read step.</li>
+</ul>
+<p>The loop ends when the tests pass, when a budget of steps, tokens or time is exhausted, or when the agent detects that it is cycling. Which of those happened matters as much as the final diff, which is why the trace of the loop is part of the output.</p>
+<h2 id="the-tools-a-coding-agent-needs">The tools a coding agent needs</h2>
+<p>An agent is only as capable as the tools its harness exposes. Three are necessary for anything beyond trivial changes.</p>
+<ul>
+<li><strong>Repository access.</strong> Reading files, searching across them, and seeing version control history. Without history the agent cannot tell how the code arrived at its current shape.</li>
+<li><strong>A shell.</strong> To build, to run scripts, to inspect dependencies and to execute the project's own tooling. The shell is also the largest risk surface, which is why its permissions are a harness decision.</li>
+<li><strong>A test runner.</strong> The clearest objective signal the agent gets, alongside the build and the linter. Most of what else it observes is text it has to interpret.</li>
+</ul>
+<p>Useful but optional: a language server for symbol navigation and type errors, and a way to read documentation for the dependency versions actually installed. The <a href="https://arxiv.org/abs/2405.15793" rel="noopener">SWE-agent paper</a> makes the point that how tools are shaped for the model, not only which tools exist, changes what an agent can finish.</p>
+<h2 id="grounding-in-the-repository">Grounding in the repository</h2>
+<p>Generic code is the common failure mode of assistants: the suggestion is correct for a tutorial and wrong for your codebase. Your repository has conventions for logging, errors and naming, a dependency set pinned to particular versions, and idioms that a reviewer will reject a change for ignoring.</p>
+<p>Grounding means two things. First, retrieval: the agent reads the actual modules it is changing and the ones that call them, rather than reasoning from memory of similar projects. Second, verification: it runs the project's build and tests, so that a wrong assumption about a library version fails before a human sees it.</p>
+<p>The second half is what an assistant cannot do and the reason grounding is stronger in an agent. A claim about how your code behaves can be checked by running it. Runix Code is being designed around exactly this: <a href="/code">grounding in your repository, its modules, idioms and the versions you run</a>, rather than in generic patterns.</p>
+<h2 id="where-humans-gate">Where humans gate</h2>
+<p>Autonomy inside the loop does not mean autonomy over the repository. The gates sit in three places.</p>
+<ol>
+<li><strong>Before the run.</strong> Which repositories the agent may touch, which commands it may execute, which secrets it never sees, and how much it may spend.</li>
+<li><strong>During the run.</strong> Tests as an objective check, and budgets that stop a cycling agent.</li>
+<li><strong>After the run.</strong> The change arrives as a diff for a person to approve, request changes on, or reject. Nothing merges without that decision.</li>
+</ol>
+<p>The third gate is the one that keeps an existing team's review habits intact, and it is the subject of <a href="/blog/reviewable-by-default-agent-changes-as-diffs">why agent changes should land as reviewable diffs</a>. The <a href="/docs/code">Runix Code rollout guide</a> describes the same structure: assist mode in the editor and terminal, agent mode for tasks, and a review gate that is not optional.</p>
+<h2 id="what-a-coding-agent-is-not">What a coding agent is not</h2>
+<ul>
+<li><strong>Not a guarantee of correctness.</strong> Passing tests means the tests pass. It does not mean the change does what the issue asked, and an agent can make a failing test pass by changing the test.</li>
+<li><strong>Not deterministic.</strong> The same task can produce different diffs on different runs. Evaluation has to account for that; see <a href="/blog/evaluate-a-coding-agent-on-your-own-repository">how to evaluate a coding agent on your own repository</a>.</li>
+<li><strong>Not a benchmark score.</strong> Public benchmarks such as <a href="https://arxiv.org/abs/2310.06770" rel="noopener">SWE-bench</a> measure resolution of tasks drawn from particular public repositories. Your repository is not one of them.</li>
+<li><strong>Not a replacement for review.</strong> It removes the typing, not the judgement. A team that stops reading diffs because an agent wrote them has removed its last gate.</li>
+<li><strong>Not an employee.</strong> It has no memory of last week's decision unless that decision is in the repository, and it does not know what the issue tracker left unsaid.</li>
+</ul>
+<p>Runix Code is a coding agent in development, built for teams: grounded in the repository, designed to run as an independent agent for its domain with its own harness and to land every change as a reviewable diff rather than a silent write. It sits in the <a href="/agents">agents layer of the Runix stack</a>; the waitlist is open, and this post describes what is being built, not a shipped product.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Is a coding agent the same as an AI coding assistant?</h3>
+<p>No. An assistant produces text that a person applies and verifies; an agent runs the read, edit and test loop itself and produces a change to the repository. The same model can play either role depending on the harness around it.</p>
+<h3>Does a coding agent need access to a shell?</h3>
+<p>For anything beyond trivial edits, yes: it has to build the project and run tests to verify its own work. The shell is also the largest risk surface, so its permissions should be scoped by the harness rather than left open.</p>
+<h3>Can a coding agent merge its own changes?</h3>
+<p>It can be configured to, but it should not. The change should land as a diff that a person approves, so the team keeps its review habits and the blast radius of a wrong change stays bounded.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/code">Runix Code</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/the-harness-what-runs-an-ai-agent">The harness: what actually runs an AI agent</a></li>
+    <li><a href="/blog/reviewable-by-default-agent-changes-as-diffs">Reviewable by default: why an agent's changes should land as diffs</a></li>
+    <li><a href="/blog/evaluate-a-coding-agent-on-your-own-repository">Evaluate coding agents on your own repository, not on a leaderboard</a></li>
+    <li><a href="/code">Runix Code: an independent coding agent, reviewable in your repository</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

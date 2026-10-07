@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine-tuning vs RAG vs prompting: which one you need | Runix</title>
+<meta name="description" content="When a prompt is enough, when retrieval fixes a knowledge or freshness gap, when fine-tuning is the right tool, and how the failure mode tells you which one.">
+<link rel="canonical" href="https://runixcloud.io/blog/fine-tune-prompt-or-retrieve">
+<meta property="og:title" content="Fine-tuning vs RAG vs prompting: which one you need | Runix">
+<meta property="og:description" content="When a prompt is enough, when retrieval fixes a knowledge or freshness gap, when fine-tuning is the right tool, and how the failure mode tells you which one.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/fine-tune-prompt-or-retrieve">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-fine-tune-prompt-or-retrieve.png?v=c594785c">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-fine-tune-prompt-or-retrieve.png?v=c594785c">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Fine-tuning vs RAG vs prompting: a decision guide by failure mode",
+  "description": "When a prompt is enough, when retrieval fixes a knowledge or freshness gap, when fine-tuning is the right tool, and how the failure mode tells you which one.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/fine-tune-prompt-or-retrieve"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-fine-tune-prompt-or-retrieve.png?v=c594785c",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Fine-tuning vs RAG vs prompting: a decision guide by failure mode",
+      "item": "https://runixcloud.io/blog/fine-tune-prompt-or-retrieve"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can fine-tuning and RAG be combined?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and it is a common end state: a tuned small model handles format and style while retrieval supplies the facts. Add them in cost order and measure each step against the same test set."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does fine-tuning teach a model new facts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Unreliably. Fine-tuning on documents teaches their style and structure far more reliably than their contents, and the contents go stale. Retrieval is the tool for knowledge and freshness."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How large should the test set be before choosing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Large enough that the difference you care about is bigger than the run-to-run noise, which for most tasks means hundreds of real inputs rather than a dozen. Build it before the first experiment."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Fine-tuning vs RAG vs prompting: which one you need | Runix">
+<meta name="twitter:description" content="When a prompt is enough, when retrieval fixes a knowledge or freshness gap, when fine-tuning is the right tool, and how the failure mode tells you which one.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Models">
+<meta property="article:section" content="Buyer&#x27;s guide">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Buyer's guide</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#three-tools-three-different-problems">Three tools, three different problems</a></li><li><a href="#when-prompting-is-enough">When prompting is enough</a></li><li><a href="#when-retrieval-is-the-fix">When retrieval is the fix</a></li><li><a href="#when-fine-tuning-is-the-right-tool">When fine-tuning is the right tool</a></li><li><a href="#the-cheapest-fine-tuning-vs-rag-vs-prompting-experiment">The cheapest fine-tuning vs RAG vs prompting experiment</a></li><li><a href="#reading-the-failure-mode">Reading the failure mode</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Buyer's guide</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">Fine-tuning vs RAG vs prompting: a decision guide by failure mode</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Fine-tuning vs RAG vs prompting is usually framed as a choice between three ways of making a model better. It is more useful to treat them as three fixes for three different failures. A prompt changes what the model is asked, retrieval changes what it is shown, and fine-tuning changes what it is. Pick by diagnosing the failure, not by preference.</p>
+
+<h2 id="three-tools-three-different-problems">Three tools, three different problems</h2>
+<p><strong>Prompting</strong> is instruction at inference time: the system message, the worked examples, the output format you ask for. It costs nothing to change and nothing to deploy, and every request pays for it again in input tokens.</p>
+<p><strong>Retrieval-augmented generation</strong> (RAG) fetches relevant text from a store you control and places it in the context before the model answers. The weights do not change; the information in front of the model does. The name comes from <a href="https://arxiv.org/abs/2005.11401" rel="noopener">the original retrieval-augmented generation paper</a>, which trained retriever and generator together; the production pattern keeps the weights fixed.</p>
+<p><strong>Fine-tuning</strong> continues training the model on examples of the task done well, so the behaviour lives in the weights rather than in the prompt. It is the only one of the three that produces a new model you have to evaluate, version and serve.</p>
+
+<h2 id="when-prompting-is-enough">When prompting is enough</h2>
+<p>Start here, every time. A large share of "the model cannot do this" turns out to be "the model was not told clearly". Write the instruction you would give a careful new colleague, add a few worked examples, and state the output format exactly.</p>
+<p>Prompting is enough when the model already has the knowledge and the skill, and the gap is in the asking. The signs: it gets the task right sometimes, gets it right when you rephrase, or gets it right after one correction in a longer conversation.</p>
+<p>Its limits are cost and ceiling. A long prompt full of examples is paid for on every call, although <a href="/blog/prompt-caching-explained">prompt caching</a> blunts that when the prefix is stable. And there is a ceiling: if the model does not know the fact, or cannot hold a style across thousands of requests, more instructions do not help.</p>
+
+<h2 id="when-retrieval-is-the-fix">When retrieval is the fix</h2>
+<p>Retrieval fixes knowledge problems. If the right answer depends on your documents, your product's current state, or anything that changed after the model's training data was collected, tuning puts it in the weights only unreliably, and only as of the training snapshot. The model has to be shown the text.</p>
+<p>Retrieval is also the fix for freshness. A fine-tuned model is a snapshot; a retrieval index is updated by writing to it. If the facts change weekly, re-training weekly is the wrong shape of solution.</p>
+<p>What retrieval does not fix: tone, format and reasoning habits. Putting the right passage in the context does not stop a model drifting into chatty prose. Retrieval also brings its own failure, the retriever returning the wrong passage, which looks exactly like the model being wrong until you log what was retrieved next to what was answered.</p>
+
+<h2 id="when-fine-tuning-is-the-right-tool">When fine-tuning is the right tool</h2>
+<p>Fine-tuning fixes behaviour that is consistent across requests and hard to specify in words. Four cases recur:</p>
+<ul>
+<li><strong>Format.</strong> A strict schema or a house structure for answers, where the prompted model complies most of the time and most is not good enough.</li>
+<li><strong>Style and tone.</strong> Behaviour you can recognise but cannot fully write down, which is also the territory of <a href="/blog/preference-tuning-with-dpo-explained">preference tuning with DPO</a>.</li>
+<li><strong>A narrow task at volume.</strong> Classification, extraction, routing: one job asked many times a day, where a smaller tuned model may match a larger prompted one and costs less to serve.</li>
+<li><strong>Latency and cost at scale.</strong> Moving a long few-shot prompt into the weights shortens every request, and a smaller model answers faster on the same hardware.</li>
+</ul>
+<p>What fine-tuning does not fix: knowledge. Training on your documents teaches a model the shape of your documents far more reliably than their contents, and it does not keep up when the contents change. Teams that fine-tune for facts usually add retrieval later anyway.</p>
+<p>Fine-tuning also carries a price that is not on the GPU bill: a dataset to build, a held-out set to protect, an evaluation to run, and a model to serve and keep serving. The methods differ in what they cost; <a href="/blog/lora-qlora-and-full-fine-tuning">LoRA, QLoRA and full fine-tuning</a> covers what each one changes.</p>
+
+<h2 id="the-cheapest-fine-tuning-vs-rag-vs-prompting-experiment">The cheapest fine-tuning vs RAG vs prompting experiment</h2>
+<p>Run the experiments in cost order. Each one produces the input for the next.</p>
+<ol>
+<li><strong>Build a test set before touching anything.</strong> A few hundred real inputs with the answer you want for each. Without it, every later comparison is an anecdote.</li>
+<li><strong>Prompt the strongest model you can run.</strong> If it passes, you have a ceiling and a baseline. If it fails, read the failures rather than counting them.</li>
+<li><strong>Add retrieval if the failures are missing facts.</strong> Log what was retrieved alongside what was answered, so retriever errors and model errors can be told apart.</li>
+<li><strong>Fine-tune a smaller model if the failures are behavioural.</strong> Compare it with the prompted model on the same test set, not with the base model it started from.</li>
+</ol>
+<p>A frequent outcome is that the prompted large model is the right answer and the project ends at step two. That is a good result, not a failed one. The expensive mistake is starting at step four to find out.</p>
+
+<h2 id="reading-the-failure-mode">Reading the failure mode</h2>
+<p>When a system is already live and underperforming, the failure usually names the tool it needs.</p>
+<ul>
+<li><strong>Wrong facts in a confident tone:</strong> a knowledge gap. Retrieval, or better retrieval.</li>
+<li><strong>Right facts in the wrong shape:</strong> a format or style gap. A stricter prompt first, then fine-tuning if compliance stays below what you need.</li>
+<li><strong>Right after rephrasing:</strong> an instruction gap. Prompting.</li>
+<li><strong>Right, but too slow or too expensive:</strong> a serving gap. A smaller model, usually tuned, and a shorter prompt.</li>
+<li><strong>Out of date:</strong> a freshness gap. Retrieval over an index you can update.</li>
+</ul>
+<p>Mixed signals usually mean two gaps, and the tools stack: a tuned small model with retrieval in front of it is a common end state. Add them in the cost order above, and let <a href="/blog/evaluate-the-tuned-model-against-your-baseline">an evaluation against the model you run today</a> show that each step earned its place.</p>
+
+<p><a href="/models">Runix Models</a> is the fine-tuning branch of this guide: supervised fine-tuning, LoRA and QLoRA, and DPO on open-weight families, evaluated on a task-specific held-out set against the model you run today, with training data from your own team or from <a href="/data">Runix Data</a>. It is in early access, by engagement, scoped and quoted before any training starts, and the scoping begins with the question this post asks: whether a tuned model is the right tool for the failure in front of you, or whether a hosted model through <a href="/router">Runix Router</a> already is.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Can fine-tuning and RAG be combined?</h3>
+<p>Yes, and it is a common end state: a tuned small model handles format and style while retrieval supplies the facts. Add them in cost order and measure each step against the same test set.</p>
+<h3>Does fine-tuning teach a model new facts?</h3>
+<p>Unreliably. Fine-tuning on documents teaches their style and structure far more reliably than their contents, and the contents go stale. Retrieval is the tool for knowledge and freshness.</p>
+<h3>How large should the test set be before choosing?</h3>
+<p>Large enough that the difference you care about is bigger than the run-to-run noise, which for most tasks means hundreds of real inputs rather than a dozen. Build it before the first experiment.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/models">Runix Models</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/lora-qlora-and-full-fine-tuning">LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights</a></li>
+    <li><a href="/blog/evaluate-the-tuned-model-against-your-baseline">How to evaluate a fine-tuned LLM against the model you run today</a></li>
+    <li><a href="/blog/prompt-caching-explained">Prompt Caching: When It Pays and When It Bites</a></li>
+    <li><a href="/models">Runix Models: fine-tune and serve open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

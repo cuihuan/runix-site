@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What DPO fine-tuning changes, and what it cannot | Runix</title>
+<meta name="description" content="How DPO fine-tuning learns from chosen and rejected pairs without a reward model, where preference tuning helps and where it cannot, and the data pitfalls.">
+<link rel="canonical" href="https://runixcloud.io/blog/preference-tuning-with-dpo-explained">
+<meta property="og:title" content="What DPO fine-tuning changes, and what it cannot | Runix">
+<meta property="og:description" content="How DPO fine-tuning learns from chosen and rejected pairs without a reward model, where preference tuning helps and where it cannot, and the data pitfalls.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/preference-tuning-with-dpo-explained">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-preference-tuning-with-dpo-explained.png?v=7c156c86">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-preference-tuning-with-dpo-explained.png?v=7c156c86">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "DPO fine-tuning explained: what preference tuning changes and what it cannot",
+  "description": "How DPO fine-tuning learns from chosen and rejected pairs without a reward model, where preference tuning helps and where it cannot, and the data pitfalls.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/preference-tuning-with-dpo-explained"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-preference-tuning-with-dpo-explained.png?v=7c156c86",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "DPO fine-tuning explained: what preference tuning changes and what it cannot",
+      "item": "https://runixcloud.io/blog/preference-tuning-with-dpo-explained"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does DPO need a reward model?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. DPO derives the reward from the model and a frozen reference copy, so the only trained artefact is the policy itself. The reference model, or its log-probabilities, does need to be available during training."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should DPO come before or after supervised fine-tuning?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "After. Supervised fine-tuning gets the model to do the task; DPO shapes how it does it. Applied to a model that cannot do the task, preference tuning produces a model that fails more gracefully."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many preference pairs are needed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no fixed number; it depends on how consistent the pairs are and how narrow the behaviour is. Rater agreement and a clean held-out evaluation matter more than volume."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="What DPO fine-tuning changes, and what it cannot | Runix">
+<meta name="twitter:description" content="How DPO fine-tuning learns from chosen and rejected pairs without a reward model, where preference tuning helps and where it cannot, and the data pitfalls.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Models">
+<meta property="article:section" content="Concepts">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Concepts</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#what-preference-data-looks-like">What preference data looks like</a></li><li><a href="#what-dpo-fine-tuning-optimises">What DPO fine-tuning optimises</a></li><li><a href="#how-it-differs-from-rlhf-with-a-reward-model">How it differs from RLHF with a reward model</a></li><li><a href="#where-preference-tuning-helps">Where preference tuning helps</a></li><li><a href="#where-it-does-not-help">Where it does not help</a></li><li><a href="#collecting-preference-data-without-fooling-yourself">Collecting preference data without fooling yourself</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Concepts</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">DPO fine-tuning explained: what preference tuning changes and what it cannot</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>DPO fine-tuning trains a model on pairs of answers, one preferred and one not, and moves it towards the preferred kind. It is the simplest way to teach behaviour that is easier to judge than to describe. This post covers what the data looks like, what the method actually optimises, how it differs from reinforcement learning with a reward model, and where it helps and where it cannot.</p>
+
+<h2 id="what-preference-data-looks-like">What preference data looks like</h2>
+<p>A preference record has three parts: a prompt, a chosen response, and a rejected response. Nothing says the chosen one is good in absolute terms, only that it is better than the other one for that prompt. The signal is a comparison, not a label.</p>
+<p>That is the point. Writing a gold answer for "respond in our house tone" or "decline this kind of request politely" is hard; picking the better of two drafts is something a reviewer can do quickly and fairly consistently. Preference data captures judgement without requiring anyone to articulate the rule.</p>
+
+<h2 id="what-dpo-fine-tuning-optimises">What DPO fine-tuning optimises</h2>
+<p>Direct Preference Optimization, from <a href="https://arxiv.org/abs/2305.18290" rel="noopener">the paper by Rafailov and colleagues</a>, starts from the same objective as reinforcement learning from human feedback: maximise a reward learned from preferences while keeping the model close to a reference model, with a coefficient, usually written <code>beta</code>, that sets how much drift is allowed.</p>
+<p>The paper's observation is that this constrained objective has a closed-form solution, and that the reward implied by it can be written in terms of the model and the reference alone. Substituting that into the standard model of pairwise preferences turns the whole procedure into one classification loss over pairs:</p>
+<pre><code>loss = -log sigmoid(
+    beta * (log p(chosen)   - log p_ref(chosen))
+  - beta * (log p(rejected) - log p_ref(rejected))
+)</code></pre>
+<p>In words: raise the log-probability of the chosen response relative to the reference, lower it for the rejected response, and score the gap. The reference model is a frozen copy of the model you started from, usually the supervised fine-tuned model. It stays in memory, or its log-probabilities are precomputed, for the whole run.</p>
+
+<h2 id="how-it-differs-from-rlhf-with-a-reward-model">How it differs from RLHF with a reward model</h2>
+<p>The earlier recipe, described in <a href="https://arxiv.org/abs/2203.02155" rel="noopener">the InstructGPT paper</a>, has three stages: supervised fine-tuning, training a separate reward model on preference pairs, then optimising the policy against that reward with a reinforcement learning algorithm while sampling new responses throughout. DPO keeps the first stage and collapses the other two.</p>
+<ul>
+<li><strong>No reward model to train, host or debug.</strong> The policy is its own reward model, which is the claim in the paper's title.</li>
+<li><strong>No sampling loop.</strong> DPO trains on fixed pairs like supervised learning; the RL recipe generates responses during training and scores them.</li>
+<li><strong>Fewer moving parts.</strong> The main choice is <code>beta</code>. The RL recipe has a reward model, a value model and an optimiser loop, each with its own instability.</li>
+</ul>
+<p>What DPO gives up is on-policy exploration. The RL loop can discover a good response the data never contained; DPO never generates a candidate during training, so it learns only from the pairs it is given. In practice this makes the quality and coverage of the pairs the whole game, which is why the data section below is the longest. Implementations are available in <a href="https://github.com/huggingface/trl" rel="noopener">the TRL library</a>, and DPO combines with <a href="/blog/lora-qlora-and-full-fine-tuning">LoRA or QLoRA</a> like any other fine-tuning step.</p>
+
+<h2 id="where-preference-tuning-helps">Where preference tuning helps</h2>
+<ul>
+<li><strong>Tone and register.</strong> Terse versus explanatory, formal versus plain: styles the model can already produce and only needs to prefer.</li>
+<li><strong>Refusals.</strong> When to decline, and how. Pairs of a brusque refusal and a helpful one, or an over-refusal and a reasonable answer, teach the boundary better than a paragraph of policy in the prompt.</li>
+<li><strong>Format adherence.</strong> Stopping after the answer, not restating the question, keeping to the schema. A chosen response that follows the format and a rejected one that nearly does is a precise signal.</li>
+<li><strong>Choosing among valid answers.</strong> Tasks where several responses are correct and one is better, which supervised fine-tuning on a single gold answer cannot express.</li>
+</ul>
+
+<h2 id="where-it-does-not-help">Where it does not help</h2>
+<p>DPO fine-tuning does not add knowledge. It changes which of the responses the model could already produce it prefers; a fact the model does not have is not among them. For knowledge and freshness the tool is retrieval, as set out in <a href="/blog/fine-tune-prompt-or-retrieve">fine-tuning versus RAG versus prompting</a>.</p>
+<p>It does not fix a capability gap either. If the supervised model cannot do the task at all, preferring better attempts over worse ones leaves you with a model that fails more politely. Do supervised fine-tuning first, confirm the model can do the task, and then use preferences to shape how it does it.</p>
+<p>And it does not replace evaluation. The training loss going down tells you the model has separated your pairs; it does not tell you the behaviour transferred to new prompts, or that nothing else moved. <a href="/blog/did-the-model-change-make-it-worse">Refusal rate and parse rate</a> are exactly the signals preference tuning is most likely to shift, in either direction.</p>
+
+<h2 id="collecting-preference-data-without-fooling-yourself">Collecting preference data without fooling yourself</h2>
+<ol>
+<li><strong>Sample pairs from the model you are tuning.</strong> Pairs copied from another model's outputs teach it to prefer responses it may never produce. Generate candidates from your supervised model and have those judged.</li>
+<li><strong>Watch length.</strong> Reviewers tend to prefer the longer answer, and the model learns verbosity instead of quality. Compare the chosen and rejected length distributions before training.</li>
+<li><strong>Change one thing per pair.</strong> A pair that differs in tone, length and correctness at once teaches a blend. Pairs that differ mainly in the behaviour you want are the useful ones.</li>
+<li><strong>Measure rater agreement.</strong> Have several reviewers judge a shared subset. Low agreement means the pairs encode noise, and the model will learn the noise.</li>
+<li><strong>Treat synthetic judges with suspicion.</strong> A model used as a judge brings its own preferences for style and length. Spot-check its decisions against humans before trusting it at volume.</li>
+<li><strong>Keep the evaluation prompts out.</strong> If held-out prompts are used to generate pairs, the evaluation is contaminated before training starts. <a href="/data">Runix Data</a> keeps evaluation data split from training data by source for this reason.</li>
+</ol>
+
+<p><a href="/models">Runix Models</a> includes preference tuning with DPO alongside supervised fine-tuning, LoRA and QLoRA, applied to open-weight families and evaluated on a task-specific held-out set against the model you run today. It is in early access, by engagement; the data you provide trains and evaluates the model you commission, and nothing else.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Does DPO need a reward model?</h3>
+<p>No. DPO derives the reward from the model and a frozen reference copy, so the only trained artefact is the policy itself. The reference model, or its log-probabilities, does need to be available during training.</p>
+<h3>Should DPO come before or after supervised fine-tuning?</h3>
+<p>After. Supervised fine-tuning gets the model to do the task; DPO shapes how it does it. Applied to a model that cannot do the task, preference tuning produces a model that fails more gracefully.</p>
+<h3>How many preference pairs are needed?</h3>
+<p>There is no fixed number; it depends on how consistent the pairs are and how narrow the behaviour is. Rater agreement and a clean held-out evaluation matter more than volume.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/models">Runix Models</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/lora-qlora-and-full-fine-tuning">LoRA vs QLoRA vs full fine-tuning: what each one changes in the weights</a></li>
+    <li><a href="/blog/evaluate-the-tuned-model-against-your-baseline">How to evaluate a fine-tuned LLM against the model you run today</a></li>
+    <li><a href="/blog/fine-tune-prompt-or-retrieve">Fine-tuning vs RAG vs prompting: a decision guide by failure mode</a></li>
+    <li><a href="/models">Runix Models: fine-tune and serve open-weight models</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

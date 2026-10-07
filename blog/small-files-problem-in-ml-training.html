@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The small files problem in machine learning | Runix</title>
+<meta name="description" content="Why millions of small samples cost more than their bytes: per-object overhead, listing, metadata pressure, and packing formats versus a metadata service.">
+<link rel="canonical" href="https://runixcloud.io/blog/small-files-problem-in-ml-training">
+<meta property="og:title" content="The small files problem in machine learning | Runix">
+<meta property="og:description" content="Why millions of small samples cost more than their bytes: per-object overhead, listing, metadata pressure, and packing formats versus a metadata service.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/small-files-problem-in-ml-training">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-small-files-problem-in-ml-training.png?v=de07ce18">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-small-files-problem-in-ml-training.png?v=de07ce18">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The small files problem in machine learning: millions of samples, one metadata bill",
+  "description": "Why millions of small samples cost more than their bytes: per-object overhead, listing, metadata pressure, and packing formats versus a metadata service.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/small-files-problem-in-ml-training"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-small-files-problem-in-ml-training.png?v=de07ce18",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "The small files problem in machine learning: millions of samples, one metadata bill",
+      "item": "https://runixcloud.io/blog/small-files-problem-in-ml-training"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why are small files slow to train on?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each file carries a fixed cost, a request on an object store or a metadata entry and an open on a file system, that does not shrink with its size. With millions of small samples those fixed costs, not the bytes, set the read rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I pack my dataset into tar shards or Parquet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pack when the dataset is frozen and read sequentially many times by a loader you control. Tar shards suit mixed media read in order; Parquet suits tabular and text data where a reader benefits from skipping columns."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a file system with a metadata service solve the small files problem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It moves the cost rather than removing it. The per-object cost of the bucket is paid once when the cache warms instead of every epoch, while the metadata service has a capacity in entries that needs sizing up front."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="The small files problem in machine learning | Runix">
+<meta name="twitter:description" content="Why millions of small samples cost more than their bytes: per-object overhead, listing, metadata pressure, and packing formats versus a metadata service.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Infrastructure">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#where-the-small-files-come-from">Where the small files come from</a></li><li><a href="#why-the-small-files-problem-in-machine-learning-is-about-ove">Why the small files problem in machine learning is about overhead, not bytes</a></li><li><a href="#listing-and-metadata-pressure">Listing and metadata pressure</a></li><li><a href="#packing-shards-parquet-and-webdataset-style-formats">Packing: shards, Parquet and WebDataset-style formats</a></li><li><a href="#a-file-system-with-a-metadata-service">A file system with a metadata service</a></li><li><a href="#choosing-between-packing-and-a-file-system">Choosing between packing and a file system</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
+    <h1 style="margin-top: 14px;">The small files problem in machine learning: millions of samples, one metadata bill</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Most training datasets start life as one file per sample: a JPEG per image, a JSON record per conversation, a WAV per utterance, a source file per function. That is the natural output of collection and labelling tools, and the worst possible shape for storage. The <strong>small files problem in machine learning</strong> is that the cost of a dataset is set by how many objects it has, not by how many bytes, and millions of objects cost far more than the same bytes in larger ones.</p>
+
+<h2 id="where-the-small-files-come-from">Where the small files come from</h2>
+
+<p>Sample-per-file is convenient for every step before training: annotators work on one item at a time, collection scripts write one output per input, deduplication wants a stable identity per record, and a reviewer can open any sample with an ordinary tool. Code datasets are the extreme case: a repository is thousands of files, most of them small, and a <a href="/code-data">code dataset</a> built from many repositories inherits that shape multiplied.</p>
+
+<p>The problem appears only at the boundary where the pipeline hands the data to a loader. The <a href="/blog/ai-data-pipelines">pipeline stages</a> that produce samples are per record by nature; the training loop that consumes them wants bulk, and whichever side converts between the two pays.</p>
+
+<h2 id="why-the-small-files-problem-in-machine-learning-is-about-ove">Why the small files problem in machine learning is about overhead, not bytes</h2>
+
+<p>Every file carries fixed costs that do not shrink with its size. In an object store, each one is a request: request signing, a network round trip, the request and the response, and in most pricing models a per-request charge on top of the bytes. On a file system, each one is an inode, an open, a read and a close, and across a FUSE boundary each of those crosses between kernel and user space.</p>
+
+<p>For a large file those costs are noise next to the transfer; for a small one they are the transfer. A loader reading thousands of small samples per step is bound by how many requests per second the storage path can answer, not by bandwidth, and the GPU behind it waits on request latency rather than on bytes.</p>
+
+<h2 id="listing-and-metadata-pressure">Listing and metadata pressure</h2>
+
+<p>Before a job reads its first sample it needs to know what the samples are. On an object store that means listing a prefix, which is paged and sequential: millions of keys take many round trips to enumerate, every job repeats the work, and the list is stale by the time it finishes if anything is still writing.</p>
+
+<p>On a file system the listing is faster but the metadata becomes the bottleneck instead. Every file is an entry a metadata service has to hold and answer for, and a training job's opens, stats and readdirs are a storm of small metadata operations at the rate the loader runs. HDFS made this failure famous: its name node keeps the namespace in memory, so many small files exhaust the name node before the disks. Any file system with a central metadata service has the same ceiling, placed higher or lower by its design.</p>
+
+<p>The problem is therefore two-sided: small files on an object store are expensive per read, and small files on a file system are expensive per entry. Each remedy below moves the cost to one side or the other.</p>
+
+<h2 id="packing-shards-parquet-and-webdataset-style-formats">Packing: shards, Parquet and WebDataset-style formats</h2>
+
+<p>Packing concatenates many samples into one large file, so that a read is sequential and a listing is short. The common forms:</p>
+
+<ul>
+<li><strong>Tar shards</strong>, as popularised by <a href="https://github.com/webdataset/webdataset" rel="noopener">WebDataset</a>: a plain tar file per shard, samples stored as consecutive members, read sequentially and shuffled with an in-memory buffer. Any tool that reads tar can inspect them.</li>
+<li><strong>Record formats</strong> such as TFRecord: a length-prefixed sequence of serialised records, built for streaming reads and opaque to tools that do not know the schema.</li>
+<li><strong><a href="https://parquet.apache.org/" rel="noopener">Parquet</a></strong>: columnar, with row groups and per-column statistics, so a reader can skip what it does not need. Right for tabular and text data; awkward for large binary blobs that defeat columnar compression.</li>
+</ul>
+
+<p>Packing trades away three things. Random access to one sample by id is gone; finding it means reading the shard or keeping a side index. Shuffling moves to shard granularity plus a buffer, which is weaker than a global shuffle. And updating one sample means rewriting its shard, so a dataset under active curation is repacked on every change, and per-record identity survives only if it is carried inside the shard.</p>
+
+<h2 id="a-file-system-with-a-metadata-service">A file system with a metadata service</h2>
+
+<p>The alternative is to leave the samples as files and put a file system in front of the bucket that is built to absorb the metadata load. Its metadata service holds the namespace and answers stat and readdir without touching the bucket, replicated to survive a node failure. A cache on memory and SSD serves the bytes, so each small object is fetched from the bucket once, when the cache warms, and served locally on every epoch after.</p>
+
+<p>This keeps what packing gives up: every sample is still addressable by path, tools that expect files keep working, a curated dataset can change one sample at a time, and the bucket keeps its one-object-per-sample layout for everything else that reads it. The per-request cost of the object store is paid once at warm time instead of once per epoch.</p>
+
+<p>It does not make the metadata free. The service has a capacity in entries, a sizing question to ask before committing a dataset to it, and the cluster has to be running for the path to exist. A sequential pass over packed shards still touches fewer metadata entries per sample than any file system can, because a shard is one entry for many samples.</p>
+
+<h2 id="choosing-between-packing-and-a-file-system">Choosing between packing and a file system</h2>
+
+<ul>
+<li>Pack when the dataset is frozen, read sequentially many times, and consumed by one loader you control. This is the common case for a large pretraining corpus.</li>
+<li>Use a file system with a metadata service when the dataset is still being curated, when samples must be addressable individually, when several tools read it, or when the code cannot change.</li>
+<li>Do both when the data has a lifecycle: files while it is being built and evaluated, shards once it is frozen, with the file system still serving the files for inspection.</li>
+</ul>
+
+<p>Whichever you choose, measure the per-sample cost on the first epoch and the second. Packing fixes the first, a cache fixes the second, and neither fixes a loader that spends its time decoding.</p>
+
+<p><a href="/fs">Runix FS</a> is designed for the second case: a file system over an S3-compatible bucket, with metadata held by masters replicated with Raft, a cache in memory, SSD and HDD tiers on the workers, and paths that map one-to-one to object keys, so the sample-per-object layout stays readable by anything else. It is in early access, sized and deployed with each customer in their own cloud account; the <a href="/docs/fs">quick start</a> brings up a single-node cluster, and the <a href="/blog/introducing-runix-fs">introduction</a> states what we do and do not claim.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Why are small files slow to train on?</h3>
+<p>Each file carries a fixed cost, a request on an object store or a metadata entry and an open on a file system, that does not shrink with its size. With millions of small samples those fixed costs, not the bytes, set the read rate.</p>
+<h3>Should I pack my dataset into tar shards or Parquet?</h3>
+<p>Pack when the dataset is frozen and read sequentially many times by a loader you control. Tar shards suit mixed media read in order; Parquet suits tabular and text data where a reader benefits from skipping columns.</p>
+<h3>Does a file system with a metadata service solve the small files problem?</h3>
+<p>It moves the cost rather than removing it. The per-object cost of the bucket is paid once when the cache warms instead of every epoch, while the metadata service has a capacity in entries that needs sizing up front.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/fs">Runix FS</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/object-storage-is-not-a-file-system">Object storage is not a file system, and what POSIX on object storage adds</a></li>
+    <li><a href="/blog/ai-data-pipelines">From Raw to Model-Ready: A Practical Guide to AI Data Pipelines</a></li>
+    <li><a href="/blog/multi-tier-cache-for-ai-training-data">A multi-tier cache for AI training data: what goes where</a></li>
+    <li><a href="/fs">Runix FS: an AI-native file system on your object storage</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

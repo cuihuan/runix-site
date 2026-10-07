@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark contamination starts with a random split | Runix</title>
+<meta name="description" content="Row splits put near-duplicates on both sides of an evaluation. Why to split by repository, document or entity, and how to decontaminate and report overlap.">
+<link rel="canonical" href="https://runixcloud.io/blog/split-by-source-not-by-row">
+<meta property="og:title" content="Benchmark contamination starts with a random split | Runix">
+<meta property="og:description" content="Row splits put near-duplicates on both sides of an evaluation. Why to split by repository, document or entity, and how to decontaminate and report overlap.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/split-by-source-not-by-row">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-split-by-source-not-by-row.png?v=0b544bab">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-split-by-source-not-by-row.png?v=0b544bab">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=72">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Split by source, not by row: how benchmark contamination reaches your own evaluation set",
+  "description": "Row splits put near-duplicates on both sides of an evaluation. Why to split by repository, document or entity, and how to decontaminate and report overlap.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/split-by-source-not-by-row"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-split-by-source-not-by-row.png?v=0b544bab",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-07"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Split by source, not by row: how benchmark contamination reaches your own evaluation set",
+      "item": "https://runixcloud.io/blog/split-by-source-not-by-row"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is a random train and evaluation split a problem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rows in real corpora are not independent: forks, restated filings, quoted cases and episodes from one session are near-duplicates of each other. A random split puts members of each group on both sides, so the evaluation score partly measures memorisation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should the unit of the split be?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The thing that generates correlated records: the repository for code, the document or source for text, the entity for records about companies, cases or patients, and a cut-off date for anything time-ordered."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is n-gram decontamination against public benchmarks enough?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Paraphrased or translated copies of benchmark items pass n-gram checks, so decontamination needs embedding similarity and human review as well, plus a versioned registry of the benchmarks that were checked."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="Benchmark contamination starts with a random split | Runix">
+<meta name="twitter:description" content="Row splits put near-duplicates on both sides of an evaluation. Why to split by repository, document or entity, and how to decontaminate and report overlap.">
+<meta property="article:published_time" content="2026-10-07">
+<meta property="article:modified_time" content="2026-10-07">
+<meta property="article:tag" content="Data">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">October 7, 2026</span>
+    <ul class="pbar-links"><li><a href="#how-benchmark-contamination-gets-in-through-a-row-level-spli">How benchmark contamination gets in through a row-level split</a></li><li><a href="#split-by-repository-document-or-entity">Split by repository, document or entity</a></li><li><a href="#decontamination-against-public-benchmarks">Decontamination against public benchmarks</a></li><li><a href="#what-decontamination-still-cannot-prove">What decontamination still cannot prove</a></li><li><a href="#how-to-report-overlap">How to report overlap</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+  </div>
+</nav>
+<!--/ps:bar-->
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">Split by source, not by row: how benchmark contamination reaches your own evaluation set</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Benchmark contamination is the presence in training data of evaluation items, or near-copies of them, so that a score measures memory rather than ability. The public version of the problem, a benchmark leaking into a pretraining crawl, gets the attention. The private version is more common and entirely self-inflicted: a team builds its own evaluation set by randomly splitting rows, and the training side contains near-duplicates of the evaluation side.</p>
+<p>This post explains how a row-level split leaks, what the right unit of splitting is in each domain, how to decontaminate against public benchmarks, and what an overlap report should contain so that a reader can trust the number.</p>
+<h2 id="how-benchmark-contamination-gets-in-through-a-row-level-spli">How benchmark contamination gets in through a row-level split</h2>
+<p>A random split assigns each row independently to training or evaluation. That is correct only if rows are independent, and in real corpora they are not: the same file exists in a repository and its forks, the same filing is restated the next quarter, the same case is quoted in later judgments, and the same robot session is cut into episodes that share a scene and an operator. A random split puts members of each of those groups on both sides.</p>
+<p>The effect is measurable. <a href="https://arxiv.org/abs/2107.06499" rel="noopener">Lee et al. (2021)</a>, deduplicating standard language-modelling datasets, found train-test overlap affecting over 4% of the validation set, and models trained on the deduplicated data emitted memorised text ten times less often. A validation set with that much overlap rewards memorisation on every item that overlaps, and the overall score moves in the direction of whichever model memorised more.</p>
+<p>Exact deduplication before splitting does not fix this, because the leaking records are near-duplicates and semantic duplicates, which exact hashing never sees. <a href="/blog/deduplication-exact-near-semantic">The three tiers of deduplication</a> explain what each catches; the point here is that the split has to be designed so that the misses of all three tiers land on the same side.</p>
+<h2 id="split-by-repository-document-or-entity">Split by repository, document or entity</h2>
+<p>The unit of the split is the thing that generates correlated records, and it differs by domain:</p>
+<ul>
+<li><strong>Code:</strong> the repository, extended to its fork family, so that a file and its forked copies are on one side. Evaluation tasks come from repositories that contribute nothing to training.</li>
+<li><strong>Documents:</strong> the source document, and often the source itself, so that two chunks of one filing or two articles from one template cannot straddle the split.</li>
+<li><strong>Entities:</strong> the company, the case, the protein, the patient, so that every record about one entity is on one side. This matters most when the task is to predict something about the entity.</li>
+<li><strong>Time:</strong> for anything time-ordered, a cut-off date with evaluation after it, so that the model is not graded on a past whose future it has seen.</li>
+</ul>
+<p>The mechanics are simple once the key exists: assign groups, not rows, and keep the group key in each record's provenance so the assignment can be reproduced. The order of operations matters. Deduplicate first, across the whole corpus; then split by group; then run near-duplicate detection across the two sides as a check. The check finds what the group key missed: a file copied between unrelated repositories, a document quoted in another, an entity with two identifiers.</p>
+<p>The cost is a less convenient evaluation set. Group splits produce uneven sizes and leave some groups entirely on one side, so the evaluation set covers fewer sources than a random split would. That is the correct trade: an evaluation set that covers every source is one that shares every source with training.</p>
+<h2 id="decontamination-against-public-benchmarks">Decontamination against public benchmarks</h2>
+<p>The second obligation is to public benchmarks: a training set must not contain the items a model will later be scored on. The usual check is n-gram overlap, comparing token sequences from each benchmark item against the training data and removing the matches. It is cheap, and it is known to be insufficient.</p>
+<p><a href="https://arxiv.org/abs/2311.04850" rel="noopener">Yang et al. (2023)</a> show that simple variations of test data, paraphrasing or translation, bypass n-gram decontamination, and that a 13B model trained on rephrased test sets reached scores on par with GPT-4. They also report that 8% to 18% of HumanEval overlapped with public pretraining corpora they examined. The practical consequence is that decontamination needs the same three tiers as deduplication: exact and n-gram matching for the copies, embedding similarity for the rephrasings, and a human look at the candidates.</p>
+<p>For code tasks it also means keeping out of training the repositories that public benchmarks draw on, such as the repositories <a href="https://www.swebench.com/" rel="noopener">SWE-bench</a> takes its tasks from; <a href="/code-data">the code domain rules</a> state that evaluation tasks are checked for overlap with public benchmarks. Keep a registry of the benchmarks decontaminated against, with versions, because benchmarks change and new ones appear after a dataset is built. A training set decontaminated against last year's list is contaminated against this year's.</p>
+<h2 id="what-decontamination-still-cannot-prove">What decontamination still cannot prove</h2>
+<p>A clean split proves that your evaluation set is independent of your training set. It says nothing about the pretrained model you start from, which may have seen the public benchmark, or a paraphrase of it, long before your data arrived. The honest position is to report both: the overlap between your own splits, and the fact that the base model's exposure is unknown unless its training data is published. <a href="/blog/did-the-model-change-make-it-worse">Telling whether a model change made things worse</a> depends on an evaluation set whose independence you can actually assert.</p>
+<h2 id="how-to-report-overlap">How to report overlap</h2>
+<p>An overlap report is what turns "decontaminated" from an adjective into a claim with evidence. It should state:</p>
+<ol>
+<li>The group key used for the split, per domain, and how group membership was determined.</li>
+<li>The methods run across the split and against each public benchmark: exact, n-gram size, MinHash threshold, embedding model and similarity threshold.</li>
+<li>The benchmarks and versions checked.</li>
+<li>Counts found per method, and the action taken: removed from training, or kept and flagged, with the reason.</li>
+<li>The sample of candidate pairs a person reviewed, and what share were true overlaps.</li>
+<li>What was not checked, and why.</li>
+</ol>
+<p>A report that gives a single overlap percentage with no method, no benchmark list and no denominator cannot be checked, and <a href="/blog/what-a-data-quality-report-should-contain">a data quality report</a> that cannot be checked is a brochure.</p>
+<p>Runix Data splits evaluation data from training data by source, so that near-duplicates cannot sit on both sides, and, in the code domain, checks evaluation sets for overlap with public benchmarks; the quality report that accompanies every delivery states what was dropped and why. <a href="/data">Runix Data</a> is in early access, by engagement, priced per project or by volume and quoted before any work starts.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>Why is a random train and evaluation split a problem?</h3>
+<p>Rows in real corpora are not independent: forks, restated filings, quoted cases and episodes from one session are near-duplicates of each other. A random split puts members of each group on both sides, so the evaluation score partly measures memorisation.</p>
+<h3>What should the unit of the split be?</h3>
+<p>The thing that generates correlated records: the repository for code, the document or source for text, the entity for records about companies, cases or patients, and a cut-off date for anything time-ordered.</p>
+<h3>Is n-gram decontamination against public benchmarks enough?</h3>
+<p>No. Paraphrased or translated copies of benchmark items pass n-gram checks, so decontamination needs embedding similarity and human review as well, plus a versioned registry of the benchmarks that were checked.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/data">Runix Data</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/deduplication-exact-near-semantic">Exact, near and semantic: why near-duplicate detection for training data needs all three</a></li>
+    <li><a href="/blog/verified-coding-tasks-fail-to-pass">Fail-to-pass and pass-to-pass tests in clean containers: what makes a coding task valid</a></li>
+    <li><a href="/blog/what-a-data-quality-report-should-contain">What a data quality report should contain, and how to read one sceptically</a></li>
+    <li><a href="/data">Runix Data: domain data for training and evaluation</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

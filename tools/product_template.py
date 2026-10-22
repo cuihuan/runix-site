@@ -188,6 +188,7 @@ PRODUCTS = {
             ("Metadata", "Masters replicated with Raft", "This page"),
             ("Mount modes", "Cache mode: the bucket is the source of truth and writes pass through. File-system mode: operations complete in the cluster, then sync to the bucket", '<a href="/docs/fs">Quick start</a>'),
             ("Kubernetes", "The CSI driver provisions ReadWriteMany volumes by creating a directory, not by calling a cloud API", '<a href="/docs/fs">Quick start</a>'),
+            ("Source", "Public Runix FS fork of Curvine under Apache 2.0", '<a href="https://github.com/Runix-lab/runix-fs" rel="noopener">Source and development</a>'),
             ("Deployment", "Sized and deployed with you, in your own cloud account; supported under contract with Runix AI Inc", "This page"),
             ("Published results", "The Curvine project's own figures, labelled as such; not a Runix service level", '<a href="/fs#published-results">Published results</a>'),
             ("Pricing", "Quoted per deployment during early access", '<a href="/plans">Pricing</a>'),

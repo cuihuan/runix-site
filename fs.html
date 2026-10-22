@@ -224,7 +224,7 @@
         <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%20FS%20early%20access">Request early access</a><!--/email_off-->
         <a class="btn btn-ghost" href="/docs/fs">Read the quick start</a>
       </div>
-      <p class="hero-note">Built on Curvine, an open-source CNCF Sandbox project under the Apache 2.0 licence. <a href="/blog/introducing-runix-fs">Read the launch post</a>.</p>
+      <p class="hero-note">Built on Curvine, an open-source CNCF Sandbox project under the Apache 2.0 licence. <a href="https://github.com/Runix-lab/runix-fs" rel="noopener">Runix FS source and development</a> · <a href="/blog/introducing-runix-fs">Read the launch post</a>.</p>
     </div>
     <div>
 <!--pt:glance-->
@@ -252,7 +252,8 @@
     <span>Apache 2.0</span>
     <span>CNCF Sandbox project</span>
     <span>Rust core, no garbage collector</span>
-    <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine on GitHub &rarr;</a>
+    <a href="https://github.com/Runix-lab/runix-fs" rel="noopener">Runix FS on GitHub &rarr;</a>
+    <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine upstream &rarr;</a>
   </div>
 </div>
 
@@ -549,6 +550,7 @@ $ bin/cv fs free -r /training-data/imagenet</pre>
           <tr><th scope="row">Metadata</th><td>Masters replicated with Raft</td><td>This page</td></tr>
           <tr><th scope="row">Mount modes</th><td>Cache mode: the bucket is the source of truth and writes pass through. File-system mode: operations complete in the cluster, then sync to the bucket</td><td><a href="/docs/fs">Quick start</a></td></tr>
           <tr><th scope="row">Kubernetes</th><td>The CSI driver provisions ReadWriteMany volumes by creating a directory, not by calling a cloud API</td><td><a href="/docs/fs">Quick start</a></td></tr>
+          <tr><th scope="row">Source</th><td>Public Runix FS fork of Curvine under Apache 2.0</td><td><a href="https://github.com/Runix-lab/runix-fs" rel="noopener">Source and development</a></td></tr>
           <tr><th scope="row">Deployment</th><td>Sized and deployed with you, in your own cloud account; supported under contract with Runix AI Inc</td><td>This page</td></tr>
           <tr><th scope="row">Published results</th><td>The Curvine project's own figures, labelled as such; not a Runix service level</td><td><a href="/fs#published-results">Published results</a></td></tr>
           <tr><th scope="row">Pricing</th><td>Quoted per deployment during early access</td><td><a href="/plans">Pricing</a></td></tr>

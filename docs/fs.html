@@ -210,7 +210,7 @@
 
 <article class="article">
 
-<p><a href="/fs">Runix FS</a> is a POSIX file system and a multi-tier distributed cache over object storage, built on <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a>, the open-source project it packages. Because the engine is open source, you can try it today on a single machine with the steps below; they follow the Curvine documentation, and every command on this page comes from it. In early access, we deploy and size the production cluster with you.</p>
+<p><a href="/fs">Runix FS</a> is a POSIX file system and a multi-tier distributed cache over object storage, developed in the public <a href="https://github.com/Runix-lab/runix-fs" rel="noopener">Runix FS repository</a>, an Apache 2.0 fork of <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a>. Source build instructions and development notes are in the <a href="https://github.com/Runix-lab/runix-fs#readme" rel="noopener">fork README</a>. The engine commands below follow the Curvine documentation and retain the upstream binary names. In early access, we deploy and size the production cluster with you.</p>
 
 <h2 id="what-you-deploy">1. What you deploy</h2>
 <ul>
@@ -221,14 +221,14 @@
 <p>File paths map one-to-one to object keys, so what is in the bucket keeps its original layout and stays readable without the cluster. How writes reach the bucket depends on the mount mode, in the next steps.</p>
 
 <h2 id="try-it-on-one-machine">2. Try it on one machine</h2>
-<p>Download a release package from the <a href="https://github.com/CurvineIO/curvine/releases" rel="noopener">Curvine releases page</a> (at the time of writing, v0.4.1 is the newest release with a prebuilt package, for Linux on x86_64) or build from source, then start a local cluster from the extracted directory:</p>
+<p>For Runix FS, build from source using the <a href="https://github.com/Runix-lab/runix-fs#readme" rel="noopener">fork README</a>. To evaluate the upstream engine instead, choose a package compatible with your Linux system from the <a href="https://github.com/CurvineIO/curvine/releases" rel="noopener">Curvine releases page</a>; those are upstream Curvine packages, not Runix FS releases. From the built or extracted distribution directory, start a local cluster:</p>
 <pre><code>export CURVINE_MASTER_HOSTNAME=localhost
 ./bin/restart-all.sh</code></pre>
 <p>This starts a master, a worker and the FUSE daemon, mounted at <code>/curvine-fuse</code> by default. Confirm the cluster is healthy and list the namespace:</p>
 <pre><code>bin/cv report
 bin/cv fs mkdir /quick-start
 bin/cv fs ls /</code></pre>
-<p>The web UI is served on port 9000 on the master and 9001 on the worker. <code>localhost</code> is only right for a single machine: on more than one node, set the master, worker and client hostnames to addresses the other nodes can reach.</p>
+<p>The default web UI ports are 9001 on the master and 9002 on the worker; check your cluster configuration if you override them. <code>localhost</code> is only right for a single machine: on more than one node, set the master, worker and client hostnames to addresses the other nodes can reach.</p>
 
 <h2 id="attach-a-bucket">3. Attach a bucket</h2>
 <p>A mount attaches a bucket prefix to a path in the namespace, in one of two modes. <code>cache_mode</code> is for read-heavy data: the bucket stays the source of truth, writes pass straight through to it, and a read that misses the cache is served from the bucket while the cache fills in the background. <code>fs_mode</code>, the default, is for write-heavy work: every operation completes in Runix FS first and is synchronised to the bucket asynchronously. This example uses <code>cache_mode</code>:</p>

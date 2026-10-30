@@ -1504,7 +1504,8 @@ main a.hero-kicker:not(.btn):hover { border-color: var(--ink-3); color: var(--in
 }
 .pmap-cells { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; padding: 14px; list-style: none; margin: 0; }
 .pmap-cells li { display: grid; min-width: 0; }
-.pmap-host { padding: 6px 4px 0; font: 500 12.5px/1.4 var(--mono); }
+.pmap-tile { display: grid; min-width: 0; }
+.pmap-host { padding: 10px 4px 0; font: 500 12.5px/1.4 var(--mono); }
 .pmap-host a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; }
 .pmap-host a:hover { color: var(--indigo); }
 main a.pmap-cell:not(.btn) {

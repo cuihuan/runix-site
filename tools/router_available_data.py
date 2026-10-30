@@ -49,7 +49,7 @@ ROUTER_HOW = '''<section class="section" id="how">
           <path d="M476 150 C 530 150, 540 104, 596 104" marker-end="url(#ar)" fill="none"/>
           <text x="540" y="118" class="d-edge">forwarded</text>
         </g>
-        <g class="d-flow d-idle">
+        <g class="d-flow">
           <path d="M476 200 C 530 200, 540 236, 596 236" marker-end="url(#ar)" fill="none" stroke-dasharray="2 6"/>
           <text x="540" y="246" class="d-edge">recorded</text>
         </g>
@@ -243,7 +243,8 @@ SITES = {
 }
 '''
 
-HOST_CSS = '''.pmap-host { padding: 6px 4px 0; font: 500 12.5px/1.4 var(--mono); }
+HOST_CSS = '''.pmap-tile { display: grid; min-width: 0; }
+.pmap-host { padding: 10px 4px 0; font: 500 12.5px/1.4 var(--mono); }
 .pmap-host a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; }
 .pmap-host a:hover { color: var(--indigo); }
 '''
@@ -305,8 +306,8 @@ EDITS = [
      """site = SITES.get(pk)
             host = (f'<span class="pmap-host"><a href="https://{site}/">{site}</a></span>'
                     if site else "")
-            out.append(f'{i3}<li><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
-                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a>{host}</li>')"""),
+            out.append(f'{i3}<li><div class="pmap-tile"><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
+                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a></div>{host}</li>')"""),
     ("after", "assets/style.css", ".pmap-cells li { display: grid; min-width: 0; }\n", HOST_CSS),
     ("tools/product_template.py", 'live = " pbar-live" if status == "early access" else ""',
      'live = " pbar-live" if status in ("available", "early access") else ""'),

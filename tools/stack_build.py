@@ -46,8 +46,8 @@ def home_stack(indent):
             site = SITES.get(pk)
             host = (f'<span class="pmap-host"><a href="https://{site}/">{site}</a></span>'
                     if site else "")
-            out.append(f'{i3}<li><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
-                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a>{host}</li>')
+            out.append(f'{i3}<li><div class="pmap-tile"><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
+                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a></div>{host}</li>')
         out.append(f'{i2}</ul>')
         if key == "data":
             # The domains the data layer works in, each a link to its own page. Drawn under the layer's products because they belong to the

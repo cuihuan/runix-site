@@ -588,3 +588,17 @@ for f in (B + "auto-routing-versus-a-pinned-model-id.html", "tools/posts/auto-ro
     q = j if f.endswith(".json") else (lambda s: s)
     EDITS += [(f, q(o), q(n)) for o, n in ((AUTO1_OLD, AUTO1_NEW), (AUTO2_OLD, AUTO2_NEW), (AUTO3_OLD, AUTO3_NEW),
                                            (AUTO4_OLD, AUTO4_NEW), (AUTO5_OLD, AUTO5_NEW))]
+
+# Found by a second scan, after the first deploy candidate was rendered.
+EDITS += [
+    (R, "central key custody, written data terms, and failover that fires mid-request, behind one OpenAI-compatible API.",
+     "one OpenAI-compatible API and one key, with per-key quotas and allowlists, written data terms, and a log of every request with its cost."),
+    ("index.html", "<p>The gateway is running traffic. The file system,", "<p>The gateway is available today. The file system,"),
+    ("about.html", "one endpoint, central keys, written data terms, running traffic today.",
+     "one endpoint, central keys, written data terms, available today."),
+    (B + "rebuild-ai-unix.html", ", in early access and running traffic.", ", available today."),
+    (B + "rebuild-ai-unix.html", "with central key custody, per-key quotas and failover that fires mid-request, so the application",
+     "with central key custody, per-key quotas and a log of every request with its cost, so the application"),
+    (B + "rebuild-ai-unix.html", "Failover between providers happens mid-request with streaming preserved.",
+     "Provider errors come back in the OpenAI shape with a request id, and streams pass through unbuffered."),
+]

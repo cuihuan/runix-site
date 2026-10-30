@@ -215,17 +215,17 @@
 
 <h2 id="two-policies-behind-one-endpoint">Two policies behind one endpoint</h2>
 
-<p>The first policy is a pinned model id: the request names a model, and the router sends it to a provider that serves that model. On <a href="/router">Runix Router</a>, an explicit id pins the model, and failover stays within the providers that serve it. If the first provider fails mid-request, the retry goes to another provider of the same model, never to a different model.</p>
+<p>The first policy is a pinned model id: the request names a model, and the router sends it to a provider that serves that model. On <a href="/router">Runix Router</a>, every request names its model by the vendor's id, and failover between providers is set up per account. If the first provider fails mid-request, the retry goes to another provider of the same model, never to a different model.</p>
 
-<p>The second policy is <code>auto</code>: the request leaves the choice to the router. On Router, <code>auto</code> chooses by cost, health and the policy attached to the key, and a key's allowed models are the outer boundary of any choice made on its behalf. The application sends one string and receives an answer; which model produced it is recorded in the gateway's request-level trail: who called what, when, with which model.</p>
+<p>The second policy is <code>auto</code>: the request leaves the choice to the router. On a router that offers it, <code>auto</code> chooses by cost, health and the policy attached to the key, and a key's allowed models are the outer boundary of any choice made on its behalf. The application sends one string and receives an answer; which model produced it is recorded in the gateway's request-level trail: who called what, when, with which model.</p>
 
 <p>The two are not exclusive: the <code>model</code> field travels with every request, so one key can pin on one route and send <code>auto</code> on another. What matters is that each route chooses deliberately, because the trade-offs run in opposite directions.</p>
 
-<pre><code>curl https://api.router.runixcloud.io/v1/chat/completions \
+<pre><code>curl https://router-api.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
   -d '{"model": "auto", "messages": [{"role": "user", "content": "..."}]}'
 
-curl https://api.router.runixcloud.io/v1/chat/completions \
+curl https://router-api.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
   -d '{"model": "MODEL_ID", "messages": [{"role": "user", "content": "..."}]}'</code></pre>
 
@@ -241,7 +241,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
 
 <p>Send <code>auto</code> when several models clear your quality bar and the differences between them are cost and availability. Classification, extraction into a validated schema, summarisation of internal text and background enrichment usually qualify. For this traffic the question of which model has no product answer, so letting cost and health decide is the honest policy, not the lazy one.</p>
 
-<p><code>auto</code> can also widen the failover set, where the router's policy allows it. A pinned request can only move between providers of one model; a router that chose the model for an <code>auto</code> request may choose again when every provider of the first is rate-limiting or down, within the key's allowed models. Whether a router does this is a question to ask it; Runix documents failover as provider to provider. The price is that the model under a route can change without a deploy of yours; the rest of this post is about living with that.</p>
+<p><code>auto</code> can also widen the failover set, where the router's policy allows it. A pinned request can only move between providers of one model; a router that chose the model for an <code>auto</code> request may choose again when every provider of the first is rate-limiting or down, within the key's allowed models. Whether a router does this is a question to ask it; Runix Router does not choose a model for you. The price is that the model under a route can change without a deploy of yours; the rest of this post is about living with that.</p>
 
 <h2 id="what-changes-with-an-llm-routing-policy">What changes with an LLM routing policy</h2>
 
@@ -282,7 +282,7 @@ curl https://api.router.runixcloud.io/v1/chat/completions \
 
 <p>Whatever the policy, the application should never learn which provider answered; that is the point of a gateway. The logs are where that knowledge lives, and the request id is how an engineer gets it back at three in the morning.</p>
 
-<p>Runix Router is in early access. It accepts <code>auto</code> or an explicit model id on every request, applies allowed models and routing per key, and returns a request id on every response; the request shape is in the <a href="/docs/router">Router quickstart</a>. There is no published SLA during early access; the failover mechanism is documented rather than promised.</p>
+<p>Runix Router is available. It takes the vendor's model id on every request, applies allowed models per key, and returns a request id on every response; the request shape is in the <a href="/docs/router">Router quickstart</a>. Service levels are agreed per account in the order form.</p>
 
 <h2 id="questions">Questions this raises</h2>
 <h3>Does a pinned model id also pin the provider?</h3>

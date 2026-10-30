@@ -25,6 +25,20 @@ PAGES = ["pricing", "security", "about", "careers", "router", "fs", "pipeline",
          "acceptable-use"]
 
 
+# gateway.runixcloud.io is the old name of router.runixcloud.io, and both are
+# custom domains of one Pages project. _redirects cannot match on hostname, so
+# a Pages Function sends the old name over, path and query kept.
+GATEWAY_REDIRECT = """export async function onRequest({ request, next }) {
+  const url = new URL(request.url);
+  if (url.hostname === "gateway.runixcloud.io") {
+    url.hostname = "router.runixcloud.io";
+    return Response.redirect(url.toString(), 301);
+  }
+  return next();
+}
+"""
+
+
 def absolutize(html):
     """Point every internal link at the main site.
 
@@ -76,6 +90,9 @@ def main(outdir):
         # problem even when the canonical is correct.
         open(os.path.join(out, "404.html"), "w").write(
             NOT_FOUND.replace("MAIN_SITE", MAIN))
+        if sub == "gateway":
+            os.makedirs(os.path.join(out, "functions"))
+            open(os.path.join(out, "functions", "_middleware.js"), "w").write(GATEWAY_REDIRECT)
         left = re.findall(r'href="(?!https?://|mailto:|tel:|#|assets/)[^"]+"', html)
         status = "OK" if not left else f"UNRESOLVED: {left}"
         print(f"{sub}: {status}")

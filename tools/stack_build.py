@@ -16,7 +16,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from stack import LAYERS, PRODUCTS, LAYER_OF, DOMAINS, HUBS, AGENT_DOMAINS, QUALIFIER, products_in  # noqa: E402
+from stack import LAYERS, PRODUCTS, LAYER_OF, DOMAINS, HUBS, AGENT_DOMAINS, QUALIFIER, SITES, products_in  # noqa: E402
 
 START, END = "<!--stack-->", "<!--/stack-->"
 GROUND = ("GPUs, power and cloud capacity in your own account, with the "
@@ -39,12 +39,15 @@ def home_stack(indent):
         out.append(f'{i2}<ul class="pmap-cells">')
         for pk in products_in(key):
             _, href, pname, line, _l, status, tag = PRODUCTS[pk]
-            live = " pmap-live" if status == "early access" else ""
+            live = " pmap-live" if status in ("available", "early access") else ""
             new = f" <i>{tag}</i>" if tag else ""
             q = QUALIFIER.get(pk)
             qual = f'<span class="pmap-q">{q}</span>' if q else ""
+            site = SITES.get(pk)
+            host = (f'<span class="pmap-host"><a href="https://{site}/">{site}</a></span>'
+                    if site else "")
             out.append(f'{i3}<li><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
-                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a></li>')
+                       f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a>{host}</li>')
         out.append(f'{i2}</ul>')
         if key == "data":
             # The domains the data layer works in, each a link to its own page. Drawn under the layer's products because they belong to the

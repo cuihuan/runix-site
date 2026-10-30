@@ -16,12 +16,12 @@
 <link rel="preload" href="assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css?v=73">
 <script src="assets/site-config.js?v=15" defer></script>
-<title>LLM Failover: How Runix Handles Provider Outages | Runix</title>
-<meta name="description" content="How Runix Router handles a failing provider: circuit breakers, retry budgets and mid-stream failover. No published SLA during early access.">
+<title>When a Provider Fails: Runix Router Reliability | Runix</title>
+<meta name="description" content="What Runix Router does when a provider fails: OpenAI-style errors with request ids, pass-through streams, per-account failover. No public uptime figure.">
 <link rel="canonical" href="https://runixcloud.io/reliability">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="How Runix Router handles provider failure — Runix">
-<meta property="og:description" content="How Runix Router handles a failing provider: circuit breakers, retry budgets and mid-stream failover. No published SLA during early access.">
+<meta property="og:description" content="What Runix Router does when a provider fails: OpenAI-style errors with request ids, pass-through streams, per-account failover. No public uptime figure.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/reliability">
 <meta property="og:site_name" content="Runix Lab">
@@ -91,7 +91,7 @@
 </script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="How Runix Router handles provider failure — Runix">
-<meta name="twitter:description" content="How Runix Router handles a failing provider: circuit breakers, retry budgets and mid-stream failover. No published SLA during early access.">
+<meta name="twitter:description" content="What Runix Router does when a provider fails: OpenAI-style errors with request ids, pass-through streams, per-account failover. No public uptime figure.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 </head>
 <body>
@@ -144,7 +144,7 @@
   <div class="container pbar-inner">
     <a class="pbar-name" href="#overview">Reliability</a>
     <a class="pbar-layer" href="/about">Company</a>
-    <ul class="pbar-links"><li><a href="#no-published-sla-during-early-access">No published SLA during early access</a></li><li><a href="#failure-is-expected-so-it-is-designed-for">Failure is expected, so it is designed for</a></li><li><a href="#why-the-key-matters-here">Why the key matters here</a></li><li><a href="#what-you-can-verify-yourself">What you can verify yourself</a></li><li><a href="#what-is-not-here-yet">What is not here yet</a></li></ul>
+    <ul class="pbar-links"><li><a href="#service-levels-are-agreed-per-account">Service levels are agreed per account</a></li><li><a href="#what-router-does-when-a-provider-fails">What Router does when a provider fails</a></li><li><a href="#failover-between-providers">Failover between providers</a></li><li><a href="#what-you-can-verify-yourself">What you can verify yourself</a></li><li><a href="#what-is-not-here-yet">What is not here yet</a></li></ul>
     <a class="pbar-cta" href="/about#contact">Contact sales</a>
   </div>
 </nav>
@@ -154,57 +154,55 @@
   <div class="container">
     <!--ps:eyebrow--><p class="page-eyebrow">Company</p><!--/ps:eyebrow-->
     <h1>What happens when a provider fails</h1>
-    <p>A gateway earns its place on the bad days. This is the mechanism, described plainly, not a status page, and not a service level agreement.</p>
+    <p>What Router does when a model provider has a bad hour, described plainly: not a status page, and not a service level agreement.</p>
   </div>
 </div>
 <article class="article">
-<h2 id="no-published-sla-during-early-access">No published SLA during early access</h2>
-<p>Start with what this page is not. Runix Router is in early access, and there is no
-published SLA, no uptime percentage and no historical availability chart — because
-publishing one would mean standing behind a number we have not operated long enough to
-promise. What follows is how the system behaves, which is a different and more useful
-claim.</p>
+<h2 id="service-levels-are-agreed-per-account">Service levels are agreed per account</h2>
+<p>Start with what this page is not. There is no published uptime percentage and no
+historical availability chart, because a number on a marketing page has no contract behind
+it. The service level for an account is written into its order form. What follows is how
+Router behaves today, which is the claim we can stand behind for everyone.</p>
 
-<h2 id="failure-is-expected-so-it-is-designed-for">Failure is expected, so it is designed for</h2>
-<p>Model providers degrade. They rate-limit, they time out, they return errors in bursts,
-and they have bad hours that have nothing to do with your code. A router that simply
-forwards requests passes every one of those through to your users.</p>
+<h2 id="what-router-does-when-a-provider-fails">What Router does when a provider fails</h2>
+<p>Each model is served by one provider today, so when that provider fails, the failure
+reaches your application. Router makes it a failure you can handle:</p>
 <ul>
-<li><strong>Errors, rate limits and timeouts trip a circuit breaker.</strong> The request is
-re-issued to a healthy alternative under a retry budget, so a provider's bad hour does not
-become your outage — and the budget exists so that retrying never becomes its own outage.</li>
-<li><strong>Mid-stream failures are re-issued too.</strong> A failure part-way through a
-streamed response is the awkward case most integrations get wrong; the mechanics and the
-edge cases are in <a href="/blog/streaming-llm-failover">how streaming failover works</a>.</li>
-<li><strong>A degrading provider leaves the rotation</strong> before it drags your latency,
-and comes back when health checks pass.</li>
+<li><strong>Errors keep the OpenAI shape and HTTP status.</strong> The retry and fallback
+logic your SDK already has keeps working, because what arrives is what an OpenAI-compatible
+client expects.</li>
+<li><strong>Every response carries a request id</strong>, in the
+<code>X-Runix-Request-Id</code> header and inside error messages, so a failed call can be
+traced to one request rather than argued about.</li>
+<li><strong>Streams pass through, not buffered.</strong> A stream that stops at the provider
+stops for you at the same moment, instead of after a replay, and Router waits up to 15
+minutes for an answer, so a slow-thinking model is not cut off at the gateway.</li>
 </ul>
 
-<h2 id="why-the-key-matters-here">Why the key matters here</h2>
-<p>Failover is only safe if the alternative is one you would have chosen. Routing
-preferences are set per key server-side — cheapest acceptable, latency-first, provider
-allowlists — so when the router moves a request, it moves it inside the boundary you
-defined rather than to whatever happened to be up.</p>
+<h2 id="failover-between-providers">Failover between providers</h2>
+<p>Moving a request to a second provider is only safe when that provider serves the same
+model under terms you would accept. Where an account needs it, failover between providers
+is set up for that account, with the models it covers and the providers it may use named in
+writing. Until that is in place for yours, treat each model as served by one provider and
+keep your own retry logic.</p>
 
 <h2 id="what-you-can-verify-yourself">What you can verify yourself</h2>
-<p>Every response carries a request id, and errors use a structured envelope, so a failure
-can be traced to a specific call rather than argued about. The
-<a href="/docs/router">Router quickstart</a> documents the error shape and the failover
-semantics in full.</p>
+<p>The request id, the <code>usage</code> object on every response and the request log in
+the console are the same records we use. The <a href="/docs/router">Router quickstart</a>
+documents the error shape, the limits a key carries and what happens when a provider fails.</p>
 
 <h2 id="what-is-not-here-yet">What is not here yet</h2>
 <p>A continuously updated public status feed is not live. When it is, it will report
 measured availability rather than an aspiration. Until then, the honest answer to "what is
 your uptime" is that we will tell you what we have measured for your workload, and we will
-not quote a number we cannot evidence. If reliability guarantees are a procurement
-requirement for you, say so during <a href="/access">intake</a> and we will tell you
-plainly whether early access fits.</p>
+not quote a number we cannot evidence. If availability guarantees are a procurement
+requirement for you, say so in your <a href="/access">first message</a>.</p>
 </article>
 <section class="section">
   <div class="container">
     <div class="cta-band">
       <h2 id="reliability-requirements-to-check-against">Reliability requirements to check against</h2>
-      <p>If availability guarantees are part of your procurement, bring them to the intake. We will tell you plainly whether early access fits, before you spend time on an evaluation.</p>
+      <p>If availability guarantees are part of your procurement, bring them to the first conversation. We will tell you plainly what we can commit to, before you spend time on an evaluation.</p>
       <a class="btn btn-grad" href="/about#contact">Talk to us about it</a>
     </div>
   </div>

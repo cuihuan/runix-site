@@ -21,6 +21,14 @@ Idempotent. Run from the site root.
 """
 import os
 import pathlib
+import sys
+
+# SUPERSEDED 2026-10-30 by tools/router_available.py. This figure showed
+# failover between providers, which Router does not do by default; the figure
+# on /router is now the path of one request. Re-running this would add nothing
+# (it skips a page that has a figure), but its text is no longer the page's.
+print("add_router_diagram: superseded by router_available.py; nothing to do")
+sys.exit(0)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)

@@ -29,39 +29,39 @@ from stack import PRODUCTS as STACK, LAYER_OF  # noqa: E402
 
 CURL = '''<div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>one request, any model</b></div>
-<pre>$ curl https://api.router.runixcloud.io/v1/chat/completions \\
+<pre>$ curl https://router-api.runixcloud.io/v1/chat/completions \\
     -H <span class="g">"Authorization: Bearer $RUNIX_API_KEY"</span> \\
-    -d <span class="g">'{"model": "auto",
+    -d <span class="g">'{"model": "your-model-id",
          "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
       </div>'''
 
 PRODUCTS = {
     "router": {
-        "sub": "The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request, behind one OpenAI-compatible API.",
+        "sub": "The control plane between your product and the model providers: one OpenAI-compatible API and one key, with per-key quotas and allowlists, written data terms, and a log of every request with its cost.",
         "note": 'Evaluation credits on request; no card, nothing to install. Billing is usage-based in USD, <a href="/plans">quoted per workload</a>.',
         "glance": [
             ("Interface", "OpenAI-compatible API"),
-            ("Endpoint", '<code>api.router.runixcloud.io/v1</code>'),
-            ("Keys", "Per key: quota, limits, allowed models, routing"),
+            ("Endpoint", '<code>router-api.runixcloud.io/v1</code>'),
+            ("Keys", "Per key: quota, expiry, allowed models, IP allowlist"),
             ("Models", 'Public list prices, <a href="/router-models">on the catalogue</a>'),
-            ("Failover", "Mid-request, streaming preserved"),
+            ("Request log", "Model, tokens, cost and request id, per call"),
             ("Data terms", "Content never used for training"),
             ("Billing", "Usage-based, USD, itemised"),
             ("Contracting", "Runix AI Inc &middot; MSA &amp; DPA on request"),
-            ("Status", "Early access, running traffic"),
+            ("Status", "Available; accounts opened by our team"),
         ],
         "example": (CURL, "one request, any model",
-                    'An OpenAI-compatible request. <code>"auto"</code> lets Router choose by cost, health and your key\'s policy; an explicit model id pins the model, and failover stays within the providers that serve it.'),
+                    'An OpenAI-compatible request. The model is named by its vendor\'s own id, and <code>GET /v1/models</code> lists every id a key may call.'),
         "specs": [
-            ("API surface", "Chat completions and model listing, with server-sent events for streaming", '<a href="/docs/router">Router quickstart</a>'),
-            ("Model selection", '<code>"auto"</code>, or an explicit model id', '<a href="/docs/router">Router quickstart</a>'),
+            ("API surface", "Chat completions, Responses and model listing, with server-sent events for streaming", '<a href="/docs/router">Router quickstart</a>'),
+            ("Model selection", 'The vendor\'s own model id; <code>GET /v1/models</code> lists what a key may call', '<a href="/docs/router">Router quickstart</a>'),
             ("Models and prices", "Every model on the catalogue at its vendor's public list price; contract rates in writing", '<a href="/router-models">Models catalogue</a>'),
-            ("Failover", "Provider to provider, mid-request, streaming preserved", '<a href="/reliability">Reliability</a>'),
-            ("Limits", "Per key: rate limits, quotas and allowed models, revocable without a redeploy", '<a href="/access">Access</a>'),
+            ("Provider failure", "OpenAI-style error with a request id; failover between providers set up per account", '<a href="/reliability">Reliability</a>'),
+            ("Limits", "Per key: quota, expiry, allowed models and IP allowlist, changed without a redeploy", '<a href="/access">Access</a>'),
             ("Errors", "OpenAI-style error envelope, with a request id on every response", '<a href="/docs/router">Router quickstart</a>'),
             ("Data handling", "Content processed to serve the request; operational metadata kept for billing and support", '<a href="/privacy">Privacy Policy</a> and <a href="/security">Security</a>'),
             ("Transport", "TLS 1.3 and 1.2; 1.0 and 1.1 refused", '<a href="/security">Security</a>'),
-            ("Service level", "No published SLA during early access; the failover mechanism is documented", '<a href="/reliability">Reliability</a>'),
+            ("Service level", "No public uptime figure; service levels agreed per account in the order form", '<a href="/reliability">Reliability</a>'),
             ("Billing", "Usage-based in USD, per token or per request by model; prepaid balance or invoice", '<a href="/plans">Pricing</a>'),
         ],
         "with": [
@@ -72,10 +72,10 @@ PRODUCTS = {
         "after_specs": [("/router-models", "Models")],
         "start": [
             ("Tell us what you are building", "Models, expected volume, latency needs. We reply within one business day and set the account up."),
-            ("Evaluate before you pay", "Evaluation credits on request, full router functionality, no card. Integration is a base-URL change."),
+            ("Evaluate before you pay", "Evaluation credits on request, the full product, no card. Integration is a base-URL change."),
             ("Go to production in writing", "Rates stated before you commit; MSA and DPA on request; prepaid balance or invoice, in USD."),
         ],
-        "labels": {"three things that block": "Capabilities", "bad hour": "How it works"},
+        "labels": {"three things that block": "Capabilities", "one request": "How it works"},
     },
     "models": {
         "glance": [
@@ -441,7 +441,7 @@ def bar_html(key, c, doc, primary):
     links.append(("#early-access", "How to start") if 'id="early-access"' in doc else ("#start", "How to start"))
     links.append(("#faq", "Questions"))
     lis = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in links)
-    live = " pbar-live" if status == "early access" else ""
+    live = " pbar-live" if status in ("available", "early access") else ""
     p_href, p_label = primary
     cta = f'<a class="pbar-cta" href="{p_href}">{p_label}</a>'
     if p_href.startswith("mailto:"):

@@ -14,11 +14,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Runix Router Docs — OpenAI-Compatible API Quickstart</title>
-<meta name="description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, failover semantics, limits and data handling. OpenAI-compatible.">
+<meta name="description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, provider errors, limits and data handling. OpenAI-compatible.">
 <link rel="canonical" href="https://runixcloud.io/docs/router">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
 <meta property="og:title" content="Runix Router Docs — Quickstart &amp; Integration Guide">
-<meta property="og:description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, failover semantics, limits and data handling. OpenAI-compatible.">
+<meta property="og:description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, provider errors, limits and data handling. OpenAI-compatible.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://runixcloud.io/docs/router">
 <meta property="og:site_name" content="Runix Lab">
@@ -36,7 +36,7 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "Router quickstart & integration guide",
-  "description": "Integrate Runix Router in minutes: base URL and key, model selection, streaming, failover semantics, limits and data handling. OpenAI-compatible.",
+  "description": "Integrate Runix Router in minutes: base URL and key, model selection, streaming, provider errors, limits and data handling. OpenAI-compatible.",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://runixcloud.io/docs/router"
@@ -104,7 +104,7 @@
 </script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix Router Docs — Quickstart &amp; Integration Guide">
-<meta name="twitter:description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, failover semantics, limits and data handling. OpenAI-compatible.">
+<meta name="twitter:description" content="Integrate Runix Router in minutes: base URL and key, model selection, streaming, provider errors, limits and data handling. OpenAI-compatible.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 </head>
 <body>
@@ -201,7 +201,7 @@
     <li><a href="#quickstart">1. Quickstart</a></li>
     <li><a href="#model-selection">2. Model selection</a></li>
     <li><a href="#streaming">3. Streaming</a></li>
-    <li><a href="#failover-semantics">4. Failover semantics</a></li>
+    <li><a href="#when-a-provider-fails">4. When a provider fails</a></li>
     <li><a href="#limits-usage-and-cost">5. Limits, usage and cost</a></li>
     <li><a href="#errors-and-request-ids">6. Errors and request ids</a></li>
     <li><a href="#data-handling">7. Data handling</a></li>
@@ -211,15 +211,16 @@
 
 <article class="article">
 
-<p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, failover semantics, and the operational details teams ask about. Router is in <a href="/router">early access</a>: keys are issued after a short intake, and onboarded teams get support directly from the engineers.</p>
+<p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, what happens when a provider fails, and the operational details teams ask about. Router is <a href="/router">available</a>, with accounts opened by our team, and support comes directly from the engineers.</p>
 
 <h2 id="quickstart">1. Quickstart</h2>
-<p>Set your client's base URL to <code>https://api.router.runixcloud.io/v1</code> and use the key issued during onboarding. Everything else about your existing integration stays the same.</p>
+<p>Set your client's base URL to <code>https://router-api.runixcloud.io/v1</code> and use a key from the <b>Tokens</b> page of the <a href="https://router-console.runixcloud.io/">console</a>. Everything else about your existing integration stays the same.</p>
 <pre><code># cURL
-curl https://api.router.runixcloud.io/v1/chat/completions \
+curl https://router-api.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
+  -H "Content-Type: application/json" \
   -d '{
-    "model": "auto",
+    "model": "your-model-id",
     "messages": [{"role": "user", "content": "Hello"}]
   }'</code></pre>
 <pre><code># OpenAI SDK (Python)
@@ -227,50 +228,51 @@ import os
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.router.runixcloud.io/v1",
+    base_url="https://router-api.runixcloud.io/v1",
     api_key=os.environ["RUNIX_API_KEY"],
 )
 resp = client.chat.completions.create(
-    model="auto",
+    model="your-model-id",
     messages=[{"role": "user", "content": "Hello"}],
 )</code></pre>
-<p>The same base-URL swap works for any tool that speaks the OpenAI API: LangChain, LlamaIndex, the Vercel AI SDK, or plain HTTP.</p>
+<p>The same base-URL swap works for any tool that speaks the OpenAI API: LangChain, LlamaIndex, the Vercel AI SDK, or plain HTTP. Replace <code>your-model-id</code> with an id from <code>GET /v1/models</code> or the <a href="/router-models">models catalogue</a>. The Responses API is served at the same base URL, under <code>/v1/responses</code>.</p>
 
 <h2 id="model-selection">2. Model selection</h2>
-<p>Two ways to choose what serves a request:</p>
+<p>Every request names its model in the <code>model</code> field, and Router sends it to the provider that serves that model.</p>
 <ul>
-<li><strong>Pin a model id</strong> — pass a specific model id in the <code>model</code> field and Router dispatches to that model, applying failover only within the providers that serve it.</li>
-<li><strong>Route automatically</strong>: pass <code>"model": "auto"</code> and Router selects by cost, health and your account's configuration. Routing preferences are set per key during onboarding; tell us your priorities (cheapest acceptable, latency-first, provider allowlists) and they are applied server-side.</li>
-<li><strong>Discover what a key can call</strong>, <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us.</li>
+<li><strong>Model ids are the vendors' own.</strong> Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-5</code>), and other vendors' models keep their catalogue names: there is no Runix-specific alias table to maintain, so an id copied from a vendor's announcement works as-is.</li>
+<li><strong>Discover what a key can call</strong>: <code>GET /v1/models</code> with your key returns the model ids that key is allowed to use, so you can list them from code instead of asking us. A request for a model outside that list is refused before it reaches a provider.</li>
+<li><strong>Prices</strong> are on the <a href="/router-models">models catalogue</a>, at each vendor's public list price.</li>
 </ul>
-<p>Model ids are the vendors’ own. Anthropic models answer to their official hyphenated ids (<code>claude-opus-5</code>, <code>claude-sonnet-5</code>), and other vendors’ models keep their catalogue names: there is no Runix-specific alias table to maintain, so an id copied from a vendor’s announcement works as-is. The authoritative list for your key is always <code>GET /v1/models</code>.</p>
 
 <h2 id="streaming">3. Streaming</h2>
 <p>Pass <code>"stream": true</code> and responses arrive as standard server-sent events, exactly as your SDK already expects. Streaming passes through the router rather than being buffered and replayed, including tool-call deltas, so the first token is forwarded as soon as the provider emits it rather than after the response completes. That is a statement about the mechanism, not a performance claim: measure time to first token against the provider directly and you will see what the router costs you.</p>
 
-<h2 id="failover-semantics">4. Failover semantics</h2>
-<p>What happens when an upstream provider degrades is the part worth reading twice:</p>
+<h2 id="when-a-provider-fails">4. When a provider fails</h2>
+<p>Each model is served by one provider today, so a provider's failure reaches you, in a form your client already handles:</p>
 <ul>
-<li><strong>Errors, rate limits and timeouts</strong> trip a circuit breaker; the request is re-issued to a healthy alternative under a retry budget, so one provider's bad hour does not become your outage.</li>
-<li><strong>Mid-stream failures</strong> are re-issued as well: see <a href="/blog/streaming-llm-failover">how streaming failover works</a> for the mechanics and the edge cases.</li>
-<li><strong>A degrading provider</strong> is taken out of rotation before it drags your latency, and returns when health checks pass.</li>
+<li><strong>The error keeps the OpenAI shape and HTTP status</strong>, so the retry and fallback logic in your SDK keeps working unchanged.</li>
+<li><strong>Every response carries a request id</strong> (section 6), so a failed call can be traced to that exact request.</li>
+<li><strong>Long answers are not cut off at the gateway</strong>: Router waits up to 15 minutes for a response, and a stream that stops at the provider stops for you at the same moment.</li>
+<li><strong>Failover to a second provider</strong> is set up per account where it is needed, with the models it covers and the providers it may use named in writing. Without it, keep your own retries.</li>
 </ul>
-<p>For the background on failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>; why retries should be a spend budget rather than a count (and which errors deserve one at all) is covered in <a href="/blog/llm-retry-budget">Retry budgets for LLM APIs</a>.</p>
+<p>For the background on failure taxonomy, read <a href="/blog/model-failover">Model failover for production LLM traffic</a>; why retries should be a spend budget rather than a count (and which errors deserve one at all) is covered in <a href="/blog/llm-retry-budget">Retry budgets for LLM APIs</a>. How Router behaves today is on <a href="/reliability">Reliability</a>.</p>
 
 <h2 id="limits-usage-and-cost">5. Limits, usage and cost</h2>
 <ul>
+<li><strong>Per-key limits</strong>: each key can carry a spending quota, an expiry date, a list of allowed models and an IP allowlist, set on the <b>Tokens</b> page of the console and changed without a redeploy. A call outside them is refused before it reaches a provider.</li>
 <li><strong>List-price metering</strong> (requests are metered per token at the upstream
-    vendors’ published rates, with input, output, cached-read and cache-write tokens priced
+    vendors' published rates, with input, output, cached-read and cache-write tokens priced
     separately) the same structure the vendors themselves publish. We audit the rate table
-    against the vendors’ own pricing pages; the mechanics of why token bills diverge from
+    against the vendors' own pricing pages; the mechanics of why token bills diverge from
     price lists, and how to check one by hand, are in
-    <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">Why your LLM bill doesn’t
+    <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">Why your LLM bill doesn't
     match the price list</a>.</li>
 <li><strong>Usage on every response</strong>: the <code>usage</code> object carries the full
     token breakdown, cached tokens included, so any single request can be reconciled against
     the rate card without asking us. Billing is usage-based in USD with itemised statements;
     see <a href="/plans">Pricing</a> for how quotes work.</li>
-<li><strong>Per-key quotas</strong>: each key carries limits and quotas set during onboarding, revocable and adjustable without a redeploy.</li>
+<li><strong>The request log</strong>: every call is listed on the <b>Logs</b> page of the console with its key, model, tokens and cost.</li>
 <li><strong>Attribution</strong>: issue separate keys per team or product to get cost attribution along the lines your finance team actually asks about; the reasoning is covered in <a href="/blog/llm-cost-attribution">LLM cost attribution</a>.</li>
 </ul>
 
@@ -280,7 +282,7 @@ resp = client.chat.completions.create(
 {
   "error": {
     "code": "",
-    "message": "Invalid token (request id: 20260805082847...)",
+    "message": "Invalid token (request id: 20261030145933...)",
     "type": "runix_error"
   }
 }
@@ -296,20 +298,20 @@ resp = client.chat.completions.create(
 }</code></pre>
 <p>Two things worth knowing before you write error handling. First, branch on the HTTP status
 rather than on <code>error.type</code>: the status is what the OpenAI SDKs already map to
-their own exception classes, and it is the part that will not surprise you. Second, the
-request id lives inside <code>message</code>, not in a field of its own; quote it when you
-contact us and we can trace that exact call.</p>
+their own exception classes, and it is the part that will not surprise you. Second, every
+response carries its request id in the <code>X-Runix-Request-Id</code> header, and an error
+repeats it inside <code>message</code>; quote it when you contact us and we can trace that
+exact call.</p>
 <p>Paths outside <code>/v1</code> on this host are not part of the API surface and do not
-return this envelope. Per-key quota and rate limits are set during onboarding (see section 5);
-when a limit or an upstream failure is involved, the router applies the failover behaviour in
-section 4 before an error reaches you.</p>
+return this envelope. A call refused by a key's limits (section 5) and a call a provider
+failed (section 4) both arrive in this shape.</p>
 
 <h2 id="data-handling">7. Data handling</h2>
 <p>Prompt and response content is processed to serve your request; it is not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. The full statement is in the <a href="/privacy">Privacy Policy</a>, and the security posture in <a href="/security">Security</a>.</p>
 <p>If you are evaluating us — or any gateway — <a href="/blog/llm-gateway-security-review">the security review an LLM gateway should survive</a> is the list of questions we think you should ask, including of Runix.</p>
 
 <h2 id="getting-a-key">8. Getting a key</h2>
-<p>Router is currently <strong>invite-only</strong>: <a href="/about#contact">tell us what you are building</a> — models, expected volume, latency needs — or email <a href="mailto:support@runixcloud.io">support@runixcloud.io</a>, and we reply within one business day and set the account up for you. Evaluation credits are issued on request, so you can test against real traffic before you pay. Existing accounts reach the console at the address in their onboarding email.</p>
+<p>Accounts are opened by our team: <a href="/about#contact">tell us what you are building</a> — models, expected volume, latency needs — or email <a href="mailto:sales@runixcloud.io">sales@runixcloud.io</a>, and we reply within one business day and set the account up for you. Evaluation credits are issued on request, so you can test against real traffic before you pay. Once the account exists, keys are created on the <b>Tokens</b> page of the <a href="https://router-console.runixcloud.io/">console</a>.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>

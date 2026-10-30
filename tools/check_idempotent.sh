@@ -23,7 +23,7 @@ fi
 # were retired from this list on 2026-09-29: each now exits at its top with a
 # SUPERSEDED note, because the site has since moved past what they build and
 # re-running any of them would regress it. flagship_nav owns the header nav.
-BUILDERS="add_closing_ctas add_docs_nav add_router_diagram
+BUILDERS="add_closing_ctas add_docs_nav router_available
           expand_about fix_orphans wrap_tables sync_schema add_related add_glossary
           credits_on_request flagship_nav stack_build build_domain_pages product_template build_models_catalog build_solutions docs_shell page_shell build_blog_index"
 

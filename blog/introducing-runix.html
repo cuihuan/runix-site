@@ -189,7 +189,7 @@
   <h2 id="what-we-are-building">What we are building</h2>
 
   <h3>LLM Gateway</h3>
-  <p>A single OpenAI-compatible API in front of many models across providers. You point your existing SDK at a new base URL, and you get automatic retries, provider failover, model routing, rate-limit handling, and per-key usage and cost tracking. When a provider degrades, the gateway routes around it. When you want to trial a new model, you change one string, not your integration. We run the gateway to a high-availability target, and a public status page is on the roadmap.</p>
+  <p>A single OpenAI-compatible API in front of many models across providers. You point your existing SDK at a new base URL, and you get one key for every model, per-key quotas and allowlists, and per-key usage and cost tracking. When you want to trial a new model, you change one string, not your integration. A public status page is on the roadmap.</p>
 
   <h3>Managed Data Pipelines</h3>
   <p>Most production AI quality problems trace back to the data feeding the system, not the model. Our managed pipelines handle ingestion, cleaning, chunking, embedding, and refresh scheduling for the corpora behind retrieval and fine-tuning workloads. The pipeline is monitored and versioned, so when quality shifts you can see what changed in the data, not just guess.</p>

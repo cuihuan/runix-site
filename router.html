@@ -13,12 +13,12 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Runix Router — LLM Routing, Failover &amp; Cost Control</title>
-<meta name="description" content="One OpenAI-compatible endpoint that routes across model providers: mid-request failover, central key custody, per-key quotas and cost tracking.">
+<title>Runix Router — One LLM API Key for Every Model</title>
+<meta name="description" content="One OpenAI-compatible endpoint across model providers: central key custody, per-key quotas and allowlists, and a log of every request with its cost.">
 <link rel="canonical" href="https://runixcloud.io/router">
 <link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
-<meta property="og:title" content="Runix Router — LLM Routing, Failover &amp; Cost Control">
-<meta property="og:description" content="One OpenAI-compatible endpoint that routes across model providers: mid-request failover, central key custody, per-key quotas and cost tracking.">
+<meta property="og:title" content="Runix Router — One LLM API Key for Every Model">
+<meta property="og:description" content="One OpenAI-compatible endpoint across model providers: central key custody, per-key quotas and allowlists, and a log of every request with its cost.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/router">
 <meta property="og:site_name" content="Runix Lab">
@@ -37,7 +37,7 @@
   "@type": "Service",
   "name": "Runix Router",
   "serviceType": "LLM router",
-  "description": "An OpenAI-compatible LLM gateway with central key custody, routing, automatic failover between providers, per-key quotas and per-request cost attribution.",
+  "description": "An OpenAI-compatible LLM gateway with central key custody, per-key quotas and allowlists, and per-request cost attribution.",
   "url": "https://runixcloud.io/router",
   "provider": {
     "@id": "https://runixcloud.io/#org"
@@ -63,7 +63,7 @@
       "name": "What happens when a provider fails?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget, so one provider's bad hour does not become your outage."
+        "text": "The error reaches you in the OpenAI shape, with its HTTP status and a request id, so the retry logic in your client keeps working. Failover between providers is set up per account where it is needed; Reliability says what Router does today."
       }
     },
     {
@@ -87,7 +87,7 @@
       "name": "How do I get access?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Access is invite-only: tell us what you are building and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on Access ."
+        "text": "Accounts are opened by our team: tell us what you are building and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on Access ."
       }
     }
   ]
@@ -138,8 +138,8 @@
 }
 </script>
 <meta property="og:locale" content="en_US">
-<meta name="twitter:title" content="Runix Router — LLM Routing, Failover &amp; Cost Control">
-<meta name="twitter:description" content="One OpenAI-compatible endpoint that routes across model providers: mid-request failover, central key custody, per-key quotas and cost tracking.">
+<meta name="twitter:title" content="Runix Router — One LLM API Key for Every Model">
+<meta name="twitter:description" content="One OpenAI-compatible endpoint across model providers: central key custody, per-key quotas and allowlists, and a log of every request with its cost.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 </head>
 <body>
@@ -192,21 +192,21 @@
   <div class="container pbar-inner">
     <a class="pbar-name" href="#overview">Runix Router</a>
     <a class="pbar-layer" href="/#platform">04 &middot; Gateway</a>
-    <span class="pbar-status pbar-live">Early access</span>
+    <span class="pbar-status pbar-live">Available</span>
     <ul class="pbar-links"><li><a href="#capabilities">Capabilities</a></li><li><a href="#how">How it works</a></li><li><a href="#specs">Specs</a></li><li><a href="/router-models">Models</a></li><li><a href="#works-with">Works with</a></li><li><a href="#start">How to start</a></li><li><a href="#faq">Questions</a></li></ul>
-    <a class="pbar-cta" href="/about#contact">Request access</a>
+    <a class="pbar-cta" href="/about#contact">Open an account</a>
   </div>
 </nav>
 <!--/pt:bar-->
 <section class="split-hero" id="overview">
   <div class="container">
     <div>
-      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i></span>Layer 04 · Gateway<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Router · Early access</span></div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i></span>Layer 04 · Gateway<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Router · Available</span></div>
       <h1><span class="line">One compliant endpoint</span>
 <span class="line">for every model</span></h1>
       <p class="sub">The control plane between your product and the model providers: central key custody, written data terms, and failover that fires mid-request, behind one OpenAI-compatible API.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="/about#contact">Request access</a>
+        <a class="btn btn-primary" href="/about#contact">Open an account</a>
         <a class="btn btn-ghost" href="/docs/router">Read the docs</a>
       </div>
       <p class="hero-note">Evaluation credits on request; no card, nothing to install. Billing is usage-based in USD, <a href="/plans">quoted per workload</a>.</p>
@@ -217,14 +217,14 @@
         <p class="glance-title">At a glance</p>
         <dl>
         <div><dt>Interface</dt><dd>OpenAI-compatible API</dd></div>
-        <div><dt>Endpoint</dt><dd><code>api.router.runixcloud.io/v1</code></dd></div>
-        <div><dt>Keys</dt><dd>Per key: quota, limits, allowed models, routing</dd></div>
+        <div><dt>Endpoint</dt><dd><code>router-api.runixcloud.io/v1</code></dd></div>
+        <div><dt>Keys</dt><dd>Per key: quota, expiry, allowed models, IP allowlist</dd></div>
         <div><dt>Models</dt><dd>Public list prices, <a href="/router-models">on the catalogue</a></dd></div>
-        <div><dt>Failover</dt><dd>Mid-request, streaming preserved</dd></div>
+        <div><dt>Request log</dt><dd>Model, tokens, cost and request id, per call</dd></div>
         <div><dt>Data terms</dt><dd>Content never used for training</dd></div>
         <div><dt>Billing</dt><dd>Usage-based, USD, itemised</dd></div>
         <div><dt>Contracting</dt><dd>Runix AI Inc &middot; MSA &amp; DPA on request</dd></div>
-        <div><dt>Status</dt><dd>Early access, running traffic</dd></div>
+        <div><dt>Status</dt><dd>Available; accounts opened by our team</dd></div>
         </dl>
       </div>
 <!--/pt:glance-->
@@ -238,15 +238,15 @@
     <div class="example-grid">
       <div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>one request, any model</b></div>
-<pre>$ curl https://api.router.runixcloud.io/v1/chat/completions \
+<pre>$ curl https://router-api.runixcloud.io/v1/chat/completions \
     -H <span class="g">"Authorization: Bearer $RUNIX_API_KEY"</span> \
-    -d <span class="g">'{"model": "auto",
+    -d <span class="g">'{"model": "your-model-id",
          "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
       </div>
       <div class="example-note">
         <p class="sec-no">02 &middot; Example</p>
         <p class="example-title">one request, any model</p>
-        <p>An OpenAI-compatible request. <code>"auto"</code> lets Router choose by cost, health and your key's policy; an explicit model id pins the model, and failover stays within the providers that serve it.</p>
+        <p>An OpenAI-compatible request. The model is named by its vendor's own id, and <code>GET /v1/models</code> lists every id a key may call.</p>
       </div>
     </div>
   </div>
@@ -258,7 +258,7 @@
     <div class="section-head center">
       <p class="sec-no">03 &middot; Capabilities</p>
       <h2>Built for the three things that block rollouts</h2>
-      <p>Teams rarely stall on whether a model works. They stall on who holds the keys, what legal can sign, and what happens at 3am when a provider degrades.</p>
+      <p>Teams rarely stall on whether a model works. They stall on who holds the keys, what legal can sign, and who can say what the models cost.</p>
     </div>
     <div class="pillars">
       <div class="pillar">
@@ -282,19 +282,19 @@
         </ul>
       </div>
       <div class="pillar">
-        <h3>A bad provider hour is not your outage</h3>
-        <p class="lead-line">The gateway is on the hot path, so it is built to get out of the way and to recover without you.</p>
+        <h3>Spend you can see and cap</h3>
+        <p class="lead-line">Every key has a budget, and every call says what it cost.</p>
         <ul>
-          <li><b>Failover mid-request</b> — errors, rate limits and timeouts re-issue upstream under a retry budget</li>
-          <li><b>Circuit breakers</b> — a degrading provider is taken out of rotation before it drags latency</li>
+          <li><b>Per-key quotas</b> — a spending limit, an expiry date, the models a key may call and the IPs it may call from</li>
+          <li><b>Usage on every response</b> — the token breakdown comes back with the answer, so one call can be checked against the rate card</li>
+          <li><b>One bill</b> — every model at its vendor's public list price, billed in USD by Runix AI Inc, itemised</li>
           <li><b>Streaming preserved</b> — token streaming and tool calls pass through intact, not buffered and replayed</li>
-          <li><b>Routing you control</b> — pin a model, or let the router choose on cost, health and configuration</li>
         </ul>
       </div>
     </div>
     <div class="callout">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-      <span>Runix Router is in early access, so treat capability claims as what the product does for onboarded teams today — not as a published SLA. Ask us for specifics on your workload and we will answer concretely, in writing.</span>
+      <span>Everything above is what Router does for every account today. Service levels are agreed per account in the order form; ask us for specifics on your workload and we will answer concretely, in writing.</span>
     </div>
   </div>
 </section>
@@ -307,7 +307,7 @@
         <p>If your code already calls an OpenAI-compatible API, the change is configuration. The SDKs, the streaming, the tool-call shape and the error semantics you already handle stay where they are.</p>
         <ul>
           <li>Point the client at Runix and swap the key</li>
-          <li>Pin a model id, or send <code>"model": "auto"</code> and let routing decide</li>
+          <li>Name the model by its vendor id; <code>GET /v1/models</code> lists what a key may call</li>
           <li>Per-key limits and usage tracking apply from the first call</li>
         </ul>
       </div>
@@ -319,92 +319,72 @@
   <div class="container">
     <div class="section-head center">
       <p class="sec-no">04 &middot; How it works</p>
-      <h2>What a provider's bad hour looks like from your side</h2>
-      <p>Your application holds one base URL and one key. Everything below happens behind that line, while the request is still in flight.</p>
+      <h2>What happens to one request</h2>
+      <p>Your application holds one base URL and one key. This is everything Router does with a call, in order.</p>
     </div>
 
     <figure class="diagram">
       <svg viewBox="0 0 880 330" role="img" aria-labelledby="fd-t fd-d" class="diagram-svg">
-        <title id="fd-t">How Runix Router handles a degrading provider</title>
-        <desc id="fd-d">Your application sends every request to one Runix endpoint. Runix watches provider health, trips a circuit breaker when a provider starts erroring, rate-limiting or timing out, and re-issues the request to a healthy provider under a retry budget. The degraded provider returns to rotation once health checks pass.</desc>
-
+        <title id="fd-t">What Runix Router does with one request</title>
+        <desc id="fd-d">Your application sends a request to one Runix endpoint with its key. Router checks the key, its expiry, its IP allowlist, the models it may call and its remaining quota, forwards the request to the provider that serves the model, streams the answer back, then meters the tokens and records the call in the request log.</desc>
         <defs>
           <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
             <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
           </marker>
         </defs>
-
-        <!-- application -->
         <g class="d-node">
           <rect x="6" y="122" width="168" height="86" rx="12"/>
           <text x="90" y="155" class="d-title">Your application</text>
           <text x="90" y="177" class="d-sub">one base URL</text>
           <text x="90" y="194" class="d-sub">one key</text>
         </g>
-
-        <!-- app to gateway -->
         <g class="d-flow">
           <line x1="180" y1="165" x2="252" y2="165" marker-end="url(#ar)"/>
           <text x="216" y="152" class="d-edge">request</text>
         </g>
-
-        <!-- gateway -->
         <g class="d-node d-gw">
-          <rect x="258" y="74" width="212" height="182" rx="12"/>
-          <text x="364" y="106" class="d-title">Runix Router</text>
+          <rect x="258" y="54" width="212" height="222" rx="12"/>
+          <text x="364" y="86" class="d-title">Runix Router</text>
           <g class="d-chip">
-            <rect x="278" y="124" width="172" height="30" rx="8"/>
-            <text x="364" y="144">health checks</text>
-            <rect x="278" y="162" width="172" height="30" rx="8"/>
-            <text x="364" y="182">circuit breaker</text>
-            <rect x="278" y="200" width="172" height="30" rx="8"/>
-            <text x="364" y="220">retry budget</text>
+            <rect x="278" y="104" width="172" height="30" rx="8"/>
+            <text x="364" y="124">key and expiry</text>
+            <rect x="278" y="142" width="172" height="30" rx="8"/>
+            <text x="364" y="162">IP allowlist</text>
+            <rect x="278" y="180" width="172" height="30" rx="8"/>
+            <text x="364" y="200">model and quota</text>
+            <rect x="278" y="218" width="172" height="30" rx="8"/>
+            <text x="364" y="238">meter and log</text>
           </g>
         </g>
-
-        <!-- gateway to providers -->
         <g class="d-flow d-ok">
-          <path d="M476 150 C 530 150, 540 74, 596 74" marker-end="url(#ar)" fill="none"/>
-          <text x="540" y="100" class="d-edge">re-issued here</text>
-        </g>
-        <g class="d-flow d-down">
-          <path d="M476 165 L 596 165" marker-end="url(#ar)" fill="none" stroke-dasharray="5 5"/>
-          <g class="d-x">
-            <line x1="528" y1="157" x2="544" y2="173"/>
-            <line x1="544" y1="157" x2="528" y2="173"/>
-          </g>
+          <path d="M476 150 C 530 150, 540 104, 596 104" marker-end="url(#ar)" fill="none"/>
+          <text x="540" y="118" class="d-edge">forwarded</text>
         </g>
         <g class="d-flow d-idle">
-          <path d="M476 182 C 530 182, 540 256, 596 256" marker-end="url(#ar)" fill="none" stroke-dasharray="2 6"/>
+          <path d="M476 200 C 530 200, 540 236, 596 236" marker-end="url(#ar)" fill="none" stroke-dasharray="2 6"/>
+          <text x="540" y="246" class="d-edge">recorded</text>
         </g>
-
-        <!-- providers -->
         <g class="d-node d-prov">
-          <rect x="602" y="46" width="272" height="56" rx="10"/>
-          <text x="622" y="70" class="d-title d-left">Healthy provider</text>
-          <text x="622" y="89" class="d-sub d-left">serving your traffic</text>
+          <rect x="602" y="76" width="272" height="56" rx="10"/>
+          <text x="622" y="100" class="d-title d-left">Model provider</text>
+          <text x="622" y="119" class="d-sub d-left">answers, streamed straight back</text>
         </g>
-        <g class="d-node d-prov d-prov-down">
-          <rect x="602" y="137" width="272" height="56" rx="10"/>
-          <text x="622" y="161" class="d-title d-left">Degrading provider</text>
-          <text x="622" y="180" class="d-sub d-left">errors, 429s or timeouts</text>
-        </g>
-        <g class="d-node d-prov d-prov-idle">
-          <rect x="602" y="228" width="272" height="56" rx="10"/>
-          <text x="622" y="252" class="d-title d-left">Standby provider</text>
-          <text x="622" y="271" class="d-sub d-left">available if the first choice also fails</text>
+        <g class="d-node d-prov">
+          <rect x="602" y="208" width="272" height="56" rx="10"/>
+          <text x="622" y="232" class="d-title d-left">Request log</text>
+          <text x="622" y="251" class="d-sub d-left">model, tokens, cost, request id</text>
         </g>
       </svg>
 
       <ol class="diagram-steps">
-        <li><b>Your application</b> sends every request to one Runix base URL, with one key.</li>
-        <li><b>Runix Router</b> tracks provider health, and trips a circuit breaker on errors, rate limits and timeouts.</li>
-        <li><b>The degrading provider</b> is taken out of rotation before it drags your latency.</li>
-        <li><b>The request is re-issued</b> to a healthy provider under a retry budget, so a retry storm cannot become the second incident.</li>
-        <li><b>The provider returns</b> to rotation when health checks pass. Nothing in your application changed.</li>
+        <li><b>Your application</b> sends the request to one Runix base URL with its key, in the OpenAI format it already speaks.</li>
+        <li><b>Runix Router checks the key</b>: that it is active and not expired, that the call comes from an allowed IP, that the key may call this model, and that it has quota left. A call that fails a check is refused before it reaches a provider.</li>
+        <li><b>The request is forwarded</b> to the provider that serves the model, and a streamed answer is passed through as it arrives, not buffered.</li>
+        <li><b>The tokens are metered</b> at the model's price, and the response carries its usage, so a single call can be checked against the rate card.</li>
+        <li><b>The call is recorded</b> in the request log with its key, model, tokens, cost and request id, which is what support traces a question with.</li>
       </ol>
 
-      <figcaption>Your code never learns any of this happened. The base URL it holds does not change, and no redeploy is involved: which is the point of putting a gateway on the hot path at all.</figcaption>
+      <figcaption>Your code holds the same base URL and key whichever model it calls. Changing models is a different string in the request, not a different integration.</figcaption>
     </figure>
   </div>
 </section>
@@ -421,15 +401,15 @@
       <table aria-label="Runix Router specifications">
         <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
         <tbody>
-          <tr><th scope="row">API surface</th><td>Chat completions and model listing, with server-sent events for streaming</td><td><a href="/docs/router">Router quickstart</a></td></tr>
-          <tr><th scope="row">Model selection</th><td><code>"auto"</code>, or an explicit model id</td><td><a href="/docs/router">Router quickstart</a></td></tr>
+          <tr><th scope="row">API surface</th><td>Chat completions, Responses and model listing, with server-sent events for streaming</td><td><a href="/docs/router">Router quickstart</a></td></tr>
+          <tr><th scope="row">Model selection</th><td>The vendor's own model id; <code>GET /v1/models</code> lists what a key may call</td><td><a href="/docs/router">Router quickstart</a></td></tr>
           <tr><th scope="row">Models and prices</th><td>Every model on the catalogue at its vendor's public list price; contract rates in writing</td><td><a href="/router-models">Models catalogue</a></td></tr>
-          <tr><th scope="row">Failover</th><td>Provider to provider, mid-request, streaming preserved</td><td><a href="/reliability">Reliability</a></td></tr>
-          <tr><th scope="row">Limits</th><td>Per key: rate limits, quotas and allowed models, revocable without a redeploy</td><td><a href="/access">Access</a></td></tr>
+          <tr><th scope="row">Provider failure</th><td>OpenAI-style error with a request id; failover between providers set up per account</td><td><a href="/reliability">Reliability</a></td></tr>
+          <tr><th scope="row">Limits</th><td>Per key: quota, expiry, allowed models and IP allowlist, changed without a redeploy</td><td><a href="/access">Access</a></td></tr>
           <tr><th scope="row">Errors</th><td>OpenAI-style error envelope, with a request id on every response</td><td><a href="/docs/router">Router quickstart</a></td></tr>
           <tr><th scope="row">Data handling</th><td>Content processed to serve the request; operational metadata kept for billing and support</td><td><a href="/privacy">Privacy Policy</a> and <a href="/security">Security</a></td></tr>
           <tr><th scope="row">Transport</th><td>TLS 1.3 and 1.2; 1.0 and 1.1 refused</td><td><a href="/security">Security</a></td></tr>
-          <tr><th scope="row">Service level</th><td>No published SLA during early access; the failover mechanism is documented</td><td><a href="/reliability">Reliability</a></td></tr>
+          <tr><th scope="row">Service level</th><td>No public uptime figure; service levels agreed per account in the order form</td><td><a href="/reliability">Reliability</a></td></tr>
           <tr><th scope="row">Billing</th><td>Usage-based in USD, per token or per request by model; prepaid balance or invoice</td><td><a href="/plans">Pricing</a></td></tr>
         </tbody>
       </table>
@@ -485,7 +465,7 @@
       </div>
       <div class="pstep">
         <h3><span class="pstep-n">02</span>Evaluate before you pay</h3>
-        <p>Evaluation credits on request, full router functionality, no card. Integration is a base-URL change.</p>
+        <p>Evaluation credits on request, the full product, no card. Integration is a base-URL change.</p>
       </div>
       <div class="pstep">
         <h3><span class="pstep-n">03</span>Go to production in writing</h3>
@@ -504,10 +484,10 @@
     </div>
     <div class="qas">
       <div class="qa"><h3>How much of my code has to change?</h3><p>Runix Router speaks the OpenAI API. In most cases you change the base URL and the key; the SDK you already use keeps working, including streaming and tool calls.</p></div>
-      <div class="qa"><h3>What happens when a provider fails?</h3><p>Errors, rate limits and timeouts trip a circuit breaker and the request is re-issued to a healthy provider under a retry budget, so one provider's bad hour does not become your outage.</p></div>
+      <div class="qa"><h3>What happens when a provider fails?</h3><p>The error reaches you in the OpenAI shape, with its HTTP status and a request id, so the retry logic in your client keeps working. Failover between providers is set up per account where it is needed; <a href="/reliability">Reliability</a> says what Router does today.</p></div>
       <div class="qa"><h3>Is my prompt content used for training?</h3><p>No. Content is processed to serve your request, not used to train models and not sold. Operational metadata (usage counts, latency, error codes) is kept to run billing, reliability and support. See <a href="/privacy">Privacy</a>.</p></div>
       <div class="qa"><h3>Can we sign a contract and get invoiced?</h3><p>Yes. Runix AI Inc is incorporated in Wyoming. MSA and DPA on request; an order form takes precedence over the standard <a href="/terms">Terms</a>. USD billing with itemised statements, prepaid or invoiced.</p></div>
-      <div class="qa"><h3>How do I get access?</h3><p>Access is invite-only: <a href="/about#contact">tell us what you are building</a> and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on <a href="/access">Access</a>.</p></div>
+      <div class="qa"><h3>How do I get access?</h3><p>Accounts are opened by our team: <a href="/about#contact">tell us what you are building</a> and your account is set up within one business day; evaluation credits are issued on request, so you can test against real traffic before you pay. The full process is on <a href="/access">Access</a>.</p></div>
     </div>
   </div>
 </section>
@@ -516,8 +496,8 @@
   <div class="container">
     <div class="cta-band">
       <h2>Put the gateway in front of your traffic</h2>
-      <p>Tell us the models you call and roughly how much: we come back with an access plan and a quote within one business day.</p>
-      <a class="btn btn-grad" href="/about#contact">Request access</a>
+      <p>Tell us the models you call and roughly how much: we come back with an account and a quote within one business day.</p>
+      <a class="btn btn-grad" href="/about#contact">Open an account</a>
     </div>
   </div>
 </section>

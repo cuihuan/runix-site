@@ -59,7 +59,7 @@ def text(s):
 
 def status_span(key, cls="live"):
     st = PRODUCTS[key][5]
-    live = f' class="{cls}"' if st == "early access" else ""
+    live = f' class="{cls}"' if st in ("available", "early access") else ""
     return f"<span{live}>{st.capitalize()}</span>"
 
 
@@ -302,7 +302,7 @@ def hub_main():
     <div class="grid cols-3">
       <div class="card">
         <h3>Statuses are literal</h3>
-        <p>Router, FS, Models and Data are in early access; Pipeline, Code and Comic are in development. A solution page that names a product in development says so, and the page describes what is being built.</p>
+        <p>Router is available; FS, Models and Data are in early access; Pipeline, Code and Comic are in development. A solution page that names a product in development says so, and the page describes what is being built.</p>
       </div>
       <div class="card">
         <h3>Nothing is invented</h3>
@@ -505,7 +505,7 @@ def roadmap_main():
     for v in PRODUCTS.values():
         counts[v[5]] = counts.get(v[5], 0) + 1
     glance = "\n".join(f'        <div><dt>{E(st.capitalize())}</dt><dd>{", ".join(E(v[2]) for v in PRODUCTS.values() if v[5] == st)}</dd></div>'
-                       for st in ("early access", "in development"))
+                       for st in ("available", "early access", "in development"))
     return f'''<main id="main" class="has-pbar">
 {bar("Roadmap", '<a class="pbar-layer" href="/about">Company</a>', '<span class="pbar-status">No dates published</span>', links, SALES, "Contact sales")}
 <section class="split-hero" id="overview">
@@ -675,14 +675,14 @@ def write_home():
                    '<!--teams-->\n    <div class="sol-grid">\n' + cards + '\n    </div>\n    <!--/teams-->',
                    s, count=1, flags=re.S)
     if "<!--roadmap-->" in s:
-        ea = [v for v in PRODUCTS.values() if v[5] == "early access"]
+        ea = [v for v in PRODUCTS.values() if v[5] in ("available", "early access")]
         dev = [v for v in PRODUCTS.values() if v[5] == "in development"]
         li = lambda items: "".join(f'\n          <li><a href="{v[1]}">{E(v[2])}</a><span>{E(v[3])}</span></li>' for v in items)  # noqa: E731
         ga = "".join(f'\n          <li><b>{E(t)}</b></li>' for t, _ in ROADMAP["ga"])
         block = f'''<!--roadmap-->
     <div class="grid cols-3 rm-sum">
       <div class="card">
-        <p class="card-layer"><b>Now</b> &middot; early access</p>
+        <p class="card-layer"><b>Now</b> &middot; available and early access</p>
         <h3>{len(ea)} products a team can use today</h3>
         <ul class="wlist">{li(ea)}
         </ul>

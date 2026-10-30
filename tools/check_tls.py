@@ -16,7 +16,7 @@ import socket
 import ssl
 import sys
 
-HOSTS = ["runixcloud.io", "api.router.runixcloud.io", "console.router.runixcloud.io"]
+HOSTS = ["runixcloud.io", "router-api.runixcloud.io", "router-console.runixcloud.io"]
 EXPECTED = {"TLSv1": False, "TLSv1.1": False, "TLSv1.2": True, "TLSv1.3": True}
 VERSIONS = [("TLSv1", ssl.TLSVersion.TLSv1), ("TLSv1.1", ssl.TLSVersion.TLSv1_1),
             ("TLSv1.2", ssl.TLSVersion.TLSv1_2), ("TLSv1.3", ssl.TLSVersion.TLSv1_3)]

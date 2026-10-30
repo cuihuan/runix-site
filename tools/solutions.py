@@ -12,39 +12,38 @@ SOLUTIONS = [{'key': 'platform-teams',
   'slug': 'for-platform-teams',
   'name': 'Platform teams',
   'title': 'For Platform Teams: One Endpoint for Every Model | Runix',
-  'description': 'How platform teams use Runix Router for key custody, per-key limits and mid-request '
-                 'failover, and Runix FS where training data lives in object storage.',
+  'description': 'How platform teams use Runix Router for key custody, per-key limits and usage by '
+                 'key, and Runix FS where training data lives in object storage.',
   'h1': ['One endpoint for every model,', 'with the controls your team owns'],
   'sub': "For the team that owns the integration between the company's products and the model providers. "
          'Runix Router puts one OpenAI-compatible endpoint in front of every provider, with key custody, '
-         'per-key limits and failover beneath it. Where training or inference data lives in object storage, '
+         'per-key limits and usage by key beneath it. Where training or inference data lives in object storage, '
          'Runix FS gives the GPUs a file system over the bucket.',
   'situation': [['Every team holds its own provider keys',
                  'Provider keys end up in repositories, CI variables and notebooks, one per team. Nobody can '
                  'say which key spent what, and revoking one means a redeploy. The platform team is asked to '
                  'fix this without breaking the teams that depend on it.'],
-                ['A provider outage is your outage',
-                 'When a provider degrades, every product that calls it directly degrades with it. Failover '
-                 'written into each application is written differently each time, and a failure mid-stream '
-                 "is the case nobody tested. The platform team ends up on call for other people's "
-                 'integrations.'],
+                ['Every provider is integrated differently',
+                  'Each provider has its own API, SDK, keys and invoice, and every team that calls one builds '
+                  'its own integration. Nobody sees total spend in one place, and moving a product to another '
+                  'model is a code change instead of a configuration change.'],
                 ['The GPUs wait on the bucket',
                  'Training and inference data sits in object storage because that is where it is cheap. Jobs '
                  'then read it object by object, each framework with its own client for the same bucket, and '
                  'the GPUs wait while the data arrives.']],
   'stack': [['router',
              'One OpenAI-compatible endpoint in front of every provider, with keys held centrally: each key '
-             'carries its quota, rate limits, allowed models and routing, revocable without a redeploy. '
-             'Failover between providers fires mid-request, with streaming preserved.'],
+             'carries its quota, expiry, allowed models and IP allowlist, changed without a redeploy. '
+              'Every call is logged with its model, tokens and cost, and billed in USD on one statement.'],
             ['fs',
              'Where training or inference data lives in S3-compatible object storage, Runix FS mounts the '
              'bucket as a file system through FUSE, a Hadoop-compatible client or the Kubernetes CSI driver, '
              'with memory, SSD and HDD cache tiers on the workers. It runs in your own cloud account; the '
              'bucket keeps its layout and stays independently readable.']],
   'path': [['Tell us what you are building',
-            'Send the models you call, the expected volume and what you need from the contract. Router is '
-            'invite-only during early access; a person replies within one business day and sets the account '
-            'up after a short intake.'],
+            'Send the models you call, the expected volume and what you need from the contract. Router accounts '
+             'are opened by our team: a person replies within one business day and sets the account '
+             'up.'],
            ['Evaluate before you pay',
             'Evaluation credits for Router are issued on request, with full functionality and no card '
             'required. Each key carries its own quota, limits and allowed models, and billing is itemised, '
@@ -59,17 +58,18 @@ SOLUTIONS = [{'key': 'platform-teams',
                'You contract with Runix AI Inc; an MSA and a DPA are available on request. Billing is '
                'usage-based in USD, itemised, on a prepaid balance or by invoice.'],
               ['Statuses, literally',
-               'Runix Router is in early access and running traffic, with no published SLA; the failover '
-               'mechanism is documented instead. Runix FS is in early access, per deployment, and supported '
+               'Runix Router is available, with service levels agreed in the order form and no public uptime '
+                'figure. Runix FS is in early access, per deployment, and supported '
                'under contract.']],
   'reading': ['migrating-to-an-llm-gateway-without-downtime', 'streaming-llm-failover', 'per-key-llm-quotas'],
   'faq': [['Do we have to change our client code?',
            'Runix Router is OpenAI-compatible: chat completions and model listing, with server-sent events '
            'for streaming, behind an OpenAI-style error envelope with a request id on every response. You '
-           'choose a model with an explicit id, or with auto.'],
-          ['What happens when a provider fails mid-stream?',
-           'Failover is provider to provider and fires mid-request, with streaming preserved. The mechanism '
-           'is documented under Reliability; there is no published SLA during early access.'],
+            'choose a model by its vendor id, and GET /v1/models lists what a key may call.'],
+          ['What happens when a provider fails?',
+            'The error reaches you in the OpenAI shape, with its HTTP status and a request id, so the retry '
+            'logic in your client keeps working. Failover between providers is set up per account where it '
+            'is needed, and Reliability says what Router does today.'],
           ['Does Runix FS replace our object storage?',
            'No. In cache mode the bucket is the source of truth and writes pass through; in file-system mode '
            'operations complete in the cluster and then sync to the bucket. Paths map one-to-one to object '
@@ -206,8 +206,8 @@ SOLUTIONS = [{'key': 'platform-teams',
                'out on the Code plans page.'],
               ['Statuses, literally',
                'Runix Code is in development and not generally available; its page describes what is being '
-               'built, and waitlist cohorts are invited in order. Runix Router is in early access and '
-               'running traffic, with no published SLA.']],
+               'built, and waitlist cohorts are invited in order. Runix Router is available, with '
+                'service levels agreed in the order form.']],
   'reading': ['llm-cost-attribution', 'llm-api-key-management', 'model-deprecation-without-a-redeploy'],
   'faq': [['Can developers use Runix Code today?',
            'No. It is in development and not generally available; the waitlist is open and cohorts are '
@@ -270,7 +270,7 @@ SOLUTIONS = [{'key': 'platform-teams',
                'business day.'],
               ['Statuses, literally',
                'Runix Comic is in development and not generally available; its page describes what is being '
-               'built, and the waitlist is open. Runix Router is in early access, with no published SLA.']],
+               'built, and the waitlist is open. Runix Router is available, with service levels agreed in the order form.']],
   'reading': ['how-to-make-a-comic-drama-with-ai',
               'comic-drama-vs-webtoon-vs-motion-comic',
               'llm-cost-control'],
@@ -292,7 +292,7 @@ SOLUTIONS = [{'key': 'platform-teams',
                  'rules for finance, legal and security data, and single-tenant serving.',
   'h1': ['Written answers', 'for the review that never ends'],
   'sub': 'For finance, legal and security teams that have to answer a reviewer before anything carries '
-         'traffic. Runix Router puts the data terms, the contracting entity and the failover mechanism in '
+         'traffic. Runix Router puts the data terms, the contracting entity and the service level in '
          'writing. Runix Data applies domain rules for finance, legal and cybersecurity data. Runix Models '
          'serves a model single-tenant, in your cloud account, trained on your data and nothing else.',
   'situation': [['Where do the prompts go?',
@@ -326,7 +326,7 @@ SOLUTIONS = [{'key': 'platform-teams',
   'path': [['Bring the review to the intake',
             'Send what you are building, the expected volume and what the reviewers will ask for: the MSA '
             'and DPA, availability requirements, where data may travel. We reply within one business day and '
-            'say plainly whether early access fits.'],
+            'say plainly what we can commit to.'],
            ['Evaluate Router before paying',
             'Router accounts are set up after a short intake, with evaluation credits issued on request and '
             'no card required. Transport is TLS with the obsolete versions refused, and every response '
@@ -343,16 +343,16 @@ SOLUTIONS = [{'key': 'platform-teams',
                'The contracting entity is Runix AI Inc; an MSA and a DPA are available on request. Billing '
                'is usage-based in USD, itemised, on a prepaid balance or by invoice.'],
               ['What is not claimed',
-               'No service level is published during early access; the failover mechanism is documented '
-               'instead. Where your procurement requires a guarantee, say so at intake and we will say '
-               'plainly whether early access fits.']],
+               'No uptime figure is published; service levels are agreed per account in the order form, and '
+                'failover between providers is set up per account where it is needed. Where your procurement '
+                'requires a guarantee, say so in the first message and we will say plainly what we can commit to.']],
   'reading': ['where-your-prompts-actually-go', 'ai-vendor-data-questions', 'llm-gateway-security-review'],
   'faq': [['Can we sign an MSA and a DPA?',
            'Yes, on request. The contracting entity is Runix AI Inc, and the documents are reviewed per '
            'engagement.'],
           ['Is there a service level agreement?',
-           "Not during early access. Runix Router's failover fires mid-request with streaming preserved, and "
-           'the mechanism is documented; a published number would need a contract behind it.'],
+           'Per account, in the order form. No uptime figure is published, because a number on a page has '
+            'no contract behind it; Reliability describes what Router does when a provider fails.'],
           ['Is our data used to train anything?',
            'Content sent through Runix Router is never used for training. With Runix Models, your data '
            'trains and evaluates the model you commission, and nothing else; weights and access are fixed in '
@@ -513,20 +513,22 @@ AGENTS_HUB = {'title': 'Domain Agents: Software Engineering and Media | Runix',
           'gets built.']]}
 
 ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
- 'description': 'The status of every Runix product, in literal terms: what early access and in development '
-                'mean, what general availability adds, and how the order is decided.',
+ 'description': 'The status of every Runix product in literal terms: available, early access or in '
+                'development, what general availability adds, and how the order is decided.',
  'h1': ['Where Runix is,', 'and what comes next'],
  'sub': 'Seven products in five layers, at deliberately different stages. The statuses on this page are the '
-        'ones used everywhere else on the site: Router, Models, Data and FS are in early access; Pipeline, '
+        'ones used everywhere else on the site: Router is available; Models, Data and FS are in early access; Pipeline, '
         'Code and Comic are in development. What each status means, what general availability adds, and how '
         'the order is decided, without dates.',
- 'now': 'Early access means a product you can use today, set up by the team rather than bought off a shelf. '
+ 'now': 'Available means a production service, with the account opened by our team rather than by a signup '
+        'form: Runix Router is available. Early access means a product you can use today, set up by the team '
+        'rather than bought off a shelf. '
         'There is no self-serve signup: accounts and keys are issued after a short intake, and a reply comes '
         'within one business day. You evaluate before you pay: Runix Router issues evaluation credits on '
         'request with no card required, and Runix FS, Runix Data and Runix Models are scoped per engagement, '
-        'with the plan and the price agreed before any work starts. No service level is published during '
-        'early access; the failover mechanism is documented instead, and if your procurement needs a '
-        'guarantee, say so at intake and we will say plainly whether early access fits.',
+        'with the plan and the price agreed before any work starts. Service levels are agreed per account in '
+        'the order form; if your procurement needs a guarantee, say so in the first message and we will say '
+        'plainly what we can commit to.',
  'building': 'In development means the product page describes what is being built, not a shipped product. '
              'Runix Code and Runix Comic are built with waitlist cohorts, invited in order, who get access '
              'as capabilities land and whose feedback sets the order of what comes next. Runix Pipeline is '
@@ -537,12 +539,12 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
          'documentation and support directly from the engineers.'],
         ['A published service level for Router',
          'A service level for Runix Router is published at general availability, with a contract behind it; '
-         'during early access the mechanism is documented and no number is.'],
+         'until then, service levels are agreed per account in the order form.'],
         ['Self-serve signup and checkout',
-         'Self-serve signup and checkout arrive with general availability; until then accounts and keys are '
-         'set up by the team after a short intake.']],
+         'Self-serve signup and checkout arrive with general availability; until then accounts are opened by '
+          'the team, and keys are created in the console.']],
  'principles': [['Statuses are literal',
-                 'Early access and in development mean the same thing on every page of the site, and none of '
+                 'Available, early access and in development mean the same thing on every page of the site, and none of '
                  'them is aspirational. A product changes status when the thing changes, not when the copy '
                  'does.'],
                 ['No dates are published',
@@ -552,7 +554,9 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
                 ['Cohorts set the order',
                  'Waitlist cohorts and design partners decide what lands next by what they run into. The '
                  'order follows their traffic and their data, not a launch plan.']],
- 'status_line': {'early access': 'a team can be onboarded today, set up by us after a short intake, with '
+ 'status_line': {'available': 'a production service today, with the account opened by our team and service '
+                               'levels agreed in the order form',
+                 'early access': 'a team can be onboarded today, set up by us after a short intake, with '
                                  'evaluation or scoping before any payment',
                  'in development': 'the product page describes what is being built; it cannot be bought yet'},
  'ga_lede': 'General availability is a state, not a date. On this site it means these three things exist.',
@@ -564,9 +568,10 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
                         'bring and what the studio generates at each of the three stages.',
                         'Stages land in order: pre-production, production, publishing. What cohorts run into '
                         'shapes what lands next.'),
-              'router': ('Running traffic. Accounts set up after a short intake; evaluation credits on '
-                         'request with no card; one OpenAI-compatible endpoint, per-key limits, failover '
-                         "mid-request, every model at its vendor's public list price.",
+              'router': ('Available. Accounts opened by our team within one business day; evaluation '
+                         'credits on request with no card; one OpenAI-compatible endpoint, per-key quotas and '
+                         "allowlists, a log of every request with its cost, every model at its vendor's public "
+                         'list price.',
                          'General availability adds a complete API reference, a published service level with '
                          'a contract behind it, and self-serve signup and checkout.'),
               'models': ('By engagement. Base model, method, data, baseline and serving are agreed in '
@@ -606,7 +611,11 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
               '/blog/rebuild-ai-unix', 'Rebuild AI Unix'),
              ('October 7, 2026',
               'Solutions by team, the Agents layer by domain, this roadmap, and the blog grouped by layer.',
-              '/solutions', 'Solutions by team')],
+              '/solutions', 'Solutions by team'),
+             ('October 30, 2026',
+              'Runix Router moves from early access to available, at router-api.runixcloud.io and '
+              'router-console.runixcloud.io.',
+              '/router', 'Runix Router')],
  'faq': [('When will a product be generally available?',
           'No date is published for any product. The site states the status a product has reached and what '
           'general availability adds; a status changes when the thing changes.'),

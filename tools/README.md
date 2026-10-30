@@ -57,7 +57,7 @@ have to remember.
 
 | Project | Domains |
 |---|---|
-| `runix-gateway` | gateway.runixcloud.io, **router.runixcloud.io** (one project, two domains) |
+| `runix-gateway` | **router.runixcloud.io**; gateway.runixcloud.io 301s to it through a Pages Function, because `_redirects` cannot match a hostname |
 | `runix-comic` | comic.runixcloud.io |
 | `runix-code` | code.runixcloud.io |
 | `runix-data` | data.runixcloud.io |

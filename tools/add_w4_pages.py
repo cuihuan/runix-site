@@ -134,7 +134,7 @@ per team or product and the usage reporting splits along those lines.</p>
 
 <h2>5. Then you integrate</h2>
 <p>Integration is a base-URL change: point your existing OpenAI-compatible client at
-<code>https://api.router.runixcloud.io/v1</code> and swap the key. The
+<code>https://router-api.runixcloud.io/v1</code> and swap the key. The
 <a href="/docs/router">Router quickstart</a> covers model selection, streaming, failover
 semantics and the error envelope.</p>
 

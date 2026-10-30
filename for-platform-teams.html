@@ -14,9 +14,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Platform Teams: One Endpoint for Every Model | Runix</title>
-<meta name="description" content="How platform teams use Runix Router for key custody, per-key limits and mid-request failover, and Runix FS where training data lives in object storage.">
+<meta name="description" content="How platform teams use Runix Router for key custody, per-key limits and usage by key, and Runix FS where training data lives in object storage.">
 <meta property="og:title" content="For Platform Teams: One Endpoint for Every Model | Runix">
-<meta property="og:description" content="How platform teams use Runix Router for key custody, per-key limits and mid-request failover, and Runix FS where training data lives in object storage.">
+<meta property="og:description" content="How platform teams use Runix Router for key custody, per-key limits and usage by key, and Runix FS where training data lives in object storage.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Runix Lab">
 <meta property="og:image" content="https://runixcloud.io/assets/og/for-platform-teams.png?v=fbad78cf">
@@ -36,7 +36,7 @@
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "For Platform Teams: One Endpoint for Every Model | Runix",
-  "description": "How platform teams use Runix Router for key custody, per-key limits and mid-request failover, and Runix FS where training data lives in object storage.",
+  "description": "How platform teams use Runix Router for key custody, per-key limits and usage by key, and Runix FS where training data lives in object storage.",
   "url": "https://runixcloud.io/for-platform-teams",
   "isPartOf": {
     "@id": "https://runixcloud.io/#website"
@@ -57,15 +57,15 @@
       "name": "Do we have to change our client code?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Runix Router is OpenAI-compatible: chat completions and model listing, with server-sent events for streaming, behind an OpenAI-style error envelope with a request id on every response. You choose a model with an explicit id, or with auto."
+        "text": "Runix Router is OpenAI-compatible: chat completions and model listing, with server-sent events for streaming, behind an OpenAI-style error envelope with a request id on every response. You choose a model by its vendor id, and GET /v1/models lists what a key may call."
       }
     },
     {
       "@type": "Question",
-      "name": "What happens when a provider fails mid-stream?",
+      "name": "What happens when a provider fails?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Failover is provider to provider and fires mid-request, with streaming preserved. The mechanism is documented under Reliability; there is no published SLA during early access."
+        "text": "The error reaches you in the OpenAI shape, with its HTTP status and a request id, so the retry logic in your client keeps working. Failover between providers is set up per account where it is needed, and Reliability says what Router does today."
       }
     },
     {
@@ -131,7 +131,7 @@
 </script>
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="For Platform Teams: One Endpoint for Every Model | Runix">
-<meta name="twitter:description" content="How platform teams use Runix Router for key custody, per-key limits and mid-request failover, and Runix FS where training data lives in object storage.">
+<meta name="twitter:description" content="How platform teams use Runix Router for key custody, per-key limits and usage by key, and Runix FS where training data lives in object storage.">
 <noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
 </head>
 <body>
@@ -196,7 +196,7 @@
       <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/solutions">Solutions<span class="visually-hidden">: every team the stack is built for</span></a></span><span class="badge">For platform teams</span></div>
       <h1><span class="line">One endpoint for every model,</span>
 <span class="line">with the controls your team owns</span></h1>
-      <p class="sub">For the team that owns the integration between the company's products and the model providers. Runix Router puts one OpenAI-compatible endpoint in front of every provider, with key custody, per-key limits and failover beneath it. Where training or inference data lives in object storage, Runix FS gives the GPUs a file system over the bucket.</p>
+      <p class="sub">For the team that owns the integration between the company's products and the model providers. Runix Router puts one OpenAI-compatible endpoint in front of every provider, with key custody, per-key limits and usage by key beneath it. Where training or inference data lives in object storage, Runix FS gives the GPUs a file system over the bucket.</p>
       <div class="actions">
         <!--email_off--><a class="btn btn-primary" href="mailto:sales@runixcloud.io?subject=Runix%3A%20Platform%20teams">Talk to sales</a><!--/email_off-->
         <a class="btn btn-ghost" href="#stack">See the stack for this team</a>
@@ -207,7 +207,7 @@
       <div class="glance">
         <p class="glance-title">The stack for platform teams</p>
         <dl>
-        <div><dt>Runix Router</dt><dd>One compliant endpoint for every model &middot; early access</dd></div>
+        <div><dt>Runix Router</dt><dd>One compliant endpoint for every model &middot; available</dd></div>
         <div><dt>Runix FS</dt><dd>AI-native file system on your object storage &middot; early access</dd></div>
         </dl>
       </div>
@@ -228,8 +228,8 @@
         <p>Provider keys end up in repositories, CI variables and notebooks, one per team. Nobody can say which key spent what, and revoking one means a redeploy. The platform team is asked to fix this without breaking the teams that depend on it.</p>
       </div>
       <div class="card">
-        <h3>A provider outage is your outage</h3>
-        <p>When a provider degrades, every product that calls it directly degrades with it. Failover written into each application is written differently each time, and a failure mid-stream is the case nobody tested. The platform team ends up on call for other people's integrations.</p>
+        <h3>Every provider is integrated differently</h3>
+        <p>Each provider has its own API, SDK, keys and invoice, and every team that calls one builds its own integration. Nobody sees total spend in one place, and moving a product to another model is a code change instead of a configuration change.</p>
       </div>
       <div class="card">
         <h3>The GPUs wait on the bucket</h3>
@@ -248,8 +248,8 @@
     </div>
     <div class="stackrole">
       <div class="srow">
-        <div class="sp"><a href="/router">Runix Router</a><span>Layer 04 &middot; Gateway</span><span class="live">Early access</span></div>
-        <div class="sr">One OpenAI-compatible endpoint in front of every provider, with keys held centrally: each key carries its quota, rate limits, allowed models and routing, revocable without a redeploy. Failover between providers fires mid-request, with streaming preserved.</div>
+        <div class="sp"><a href="/router">Runix Router</a><span>Layer 04 &middot; Gateway</span><span class="live">Available</span></div>
+        <div class="sr">One OpenAI-compatible endpoint in front of every provider, with keys held centrally: each key carries its quota, expiry, allowed models and IP allowlist, changed without a redeploy. Every call is logged with its model, tokens and cost, and billed in USD on one statement.</div>
       </div>
       <div class="srow">
         <div class="sp"><a href="/fs">Runix FS</a><span>Layer 01 &middot; Infrastructure</span><span class="live">Early access</span></div>
@@ -269,7 +269,7 @@
     <div class="prun">
       <div class="pstep">
         <h3><span class="pstep-n">01</span>Tell us what you are building</h3>
-        <p>Send the models you call, the expected volume and what you need from the contract. Router is invite-only during early access; a person replies within one business day and sets the account up after a short intake.</p>
+        <p>Send the models you call, the expected volume and what you need from the contract. Router accounts are opened by our team: a person replies within one business day and sets the account up.</p>
       </div>
       <div class="pstep">
         <h3><span class="pstep-n">02</span>Evaluate before you pay</h3>
@@ -301,7 +301,7 @@
       </div>
       <div class="card">
         <h3>Statuses, literally</h3>
-        <p>Runix Router is in early access and running traffic, with no published SLA; the failover mechanism is documented instead. Runix FS is in early access, per deployment, and supported under contract.</p>
+        <p>Runix Router is available, with service levels agreed in the order form and no public uptime figure. Runix FS is in early access, per deployment, and supported under contract.</p>
       </div>
     </div>
   </div>
@@ -338,11 +338,11 @@
     <div class="qas">
       <div class="qa">
         <h3>Do we have to change our client code?</h3>
-        <p>Runix Router is OpenAI-compatible: chat completions and model listing, with server-sent events for streaming, behind an OpenAI-style error envelope with a request id on every response. You choose a model with an explicit id, or with auto.</p>
+        <p>Runix Router is OpenAI-compatible: chat completions and model listing, with server-sent events for streaming, behind an OpenAI-style error envelope with a request id on every response. You choose a model by its vendor id, and GET /v1/models lists what a key may call.</p>
       </div>
       <div class="qa">
-        <h3>What happens when a provider fails mid-stream?</h3>
-        <p>Failover is provider to provider and fires mid-request, with streaming preserved. The mechanism is documented under Reliability; there is no published SLA during early access.</p>
+        <h3>What happens when a provider fails?</h3>
+        <p>The error reaches you in the OpenAI shape, with its HTTP status and a request id, so the retry logic in your client keeps working. Failover between providers is set up per account where it is needed, and Reliability says what Router does today.</p>
       </div>
       <div class="qa">
         <h3>Does Runix FS replace our object storage?</h3>

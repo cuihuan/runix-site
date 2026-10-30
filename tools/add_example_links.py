@@ -23,7 +23,8 @@ PAGES = {
     "router.html": ("router", "See the gateway walkthrough and console"),
     "fs.html": ("fs", "See the Runix FS walkthrough"),
     "comic.html": ("comic", "Watch an episode made end to end"),
-    "data.html": ("embedded", "See the embodied-robotics data platform"),
+    # The external edition: /embedded/ is the internal set (internal notes, client analysis) and 404s for guest keys.
+    "data.html": ("embodied-data", "See the embodied-robotics data platform"),
 }
 START, END = "<!-- example-link -->", "<!-- /example-link -->"
 

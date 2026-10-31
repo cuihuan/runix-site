@@ -842,7 +842,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
 }
 .footer-grid-4 { grid-template-columns: 2fr 1fr 1fr 1.2fr; }
 .card-meta { margin-top: 14px; color: var(--ink-3); font-size: 12.5px; }
-.card .read-more { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--indigo); }
+.card .read-more { text-wrap: balance; display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--indigo); }
 .card .read-more:hover { text-decoration: underline; }
 
 .pillars.two { grid-template-columns: repeat(2, 1fr); }
@@ -1503,9 +1503,10 @@ main a.hero-kicker:not(.btn):hover { border-color: var(--ink-3); color: var(--in
   color: var(--ink-3); background: var(--bg-alt); border-right: 1px solid var(--line);
 }
 .pmap-cells { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; padding: 14px; list-style: none; margin: 0; }
-.pmap-cells li { display: grid; min-width: 0; }
+.pmap-cells li { display: grid; min-width: 0; grid-template-rows: 1fr auto; }
+/* Every tile carries a host line (empty when the product has no subdomain), so tiles in a row stay one height. */
 .pmap-tile { display: grid; min-width: 0; }
-.pmap-host { padding: 10px 4px 0; font: 500 12.5px/1.4 var(--mono); }
+.pmap-host { padding: 10px 4px 0; font: 500 12.5px/1.4 var(--mono); min-height: calc(1.4em + 10px); white-space: nowrap; }
 .pmap-host a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; }
 .pmap-host a:hover { color: var(--indigo); }
 main a.pmap-cell:not(.btn) {
@@ -1653,8 +1654,11 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
    unbreakable, so the column would take the width of the longest command and
    push the page sideways on a phone. Same trap as .plan-hero, same fix. */
 .split-hero .container > * { min-width: 0; }
+/* Each .line is one phrase and must stay on one line at desktop: 62px left the
+   last word of a longer phrase alone on a line of its own (/router, 2026-10-31). */
+.split-hero h1 .line { text-wrap: balance; }
 .split-hero h1 {
-  font-size: clamp(40px, 5vw, 62px); font-weight: var(--display-weight);
+  font-size: clamp(40px, 4vw, 52px); font-weight: var(--display-weight);
   letter-spacing: -0.045em; line-height: 1.04;
 }
 .split-hero .badge { margin-bottom: 26px; }
@@ -2204,11 +2208,11 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 }
 .glance dl { margin: 0; }
 .glance dl > div {
-  display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; padding: 11px 20px;
+  display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 16px; padding: 11px 20px;
   font-size: 14px; line-height: 1.45; border-bottom: 1px solid var(--line);
 }
 .glance dl > div:last-child { border-bottom: 0; }
-.glance dt { margin: 0; color: var(--ink-3); }
+.glance dt { margin: 0; color: var(--ink-3); text-wrap: balance; }
 .glance dd { margin: 0; font-weight: 600; color: var(--ink); }
 .glance dd code { font-size: 12.5px; }
 .split-hero .glance { margin: 0; }
@@ -2243,8 +2247,10 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 .works .card h3 { padding-left: 0; min-height: 0; }
 @media (max-width: 920px) {
   .example-grid { grid-template-columns: minmax(0, 1fr); }
-  .glance dl > div { grid-template-columns: 104px minmax(0, 1fr); padding: 10px 16px; }
+  .glance dl > div { grid-template-columns: 136px minmax(0, 1fr); padding: 10px 16px; }
 }
+/* At a glance labels never break mid-phrase; on a phone the label sits above its value instead. */
+@media (max-width: 560px) { .glance dl > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
 
 /* ---------- Home: how the layers connect, and latest writing (v2) ---------- */
 .lpaths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }

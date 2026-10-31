@@ -44,8 +44,9 @@ def home_stack(indent):
             q = QUALIFIER.get(pk)
             qual = f'<span class="pmap-q">{q}</span>' if q else ""
             site = SITES.get(pk)
+            # Always present (empty without a subdomain) so tiles in one row stay one height.
             host = (f'<span class="pmap-host"><a href="https://{site}/">{site}</a></span>'
-                    if site else "")
+                    if site else '<span class="pmap-host" aria-hidden="true"></span>')
             out.append(f'{i3}<li><div class="pmap-tile"><a class="pmap-cell{live}" href="{href}"><b>{pname}{new}</b>'
                        f'<span>{line}</span><em class="pmap-st">{status.capitalize()}{qual}</em></a></div>{host}</li>')
         out.append(f'{i2}</ul>')

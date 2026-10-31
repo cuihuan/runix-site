@@ -68,7 +68,7 @@ def card(p):
         <div class="post-meta"><span class="cat">{p['cat']}</span><span>{p['date']}</span><span>·</span><span>{p['read']}</span></div>
         <h3><a href="/blog/{p['slug']}">{p['headline']}</a></h3>
         <p class="excerpt">{html.escape(p['desc'], quote=False)}</p>
-        <a class="read-more" href="/blog/{p['slug']}" aria-hidden="true" tabindex="-1">Read post →</a>
+        <a class="read-more" href="/blog/{p['slug']}" aria-hidden="true" tabindex="-1">Read post&nbsp;→</a>
       </div>""")
 
 
@@ -134,7 +134,7 @@ def write_home(posts):
         <h3>{heading}</h3>
         <ul class="wlist">{lis}
         </ul>
-        <a class="read-more" href="/blog/#{sid}">All {len(items)} {heading} post{'s' if len(items) != 1 else ''} &rarr;</a>
+        <a class="read-more" href="/blog/#{sid}">All {len(items)} {heading} post{'s' if len(items) != 1 else ''}&nbsp;&rarr;</a>
       </div>""")
     block = '<!--writing-->\n    <div class="wgrid">\n' + "\n".join(cards) + "\n    </div>\n    <!--/writing-->"
     s = re.sub(r"<!--writing-->.*?<!--/writing-->", block, s, count=1, flags=re.S)

@@ -35,23 +35,28 @@ unauthenticated call, and that no certificate is inside 14 days of expiry.
 Exit code is non-zero if anything failed.
 
     crontab -e
-    17 9 * * *  /Users/cuihuan/Desktop/workspace/AI/runix/site/tools/daily_check.sh >> /tmp/runix-daily.log 2>&1
+    17 9 * * *  <repo>/tools/daily_check.sh >> /tmp/runix-daily.log 2>&1
+
+As of 2026-10-31 it is not scheduled on any machine (the path that used to sit
+here, `AI/runix/site`, no longer exists). A launchd job cannot read a
+repository under `~/Desktop` (macOS privacy protection), so schedule it from a
+clone outside Desktop, or call it from the workspace patrol.
 
 Certificates were 77-87 days out when this was written; the check is there
 because a lapsed certificate takes everything down and gives a month of
 warning nobody is watching for.
 | `link_rot.py` | Probes every external source we cite (published pages and drafts) twice and reports any that stop resolving. Wired into `daily_check.sh`: a deploy cannot break a link on another company's site, but time can. |
 
-## Product sub-sites (six live subdomains)
+## Product sub-sites (six Pages projects)
 
-`build_subsites.py <outdir>` rebuilds the five product landing pages as
-standalone sites. They are **not** covered by `deploy.sh` — refreshing them is
-a separate step that is easy to forget, and they were three days stale while
-the main site changed all night.
+`build_subsites.py <outdir>` rebuilds the product landing pages as standalone
+sites, one Pages project each (`MAP` in that file is the list). `deploy.sh`
+re-deploys them itself when `subsite_drift.sh` finds them behind; by hand:
 
     CLOUDFLARE_API_TOKEN=... tools/deploy_subsites.sh
 
-That builds all four, deploys them, and verifies the five domains afterwards.
+That builds all six, deploys them with the commit they were built from, and
+verifies the domains afterwards.
 `daily_check.sh` compares each subdomain's CSP and cache headers against the
 main site's and tells you when they have drifted, so this is not something you
 have to remember.
@@ -63,6 +68,7 @@ have to remember.
 | `runix-code` | code.runixcloud.io |
 | `runix-data` | data.runixcloud.io |
 | `runix-fs` | fs.runixcloud.io (added 2026-09-29 with the Runix FS launch) |
+| `runix-models` | models.runixcloud.io (added 2026-09-30) |
 
 **They also carry `_headers`, so a change to the CSP or cache policy on the main
 site does not reach them until they are rebuilt.** That gap was live for about

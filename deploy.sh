@@ -253,7 +253,6 @@ for path in /payments/money.js /package.json; do
   [ "$code" = "404" ] || fail=1
 done
 
-[ "$push_fail" = "0" ] || fail=1
 [ "$fail" = "0" ] && echo "==> Deploy OK" || { echo "==> Deploy FAILED verification"; exit 1; }
 
 echo "==> Tell the search engines what changed"
@@ -269,4 +268,14 @@ echo "==> Keep the product sub-domains in step"
 # and it was missed twice -- five live domains served two-versions-old CSS.
 if ! ./tools/subsite_drift.sh; then
   ./tools/deploy_subsites.sh || echo "    sub-domain re-deploy failed -- run tools/deploy_subsites.sh"
+fi
+
+# Production is fine at this point; only git is behind. Finish every step
+# above first (a push race should not also leave the sub-domains stale), then
+# fail the run so nobody mistakes it for done. 2026-10-31: the first run that
+# hit this ended on "FAILED verification" with every check green.
+if [ "$push_fail" != "0" ]; then
+  echo "==> Deployed and verified, but origin/site does not have the deployed commit yet."
+  echo "    git pull --no-rebase origin site && git push origin HEAD:site"
+  exit 1
 fi

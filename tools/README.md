@@ -14,6 +14,7 @@ difference matters, so they are separated below.
 
 | Tool | What it does | Fails the deploy? |
 |---|---|---|
+| `deploy_provenance.py check` / `record` / `push` | Production, origin/site and the deploying copy stay one history: refuses a dirty tree, a copy behind origin/site, or a live build HEAD does not contain; commits the deploy-time rewrites before upload; pushes the deployed commit after it. `test_deploy_provenance.sh` runs every case offline. | **yes** |
 | `update_lastmod.py --write` | Bumps sitemap `lastmod` only for pages whose *content* hash changed. Never on an asset-version bump. | no |
 | `qa.py` | Source-level checks: structure, meta, JSON-LD validity and FAQ/visible-copy agreement, link and anchor resolution, nav consistency, sitemap coverage, forbidden claims, mailto routing, product-status consistency, description length. | **yes** |
 | `visual_qa.py` (6-page sample) | Renders in Chrome at 375/768/1440 — overflow, sub-12px text, target size, anchors under the sticky header, WCAG AA contrast, link distinguishability. Also counts how many elements each selector-based detector examined and fails if any examined none: a detector that matches nothing reports nothing and reads as coverage. | **yes** |

@@ -24,6 +24,16 @@ if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   echo "CLOUDFLARE_API_TOKEN is not set. Create a scoped token with Pages:Edit and re-run." >&2
   exit 1
 fi
+cd "$SRC"
+
+echo "==> Production, origin/site and this copy are the same history"
+# Production is a direct upload from whichever copy runs this script, so this
+# is the only thing that stops a deploy from replacing someone else's newer
+# work. It did, more than once: see docs in DEPLOYING.md and ADR-0005 in the
+# workspace. Refuses on a dirty tree, on commits origin/site has that HEAD
+# lacks, and on a live deployment built from a commit HEAD does not contain.
+# DEPLOY_FORCE="<reason>" downgrades the refusals to warnings.
+python3 tools/deploy_provenance.py check || exit 1
 
 echo "==> Bake the legal identity into every footer"
 # Company name, registration number and contact details have to be visible in
@@ -111,6 +121,13 @@ else
   echo "    (no Chrome here — skipping the render checks)"
 fi
 
+echo "==> Record what the builders rewrote"
+# Everything above may have rewritten pages (identity, ?v=, social cards,
+# lastmod). Commit it before upload so the commit wrangler stamps on the
+# deployment is the tree that ships. On 2026-09-07 these rewrites shipped
+# uncommitted, and the next line re-used style.css?v=59 for different bytes.
+python3 tools/deploy_provenance.py record || exit 1
+
 echo "==> Stage public files"
 rsync -a \
   --exclude '.git' --exclude '.wrangler' --exclude 'node_modules' \
@@ -149,7 +166,16 @@ echo "==> Deploy to Cloudflare Pages project $PROJECT (branch $PROD_BRANCH)"
 # Without an explicit branch wrangler uses the checked-out git branch, which
 # lands on a preview URL and leaves the custom domain on the old build.
 npx --yes wrangler@4 pages deploy "$STAGE" --project-name="$PROJECT" \
-  --branch="$PROD_BRANCH" --commit-dirty=true
+  --branch="$PROD_BRANCH" --commit-hash="$(git rev-parse HEAD)" \
+  --commit-message="$(git log -1 --format=%s)" --commit-dirty=false
+
+echo "==> Publish the deployed commit to origin/site"
+# Right after the upload, before verification: if verification fails, the
+# broken tree is still what production serves, and origin/site must say so.
+# A rejected push means someone pushed meanwhile; the script ends non-zero
+# and says how to reconcile.
+push_fail=0
+python3 tools/deploy_provenance.py push || push_fail=1
 
 fail=0
 echo "==> Verify from outside"
@@ -223,6 +249,7 @@ for path in /payments/money.js /package.json; do
   [ "$code" = "404" ] || fail=1
 done
 
+[ "$push_fail" = "0" ] || fail=1
 [ "$fail" = "0" ] && echo "==> Deploy OK" || { echo "==> Deploy FAILED verification"; exit 1; }
 
 echo "==> Tell the search engines what changed"

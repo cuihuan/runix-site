@@ -30,10 +30,18 @@ python3 tools/build_subsites.py "$OUT"
 # no payment secrets) until 2026-09-29. A sub-site is one static page, so each
 # deploy runs from inside its own build directory, where there is nothing to
 # compile.
+# Built in a temp directory, so wrangler cannot see git: pass the commit the
+# build came from, so each sub-site's deployment can be traced back to it the
+# same way the main site's can (tools/deploy_provenance.py).
+commit=$(git rev-parse HEAD)
+subject=$(git log -1 --format=%s)
+dirty=false
+[ -z "$(git status --porcelain)" ] || dirty=true
 for s in gateway comic code data fs models; do
   echo "==> Deploy runix-$s"
   (cd "$OUT/subsite-$s" && npx --yes wrangler@4 pages deploy . \
-    --project-name="runix-$s" --branch=main --commit-dirty=true 2>&1 | tail -1)
+    --project-name="runix-$s" --branch=main --commit-hash="$commit" \
+    --commit-message="$subject" --commit-dirty="$dirty" 2>&1 | tail -1)
 done
 
 echo "==> Verify"

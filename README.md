@@ -7,13 +7,19 @@ Plain HTML and one stylesheet, no build step, served from Cloudflare Pages.
 
 ## Products on the site
 
-| Page | Product | Status |
-|---|---|---|
-| `router.html` | Runix Router: one OpenAI-compatible endpoint for every model provider | Early access |
-| `fs.html` | Runix FS: a POSIX file system and multi-tier cache over object storage, built on [Curvine](https://github.com/CurvineIO/curvine) | Early access |
-| `pipeline.html` | Runix Pipeline: raw material into model-ready data | In development |
-| `code.html`, `code-plans.html` | Runix Code: a reviewable AI agent in your repository | In development |
-| `comic.html` | Runix Comic: scripts into published episodes | In development |
+The products, their layer and their status are defined once, in
+`tools/stack.py`; the navigation, the home page stack and `qa.py`'s status
+gate all read it. As of 2026-10-31:
+
+| Layer | Page | Product | Status |
+|---|---|---|---|
+| 05 Agents | `code.html`, `code-plans.html` | Runix Code: an independent coding agent, reviewable in your repository | In development |
+| 05 Agents | `comic.html` | Runix Comic: an agent for comic dramas, script to episode | In development |
+| 04 Gateway | `router.html`, `router-models.html` | Runix Router: one OpenAI-compatible endpoint for every model | Available |
+| 03 Models | `models.html` | Runix Models: fine-tune and serve open-weight models | Early access |
+| 02 Data | `data.html`, six `*-data.html` domain pages | Runix Data: domain data for training and evaluation | Early access |
+| 02 Data | `pipeline.html` | Runix Pipeline: the tooling that makes data model-ready | In development |
+| 01 Infrastructure | `fs.html` | Runix FS: a POSIX file system and multi-tier cache over object storage, built on [Curvine](https://github.com/CurvineIO/curvine) | Early access |
 
 Also: `plans.html` (pricing and checkout; `/pricing` redirects here), `docs/`
 (one guide per product), `blog/`, `glossary.html`, `faq.html`, and the legal

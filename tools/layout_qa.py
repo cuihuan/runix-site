@@ -70,10 +70,16 @@ var groups=new Map();
 cards.forEach(function(e){var rc=row(e); if(!rc)return;
   var sig=label(e)+'|'+Math.round(rc[1].getBoundingClientRect().top);
   if(!groups.has(rc[0]))groups.set(rc[0],{}); var g=groups.get(rc[0]); (g[sig]=g[sig]||[]).push(e);});
-groups.forEach(function(g,box){Object.keys(g).forEach(function(sig){var es=g[sig]; if(es.length<2)return; out.seen.rows++;
+// Only cards that sit side by side are a row. Boxes stacked in one column share their column's slot but do not
+// overlap vertically; side-by-side ones do, even when centred.
+groups.forEach(function(g,box){Object.keys(g).forEach(function(sig){var all=g[sig].slice().sort(function(x,y){
+    return x.getBoundingClientRect().top-y.getBoundingClientRect().top;}), rows=[];
+  all.forEach(function(e){var r=e.getBoundingClientRect(), cur=rows[rows.length-1];
+    if(cur&&r.top<cur.bottom-1){cur.es.push(e);cur.bottom=Math.max(cur.bottom,r.bottom);} else rows.push({es:[e],bottom:r.bottom});});
+  rows.forEach(function(row){var es=row.es; if(es.length<2)return; out.seen.rows++;
   var hs=es.map(function(e){return e.getBoundingClientRect().height;});
   if(Math.max.apply(null,hs)-Math.min.apply(null,hs)>TOL&&out.uneven.length<15)
-    out.uneven.push(label(box)+' > '+sig.split('|')[0]+': '+hs.map(Math.round).join('/')+' "'+(es[0].textContent||'').replace(/\s+/g,' ').trim().slice(0,32)+'"');});});
+    out.uneven.push(label(box)+' > '+sig.split('|')[0]+': '+hs.map(Math.round).join('/')+' "'+(es[0].textContent||'').replace(/\s+/g,' ').trim().slice(0,32)+'"');});});});
 function hidden(n){var s=getComputedStyle(n);return n.classList.contains('visually-hidden')||s.clipPath!=='none'&&s.clipPath||s.clip&&s.clip!=='auto'||n.getBoundingClientRect().width<=2;}
 function inlineChain(n,e){while(n&&n!==e){var d=getComputedStyle(n).display;if(d!=='inline'&&!(n.classList.contains('line')&&d==='inline-block'))return false;n=n.parentElement;}return true;}
 function words(e,pureInline){var w=[],tw=document.createTreeWalker(e,NodeFilter.SHOW_TEXT,null),n;

@@ -37,6 +37,11 @@ Exit code is non-zero if anything failed.
     crontab -e
     17 9 * * *  <repo>/tools/daily_check.sh >> /tmp/runix-daily.log 2>&1
 
+Run it where the network is plain. On 2026-10-31 a run from the Mac reported 41
+of 124 cited sources unreachable (status 000 from GitHub, Hugging Face,
+Google); the same URLs answered 200 from the server. The Mac's proxy split
+was failing the connections, not the sources.
+
 As of 2026-10-31 it is not scheduled on any machine (the path that used to sit
 here, `AI/runix/site`, no longer exists). A launchd job cannot read a
 repository under `~/Desktop` (macOS privacy protection), so schedule it from a

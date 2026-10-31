@@ -90,7 +90,10 @@ if python3 tools/link_rot.py; then :; else FAIL=1; fi
 
 # Certificate expiry, because a cert that lapses takes everything with it and
 # gives about a month of warning that nobody is watching for.
-for host in runixcloud.io router.runixcloud.io router.runixcloud.io/console; do
+# Hostnames only: a path here is handed to the TLS socket as a host name and
+# fails every time (2026-10-31: router.runixcloud.io/console slipped in when
+# router-console became router.runixcloud.io/console).
+for host in runixcloud.io router.runixcloud.io; do
   days=$(python3 - "$host" <<'PY'
 import datetime, socket, ssl, sys
 host = sys.argv[1]

@@ -24,8 +24,10 @@ serves.** `deploy.sh` calls it three times.
    the builders rewrote (`?v=`, social cards, lastmod, identity), so the
    commit stamped on the deployment is exactly the uploaded tree.
 3. `push`, right after the upload. `git push origin HEAD:site`, never forced.
-   A rejection means someone pushed meanwhile; the run ends non-zero and says
-   how to reconcile.
+   A rejection means someone pushed meanwhile; the run ends non-zero. Reconcile
+   with a merge, `git pull --no-rebase origin site && git push origin HEAD:site`.
+   Never rebase there: it rewrites the commit production serves, and the next
+   deploy's check refuses it (happened on 2026-10-31; the test covers it).
 
 `DEPLOY_FORCE="<reason>" ./deploy.sh` downgrades check's refusals to
 warnings, for emergencies. It does not force the push.

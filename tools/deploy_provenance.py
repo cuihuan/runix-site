@@ -168,11 +168,16 @@ def push():
     if r.returncode == 0:
         print(f"    {UPSTREAM} is now {head}, the commit production serves")
         return 0
+    # Merge, never rebase: rebasing rewrites the commit production serves, it
+    # drops out of every branch, and the next check refuses to deploy over it.
+    # On 2026-10-31 a tools-only push landed on site while a deploy ran; this
+    # message used to say "pull --rebase", which would have done exactly that.
     print(f"    PUSH FAILED: production now serves {head}, but {UPSTREAM} was not updated:\n"
           f"      {r.stderr.strip()}\n"
-          f"    Someone pushed in the meantime. Run git pull --rebase {REMOTE} {BRANCH}, "
-          "then git push and ./deploy.sh again, or the next deploy from another copy "
-          "will be refused against this one.", file=sys.stderr)
+          f"    Someone pushed in the meantime. Bring their work in with a merge (not a rebase,\n"
+          f"    which would rewrite {head}, the commit production serves):\n"
+          f"      git pull --no-rebase {REMOTE} {BRANCH} && git push {REMOTE} HEAD:{BRANCH}\n"
+          "    Until then the next deploy from another copy is refused.", file=sys.stderr)
     return 1
 
 

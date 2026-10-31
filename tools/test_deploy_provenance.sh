@@ -45,6 +45,16 @@ expect "someone pushed meanwhile: refuse to deploy over it" 1 "pull --ff-only" -
 echo three > page.html && git commit -qam three
 expect "push after a concurrent push is rejected, not forced" 1 "PUSH FAILED" -- python3 "$TOOL" push
 
+deployed=$(git rev-parse HEAD)
+# What the old hint said (pull --rebase) rewrites the deployed commit:
+git branch -q rebased HEAD && git checkout -q rebased && git pull -q --rebase origin site
+export DEPLOY_PROVENANCE_TEST_LIVE_COMMIT=$deployed
+expect "rebasing instead rewrites the deployed commit and is refused" 1 "not in HEAD's history" -- python3 "$TOOL" check
+git checkout -q site
+git pull -q --no-rebase --no-edit origin site && git push -q origin HEAD:site
+export DEPLOY_PROVENANCE_TEST_LIVE_COMMIT=$deployed
+expect "after merging the concurrent push, the deployed commit is accepted" 0 "contained in HEAD" -- python3 "$TOOL" check
+
 git checkout -q -b elsewhere "$first"
 export DEPLOY_PROVENANCE_TEST_LIVE_COMMIT=$(git -C "$T/a" rev-parse site)
 expect "live commit known but not in HEAD's history" 1 "not in HEAD's history" -- python3 "$TOOL" check

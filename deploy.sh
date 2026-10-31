@@ -112,6 +112,10 @@ if [ -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]; then
   python3 "$SRC/tools/visual_qa.py" index.html plans.html about.html \
     docs/router.html blog/model-failover.html terms.html \
     || { echo "visual_qa.py failed — not deploying." >&2; exit 1; }
+  # Uneven card rows and stranded words (owner's rule, 2026-10-31): the pages with
+  # the most card grids and split heroes. Full sweep by hand: python3 tools/layout_qa.py
+  python3 "$SRC/tools/layout_qa.py" index.html router.html solutions.html agents.html docs/index.html \
+    || { echo "layout_qa.py failed — not deploying." >&2; exit 1; }
   # Homepage only: enough to catch a gross regression (an image without
   # dimensions, a stylesheet that doubled) without adding half a minute to
   # every deploy. Run the full set by hand after a change to assets.

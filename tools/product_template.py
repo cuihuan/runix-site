@@ -387,7 +387,7 @@ def with_html(rows, name):
         <p class="card-layer">{layer}</p>
         <h3>{title}</h3>
         <p>{text}</p>
-        <span class="read-more">{cta} &rarr;</span>
+        <span class="read-more">{cta}&nbsp;&rarr;</span>
       </a>''' for layer, title, text, href, cta in rows)
     return block("with", f'''<section class="section" id="works-with">
   <div class="container">

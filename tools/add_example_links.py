@@ -30,7 +30,7 @@ START, END = "<!-- example-link -->", "<!-- /example-link -->"
 
 
 def block(slug, label):
-    return (f'{START}<p class="hero-note"><a href="{BASE}/{slug}/" rel="noopener">{label} &rarr;</a>'
+    return (f'{START}<p class="hero-note"><a href="{BASE}/{slug}/" rel="noopener">{label}&nbsp;&rarr;</a>'
             f' On our examples site; the access key comes from the Runix team.</p>{END}')
 
 

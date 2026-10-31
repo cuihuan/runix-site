@@ -242,7 +242,7 @@ def solcard(d):
     return (f'      <a class="solcard" href="/{d["slug"]}" aria-label="Runix for {E(d["name"].lower())}">\n'
             f'        <p class="sk">For {E(d["name"].lower())}</p>\n        <h3>{E(d["h1"][0])} {E(d["h1"][1])}</h3>\n'
             f'        <p>{E(d["sub"])}</p>\n        <ul class="sol-products">{prods}</ul>\n'
-            f'        <span class="read-more">Runix for {E(d["name"].lower())} &rarr;</span>\n      </a>')
+            f'        <span class="read-more">Runix for {E(d["name"].lower())}&nbsp;&rarr;</span>\n      </a>')
 
 
 HUB = {
@@ -374,7 +374,7 @@ def agents_main():
     nxt = []
     for name, why in d["next"]:
         slug = dom_pages.get(name)
-        link = f'\n        <a class="read-more" href="/{slug}">The {E(name)} data rules &rarr;</a>' if slug else ""
+        link = f'\n        <a class="read-more" href="/{slug}">The {E(name)} data rules&nbsp;&rarr;</a>' if slug else ""
         nxt.append(f'      <div class="card">\n        <h3>{E(name)}</h3>\n        <p>{L(why)}</p>{link}\n      </div>')
     princ = "\n".join(
         f'      <div class="card">\n        <h3>{E(t)}</h3>\n        <p>{L(x)}</p>\n      </div>' for t, x in d["principles"])
@@ -698,7 +698,7 @@ def write_home():
         <h3>What general availability adds</h3>
         <ul class="wlist">{ga}
         </ul>
-        <a class="read-more" href="/roadmap">The roadmap, without dates &rarr;</a>
+        <a class="read-more" href="/roadmap">The roadmap, without dates&nbsp;&rarr;</a>
       </div>
     </div>
     <!--/roadmap-->'''

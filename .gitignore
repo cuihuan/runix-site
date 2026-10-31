@@ -11,3 +11,4 @@ __pycache__/
 # underscore, and deploy.sh rsync-excludes them.
 _*.html
 __*.html
+_lqa*

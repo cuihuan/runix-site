@@ -12,6 +12,8 @@ import re
 
 ARROW = re.compile(r"(?<=\S) (&rarr;|→)(?=\s*</)")
 GENERATORS = ["tools/build_blog_index.py", "tools/build_solutions.py", "tools/product_template.py"]
+# Builders whose links are not .read-more but end in an arrow the same way.
+WHOLE = ["tools/add_example_links.py"]
 
 
 def main():
@@ -27,6 +29,11 @@ def main():
     for f in GENERATORS:
         p = pathlib.Path(f); t = p.read_text(encoding="utf-8")
         t2 = "\n".join(ARROW.sub(r"&nbsp;\1", line) if "read-more" in line else line for line in t.split("\n"))
+        if t2 != t:
+            p.write_text(t2, encoding="utf-8"); changed += 1
+    for f in WHOLE:
+        p = pathlib.Path(f); t = p.read_text(encoding="utf-8")
+        t2 = re.sub(r"(?<=\}) (&rarr;)(?=</a>)", r"&nbsp;\1", t)
         if t2 != t:
             p.write_text(t2, encoding="utf-8"); changed += 1
     print(f"nbsp arrows: {changed} file(s) changed")

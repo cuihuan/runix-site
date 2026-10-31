@@ -77,9 +77,11 @@ function inlineChain(n,e){while(n&&n!==e){var d=getComputedStyle(n).display;if(d
 function words(e,pureInline){var w=[],tw=document.createTreeWalker(e,NodeFilter.SHOW_TEXT,null),n;
   while((n=tw.nextNode())){var p=n.parentElement;if(!p||!vis(p)||hidden(p))continue;
     if(pureInline&&!inlineChain(p,e))continue;
-    var re=/\S+/g,m; while((m=re.exec(n.data))){var r=document.createRange(); r.setStart(n,m.index); r.setEnd(n,m.index+m[0].length);
+    // Chinese breaks between any two characters, so each CJK character is its own word; Latin runs stay whole.
+    var re=/[\u3400-\u9fff\uf900-\ufaff\u3000-\u303f\uff00-\uffef]|[^\s\u3400-\u9fff\uf900-\ufaff\u3000-\u303f\uff00-\uffef]+/g,m;
+    while((m=re.exec(n.data))){var r=document.createRange(); r.setStart(n,m.index); r.setEnd(n,m.index+m[0].length);
       var rc=r.getClientRects(); if(!rc.length)continue; var b=rc[rc.length-1];
-      w.push({cy:(b.top+b.bottom)/2,h:b.height,x:m[0],p:p});}}
+      w.push({cy:(b.top+b.bottom)/2,h:b.height,x:m[0],p:p,cjk:/^[\u3400-\u9fff\uf900-\ufaff]$/.test(m[0]),punct:/^[\u3000-\u303f\uff00-\uffef]$/.test(m[0])});}}
   return w;}
 function lines(w){var L=[]; w.forEach(function(o){var hit=L.filter(function(l){return Math.abs(l.cy-o.cy)<0.5*Math.min(l.h,o.h);})[0];
   if(hit)hit.n.push(o); else L.push({cy:o.cy,h:o.h,n:[o]});}); return L.sort(function(a,b){return a.cy-b.cy;});}
@@ -90,11 +92,15 @@ var NOWRAP='.btn,button,.badge,.pd-chip,.pmap-st,.pbar-cta,.pbar-status,.pbar-la
   var w=words(e,false), by=new Map(); w.forEach(function(o){if(!by.has(o.p))by.set(o.p,[]); by.get(o.p).push(o);});
   by.forEach(function(g){if(g.length<2)return; var L=lines(g);
     if(L.length>1&&out.wraps.length<20)out.wraps.push('wraps: '+label(e)+' "'+g.map(function(o){return o.x;}).join(' ').slice(0,40)+'" ('+L.length+' lines)');});});
-var TITLES='h1,h2,h3,h4,.pmap-cell b,.lead-line,dt,.glance-title,figcaption,.cta-band p,.hero-note,.read-more';
+var TITLES='h1,h2,h3,h4,.pmap-cell b,.lead-line,dt,.glance-title,figcaption,.cta-band p,.hero-note,.read-more,.eyebrow,.kicker,.hero-kicker';
 function orphan(e,where){var w=words(e,true); if(w.length<3)return; var L=lines(w); if(L.length<2)return;
   // A single long word (organisations, architectures) on the last line is the measure, not an orphan.
-  var last=L[L.length-1].n; if(last.length===1&&last[0].x.length<12&&out.wraps.length<20)
-    out.wraps.push('orphan: '+where+' "...'+w.slice(-4).map(function(o){return o.x;}).join(' ').slice(-40)+'" (last line: '+last[0].x+')');}
+  // A Chinese last line is stranded when it holds two characters or fewer (punctuation not counted).
+  var last=L[L.length-1].n, han=last.filter(function(o){return o.cjk;}).length;
+  var cjkOnly=last.every(function(o){return o.cjk||o.punct;});
+  var stranded=cjkOnly?han<=2:(last.length===1&&last[0].x.length<12);
+  if(stranded&&out.wraps.length<20)
+    out.wraps.push('orphan: '+where+' "...'+w.slice(-8).map(function(o){return o.x;}).join('').slice(-40)+'" (last line: '+last.map(function(o){return o.x;}).join('')+')');}
 [].forEach.call(document.querySelectorAll(TITLES),function(e){if(!vis(e)||e.closest('nav,footer'))return;
   out.seen.texts++; var ls=[].filter.call(e.querySelectorAll('.line'),function(s){return vis(s)&&getComputedStyle(s).display!=='inline';});
   if(ls.length)ls.forEach(function(s){orphan(s,label(e)+' line');}); else orphan(e,label(e));});

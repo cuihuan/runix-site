@@ -100,6 +100,18 @@ echo "==> Every check can still be reached"
 python3 tools/gate_coverage.py tools/qa.py || { echo "    an unexplained dead check"; exit 1; }
 python3 tools/gate_coverage.py tools/perf_check.py || { echo "    an unexplained dead check"; exit 1; }
 
+echo "==> The checkout function's tests pass"
+# functions/api/airwallex/intent.js ships with every deploy of this project,
+# including deploys that only touch copy, and the money arithmetic it calls
+# lives in payments/. Their 20 tests (package.json "test") were never run here.
+if command -v node >/dev/null; then
+  node --test payments/*.test.js >/dev/null 2>&1 \
+    || { node --test payments/*.test.js 2>&1 | tail -20; echo "    payment tests failed -- not deploying" >&2; exit 1; }
+  echo "    $(node --test payments/*.test.js 2>&1 | grep -E '^. pass' | sed 's/^. pass //') tests pass"
+else
+  echo "    node is not installed: cannot test the checkout function -- not deploying" >&2; exit 1
+fi
+
 echo "==> Pre-deploy checks"
 # Source-level checks are cheap, so everything gets them.
 python3 "$SRC/tools/qa.py" || { echo "qa.py failed — not deploying." >&2; exit 1; }

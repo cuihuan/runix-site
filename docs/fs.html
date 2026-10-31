@@ -216,7 +216,7 @@
 <ul>
 <li><strong>Masters</strong> hold the metadata: the namespace, the mount table and scheduling. They replicate it with Raft, so a highly available cluster runs several; the Kubernetes examples use three.</li>
 <li><strong>Workers</strong> hold the cache, in memory, SSD and HDD tiers, and serve data directly to clients. On a miss they read from the bucket.</li>
-<li><strong>Access</strong> is whichever of these your workloads need: the FUSE daemon for a POSIX mount, the CSI driver for Kubernetes, the Hadoop-compatible client for Spark and Flink, or the Java, Python and Rust SDKs.</li>
+<li><strong>Access</strong> is whichever of these your workloads need: the FUSE daemon for a POSIX mount, the CSI driver for Kubernetes, the Hadoop-compatible client for Spark and Flink, or the Java, Python and Rust SDKs (<a href="/blog/fuse-csi-or-sdk-mounting-object-storage-for-ml">which to pick for an ML workload</a>).</li>
 </ul>
 <p>File paths map one-to-one to object keys, so what is in the bucket keeps its original layout and stays readable without the cluster. How writes reach the bucket depends on the mount mode, in the next steps.</p>
 

@@ -31,7 +31,7 @@ LIMIT = 62  # Google renders roughly 60 on desktop; a couple over is fine, far o
 TITLES = {
     # -- blog: narrative -> query-shaped, keyword first
     "blog/did-the-model-change-make-it-worse.html":
-        "Detecting LLM Quality Regression After a Model Update | Runix",
+        "LLM Quality Regression After a Model Update | Runix",
     "blog/how-long-should-an-llm-request-wait.html":
         "LLM API Timeouts: How Long Should a Request Wait? | Runix",
     "blog/llm-retry-budget.html":

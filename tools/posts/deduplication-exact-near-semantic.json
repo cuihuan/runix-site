@@ -1,6 +1,6 @@
 {
  "slug": "deduplication-exact-near-semantic",
- "title": "Near-duplicate detection for training data, explained | Runix",
+ "title": "Near-Duplicate Detection for Training Data | Runix",
  "h1": "Exact, near and semantic: why near-duplicate detection for training data needs all three",
  "description": "Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.",
  "category": "Engineering",

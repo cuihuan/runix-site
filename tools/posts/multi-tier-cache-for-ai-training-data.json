@@ -1,6 +1,6 @@
 {
  "slug": "multi-tier-cache-for-ai-training-data",
- "title": "A multi-tier cache for AI training data, tier by tier | Runix",
+ "title": "A Multi-Tier Cache for AI Training Data | Runix",
  "h1": "A multi-tier cache for AI training data: what goes where",
  "description": "Memory, SSD and HDD tiers for training data: what goes where, how eviction and warming work, page cache or distributed cache, and when caching is pointless.",
  "category": "Engineering",

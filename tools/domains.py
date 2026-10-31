@@ -126,7 +126,7 @@ DOMAINS = [
     },
     {
         "key": "cybersecurity", "slug": "cybersecurity-data", "name": "Cybersecurity",
-        "title": "Cybersecurity Data for AI Training and Evaluation — Runix Data",
+        "title": "Cybersecurity Data for AI Training and Eval — Runix Data",
         "description": "Advisories, vulnerability records, logs and threat reports for security models: merged across sources, versions normalised, indicators defanged, labels traced.",
         "h1": ("Security data,", "with nothing live inside"),
         "sub": "Advisories, vulnerability records, logs and threat reports for models that triage, detect and explain: merged across sources, affected versions normalised, indicators defanged, and every label traceable to the rule that set it.",
@@ -268,7 +268,7 @@ DOMAINS = [
     },
     {
         "key": "ai-for-science", "slug": "ai-for-science-data", "name": "AI for Science",
-        "title": "AI for Science Data: Antibody and Protein Records — Runix Data",
+        "title": "AI for Science Data: Antibodies and Proteins — Runix Data",
         "description": "Antibody and protein sequence and structure data for scientific models: formats validated, one numbering scheme, accessions reconciled, measurements kept apart.",
         "h1": ("Antibody and protein data,", "where a bad merge changes the answer"),
         "sub": "Sequence and structure records for models in antibody and protein work: formats validated, one numbering scheme applied across sources, accessions reconciled, and measured values kept apart from computed ones. Our scope here is biological data.",

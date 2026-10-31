@@ -30,7 +30,7 @@ DATA = pathlib.Path("tools/models_catalog.json")
 OUT = pathlib.Path("router-models.html")
 SHELL = pathlib.Path("router.html")
 
-TITLE = "Router Models Catalogue: Public List Prices per Model | Runix"
+TITLE = "Router Models Catalogue: List Price per Model | Runix"
 DESC = ("Every model Runix Router routes to, at the vendor's public list price per million tokens, with "
         "context window and the vendor page each price was read from.")
 

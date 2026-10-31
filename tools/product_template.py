@@ -29,7 +29,7 @@ from stack import PRODUCTS as STACK, LAYER_OF  # noqa: E402
 
 CURL = '''<div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>one request, any model</b></div>
-<pre>$ curl https://router-api.runixcloud.io/v1/chat/completions \\
+<pre>$ curl https://router.runixcloud.io/v1/chat/completions \\
     -H <span class="g">"Authorization: Bearer $RUNIX_API_KEY"</span> \\
     -d <span class="g">'{"model": "your-model-id",
          "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>
@@ -41,7 +41,7 @@ PRODUCTS = {
         "note": 'Evaluation credits on request; no card, nothing to install. Billing is usage-based in USD, <a href="/plans">quoted per workload</a>.',
         "glance": [
             ("Interface", "OpenAI-compatible API"),
-            ("Endpoint", '<code>router-api.runixcloud.io/v1</code>'),
+            ("Endpoint", '<code>router.runixcloud.io/v1</code>'),
             ("Keys", "Per key: quota, expiry, allowed models, IP allowlist"),
             ("Models", 'Public list prices, <a href="/router-models">on the catalogue</a>'),
             ("Request log", "Model, tokens, cost and request id, per call"),

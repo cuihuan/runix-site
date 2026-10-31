@@ -74,7 +74,7 @@ if apply("access.html", ACCESS_NEW_MAIN, ACCESS_OLD_MAIN, problems):
 
 # --- docs/router.html §8: not covered by the open script's tables ----------
 DOCS = "docs/router.html"
-DOCS_OLD = ('<p>Router is self-serve: <a href="https://router-console.runixcloud.io/register">'
+DOCS_OLD = ('<p>Router is self-serve: <a href="https://router.runixcloud.io/register">'
             'create an account</a> and your key is issued immediately; evaluation credits are '
             'issued on request, so you can test against real traffic before you pay. For custom '
             'routing, limits above the self-serve ceiling, invoicing or a signed agreement, '
@@ -87,7 +87,7 @@ DOCS_NEW = ('<p>Router is currently <strong>invite-only</strong>: '
             'support@runixcloud.io</a>, and we reply within one business day and set the '
             'account up for you. Evaluation credits are issued on request, so you can test '
             'against real traffic before you pay. Existing accounts '
-            '<a href="https://router-console.runixcloud.io">sign in here</a>.</p>')
+            '<a href="https://router.runixcloud.io/console">sign in here</a>.</p>')
 if apply(DOCS, DOCS_OLD, DOCS_NEW, problems):
     print("docs/router.html: getting-a-key section now describes the intake path")
 
@@ -104,8 +104,8 @@ for p in pathlib.Path(".").rglob("*.html"):
         f'href="{REGISTER}" target="_blank" rel="noopener">Get API key<',
         'href="/about#contact">Request access<')
     t = t.replace(f'href="{REGISTER}">Create an account<', 'href="/about#contact">Request access<')
-    t = t.replace(f'href="{REGISTER}">console<', 'href="https://router-console.runixcloud.io">console<')
-    t = t.replace(REGISTER, "https://router-console.runixcloud.io")  # any stragglers: at least land on sign-in
+    t = t.replace(f'href="{REGISTER}">console<', 'href="https://router.runixcloud.io/console">console<')
+    t = t.replace(REGISTER, "https://router.runixcloud.io/console")  # any stragglers: at least land on sign-in
     p.write_text(t, encoding="utf-8")
     swept += n
 print(f"sweep: {swept} register link(s) rewritten across the site")
@@ -130,7 +130,7 @@ EDITS2 = [
      1),
     ("access.html",
      "<h2>1. Create your account</h2>\n"
-     '<p>Sign up at <a href="https://router-console.runixcloud.io">router-console.runixcloud.io</a> with an email\n'
+     '<p>Sign up at <a href="https://router.runixcloud.io/console">router.runixcloud.io/console</a> with an email\n'
      "address and a password. There is no intake form, no waiting list and no card.</p>",
      "<h2>1. Ask for an account</h2>\n"
      '<p>Email <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> '
@@ -229,7 +229,7 @@ EDITS2 = [
      "or a signed agreement in the same message.",
      2),  # FAQ JSON-LD + visible body carry the same single-line text
     ("router.html",
-     '<p>Create an account on the <a href="https://router-console.runixcloud.io">console</a> '
+     '<p>Create an account on the <a href="https://router.runixcloud.io/console">console</a> '
      "and your key is issued immediately; evaluation credits are issued on request, so you "
      "can test against real traffic before you pay. Teams that need custom routing, higher "
      "limits or invoicing can talk to us instead. The full process is on "

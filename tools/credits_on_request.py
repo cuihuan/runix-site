@@ -48,17 +48,17 @@ EDITS = [
 
     # Two of these are wrapped around an <a>, so the sentence is split by
     # markup and the plain-prose variants above cannot reach them.
-    ('<a href="https://router-console.runixcloud.io/register">console</a> and '
+    ('<a href="https://router.runixcloud.io/register">console</a> and '
      "your key is issued immediately, with evaluation credits to test against "
      "real traffic.",
-     '<a href="https://router-console.runixcloud.io/register">console</a> and '
+     '<a href="https://router.runixcloud.io/register">console</a> and '
      "your key is issued immediately; evaluation credits are issued on "
      "request, so you can test against real traffic before you pay."),
 
-    ('<a href="https://router-console.runixcloud.io/register">create an '
+    ('<a href="https://router.runixcloud.io/register">create an '
      "account</a> and your key is issued immediately, with evaluation credits "
      "to test against real traffic.",
-     '<a href="https://router-console.runixcloud.io/register">create an '
+     '<a href="https://router.runixcloud.io/register">create an '
      "account</a> and your key is issued immediately; evaluation credits are "
      "issued on request, so you can test against real traffic before you pay."),
 

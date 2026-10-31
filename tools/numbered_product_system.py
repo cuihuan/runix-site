@@ -51,7 +51,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-CONSOLE = "https://router-console.runixcloud.io"
+CONSOLE = "https://router.runixcloud.io/console"
 
 # --------------------------------------------------------------- nav (52 pages)
 # The block is not byte-identical across pages: each page marks its own item

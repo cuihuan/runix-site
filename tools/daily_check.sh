@@ -53,7 +53,7 @@ run "page checks"                        python3 tools/qa.py
 API_CODE=""
 for attempt in 1 2 3; do
   API_CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 \
-    https://router-api.runixcloud.io/v1/models)
+    https://router.runixcloud.io/v1/models)
   [ "$API_CODE" = "401" ] && break
   sleep 3
 done
@@ -90,7 +90,7 @@ if python3 tools/link_rot.py; then :; else FAIL=1; fi
 
 # Certificate expiry, because a cert that lapses takes everything with it and
 # gives about a month of warning that nobody is watching for.
-for host in runixcloud.io router-api.runixcloud.io router-console.runixcloud.io; do
+for host in runixcloud.io router.runixcloud.io router.runixcloud.io/console; do
   days=$(python3 - "$host" <<'PY'
 import datetime, socket, ssl, sys
 host = sys.argv[1]

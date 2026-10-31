@@ -221,11 +221,11 @@
 
 <p>The two are not exclusive: the <code>model</code> field travels with every request, so one key can pin on one route and send <code>auto</code> on another. What matters is that each route chooses deliberately, because the trade-offs run in opposite directions.</p>
 
-<pre><code>curl https://router-api.runixcloud.io/v1/chat/completions \
+<pre><code>curl https://router.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
   -d '{"model": "auto", "messages": [{"role": "user", "content": "..."}]}'
 
-curl https://router-api.runixcloud.io/v1/chat/completions \
+curl https://router.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
   -d '{"model": "MODEL_ID", "messages": [{"role": "user", "content": "..."}]}'</code></pre>
 

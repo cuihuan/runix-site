@@ -39,7 +39,7 @@ done
 echo "==> Verify"
 sleep 20
 fail=0
-for h in router comic code data fs models; do
+for h in comic code data fs models; do
   hdr=$(curl -sI --max-time 15 "https://$h.runixcloud.io/assets/style.css")
   cache=$(printf '%s' "$hdr" | grep -i '^cache-control' | tr -d '\r')
   csp=$(curl -sI --max-time 15 "https://$h.runixcloud.io/" | grep -ic content-security)
@@ -47,17 +47,17 @@ for h in router comic code data fs models; do
   [ "$csp" = "1" ] || fail=1
 done
 # No sub-site may answer on the checkout route; it belongs to the main site.
-for h in router comic code data fs models; do
+for h in comic code data fs models; do
   code=$(curl -s -o /dev/null -w '%{http_code}' -X POST --max-time 15 "https://$h.runixcloud.io/api/airwallex/intent")
   if [ "$code" != "404" ] && [ "$code" != "405" ]; then
     printf '    %-9s POST /api/airwallex/intent -> %s (expected no function here)\n' "$h" "$code"
     fail=1
   fi
 done
-# gateway.* is the old name of router.*: it must redirect, not serve a copy.
+# gateway.* is the old name of the Router product page: it must redirect, not serve a copy.
 loc=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 15 "https://gateway.runixcloud.io/x?y=1")
-if [ "$loc" != "301 https://router.runixcloud.io/x?y=1" ]; then
-  printf '    gateway   -> %s (expected a 301 to router.runixcloud.io)\n' "$loc"
+if [ "$loc" != "301 https://runixcloud.io/router" ]; then
+  printf '    gateway   -> %s (expected a 301 to runixcloud.io/router)\n' "$loc"
   fail=1
 fi
 [ "$fail" -eq 0 ] && echo "==> Sub-sites OK" || { echo "==> Sub-site verification FAILED"; exit 1; }

@@ -218,7 +218,7 @@
         <p class="glance-title">At a glance</p>
         <dl>
         <div><dt>Interface</dt><dd>OpenAI-compatible API</dd></div>
-        <div><dt>Endpoint</dt><dd><code>router-api.runixcloud.io/v1</code></dd></div>
+        <div><dt>Endpoint</dt><dd><code>router.runixcloud.io/v1</code></dd></div>
         <div><dt>Keys</dt><dd>Per key: quota, expiry, allowed models, IP allowlist</dd></div>
         <div><dt>Models</dt><dd>Public list prices, <a href="/router-models">on the catalogue</a></dd></div>
         <div><dt>Request log</dt><dd>Model, tokens, cost and request id, per call</dd></div>
@@ -239,7 +239,7 @@
     <div class="example-grid">
       <div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>one request, any model</b></div>
-<pre>$ curl https://router-api.runixcloud.io/v1/chat/completions \
+<pre>$ curl https://router.runixcloud.io/v1/chat/completions \
     -H <span class="g">"Authorization: Bearer $RUNIX_API_KEY"</span> \
     -d <span class="g">'{"model": "your-model-id",
          "messages": [{"role": "user", "content": "Hello"}]}'</span></pre>

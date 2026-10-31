@@ -214,9 +214,9 @@
 <p>Runix Router is an OpenAI-compatible endpoint in front of many model providers. If your code already calls an OpenAI-compatible API, integration is a configuration change: point the client at Runix and swap the key. This guide covers the quickstart, model selection, streaming, what happens when a provider fails, and the operational details teams ask about. Router is <a href="/router">available</a>, with accounts opened by our team, and support comes directly from the engineers.</p>
 
 <h2 id="quickstart">1. Quickstart</h2>
-<p>Set your client's base URL to <code>https://router-api.runixcloud.io/v1</code> and use a key from the <b>Tokens</b> page of the <a href="https://router-console.runixcloud.io/">console</a>. Everything else about your existing integration stays the same.</p>
+<p>Set your client's base URL to <code>https://router.runixcloud.io/v1</code> and use a key from the <b>Tokens</b> page of the <a href="https://router.runixcloud.io/console">console</a>. Everything else about your existing integration stays the same.</p>
 <pre><code># cURL
-curl https://router-api.runixcloud.io/v1/chat/completions \
+curl https://router.runixcloud.io/v1/chat/completions \
   -H "Authorization: Bearer $RUNIX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -228,7 +228,7 @@ import os
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://router-api.runixcloud.io/v1",
+    base_url="https://router.runixcloud.io/v1",
     api_key=os.environ["RUNIX_API_KEY"],
 )
 resp = client.chat.completions.create(
@@ -311,7 +311,7 @@ failed (section 4) both arrive in this shape.</p>
 <p>If you are evaluating us — or any gateway — <a href="/blog/llm-gateway-security-review">the security review an LLM gateway should survive</a> is the list of questions we think you should ask, including of Runix.</p>
 
 <h2 id="getting-a-key">8. Getting a key</h2>
-<p>Accounts are opened by our team: <a href="/about#contact">tell us what you are building</a> — models, expected volume, latency needs — or email <a href="mailto:sales@runixcloud.io">sales@runixcloud.io</a>, and we reply within one business day and set the account up for you. Evaluation credits are issued on request, so you can test against real traffic before you pay. Once the account exists, keys are created on the <b>Tokens</b> page of the <a href="https://router-console.runixcloud.io/">console</a>.</p>
+<p>Accounts are opened by our team: <a href="/about#contact">tell us what you are building</a> — models, expected volume, latency needs — or email <a href="mailto:sales@runixcloud.io">sales@runixcloud.io</a>, and we reply within one business day and set the account up for you. Evaluation credits are issued on request, so you can test against real traffic before you pay. Once the account exists, keys are created on the <b>Tokens</b> page of the <a href="https://router.runixcloud.io/console">console</a>.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>

@@ -32,6 +32,14 @@ import re
 import subprocess
 import sys
 
+# SUPERSEDED 2026-10-31 by tools/router_one_host.py. The hostnames this tool wrote
+# (router-api / router-console) were replaced by one host, router.runixcloud.io;
+# re-running it would bring the hyphenated names back. Its other edits are in the
+# files already.
+if __name__ == "__main__":
+    print("router_available: superseded by router_one_host.py; nothing to do")
+    sys.exit(0)
+
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from router_available_data import EDITS, BLOCKS  # noqa: E402
 

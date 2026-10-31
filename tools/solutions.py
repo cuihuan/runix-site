@@ -613,8 +613,8 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
               'Solutions by team, the Agents layer by domain, this roadmap, and the blog grouped by layer.',
               '/solutions', 'Solutions by team'),
              ('October 30, 2026',
-              'Runix Router moves from early access to available, at router-api.runixcloud.io and '
-              'router-console.runixcloud.io.',
+              'Runix Router moves from early access to available, at router.runixcloud.io: the console and '
+              'the API on one host.',
               '/router', 'Runix Router')],
  'faq': [('When will a product be generally available?',
           'No date is published for any product. The site states the status a product has reached and what '

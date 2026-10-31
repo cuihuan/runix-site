@@ -25,14 +25,13 @@ PAGES = ["pricing", "security", "about", "careers", "router", "fs", "pipeline",
          "acceptable-use"]
 
 
-# gateway.runixcloud.io is the old name of router.runixcloud.io, and both are
-# custom domains of one Pages project. _redirects cannot match on hostname, so
+# gateway.runixcloud.io is the old name of the Router product page; router.runixcloud.io
+# is now the console and API host itself, not this Pages project. _redirects cannot match on hostname, so
 # a Pages Function sends the old name over, path and query kept.
 GATEWAY_REDIRECT = """export async function onRequest({ request, next }) {
   const url = new URL(request.url);
   if (url.hostname === "gateway.runixcloud.io") {
-    url.hostname = "router.runixcloud.io";
-    return Response.redirect(url.toString(), 301);
+    return Response.redirect("https://runixcloud.io/router", 301);
   }
   return next();
 }

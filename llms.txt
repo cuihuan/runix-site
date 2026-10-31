@@ -39,7 +39,7 @@ Seven products at different stages. The statuses below are literal.
 - **Runix Router** — *status: available, with accounts opened by our team.* One OpenAI-compatible
   endpoint across many providers, positioned on security, compliance and performance:
   central key custody, per-key limits and quotas, request-level audit trail, contracts and
-  written data terms, a log of every request with its cost, and streaming passed through unbuffered. API base https://router-api.runixcloud.io/v1. Hosted API, billed on usage.
+  written data terms, a log of every request with its cost, and streaming passed through unbuffered. API base https://router.runixcloud.io/v1. Hosted API, billed on usage.
   https://runixcloud.io/router
   Models catalogue, every model at its vendor's public list price: https://runixcloud.io/router-models
 - **Runix FS** — *status: early access, launched September 2026.* An AI-native file system:

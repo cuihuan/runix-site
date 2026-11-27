@@ -414,7 +414,10 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
 }
 
 /* ---------- Feature rows ---------- */
-.feature { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 40px 0; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding: 40px 0; }
+/* Columns start level (DESIGN.md section 5); right under a section head the
+   head's own margin is the gap, not margin plus padding. */
+.section-head + .feature { padding-top: 0; }
 .feature > * { min-width: 0; }
 .feature h3 { font-size: var(--text-3xl); font-weight: var(--display-weight); letter-spacing: var(--track-heading); margin-bottom: 14px; }
 .feature p { color: var(--ink-2); }
@@ -2614,3 +2617,5 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
    column, and its read-more sits on the bottom edge however long the copy. */
 .grid > .card-clickable { display: flex; flex-direction: column; }
 .grid > .card-clickable > .read-more { margin-top: auto; padding-top: 14px; align-self: flex-start; }
+/* A Chinese headline has no word spaces to wrap at evenly; each phrase keeps its own line on a phone too. */
+:lang(zh) .hero-flagship h1 .line, :lang(zh) .split-hero h1 .line, :lang(zh) .page-hero h1 .line { display: block; }

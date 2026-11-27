@@ -117,7 +117,7 @@ Rules:
 
 | Component | Spec |
 |---|---|
-| Header | 64px, sticky, translucent white. Brand left; Products menu, Solutions, Pricing, Docs, Company, language link; one primary action ("Contact sales") right. |
+| Header | 64px, sticky, translucent white. Brand left; Products menu, Solutions, Pricing, Docs, Company, the language link (once the Chinese edition is live, `i18n.ZH_LIVE`); one primary action ("Contact sales") right. |
 | Products menu | One row per layer: a 160px label column (`05 AGENTS`), then products two to a row. A layer's hub link ("Agents by domain") is a full-width row under that layer's products, never in the label column, so every row is as tall as its products and no taller. Footer link "The whole stack". |
 | Product bar | Under the header on product and hub pages: name, layer, status, section links, the page's own primary action. It is where layer and status are stated; the hero does not repeat them. A bar whose action is the same as the header's ("Contact sales") omits it. |
 | Label | `font: 600 var(--text-2xs)/1.3 var(--mono)`, `--track-label`, uppercase. Section numbers `02 · Capabilities` are labels. |

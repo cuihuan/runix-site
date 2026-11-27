@@ -1,16 +1,17 @@
 # Runix Lab
 
-> Runix Lab is rebuilding Unix for AI (its motto: "Rebuild AI Unix"; the name is Rebuild +
-> Unix): an efficient, stable,
+> Runix Lab is an AI-native company rebuilding Unix for AI (its motto: "Rebuild AI Unix";
+> the name is Rebuild + Unix): agents write, test and operate most of its engineering under
+> human review, and it builds an efficient, stable,
 > enterprise-grade AI operating system in five layers, each one a product a team can use
 > on its own: infrastructure (Runix FS, an AI-native file system over object
 > storage), data (Runix Data, domain training and evaluation data, and Runix Pipeline, the
 > data tooling), models (Runix Models, fine-tuning and dedicated serving of open-weight
 > models), gateway (Runix Router, one OpenAI-compatible API in front of many model
-> providers) and agents (Runix Code and Runix Comic, independent agents for their domains, each with its own harness). Operated by Runix AI Inc, a
-> company incorporated in Wyoming, United States. Router, FS, Data and Models are in early
-> access: accounts and engagements are set up on request rather than through self-serve
-> signup.
+> providers, and Runix Bench, the open benchmark for LLM gateways) and agents (Runix Code and Runix Comic, independent agents for their domains, each with its own harness). Operated by Runix AI Inc, a
+> company incorporated in Wyoming, United States. Router is available and Bench is open
+> source; FS, Data and Models are in early access. Accounts and engagements are set up on
+> request rather than through self-serve signup.
 
 ## The idea
 
@@ -26,7 +27,7 @@ Five layers, top to bottom as the home page draws them, standing on the customer
 compute (GPUs, power and cloud capacity), which Runix Lab does not sell:
 
 - Layer 5, Agents: Runix Code, Runix Comic (independent domain agents and their harnesses)
-- Layer 4, Gateway: Runix Router
+- Layer 4, Gateway: Runix Router, Runix Bench
 - Layer 3, Models: Runix Models
 - Layer 2, Data: Runix Data, Runix Pipeline (domains: code, the focus; finance;
   cybersecurity; legal; embodied AI; AI for Science)
@@ -35,6 +36,13 @@ compute (GPUs, power and cloud capacity), which Runix Lab does not sell:
 ## Products
 
 Eight products at different stages. The statuses below are literal.
+
+- **Runix Bench** — *status: available, open source (MIT).* The open benchmark for LLM
+  gateways and relay APIs, measured from outside: trust and integrity (is the model the one
+  on the label), price against the official list price, 30-day success rate, time to first
+  token and throughput, and caching. Eleven endpoints probed every six hours, raw results
+  public; a self-test runs the same probe against any OpenAI-compatible gateway with your
+  own key. https://runixcloud.io/bench · live table https://benchmark.runixcloud.io/
 
 - **Runix Router** — *status: available, with accounts opened by our team.* One OpenAI-compatible
   endpoint across many providers, positioned on security, compliance and performance:

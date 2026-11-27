@@ -26,7 +26,8 @@ back to English for the missing units, for an urgent English-only fix.
     python3 tools/build_cn.py --alternates      # hreflang on the English pages (only once ZH_LIVE)
 
 Per-page notes that exist only in Chinese live in the catalog under "@" keys
-("@notice:router.html"): one paragraph inserted after the hero's deck.
+("@notice:router.html"): one paragraph inserted after the hero's deck. A key
+"page.html::English" overrides the shared translation on that page only.
 """
 import html as _html
 import json
@@ -274,7 +275,9 @@ def localise(page, src, cat, missing, allow_stale):
     spans = units(src)
     out, pos = [], 0
     for s, e, msgid, kind in spans:
-        zh = cat.get(msgid)
+        # "page::string" overrides the shared entry on one page (a headline
+        # split into lines reads in a different order in Chinese)
+        zh = cat.get(f"{page}::{msgid}", cat.get(msgid))
         if zh is None:
             missing.setdefault(page, []).append(msgid)
             zh = msgid if allow_stale else None

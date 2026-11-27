@@ -171,6 +171,16 @@ the next row (pin `grid-row` on all of them).
 | every page that references `#org` or `#website` by `@id` | `add_org_graph.py` | one compact `@graph` with the Organization and WebSite nodes on every page, placed directly after the page's own JSON-LD blocks (and a preconnect hint for the analytics origin). Before it, 75 pages pointed `author`, `publisher` and `provider` at nodes that existed only on the home page, so a parser reading one page saw an author with no name. Builders that replace a page's structured data skip the `@graph` block; keep it that way |
 | a JSON spec per post (`tools/posts/*.json`) | `write_post.py` | a draft in `scheduled/` with the Article, BreadcrumbList and FAQPage schema, the layer tag, the related-reading block and the closing callout. It refuses a spec that breaks the site's rules (a forbidden claim, a missing link, an em dash, a description over 160) before a gate ever sees it. `publish.py` stamps the date and rebuilds every surface |
 
+## Design standard and the two editions (2026-11-27)
+
+| Tool | What it does | Fails the deploy? |
+|---|---|---|
+| `design_lint.py` | Holds `assets/style.css`, inline `<style>` blocks and `style=""` attributes to `DESIGN.md`: sizes on the twelve-step type scale, tracking from six tokens, five radii, three breakpoints, no raw colour outside `:root`, no `var()` that is never defined, label colours by role. `--self-test` injects one violation of each kind and proves every check fires. | **yes** |
+| `design_tokens.py` | One-shot: moved every raw value in the stylesheet onto the tokens (headline sizes chosen per selector, the rest to the nearest step). Idempotent. | no |
+| `build_cn.py` | Renders the Chinese edition (runixcloud.com) from the pages in `i18n.py` and the catalog `i18n/zh-CN.json`. `--extract` writes what is untranslated to `i18n/zh-CN.todo.json`; `--check` fails while anything is; `--out DIR` renders; `--alternates` writes hreflang into the English pages once `i18n.ZH_LIVE` is true. See `i18n/README.md`. | **yes** (`--check`, unless `CN_STALE_OK`) |
+| `deploy_cn.sh` | Renders the edition into a temp directory, checks its markup, deploys it to the Pages project `runix-cn` with the same commit as the English site, and verifies language, canonical and the redirect to English. `deploy.sh` runs it last. | no (reported) |
+| `add_bench.py`, `ai_unix_copy.py` | One-shot content builders for the 2026-11-27 pass: the Runix Bench page, and the AI Unix / AI-native copy on the home page and /about. Idempotent. | no |
+
 ## Superseded builders
 
 `open_self_serve_signup.py`, `numbered_product_system.py` and

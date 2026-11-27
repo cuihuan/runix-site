@@ -166,6 +166,21 @@ def main():
         ('content="About Runix — US-Incorporated AI Infrastructure Company"',
          'content="About Runix Lab — AI-Native AI Infrastructure Company"'),
     ])
+    edit("about.html", [
+        ("""            <a href="/router">What Router does</a>.</li>
+          <li><strong>Runix FS</strong>""", """            <a href="/router">What Router does</a>.</li>
+          <li><strong>Runix Bench</strong>: <em>available, open source under MIT.</em>
+            The open benchmark for LLM gateways: trust, price against list, 30-day success
+            rate, speed and caching, measured from outside on a schedule, with every raw
+            result public and a self-test for any gateway. <a href="/bench">What Bench does</a>.</li>
+          <li><strong>Runix FS</strong>"""),
+    ])
+    edit("plans.html", [
+        ("""see the catalogue</a>), with itemised statements; prepaid or invoiced</td></tr>
+""", """see the catalogue</a>), with itemised statements; prepaid or invoiced</td></tr>
+          <tr><th scope="row"><a href="/bench">Runix Bench</a></th><td>Gateway</td><td>Available</td><td>Free and open source under MIT; agent runs on Terminal-Bench quoted on request</td></tr>
+"""),
+    ])
     edit("fs.html", [
         ("<title>Runix FS — AI-Native File System on Object Storage</title>",
          "<title>Runix FS — AI File System and S3 Cache for Training</title>"),

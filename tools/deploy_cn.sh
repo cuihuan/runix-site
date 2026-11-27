@@ -69,9 +69,13 @@ for path in / /bench /fs /router /about; do
   printf '    %-8s %s %s\n' "$path" "${lang:-no lang}" "${canon:-no canonical}"
   [ "$lang" = '<html lang="zh-CN"' ] || fail=1
 done
-loc=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 15 "$base/plans")
-printf '    /plans   -> %s\n' "$loc"
-case "$loc" in 302\ https://runixcloud.io/plans) ;; *) fail=1 ;; esac
+# a page with no Chinese edition goes to the English one
+loc=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 15 "$base/faq")
+printf '    /faq     -> %s\n' "$loc"
+case "$loc" in 302\ https://runixcloud.io/faq) ;; *) fail=1 ;; esac
+robots=$(curl -sI --max-time 15 "$base/" | grep -ic '^x-robots-tag: noindex')
+printf '    pages.dev noindex: %s\n' "$robots"
+[ "$robots" = "1" ] || fail=1
 # Even rows and no stranded characters hold in Chinese too (DESIGN.md section 8).
 for path in / /bench /fs /router; do
   python3 tools/layout_qa.py "$base$path" 2>&1 | grep -v '^rendered' | sed 's/^/    /' | grep -v 'no layout problems' && fail=1

@@ -2637,3 +2637,11 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
   font: 700 var(--text-2xs)/26px var(--mono); letter-spacing: var(--track-label);
   text-transform: uppercase; color: var(--ink-3);
 }
+/* A product name never breaks inside itself ("Runix / Models"); on a phone the
+   status drops under the name instead of squeezing it. */
+.pmap-cell b { white-space: nowrap; }
+@media (max-width: 560px) {
+  main a.pmap-cell:not(.btn) { grid-template-columns: minmax(0, 1fr); }
+  .pmap-st { grid-column: 1; grid-row: auto; }
+  .pmap-q { display: inline; margin: 0 0 0 8px; text-align: left; }
+}

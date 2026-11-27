@@ -33,6 +33,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from stack import LAYERS, PRODUCTS as STACK, HUBS, products_in, product_pages  # noqa: E402
+from i18n import ZH_LIVE, counterpart, path_of  # noqa: E402
 
 
 # 2026-10-07: "Solutions" sits first after Products -- the site is browsed by
@@ -175,6 +176,12 @@ def build_nav(path, indent):
     # header carries no sign-in and no sign-up. Accounts are set up by the team
     # and customers get the console address with their onboarding; a public
     # sign-in link only led prospects to a login they did not have yet.
+    # 2026-11-27: the language link, to the same page in the Chinese edition
+    # (runixcloud.com) when it has one, else to that edition's home page.
+    # build_cn.py turns it round on the Chinese pages.
+    if ZH_LIVE:
+        zh = counterpart(path_of(str(path)), "zh")
+        lines.append(f'{i1}<a class="nav-lang" href="{zh}" hreflang="zh-CN" lang="zh-CN">中文</a>')
     lines.append(f'{i1}<a class="nav-cta" href="/about#contact">Contact sales</a>')
     lines.append(f'{indent}</div>')
     return "\n".join(lines)

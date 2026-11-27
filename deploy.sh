@@ -79,6 +79,11 @@ python3 tools/point_og.py || { echo "    pointing pages at cards failed"; exit 1
 echo "==> Refresh sitemap lastmod for pages whose content changed"
 python3 "$SRC/tools/update_lastmod.py" --write
 
+echo "==> The stylesheet keeps to the design standard"
+# DESIGN.md: one type scale, one tracking set, five radii, three breakpoints,
+# no raw colour outside :root, no undefined var(). Instant.
+python3 tools/design_lint.py || { echo "    off-standard values -- see DESIGN.md"; exit 1; }
+
 echo "==> Code samples fit their container"
 python3 tools/code_overflow.py || { echo "    a code sample is cut off"; exit 1; }
 
@@ -110,6 +115,15 @@ if command -v node >/dev/null; then
   echo "    $(node --test payments/*.test.js 2>&1 | grep -E '^. pass' | sed 's/^. pass //') tests pass"
 else
   echo "    node is not installed: cannot test the checkout function -- not deploying" >&2; exit 1
+fi
+
+echo "==> Every string on a Chinese page is translated"
+# The Chinese edition (runixcloud.com) is rendered from these same pages; an
+# English edit with no translation would ship a half-English page. Fails here,
+# before anything is uploaded, naming the strings. CN_STALE_OK="<reason>" ships
+# them in English instead. See i18n/README.md.
+if [ -z "${CN_STALE_OK:-}" ]; then
+  python3 tools/build_cn.py --check || { echo "    translate i18n/zh-CN.todo.json into i18n/zh-CN.json -- not deploying" >&2; exit 1; }
 fi
 
 echo "==> Pre-deploy checks"
@@ -149,7 +163,7 @@ rsync -a \
   --exclude '.git' --exclude '.wrangler' --exclude 'node_modules' \
   --exclude 'payments' --exclude 'package.json' --exclude 'package-lock.json' \
   --exclude 'README.md' --exclude 'deploy.sh' --exclude '.DS_Store' --exclude '.gitignore' \
-  --exclude 'scheduled' --exclude 'tools' \
+  --exclude 'scheduled' --exclude 'tools' --exclude 'i18n' \
   `# 2026-09-06: the list named README.md specifically, so every other repo
    # document shipped. Verified against the live site that day: /PRODUCT.md,
    # /PRICING-FRAMEWORK-GAP.md, /.impeccable/config.json and
@@ -281,6 +295,11 @@ echo "==> Keep the product sub-domains in step"
 if ! ./tools/subsite_drift.sh; then
   ./tools/deploy_subsites.sh || echo "    sub-domain re-deploy failed -- run tools/deploy_subsites.sh"
 fi
+
+echo "==> Deploy the Chinese edition from the same commit"
+# runixcloud.com is these pages in Chinese; shipping both from one run is what
+# keeps them one site. A failure here leaves the English site live and says so.
+./tools/deploy_cn.sh || echo "    Chinese edition deploy failed -- run tools/deploy_cn.sh"
 
 # Production is fine at this point; only git is behind. Finish every step
 # above first (a push race should not also leave the sub-domains stale), then

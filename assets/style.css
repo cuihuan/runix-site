@@ -2593,3 +2593,21 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
 .rm-sum .wlist li { display: inline; padding: 0; border: 0; font-size: var(--text-sm); }
 .rm-sum .wlist li + li::before { content: " · "; color: var(--ink-3); }
 .rm-sum .wlist { margin-top: 8px; }
+
+/* ---------- Two editions (2026-11-27, DESIGN.md section 8) ----------
+   runixcloud.com is the same pages in Chinese (tools/build_cn.py). Archivo
+   keeps setting Latin words and numbers; CJK falls through to the platform's
+   own face. Negative tracking collides CJK glyphs, so headings set at 0; body
+   text gets more leading; lines break between words, not inside them. */
+.nav-links .nav-lang { font-size: var(--text-sm); color: var(--ink-3); }
+.nav-links .nav-lang:hover { color: var(--ink); }
+:lang(zh) body, body:lang(zh) { font-family: "Archivo", var(--cjk); }
+:lang(zh) { word-break: auto-phrase; line-break: strict; }
+:lang(zh) h1, :lang(zh) h2, :lang(zh) h3, :lang(zh) h4,
+:lang(zh) .section-head h2, :lang(zh) .page-hero h1, :lang(zh) .hero h1 { letter-spacing: 0; line-height: 1.3; }
+:lang(zh) p, :lang(zh) li, :lang(zh) dd { line-height: 1.8; }
+:lang(zh) em, :lang(zh) i { font-style: normal; }
+:lang(zh) .sec-no, :lang(zh) .nav-layer-name, :lang(zh) .glance-title, :lang(zh) .pbar-status,
+:lang(zh) .pmap-st, :lang(zh) .lpath-label, :lang(zh) .thesis .k { letter-spacing: var(--track-caps); }
+.cn-notice { margin-top: 14px; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: var(--radius-sm);
+  background: var(--bg-alt); color: var(--ink-2); font-size: var(--text-sm); }

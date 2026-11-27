@@ -69,10 +69,12 @@ for path in / /bench /fs /router /about; do
   printf '    %-8s %s %s\n' "$path" "${lang:-no lang}" "${canon:-no canonical}"
   [ "$lang" = '<html lang="zh-CN"' ] || fail=1
 done
-# a page with no Chinese edition goes to the English one
-loc=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 15 "$base/faq")
-printf '    /faq     -> %s\n' "$loc"
-case "$loc" in 302\ https://runixcloud.io/faq) ;; *) fail=1 ;; esac
+# a page with no Chinese edition goes to the English one (picked from the
+# list, so adding pages to i18n.CN_PAGES never turns this check against itself)
+en_only=$(python3 -c 'import glob,sys; sys.path.insert(0,"tools"); from i18n import CN_PAGES, path_of; print(next(path_of(p) for p in sorted(glob.glob("*.html")) if p not in CN_PAGES and not p.startswith("_")))')
+loc=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 15 "$base$en_only")
+printf '    %-8s -> %s\n' "$en_only" "$loc"
+[ "$loc" = "302 https://runixcloud.io$en_only" ] || fail=1
 robots=$(curl -sI --max-time 15 "$base/" | grep -ic '^x-robots-tag: noindex')
 printf '    pages.dev noindex: %s\n' "$robots"
 [ "$robots" = "1" ] || fail=1

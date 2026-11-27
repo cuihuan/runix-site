@@ -22,6 +22,7 @@ GUIDES = {
     "code": ("/docs/code", "Rollout guide"),
     "comic": ("/docs/comic", "Workflow guide"),
     "router": ("/docs/router", "Integration guide"),
+    "bench": ("/bench#early-access", "Self-test guide"),
     "models": ("/models#early-access", "Engagement guide"),
     "data": ("/data#early-access", "Engagement guide"),
     "pipeline": ("/docs/pipeline", "Engagement guide"),

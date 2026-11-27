@@ -43,6 +43,18 @@
   "blogPost": [
     {
       "@type": "BlogPosting",
+      "headline": "JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data",
+      "url": "https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs",
+      "datePublished": "2026-11-27"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "How to benchmark an LLM gateway before it carries production traffic",
+      "url": "https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway",
+      "datePublished": "2026-11-27"
+    },
+    {
+      "@type": "BlogPosting",
       "headline": "Why five layers: how Runix drew its AI infrastructure stack",
       "url": "https://runixcloud.io/blog/why-five-layers",
       "datePublished": "2026-10-07"
@@ -462,6 +474,7 @@
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
             <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+            <a class="nav-prod" href="/bench"><b>Runix Bench <i>New</i></b><span>The open benchmark for LLM gateways</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>03</span>Models</p>
@@ -495,7 +508,7 @@
     <a class="pbar-name" href="#overview">Blog</a>
     <a class="pbar-layer" href="/blog/">Blog</a>
     <ul class="pbar-links"><li><a href="#agents">Agents</a></li><li><a href="#gateway">Gateway</a></li><li><a href="#models">Models</a></li><li><a href="#data">Data</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#company">Company</a></li></ul>
-    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+    
   </div>
 </nav>
 <!--/ps:bar-->
@@ -504,8 +517,8 @@
   <div class="container">
     <!--ps:eyebrow--><p class="page-eyebrow">Blog</p><!--/ps:eyebrow-->
     <h1>Engineering notes, by layer of the stack</h1>
-    <p>What we learn running AI infrastructure, written for the engineers who run it too. <!--count-->58 posts<!--/count-->, grouped by the layer of the stack each one is about, newest first within each.</p>
-    <!--chips--><ul class="topic-chips" aria-label="Posts by layer"><li><a class="pd-chip" href="#agents">Agents <i>7</i></a></li><li><a class="pd-chip" href="#gateway">Gateway <i>27</i></a></li><li><a class="pd-chip" href="#models">Models <i>6</i></a></li><li><a class="pd-chip" href="#data">Data <i>8</i></a></li><li><a class="pd-chip" href="#infrastructure">Infrastructure <i>7</i></a></li><li><a class="pd-chip" href="#company">Company <i>3</i></a></li></ul><!--/chips-->
+    <p>What we learn running AI infrastructure, written for the engineers who run it too. <!--count-->60 posts<!--/count-->, grouped by the layer of the stack each one is about, newest first within each.</p>
+    <!--chips--><ul class="topic-chips" aria-label="Posts by layer"><li><a class="pd-chip" href="#agents">Agents <i>7</i></a></li><li><a class="pd-chip" href="#gateway">Gateway <i>28</i></a></li><li><a class="pd-chip" href="#models">Models <i>6</i></a></li><li><a class="pd-chip" href="#data">Data <i>8</i></a></li><li><a class="pd-chip" href="#infrastructure">Infrastructure <i>8</i></a></li><li><a class="pd-chip" href="#company">Company <i>3</i></a></li></ul><!--/chips-->
   </div>
 </div>
 
@@ -569,9 +582,15 @@
     <div class="section-head center">
       <p class="sec-no">03 &middot; Gateway</p>
       <h2 id="gateway">Gateway</h2>
-      <p>Layer 04 &middot; one way in to every model. 27 posts, newest first. <a href="/router">Gateway on the stack</a>.</p>
+      <p>Layer 04 &middot; one way in to every model. 28 posts, newest first. <a href="/router">Gateway on the stack</a>.</p>
     </div>
     <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Buyer's guide</span><span>November 27, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/how-to-benchmark-an-llm-gateway">How to benchmark an LLM gateway before it carries production traffic</a></h3>
+        <p class="excerpt">Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.</p>
+        <a class="read-more" href="/blog/how-to-benchmark-an-llm-gateway" aria-hidden="true" tabindex="-1">Read post&nbsp;→</a>
+      </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
         <h3><a href="/blog/llm-budgets-per-team-and-per-feature">Turning an LLM bill into a policy: budgets per team and per feature</a></h3>
@@ -851,9 +870,15 @@
     <div class="section-head center">
       <p class="sec-no">06 &middot; Infrastructure</p>
       <h2 id="infrastructure">Infrastructure</h2>
-      <p>Layer 01 &middot; storage that keeps GPUs fed. 7 posts, newest first. <a href="/fs">Infrastructure on the stack</a>.</p>
+      <p>Layer 01 &middot; storage that keeps GPUs fed. 8 posts, newest first. <a href="/fs">Infrastructure on the stack</a>.</p>
     </div>
     <div class="blog-list">
+      <div class="card">
+        <div class="post-meta"><span class="cat">Engineering</span><span>November 27, 2026</span><span>·</span><span>5 min read</span></div>
+        <h3><a href="/blog/juicefs-alluxio-mountpoint-and-runix-fs">JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data</a></h3>
+        <p class="excerpt">Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.</p>
+        <a class="read-more" href="/blog/juicefs-alluxio-mountpoint-and-runix-fs" aria-hidden="true" tabindex="-1">Read post&nbsp;→</a>
+      </div>
       <div class="card">
         <div class="post-meta"><span class="cat">Engineering</span><span>October 7, 2026</span><span>·</span><span>6 min read</span></div>
         <h3><a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth: AI file system cache mode versus file-system mode</a></h3>
@@ -949,6 +974,7 @@
         <a href="/comic">Runix Comic</a>
         <span class="footer-sub">Gateway</span>
         <a href="/router">Runix Router</a>
+        <a href="/bench">Runix Bench</a>
         <span class="footer-sub">Models</span>
         <a href="/models">Runix Models</a>
         <span class="footer-sub">Data</span>

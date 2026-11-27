@@ -36,6 +36,7 @@ CATEGORIES = {"Engineering", "Concepts", "Buyer's guide", "Compliance", "Securit
 # Where a post sends its reader at the end. Anchor text names the destination.
 PRODUCT = {
     "/router": "Runix Router: one OpenAI-compatible endpoint across providers",
+    "/bench": "Runix Bench: the open benchmark for LLM gateways",
     "/router-models": "The Router models catalogue, at vendors' public list prices",
     "/reliability": "What happens when a provider fails",
     "/plans": "How Runix pricing works",

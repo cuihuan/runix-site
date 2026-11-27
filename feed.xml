@@ -6,7 +6,21 @@
     <atom:link href="https://runixcloud.io/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Engineering notes on LLM gateways, reliability, cost control and data pipelines, from the team building Runix.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>How to benchmark an LLM gateway before it carries production traffic</title>
+      <link>https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway</guid>
+      <description>Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.</description>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data</title>
+      <link>https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs</link>
+      <guid isPermaLink="true">https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs</guid>
+      <description>Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.</description>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>DPO fine-tuning explained: what preference tuning changes and what it cannot</title>
       <link>https://runixcloud.io/blog/preference-tuning-with-dpo-explained</link>

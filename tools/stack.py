@@ -1,4 +1,4 @@
-"""The Runix Lab product stack: five layers and the seven products in them.
+"""The Runix Lab product stack: five layers and the eight products in them.
 
 One definition, read by every builder that draws the stack: the header's
 Products menu (flagship_nav.py), the layer locator on each product page
@@ -34,6 +34,11 @@ PRODUCTS = {
     "router": ("router.html", "/router", "Runix Router",
                "One compliant endpoint for every model",
                "gateway", "available", ""),
+    # 2026-11-27: the open benchmark, the tool that measures the layer (ours
+    # included). Its live table is benchmark.runixcloud.io.
+    "bench": ("bench.html", "/bench", "Runix Bench",
+              "The open benchmark for LLM gateways",
+              "gateway", "available", "New"),
     "models": ("models.html", "/models", "Runix Models",
                "Fine-tune and serve open-weight models",
                "models", "early access", "New"),
@@ -59,7 +64,7 @@ DOMAINS = [(d["slug"], d["name"], d["key"] == "code") for d in _DOMAIN_PAGES]
 # (2026-10-07): "early access" covers a key, a deployment and a scoped
 # engagement, and an investor or a buyer should see which from the first screen.
 QUALIFIER = {
-    "router": "set up by our team", "fs": "deployed per customer",
+    "router": "set up by our team", "bench": "open source", "fs": "deployed per customer",
     "models": "by engagement", "data": "by engagement",
     "pipeline": "design partners", "code": "waitlist open", "comic": "waitlist open",
 }
@@ -72,7 +77,7 @@ LAYER_OF = {key: (num, name) for key, num, name, _ in LAYERS}
 # pages' canonicals stay on the main site; a subdomain is the short address.
 SITES = {
     "code": "code.runixcloud.io", "comic": "comic.runixcloud.io",
-    "router": "router.runixcloud.io", "models": "models.runixcloud.io",
+    "router": "router.runixcloud.io", "bench": "benchmark.runixcloud.io", "models": "models.runixcloud.io",
     "data": "data.runixcloud.io", "fs": "fs.runixcloud.io",
 }
 

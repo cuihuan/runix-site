@@ -163,6 +163,7 @@
           <div class="nav-layer">
             <p class="nav-layer-name"><span>04</span>Gateway</p>
             <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+            <a class="nav-prod" href="/bench"><b>Runix Bench <i>New</i></b><span>The open benchmark for LLM gateways</span></a>
           </div>
           <div class="nav-layer">
             <p class="nav-layer-name"><span>03</span>Models</p>
@@ -197,7 +198,7 @@
     <span class="pbar-layer">Concepts</span>
     <span class="pbar-status">October 7, 2026</span>
     <ul class="pbar-links"><li><a href="#where-the-lines-come-from">Where the lines come from</a></li><li><a href="#five-ai-infrastructure-stack-layers-one-unix-idea-each">Five AI infrastructure stack layers, one Unix idea each</a></li><li><a href="#why-each-layer-must-be-usable-alone">Why each layer must be usable alone</a></li><li><a href="#the-two-paths-through-the-stack">The two paths through the stack</a></li><li><a href="#what-the-ai-infrastructure-stack-layers-leave-out">What the AI infrastructure stack layers leave out</a></li><li><a href="#questions">Questions this raises</a></li></ul>
-    <a class="pbar-cta" href="/about#contact">Contact sales</a>
+    
   </div>
 </nav>
 <!--/ps:bar-->
@@ -237,7 +238,7 @@
 
 <p>A Unix tool is useful by itself; the pipe is a bonus. The same rule holds here as a design constraint: a layer that only works when the layers around it are also bought is a bundle, and a bundle hides which part is actually good.</p>
 
-<p>It shows up in three places. Each product has its own interface, written down: a mount or an SDK, a stage with inspectable output, an API, a diff in a repository. Each has its own price, per deployment, engagement, project, token or plan, not a share of a platform fee. And each has its own status, which is why the statuses differ: four of the seven products in early access, three in development, none described as more than it is.</p>
+<p>It shows up in three places. Each product has its own interface, written down: a mount or an SDK, a stage with inspectable output, an API, a diff in a repository. Each has its own price, per deployment, engagement, project, token or plan, not a share of a platform fee. And each has its own status, which is why the statuses differ: two of the eight products available, three in early access, three in development, none described as more than it is.</p>
 
 <p>The handoffs are optional by construction. A model tuned by Runix Models can sit behind Router next to hosted providers, or be called directly. Runix Code can route its model calls through Router, or not. Most teams start at one layer, where their problem is.</p>
 
@@ -256,7 +257,7 @@
 <li><strong>Evaluation.</strong> There is no evaluation layer, because evaluation cuts through every layer: Data splits evaluation from training by source, Models measures against the model the customer runs today, and a model change behind Router is only safe if someone watches the signals that move when it does harm.</li>
 <li><strong>Security and compliance.</strong> Key custody, data terms, masking and retention each live inside a layer, but the review that asks about them runs across all five.</li>
 <li><strong>The seams.</strong> The clean lines are where the hard engineering is: a file-system mode that syncs to the bucket asynchronously is eventually consistent, failover changes which model answered, and a stage boundary is only auditable if someone reads what the stage left.</li>
-<li><strong>People and time.</strong> The diagram implies an order; adoption does not follow it. Three of the seven products are in development, and there is no published SLA during early access.</li>
+<li><strong>People and time.</strong> The diagram implies an order; adoption does not follow it. Three of the eight products are in development, and there is no published SLA during early access.</li>
 </ul>
 
 <p>Runix Lab is the brand of Runix AI Inc, and the five layers are its answer to what an operating system for enterprise AI should consist of. <a href="/about">The company page</a> lists each product with its literal status and the terms a team would contract under; the layers are a map of the work, drawn to be adopted one at a time.</p>
@@ -304,6 +305,7 @@
         <a href="/comic">Runix Comic</a>
         <span class="footer-sub">Gateway</span>
         <a href="/router">Runix Router</a>
+        <a href="/bench">Runix Bench</a>
         <span class="footer-sub">Models</span>
         <a href="/models">Runix Models</a>
         <span class="footer-sub">Data</span>

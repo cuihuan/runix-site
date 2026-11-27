@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to benchmark an LLM gateway: trust, price, uptime, speed | Runix</title>
+<meta name="description" content="Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.">
+<link rel="canonical" href="https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway">
+<meta property="og:title" content="How to benchmark an LLM gateway: trust, price, uptime, speed | Runix">
+<meta property="og:description" content="Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-how-to-benchmark-an-llm-gateway.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-how-to-benchmark-an-llm-gateway.png?v=0">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=75">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to benchmark an LLM gateway before it carries production traffic",
+  "description": "Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-how-to-benchmark-an-llm-gateway.png?v=0",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-11-27",
+  "dateModified": "2026-11-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to benchmark an LLM gateway before it carries production traffic",
+      "item": "https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What should an LLM gateway benchmark measure first?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Trust: whether the model behind the endpoint is the one being billed, checked by sending the same requests to the gateway and to the official API and comparing the answers and token counts. Price, uptime and speed only mean something once that holds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long should a gateway be probed before judging its uptime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Thirty days, on a schedule of every few hours, with the 7-day figure beside it. Rate limits, server errors and timeouts are counted separately, and errors the probe causes itself are excluded."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a gateway that is far cheaper than list price a good deal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually not. A price under half of the provider's list price most often means a resold or reverse-engineered channel, so it should be read together with the trust check rather than on its own."
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="How to benchmark an LLM gateway: trust, price, uptime, speed | Runix">
+<meta name="twitter:description" content="Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:modified_time" content="2026-11-27">
+<meta property="article:tag" content="Gateway">
+<meta property="article:section" content="Buyer&#x27;s guide">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+            <a class="nav-prod" href="/bench"><b>Runix Bench <i>New</i></b><span>The open benchmark for LLM gateways</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Buyer's guide</span><span>November 27, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">How to benchmark an LLM gateway before it carries production traffic</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>An LLM gateway sits on every model call an application makes, so its failures become the application's failures. Every gateway's own page says it is fast, cheap and reliable. A benchmark answers the question from where the application stands: outside the gateway, calling its public endpoint with an ordinary key. This guide sets out five checks in the order they matter, the way <a href="/bench">Runix Bench</a> runs them, and the red flag each one catches.</p>
+
+<h2>Check 1: is it the model on the label?</h2>
+
+<p>Trust comes first because every other number is meaningless if the model behind the endpoint is not the one being billed. The failure modes are quiet: a cheaper model served under a premium name, weights quantized until long or non-English answers degrade, a hidden system prompt that inflates every request, or a long context silently trimmed to save cost.</p>
+
+<p>The way to check is a diff against the official API. Send the same fixed request set to the gateway and to the provider directly, with tool calls, long context and sampling-sensitive cases in it, and compare tool-call validity, token counts and the shape of the answers. This is the method of the <a href="https://github.com/MoonshotAI/K2-Vendor-Verifier" rel="noopener">K2 Vendor Verifier</a>. A prompt that costs more input tokens through the gateway than through the provider is the simplest evidence of an injected prefix. Rate the result in three tiers only: verified, claimed but unverified, or unverified, and never mark anything verified without the evidence attached.</p>
+
+<p>Trust also covers the operator. Read the data-retention and training terms in the formal policy, not the home page slogan, and check that a legal entity stands behind the service and will issue an invoice. A relay with no entity and no invoice is a counterparty risk however good its numbers are today.</p>
+
+<h2>Check 2: divide the price by the list price</h2>
+
+<p>For each model, divide the gateway's input and output prices by the provider's own list prices, average the two ratios, and take the geometric mean across models for one index: under 1 is cheaper than list, over 1 is a markup. Keep the two raw columns beside the index, because a gateway can discount input and mark up output and the average hides it. <a href="/blog/how-to-read-an-llm-price-list">How to read an LLM price list</a> covers the units, and the <a href="/router-models">Router models catalogue</a> shows list prices with the page each came from.</p>
+
+<p>Read a low price next to the trust result. A price far under half of list usually means a resold or reverse-engineered channel, and that is a warning sign rather than a bargain. Also record what the price page leaves out: top-up fees, cache pricing, and multipliers applied to some models only.</p>
+
+<h2>Check 3: stability over thirty days, errors sorted by kind</h2>
+
+<p>One afternoon of testing says little about a service that has to work at three in the morning. Probe on a schedule, every few hours, and compute the success rate over a rolling 30-day window with the 7-day figure beside it. Count rate limits, server errors and timeouts separately: a 429 is a capacity signal, a 5xx is an outage, a timeout is often a queue, and they call for different responses.</p>
+
+<p>Be fair to the gateway as well. Errors the probe causes itself, an unauthorised key or a model the gateway never offered, are excluded from the denominator and shown on their own. Then look at time of day: divide the time to first token in the slowest hour by the fastest, and treat a ratio of two or more as peak-hour throttling. <a href="/reliability">What happens when a provider fails</a> describes what a gateway should do on its own bad hour.</p>
+
+<h2>Check 4: speed, first token then throughput</h2>
+
+<p>Measure time to first token on streaming requests and report the median. Report a p95 only when a run has at least five samples, since with three samples the p95 is just the maximum. Measure throughput after the first token, dividing the tokens generated after it by the time spent after it, which is the convention llmperf and Artificial Analysis use; counting the first token makes every gateway look faster than it is.</p>
+
+<p>Keep the probe honest: put a random id in each prompt so nothing is served from a cache, cap the output length, and keep concurrency at four or under so the benchmark never turns into a load test. Watch for fake streaming, where the first token arrives together with most of the answer because the gateway buffered the whole reply and replayed it.</p>
+
+<h2>Check 5: measure the cache, do not read about it</h2>
+
+<p>Prompt caching can cut the cost of repeated context sharply, which matters for agents that resend the same history on every turn. Send the same long prompt twice and compare the usage block and the bill: a cache that is advertised but never reported, or reported but billed at full price, fails the check. As <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">why an LLM bill does not match the price list</a> argues, check the bill, not the page.</p>
+
+<h2>Run the checks on your own gateway</h2>
+
+<p>All five checks are automated in <a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">LLM Gateway Bench</a>, the open-source project behind Runix Bench, released under the MIT licence. A scheduled job probes every tracked endpoint every six hours and commits the raw results, and the self-test runs the same probe against any OpenAI-compatible endpoint with your own key, which never leaves your machine. The report puts your gateway beside the best measured endpoint on each dimension.</p>
+
+<p>Single calls do not show what a gateway changes for an agent. For that, run the same <a href="https://github.com/harbor-framework/terminal-bench" rel="noopener">Terminal-Bench</a> tasks through two routers with the same agent, run the baseline twice to see the noise, and compare verifier scores and cost. A difference smaller than the gap between two runs of the same router is not a difference. <a href="/blog/what-is-an-llm-gateway">What is an LLM gateway</a> explains what the layer is for in the first place.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What should an LLM gateway benchmark measure first?</h3>
+<p>Trust: whether the model behind the endpoint is the one being billed, checked by sending the same requests to the gateway and to the official API and comparing the answers and token counts. Price, uptime and speed only mean something once that holds.</p>
+<h3>How long should a gateway be probed before judging its uptime?</h3>
+<p>Thirty days, on a schedule of every few hours, with the 7-day figure beside it. Rate limits, server errors and timeouts are counted separately, and errors the probe causes itself are excluded.</p>
+<h3>Is a gateway that is far cheaper than list price a good deal?</h3>
+<p>Usually not. A price under half of the provider's list price most often means a resold or reverse-engineered channel, so it should be read together with the trust check rather than on its own.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/bench">Runix Bench</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/what-is-an-llm-gateway">What Is an LLM Gateway? A Plain Definition</a></li>
+    <li><a href="/blog/how-to-read-an-llm-price-list">How to read an LLM price list</a></li>
+    <li><a href="/blog/build-vs-buy-llm-gateway">Build or Buy an LLM Gateway: An Honest Comparison</a></li>
+    <li><a href="/bench">Runix Bench: the open benchmark for LLM gateways</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <a href="/bench">Runix Bench</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

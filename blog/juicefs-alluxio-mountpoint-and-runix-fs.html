@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4X1KF9Y1MW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4X1KF9Y1MW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JuiceFS vs Alluxio vs Mountpoint vs Runix FS for AI data | Runix</title>
+<meta name="description" content="Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.">
+<link rel="canonical" href="https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs">
+<meta property="og:title" content="JuiceFS vs Alluxio vs Mountpoint vs Runix FS for AI data | Runix">
+<meta property="og:description" content="Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs">
+<meta property="og:site_name" content="Runix Lab">
+<meta property="og:image" content="https://runixcloud.io/assets/og/blog-juicefs-alluxio-mountpoint-and-runix-fs.png?v=0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/blog-juicefs-alluxio-mountpoint-and-runix-fs.png?v=0">
+<link rel="icon" href="../assets/favicon.svg?v=11" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-latin.woff2?v=2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/style.css?v=75">
+<script src="../assets/site-config.js?v=15" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data",
+  "description": "Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs"
+  },
+  "image": "https://runixcloud.io/assets/og/blog-juicefs-alluxio-mountpoint-and-runix-fs.png?v=0",
+  "author": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "publisher": {
+    "@id": "https://runixcloud.io/#org"
+  },
+  "datePublished": "2026-11-27",
+  "dateModified": "2026-11-27"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://runixcloud.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://runixcloud.io/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data",
+      "item": "https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://runixcloud.io/#org",
+      "name": "Runix AI Inc",
+      "alternateName": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "logo": "https://runixcloud.io/assets/logo.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://runixcloud.io/#website",
+      "name": "Runix Lab",
+      "url": "https://runixcloud.io/",
+      "publisher": {
+        "@id": "https://runixcloud.io/#org"
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the main difference between JuiceFS and Alluxio?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JuiceFS is a file system that stores file data in its own block format in the bucket and keeps the directory tree in a separate metadata engine. Alluxio is a distributed cache that keeps the namespace of the store underneath, so the bucket stays readable without it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Mountpoint for Amazon S3 a file system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is a FUSE client that maps files to objects one to one and implements the operations object storage does well. It does not support editing existing files in place or most renames, and it caches per machine rather than across a cluster."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Runix FS change the data in my bucket?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In cache mode, no: paths map one to one to object keys and writes pass through to the bucket. In file-system mode, writes complete in the cluster first and reach the bucket through a background sync."
+      }
+    }
+  ]
+}
+</script>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:title" content="JuiceFS vs Alluxio vs Mountpoint vs Runix FS for AI data | Runix">
+<meta name="twitter:description" content="Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:modified_time" content="2026-11-27">
+<meta property="article:tag" content="Infrastructure">
+<meta property="article:section" content="Engineering">
+<link rel="alternate" type="application/rss+xml" title="Runix Blog" href="https://runixcloud.io/feed.xml">
+<noscript><style>@media (max-width:920px){.nav{flex-wrap:wrap}.nav-links{display:flex!important;position:static;flex-direction:row;flex-wrap:wrap;background:none;padding:8px 0 0;border:none;gap:12px 18px;width:100%}.nav-toggle{display:none!important}.nav-panel{display:none!important}.nav-menu{width:auto}}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-top" href="/#products">Products</a>
+        <div class="nav-panel">
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>05</span>Agents</p>
+            <a class="nav-prod" href="/code"><b>Runix Code</b><span>An independent coding agent, reviewable in your repository</span></a>
+            <a class="nav-prod" href="/comic"><b>Runix Comic</b><span>An independent agent for comic dramas, script to episode</span></a>
+            <a class="nav-prod nav-hub" href="/agents"><b>Agents by domain <span aria-hidden="true">&rarr;</span></b><span>Software engineering, media, and what comes next</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>04</span>Gateway</p>
+            <a class="nav-prod" href="/router"><b>Runix Router</b><span>One compliant endpoint for every model</span></a>
+            <a class="nav-prod" href="/bench"><b>Runix Bench <i>New</i></b><span>The open benchmark for LLM gateways</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>03</span>Models</p>
+            <a class="nav-prod" href="/models"><b>Runix Models <i>New</i></b><span>Fine-tune and serve open-weight models</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>02</span>Data</p>
+            <a class="nav-prod" href="/data"><b>Runix Data <i>New</i></b><span>Domain data for training and evaluation</span></a>
+            <a class="nav-prod" href="/pipeline"><b>Runix Pipeline</b><span>The tooling that makes data model-ready</span></a>
+          </div>
+          <div class="nav-layer">
+            <p class="nav-layer-name"><span>01</span>Infrastructure</p>
+            <a class="nav-prod" href="/fs"><b>Runix FS</b><span>AI-native file system on your object storage</span></a>
+          </div>
+          <a class="nav-prod nav-stack-link" href="/#platform"><b>The whole stack <span aria-hidden="true">&rarr;</span></b><span>How the five layers fit together</span></a>
+        </div>
+      </div>
+      <a href="/solutions">Solutions</a>
+      <a href="/plans">Pricing</a>
+      <a href="/docs/">Docs</a>
+      <a href="/about">Company</a>
+      <a class="nav-cta" href="/about#contact">Contact sales</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="has-pbar">
+
+<div class="page-hero" id="overview">
+  <div class="container">
+    <div class="post-meta"><span class="cat">Engineering</span><span>November 27, 2026</span><span>·</span><span>5 min read</span></div>
+    <h1 style="margin-top: 14px;">JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data</h1>
+  </div>
+</div>
+
+<article class="article">
+
+<p>Training data, checkpoints and model weights live in object storage because it is cheap and durable. Training code, inference servers and agents expect files. Something has to sit between the two, and the open-source options differ less in speed than in what they do to your bucket and where they keep the cache. This post compares four of them on those two questions: JuiceFS, Alluxio, Mountpoint for Amazon S3 and <a href="/fs">Runix FS</a>, which is built on the Curvine project. It describes each project's documented design, not a benchmark run.</p>
+
+<h2>The first question: is the bucket still a copy of your files?</h2>
+
+<p>Some layers keep one object per file, so the path <code>train/0001.parquet</code> in the mount is the key <code>train/0001.parquet</code> in the bucket, and any other tool can still read the bucket directly. Others store file data in their own format and keep the directory tree in a separate metadata service, which buys full file-system semantics at the cost of the bucket no longer being readable on its own. Neither is wrong. The choice decides whether the file layer is a cache you can remove or a storage system you depend on, and <a href="/blog/object-storage-is-not-a-file-system">why object storage is not a file system</a> explains what each side gives up.</p>
+
+<h2>JuiceFS: a full file system that owns its layout</h2>
+
+<p><a href="https://juicefs.com/docs/community/architecture/" rel="noopener">JuiceFS</a> splits each file into chunks and blocks and writes the blocks to the bucket, while the directory tree, names and attributes live in a metadata engine such as Redis, MySQL, PostgreSQL or TiKV. The result is close to full POSIX: renames are cheap metadata operations, small writes and random edits work, and clients cache blocks on local disk.</p>
+
+<p>The trade-off is the layout. The objects in the bucket are blocks, not your files, so reading the data without JuiceFS is not possible and the metadata engine becomes part of what has to stay up and be backed up. For a team that wants a general-purpose shared file system on cheap storage, that is a fair price. For a team whose bucket is also read by Spark jobs, data vendors or other tools, it is a migration.</p>
+
+<h2>Mountpoint for Amazon S3: a fast client that keeps S3 semantics</h2>
+
+<p><a href="https://github.com/awslabs/mountpoint-s3/blob/main/doc/SEMANTICS.md" rel="noopener">Mountpoint for Amazon S3</a> is an open-source FUSE client from AWS that maps files to objects one to one. It is deliberately narrow: it implements the operations object storage does well, reading, listing and writing new files sequentially, and its semantics document lists what it does not do, such as editing an existing file in place or most renames.</p>
+
+<p>That makes it a good fit for read-heavy jobs on large files, and the bucket stays exactly as it was. It caches on the local disk of the machine that mounts it, so ten training nodes reading the same dataset each fetch it from the bucket and each keep their own copy. When the working set is shared across many nodes, the bottleneck stays where it was.</p>
+
+<h2>Alluxio: a distributed cache over the store you have</h2>
+
+<p>Alluxio places a cluster of workers between compute and the under-store and caches data on memory, SSD and HDD tiers, keeping the namespace of the bucket underneath. Applications reach it through a FUSE mount, a Hadoop-compatible client or its own APIs. Because the cache is shared, one node's read warms the data for the others, which is what a multi-node training job wants from a cache, and <a href="/blog/multi-tier-cache-for-ai-training-data">a multi-tier cache for AI training data</a> covers how to size one. The project is written in Java and has open-source and commercial editions.</p>
+
+<h2>Runix FS: Curvine's cache, with two mount modes</h2>
+
+<p>Runix FS is built on <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a>, an open-source distributed file system and cache written in Rust, released under Apache 2.0 and accepted as a CNCF Sandbox project. Masters replicated with Raft hold the metadata, and workers cache data on memory, SSD and HDD tiers, so a working set read by one node is served to the others from the cluster. Applications reach it through a FUSE mount, a Hadoop-compatible client, Java, Python and Rust SDKs, or a Kubernetes CSI driver.</p>
+
+<p>The difference is that each mount picks how writes reach the bucket. In cache mode the bucket is the source of truth, paths map one to one to object keys, and writes pass through, so the bucket stays readable by everything else. In file-system mode, operations complete in the cluster first and are synchronised to the bucket in the background, which suits write-heavy work such as checkpoints at the price of eventual consistency. <a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth</a> works through the choice. Runix deploys it in your own cloud account and supports it under contract.</p>
+
+<h2>How to choose</h2>
+
+<ul>
+<li><strong>One node, large files, mostly reads:</strong> a client such as Mountpoint is often enough, and it adds nothing to operate.</li>
+<li><strong>Many nodes reading the same data:</strong> a shared, distributed cache, Alluxio or Runix FS, so the bucket is read once rather than once per node.</li>
+<li><strong>The bucket is shared with other tools:</strong> keep one object per file, which rules out layers that own the layout.</li>
+<li><strong>A general-purpose file system with heavy renames and small edits:</strong> JuiceFS, or Runix FS in file-system mode for the paths that need it.</li>
+</ul>
+
+<h2>What to test before you decide</h2>
+
+<p>Run your own workload, not a synthetic one: list and open a directory of many small files, because the <a href="/blog/small-files-problem-in-ml-training">small-files problem</a> is where most layers differ; read a full epoch twice and compare the second pass; write and rename a checkpoint; and stop one cache node during a read to see what the job does. The <a href="/docs/fs">Runix FS quick start</a> mounts an existing bucket in three commands, which is enough to run all four tests against your own data.</p>
+
+<h2 id="questions">Questions this raises</h2>
+<h3>What is the main difference between JuiceFS and Alluxio?</h3>
+<p>JuiceFS is a file system that stores file data in its own block format in the bucket and keeps the directory tree in a separate metadata engine. Alluxio is a distributed cache that keeps the namespace of the store underneath, so the bucket stays readable without it.</p>
+<h3>Is Mountpoint for Amazon S3 a file system?</h3>
+<p>It is a FUSE client that maps files to objects one to one and implements the operations object storage does well. It does not support editing existing files in place or most renames, and it caches per machine rather than across a cluster.</p>
+<h3>Does Runix FS change the data in my bucket?</h3>
+<p>In cache mode, no: paths map one to one to object keys and writes pass through to the bucket. In file-system mode, writes complete in the cluster first and reach the bucket through a background sync.</p>
+
+<div class="callout" style="margin-top:40px;">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+  <span>Related to this post: <a href="/fs">Runix FS</a>. <a href="/about#contact">Tell us what you are building</a> and we reply within one business day.</span>
+</div>
+
+<aside class="related" aria-labelledby="related-reading">
+  <h2 id="related-reading">Related reading</h2>
+  <ul>
+    <li><a href="/blog/object-storage-is-not-a-file-system">Object storage is not a file system, and what POSIX on object storage adds</a></li>
+    <li><a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth: AI file system cache mode versus file-system mode</a></li>
+    <li><a href="/blog/multi-tier-cache-for-ai-training-data">A multi-tier cache for AI training data: what goes where</a></li>
+    <li><a href="/fs">Runix FS: an AI-native file system on your object storage</a></li>
+  </ul>
+</aside>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid footer-grid-4">
+      <div>
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">R</span>Runix <span class="brand-lab">Lab</span></a>
+        <p class="desc">Rebuild AI Unix: an efficient, stable, enterprise-grade AI operating system, in five layers from storage to agents.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Product</p>
+        <a href="/solutions">Solutions</a>
+        <span class="footer-sub">Agents</span>
+        <a href="/agents">Agents by domain</a>
+        <a href="/code">Runix Code</a>
+        <a href="/code-plans">Code plans</a>
+        <a href="/comic">Runix Comic</a>
+        <span class="footer-sub">Gateway</span>
+        <a href="/router">Runix Router</a>
+        <a href="/bench">Runix Bench</a>
+        <span class="footer-sub">Models</span>
+        <a href="/models">Runix Models</a>
+        <span class="footer-sub">Data</span>
+        <a href="/data">Runix Data</a>
+        <a href="/pipeline">Runix Pipeline</a>
+        <span class="footer-sub">Infrastructure</span>
+        <a href="/fs">Runix FS</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div>
+        <p class="footer-heading">Company</p>
+        <a href="/about">About</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/about#contact">Contact</a>
+        <a href="/security">Security</a>
+        <a href="/reliability">Reliability</a>
+        <a href="/faq">FAQ</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/access">Access</a>
+        <a href="/careers">Careers</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <p class="footer-heading">Legal</p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/delivery">Shipping &amp; Delivery</a>
+        <a href="/cancellation">Cancellation Policy</a>
+        <a href="/acceptable-use">Acceptable Use</a>
+      </div>
+    </div>
+    <!--identity-->
+    <address class="footer-identity"><strong>Runix AI Inc</strong> &middot; Registered in Wyoming, United States &middot; Company No. 2026-002036618 &middot; 30 N Gould St Ste R, Sheridan, WY 82801, United States &middot; <a href="tel:+13086890770">+1 (308) 689-0770</a> &middot; <!--email_off--><a href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--></address>
+    <!--/identity-->
+    <div class="footer-bottom">
+      <span>&copy; 2026 <span data-cfg="legalCompanyName">Runix AI Inc</span></span>
+      <span>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+        <!--email_off--><a data-cfg-mail="supportEmail" href="mailto:support@runixcloud.io">support@runixcloud.io</a><!--/email_off--> <span aria-hidden="true">&middot;</span> <!--email_off--><a data-cfg-mail="contactEmail" href="mailto:contact@runixcloud.io">contact@runixcloud.io</a><!--/email_off-->
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

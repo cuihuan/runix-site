@@ -269,7 +269,7 @@ def hub_main():
 <section class="split-hero" id="overview">
   <div class="container">
     <div>
-      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform">Five layers, seven products<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Solutions &middot; by team</span></div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform">Five layers, eight products<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Solutions &middot; by team</span></div>
       <h1><span class="line">{E(HUB["h1"][0])}</span>
 <span class="line">{E(HUB["h1"][1])}</span></h1>
       <p class="sub">{E(HUB["sub"])}</p>
@@ -514,7 +514,7 @@ def roadmap_main():
 <section class="split-hero" id="overview">
   <div class="container">
     <div>
-      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform">Five layers, seven products<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Roadmap &middot; statuses are literal</span></div>
+      <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform">Five layers, eight products<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Roadmap &middot; statuses are literal</span></div>
       <h1><span class="line">{E(d["h1"][0])}</span>
 <span class="line">{E(d["h1"][1])}</span></h1>
       <p class="sub">{E(d["sub"])}</p>
@@ -526,7 +526,7 @@ def roadmap_main():
     </div>
     <div>
       <div class="glance">
-        <p class="glance-title">Seven products today</p>
+        <p class="glance-title">Eight products today</p>
         <dl>
 {glance}
         <div><dt>Dates</dt><dd>None published. Cohorts and design partners set the order.</dd></div>

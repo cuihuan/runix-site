@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One template for the seven product pages (2026-09-30 redesign, v2).
+"""One template for the eight product pages (2026-09-30 redesign, v2).
 
 Design: the canvas "Runix Lab Site Redesign", artboard 04. Every product page
 gets the same shell around the copy it already has:
@@ -26,6 +26,8 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from stack import PRODUCTS as STACK, LAYER_OF  # noqa: E402
+
+BENCH_REPO = "https://github.com/cuihuan/llm-gateway-bench"
 
 CURL = '''<div class="term">
         <div class="term-bar"><i></i><i></i><i></i><b>one request, any model</b></div>
@@ -67,7 +69,7 @@ PRODUCTS = {
         "with": [
             ("Above &middot; 05 Agents", "Runix Code and Runix Comic", "Independent domain agents. One that wants a single endpoint for every model can put Router in front of its calls.", "/#layer-applications", "See the agents"),
             ("Below &middot; 03 Models", "Runix Models", "A model tuned on your data sits behind Router next to the hosted providers, on dedicated capacity.", "/models", "Explore Runix Models"),
-            ("The whole stack", "Five layers, seven products", "How Router fits with data, storage and the agents on top.", "/#platform", "See the stack"),
+            ("The whole stack", "Five layers, eight products", "How Router fits with data, storage and the agents on top.", "/#platform", "See the stack"),
         ],
         "after_specs": [("/router-models", "Models")],
         "start": [
@@ -102,7 +104,7 @@ PRODUCTS = {
         "with": [
             ("Above &middot; 04 Gateway", "Runix Router", "The tuned model answers through the same OpenAI-compatible endpoint as the hosted providers.", "/router", "Explore Runix Router"),
             ("Below &middot; 02 Data", "Runix Data", "Training and evaluation sets in six domains, delivered with provenance and a quality report.", "/data", "Explore Runix Data"),
-            ("The whole stack", "Five layers, seven products", "How Models fits between the data it learns from and the gateway it answers through.", "/#platform", "See the stack"),
+            ("The whole stack", "Five layers, eight products", "How Models fits between the data it learns from and the gateway it answers through.", "/#platform", "See the stack"),
         ],
         "labels": {"From base model": "Capabilities", "Where it sits": "How it works", "What we tune": "Models", "When a tuned model": "Fit", "early access works": "How to start"},
     },
@@ -200,6 +202,38 @@ PRODUCTS = {
         ],
         "labels": {"Object-storage economics": "Capabilities", "Where it sits": "How it works", "Your code does not change": "Integration", "workloads that stall": "Workloads", "project has measured": "Results", "Open source": "Open source", "early access works": "How to start"},
     },
+    # 2026-11-27. Facts from github.com/cuihuan/llm-gateway-bench: methodology.md,
+    # the probe workflow (every six hours), web/data.json (eleven endpoints).
+    "bench": {
+        "glance": [
+            ("Measures", "Trust and integrity, price against list, 30-day stability, speed, cache"),
+            ("Endpoints", "Eleven as of 2026-11-27: eight gateways and three official baselines"),
+            ("Cadence", "A probe every six hours, each run committed to the repository"),
+            ("Window", "Rolling 30 days, with the 7-day figure beside it"),
+            ("Self-test", "One command with your own key; the key stays on your machine"),
+            ("Agent runs", "Terminal-Bench through two routers, on request"),
+            ("Licence", "MIT, with every raw result public"),
+            ("Status", "Available, open source"),
+        ],
+        "specs": [
+            ("Dimensions", "Trust and integrity, price, stability, speed, cache; catalogue coverage alongside", f'<a href="{BENCH_REPO}/blob/main/docs/methodology.md" rel="noopener">Methodology</a>'),
+            ("Ratings", "Verified, claimed but unverified, or unverified; nothing without an evidence link is verified", f'<a href="{BENCH_REPO}/blob/main/docs/methodology.md" rel="noopener">Methodology</a>'),
+            ("Probe", "Public script and prompts; a random request id defeats caching; concurrency at most four", f'<a href="{BENCH_REPO}" rel="noopener">Repository</a>'),
+            ("Cadence", "Every six hours from a scheduled job; raw results committed", f'<a href="{BENCH_REPO}" rel="noopener">Repository</a>'),
+            ("Speed", "Time to first token p50, p95 only with five or more samples; throughput after the first token", "This page"),
+            ("Stability", "Success rate over 30 days; probe-caused 401, 403 and other 4xx excluded, 429 counted", "This page"),
+            ("Agent runs", "Terminal-Bench tasks through Harbor, Claude Code or Codex as the agent, A/A and A/B statistics", "This page"),
+            ("Related parties", "Marked on their row and rated by the same rules", "This page"),
+            ("Licence", "MIT", f'<a href="{BENCH_REPO}" rel="noopener">Repository</a>'),
+            ("Pricing", "Free; managed probing and report hosting on request", f'<a href="https://benchmark.runixcloud.io/pricing.html" rel="noopener">Bench pricing</a>'),
+        ],
+        "with": [
+            ("Above &middot; 05 Agents", "Runix Code and Runix Comic", "Agent runs measure the same tasks through two routers, so a team sees what a gateway changes for its agent.", "/agents", "Explore the agents"),
+            ("Beside &middot; 04 Gateway", "Runix Router", "The gateway the benchmark does not grade. Router is set up by our team and sends every model call through one endpoint.", "/router", "Explore Runix Router"),
+            ("Below &middot; 03 Models", "Runix Models", "A tuned model is judged against the model you call today, by the same rule: measured, not claimed.", "/models", "Explore Runix Models"),
+        ],
+        "labels": {"in the order they matter": "Capabilities", "how it measures": "How it works", "publishes a gateway benchmark": "Why open", "How to start": "How to start"},
+    },
     "code": {
         "sub": "An AI coding agent being built for teams: grounded in your repository, agentic where that saves time, gated by human review where it must be, with the controls an organisation needs to roll it out safely.",
         "note": 'Team plans are set out on <a href="/code-plans">the Code plans page</a>.',
@@ -224,7 +258,7 @@ PRODUCTS = {
         "with": [
             ("Below &middot; 04 Gateway", "Runix Router", "Optional in front of an agent's model calls: one endpoint for every model, with keys and quotas beneath it. The agent runs independently of it.", "/router", "Explore Runix Router"),
             ("Same layer &middot; 05 Agents", "Runix Comic", "The other agent on the stack: an independent studio agent for comic dramas.", "/comic", "Explore Runix Comic"),
-            ("The whole stack", "Five layers, seven products", "How the agents sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
+            ("The whole stack", "Five layers, eight products", "How the agents sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
         ],
         "start": [
             ("Join the waitlist", "Tell us the team size and the repositories. Cohorts are invited in order."),
@@ -255,7 +289,7 @@ PRODUCTS = {
         "with": [
             ("Below &middot; 04 Gateway", "Runix Router", "Optional in front of an agent's model calls: one endpoint for every model, with keys and quotas beneath it. The agent runs independently of it.", "/router", "Explore Runix Router"),
             ("Same layer &middot; 05 Agents", "Runix Code", "The other agent on the stack: an independent coding agent, reviewable in your repository.", "/code", "Explore Runix Code"),
-            ("The whole stack", "Five layers, seven products", "How the agents sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
+            ("The whole stack", "Five layers, eight products", "How the agents sit on the gateway, models, data and storage beneath them.", "/#platform", "See the stack"),
         ],
         "start": [
             ("Join the waitlist", "Tell us what you make and where it is published."),

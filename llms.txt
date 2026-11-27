@@ -34,7 +34,7 @@ compute (GPUs, power and cloud capacity), which Runix Lab does not sell:
 
 ## Products
 
-Seven products at different stages. The statuses below are literal.
+Eight products at different stages. The statuses below are literal.
 
 - **Runix Router** — *status: available, with accounts opened by our team.* One OpenAI-compatible
   endpoint across many providers, positioned on security, compliance and performance:
@@ -139,7 +139,7 @@ for anything forward-looking. https://runixcloud.io/roadmap
 - [FAQ](https://runixcloud.io/faq): access, billing, data handling, contracting, certifications.
 - [Access](https://runixcloud.io/access): how keys are issued and what intake involves.
 - [Reliability](https://runixcloud.io/reliability): failover mechanism; no published SLA in early access.
-- [Home](https://runixcloud.io/): the mission (Rebuild AI Unix), the five-layer stack with the data domains, the seven products and their statuses, company facts.
+- [Home](https://runixcloud.io/): the mission (Rebuild AI Unix), the five-layer stack with the data domains, the eight products and their statuses, company facts.
 - [Runix Models](https://runixcloud.io/models): fine-tuning methods, evaluation before rollout, dedicated serving, licences, FAQ.
 - [Runix Data](https://runixcloud.io/data): the six domains and their cleaning rules, verified coding tasks, what every delivery carries, FAQ.
 - [Code data](https://runixcloud.io/code-data): the cleaning rules for code data and the public standards each follows.
@@ -161,8 +161,10 @@ for anything forward-looking. https://runixcloud.io/roadmap
 
 ## Writing
 
-All 58 posts, newest first. Descriptions are the pages' own.
+All 60 posts, newest first. Descriptions are the pages' own.
 
+- [How to benchmark an LLM gateway before it carries production traffic](https://runixcloud.io/blog/how-to-benchmark-an-llm-gateway) — Five checks to run on any LLM gateway or relay API from the outside: is the model real, price against list, 30-day uptime, speed, and whether caching works.
+- [JuiceFS, Alluxio, Mountpoint and Runix FS: a file layer for AI data](https://runixcloud.io/blog/juicefs-alluxio-mountpoint-and-runix-fs) — Four ways to read object storage as files for AI training and agents, sorted by two questions: does the bucket stay readable, and where does the cache live.
 - [Domain-specific AI agents: why agents are built one profession at a time](https://runixcloud.io/blog/ai-agents-by-domain) — Why AI agents are built per profession: the domain supplies the tools, the data rules, the evaluation and the review gate, and a generic agent lacks all four.
 - [Auto routing versus a pinned model id: choosing an LLM routing policy](https://runixcloud.io/blog/auto-routing-versus-a-pinned-model-id) — Two routing policies behind one endpoint: auto, chosen by cost and health, or a pinned model id. When each is right, and what to log to keep both honest.
 - [Exact, near and semantic: why near-duplicate detection for training data needs all three](https://runixcloud.io/blog/deduplication-exact-near-semantic) — Exact hashing, MinHash and embeddings each catch a different kind of duplicate. What each misses and costs, and how duplicates inflate evaluation scores.

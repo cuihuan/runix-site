@@ -2619,3 +2619,5 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
 .grid > .card-clickable > .read-more { margin-top: auto; padding-top: 14px; align-self: flex-start; }
 /* A Chinese headline has no word spaces to wrap at evenly; each phrase keeps its own line on a phone too. */
 :lang(zh) .hero-flagship h1 .line, :lang(zh) .split-hero h1 .line, :lang(zh) .page-hero h1 .line { display: block; }
+/* The last characters of a Chinese paragraph stay together (build_cn.py keep_tail). */
+.nw-tail { white-space: nowrap; }

@@ -271,6 +271,21 @@ def rewrite_href(href, src_page):
     return href
 
 
+CJK = "\u3400-\u9fff"
+TAIL = re.compile(rf"([{CJK}]{{4}}[。！？；：）」』]?)$")
+
+
+def keep_tail(zh):
+    """Chinese has no spaces to break at, so a paragraph's last line can end
+    up one or two characters long (layout_qa calls that an orphan). The last
+    four characters of a sentence-long unit travel together, the way
+    nbsp_arrows.py keeps an arrow with its word in English."""
+    plain = re.sub(r"<[^>]+>", "", zh)
+    if len(plain) < 24 or "nw-tail" in zh:
+        return zh
+    return TAIL.sub(r'<span class="nw-tail">\1</span>', zh, count=1)
+
+
 def localise(page, src, cat, missing, allow_stale):
     spans = units(src)
     out, pos = [], 0
@@ -287,7 +302,7 @@ def localise(page, src, cat, missing, allow_stale):
         elif kind == "attr":
             out.append(_html.escape(_html.unescape(zh), quote=True))
         else:
-            out.append(zh)
+            out.append(keep_tail(zh))
         pos = e
     out.append(src[pos:])
     doc = "".join(out)

@@ -72,4 +72,8 @@ done
 loc=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 15 "$base/plans")
 printf '    /plans   -> %s\n' "$loc"
 case "$loc" in 302\ https://runixcloud.io/plans) ;; *) fail=1 ;; esac
+# Even rows and no stranded characters hold in Chinese too (DESIGN.md section 8).
+for path in / /bench /fs /router; do
+  python3 tools/layout_qa.py "$base$path" 2>&1 | grep -v '^rendered' | sed 's/^/    /' | grep -v 'no layout problems' && fail=1
+done
 [ "$fail" -eq 0 ] && echo "==> Chinese edition OK" || { echo "==> Chinese edition verification FAILED"; exit 1; }

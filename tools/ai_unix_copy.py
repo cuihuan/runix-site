@@ -29,11 +29,14 @@ CHANGED = []
 
 
 def edit(path, pairs):
+    """Each pair is (old, new) or (old, new, marker): a marker already on the
+    page means the edit was made, even after another builder moved it."""
     p = pathlib.Path(path)
     s = p.read_text(encoding="utf-8")
     o = s
-    for old, new in pairs:
-        if new in s:
+    for pair in pairs:
+        old, new = pair[0], pair[1]
+        if new in s or (len(pair) > 2 and pair[2] in s):
             continue
         if old not in s:
             print(f"  {path}: target not found: {old[:70]!r}")
@@ -54,7 +57,7 @@ H1_OLD = '''<h1><span class="line">Runix. The operating system</span>
 H1 = '''<h1><span class="line">AI Unix.</span>
 <span class="line">Infrastructure for AI, rebuilt by AI.</span></h1>'''
 SUB_OLD = '''<p class="sub">Most teams start at the gateway: one OpenAI-compatible endpoint in front of every model provider, available today. Beneath it, the file system, data and model layers are in early access; the agents on top are in development. Use one layer, or run the whole stack.</p>'''
-SUB = '''<p class="sub">Runix Lab is an AI-native company: agents write, test and run most of our engineering, under human review. We use them to rebuild the stack AI runs on as one simple system, the way Unix was one: a file system, data, models, one gateway and the agents on top, each small and each usable on its own. Start with the gateway, available today, or measure any gateway with our open benchmark.</p>'''
+SUB = '''<p class="sub">Runix Lab is an AI-native company: agents write, test and operate most of our software, under human review. We use them to rebuild the stack AI runs on as one simple system, the way Unix was one: a file system, data, models, one gateway and the agents on top, each small and each usable on its own. Start with the gateway, available today, or measure any gateway with our open benchmark.</p>'''
 
 HOW_OLD = '''<p>What is in writing is linked, not promised: data terms, contracting, the price catalogue and the roadmap. Three of the tools we built to run a gateway are open source, including a benchmark you can run against us.</p>'''
 HOW = '''<p>What is in writing is linked, not promised: data terms, contracting, the price catalogue and the roadmap. Three of the tools we built to run a gateway are open source, including <a href="/bench">a benchmark you can run against us</a>.</p>
@@ -199,7 +202,7 @@ def main():
         <p><strong>Self-test guide</strong>: run the open benchmark against any OpenAI-compatible gateway with your own key, read the report, and see how each figure on the live table is measured.</p>
         <p class="card-meta"><span>Status: available</span> · <span>Self-test guide</span></p>
         <a class="read-more" href="/bench#early-access" aria-hidden="true" tabindex="-1">Read the Bench guide&nbsp;→</a>
-      </div>"""),
+      </div>""", '<h3><a href="/bench#early-access">Runix Bench</a></h3>'),
         ("Honest about status: Router is available and FS is in early access, and both have quick starts;",
          "Honest about status: Router and Bench are available and FS is in early access, and all three have quick starts;"),
     ])

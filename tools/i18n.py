@@ -22,6 +22,12 @@ ZH_LANG = "zh-CN"
 CN_PAGES = [
     "index.html", "bench.html", "fs.html", "router.html", "models.html", "data.html",
     "agents.html", "about.html", "404.html",
+    # second wave (2026-11-27): the rest of the stack, pricing, the docs a buyer
+    # opens first, and the writing the content pass leads with
+    "pipeline.html", "code.html", "comic.html", "solutions.html", "plans.html",
+    "docs/index.html", "docs/fs.html",
+    "blog/rebuild-ai-unix.html", "blog/how-to-benchmark-an-llm-gateway.html",
+    "blog/juicefs-alluxio-mountpoint-and-runix-fs.html", "blog/introducing-runix-fs.html",
 ]
 
 

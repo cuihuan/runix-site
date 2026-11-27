@@ -410,7 +410,15 @@ def render(out):
         if p.name.startswith("_") or p.name in CN_PAGES:
             continue
         redirects.append(f"/{p.stem} {EN}/{p.stem} 302")
-    for d in ("blog", "docs", "payments", "scheduled"):
+    # Pages serves a redirect even where a file exists, so the sections that are
+    # partly translated list their English-only pages one by one.
+    for d in ("blog", "docs"):
+        for p in sorted(ROOT.glob(f"{d}/*.html")):
+            rel = f"{d}/{p.name}"
+            if p.name.startswith("_") or rel in CN_PAGES:
+                continue
+            redirects.append(f"{path_of(rel)} {EN}{path_of(rel)} 302")
+    for d in ("payments", "scheduled"):
         redirects.append(f"/{d}/* {EN}/{d}/:splat 302")
     redirects.append(f"/pricing {EN}/plans 302")
     (out / "_redirects").write_text("\n".join(redirects) + "\n", encoding="utf-8")

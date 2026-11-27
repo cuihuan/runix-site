@@ -223,7 +223,7 @@ def units(src):
         keep.append(sp)
         if sp[3] == "inner":
             last_end = max(last_end, sp[1])
-    return [sp for sp in keep if has_letters(sp[2]) and not IDENTITY.match(re.sub(r"<[^>]+>", "", sp[2]).strip())]
+    return [sp for sp in keep if has_letters(sp[2]) and not IDENTITY.match(norm(re.sub(r"<[^>]+>", " ", sp[2])))]
 
 
 def jsonld_strings(src):
@@ -281,7 +281,7 @@ def keep_tail(zh):
     four characters of a sentence-long unit travel together, the way
     nbsp_arrows.py keeps an arrow with its word in English."""
     plain = re.sub(r"<[^>]+>", "", zh)
-    if len(plain) < 24 or "nw-tail" in zh:
+    if len(plain) < 12 or "nw-tail" in zh:
         return zh
     return TAIL.sub(r'<span class="nw-tail">\1</span>', zh, count=1)
 

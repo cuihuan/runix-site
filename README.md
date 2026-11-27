@@ -16,6 +16,7 @@ gate all read it. As of 2026-10-31:
 | 05 Agents | `code.html`, `code-plans.html` | Runix Code: an independent coding agent, reviewable in your repository | In development |
 | 05 Agents | `comic.html` | Runix Comic: an agent for comic dramas, script to episode | In development |
 | 04 Gateway | `router.html`, `router-models.html` | Runix Router: one OpenAI-compatible endpoint for every model | Available |
+| 04 Gateway | `bench.html` | Runix Bench: the open benchmark for LLM gateways ([llm-gateway-bench](https://github.com/cuihuan/llm-gateway-bench), live at benchmark.runixcloud.io) | Available, open source |
 | 03 Models | `models.html` | Runix Models: fine-tune and serve open-weight models | Early access |
 | 02 Data | `data.html`, six `*-data.html` domain pages | Runix Data: domain data for training and evaluation | Early access |
 | 02 Data | `pipeline.html` | Runix Pipeline: the tooling that makes data model-ready | In development |
@@ -25,7 +26,18 @@ Also: `plans.html` (pricing and checkout; `/pricing` redirects here), `docs/`
 (one guide per product), `blog/`, `glossary.html`, `faq.html`, and the legal
 pages the payment providers review.
 
+## Two editions
+
+`runixcloud.io` is English and `runixcloud.com` is Chinese. They are one site:
+`tools/build_cn.py` renders the Chinese pages from these same files and the
+string catalog in `i18n/zh-CN.json`, and `deploy.sh` ships both from one
+commit, refusing while a Chinese page has an untranslated string. See
+`i18n/README.md`.
+
 ## Working on it
+
+- `DESIGN.md` is the design standard: principles, tokens, components and
+  which rules are checked. `tools/design_lint.py` enforces it on every deploy.
 
 - `assets/style.css` is the whole design system. `/assets/*` is cached for a
   year, so asset URLs carry `?v=`, and `tools/bump_assets.py` moves it.

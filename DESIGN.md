@@ -89,8 +89,8 @@ Rules:
 
 ## 4. Space, shape, depth
 
-- Spacing steps: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96. Section padding is
-  96px, 64px under 920px, 48px under 560px.
+- Spacing steps: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96, 128. Section padding
+  is 128px, 88px under 920px, 64px under 560px.
 - Radius: `--radius-xs` 6px (inline chips inside text, code), `--radius-sm`
   10px (buttons inside cards, small panels, code windows), `--radius` 14px
   (cards, menus, tables), `--radius-lg` 20px (the one large framed figure per
@@ -112,6 +112,10 @@ Rules:
   under 920px. A lede longer than about 60 words goes under the h2 instead.
 - Rows of cards are one height; the last line of each card (status, link)
   sits on the bottom edge. **Checked** (`layout_qa.py`, 3px tolerance).
+- One look per component across the whole site: `tools/design_audit.mjs`
+  renders every page and lists each component's distinct computed styles
+  (headlines, labels, buttons, cards). It is how the 18px section labels were
+  found; run it after any layout change.
 
 ## 6. Components
 
@@ -122,8 +126,8 @@ Rules:
 | Product bar | Under the header on product and hub pages: name, layer, status, section links, the page's own primary action. It is where layer and status are stated; the hero does not repeat them. A bar whose action is the same as the header's ("Contact sales") omits it. |
 | Label | `font: 600 var(--text-2xs)/1.3 var(--mono)`, `--track-label`, uppercase. Section numbers `02 · Capabilities` are labels. |
 | Status | Three literal states, one look each: **available** (cyan, with a dot), **early access** (indigo), **in development** (ink-3). The qualifier under it ("by engagement") is ink-3 lower case. The words come from `tools/stack.py` and nowhere else. |
-| Button | Pill. Primary: ink fill, white text, hover `--ink-hover`. Secondary: white with a `--line-2` border. 44px tall, 36px in bars. One primary per view. |
-| Card | `--surface`, 1px `--line-2`, `--radius`, padding 28px (24px under 560px), no shadow. Title `--text-lg` 650, body `--text-md` `--ink-2`, link last and on the bottom edge. |
+| Button | Pill. Primary: ink fill, white text, hover `--ink-hover`. Secondary: white with a `--line-2` border. 54px tall (52px full-width in a plan card), 36px in bars. One primary per view. |
+| Card | `--surface`, 1px `--line-2`, `--radius`, padding 34px 32px, no shadow. Title `--text-lg` 650, body `--text-md` `--ink-2`, link last and on the bottom edge. Cells of a joined grid (`.fcell`) share the padding and drop the radius. |
 | Chip | Pill, 1px `--line-2`, `--text-sm`. A chip that is a link says so with an arrow. |
 | Tag | "New": mono `--text-2xs`, indigo on a 8% indigo tint, pill. At most one per product. |
 | Code window | `--panel`, `--radius-sm`, a title bar with the command's purpose. Code is never cut off at 1440px (`code_overflow.py`). |

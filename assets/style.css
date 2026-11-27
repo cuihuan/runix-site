@@ -1594,7 +1594,7 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 
 /* ---------- Product bento ---------- */
 .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; }
-.bento > .card { grid-column: span 2; display: flex; flex-direction: column; padding: 32px 30px 28px; }
+.bento > .card { grid-column: span 2; display: flex; flex-direction: column; padding: 34px 32px; }
 .bento > .bento-lg { grid-column: span 3; }
 .bento .card > p:not(.card-meta):not(.card-layer) { font-size: var(--text-md); }
 .bento .card-meta { margin-top: auto; padding-top: 18px; }
@@ -2060,7 +2060,7 @@ main a.pmap-cell:not(.btn):hover { border-color: var(--ink-3); background: var(-
 .lb-cards > .pcard:only-child { grid-column: 1 / -1; }
 main a.pcard:not(.btn) {
   display: grid; grid-template-columns: minmax(0, 1fr); align-content: start;
-  padding: 26px 28px 24px; background: var(--surface); color: var(--ink); text-decoration: none;
+  padding: 34px 32px; background: var(--surface); color: var(--ink); text-decoration: none;
 }
 main a.pcard:not(.btn):hover { border-color: var(--ink-3); }
 .pcard h4 { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font-size: var(--text-lg); font-weight: 650; letter-spacing: var(--track-heading); }
@@ -2332,7 +2332,7 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 
 /* ---------- Home: how the layers connect, and latest writing (v2) ---------- */
 .lpaths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.lpath { padding: 28px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--surface); }
+.lpath { padding: 34px 32px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--surface); }
 .lpath-label { margin: 0 0 14px; font: 600 var(--text-2xs)/1.3 var(--mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--indigo-ink); }
 .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 14px; }
 .pc { padding: 9px 13px; border: 1px solid var(--line-2); border-radius: var(--radius-xs); font-size: var(--text-sm); font-weight: 600; color: var(--ink); }
@@ -2340,7 +2340,7 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 .pc-arrow, .pc-or { color: var(--ink-3); font-size: var(--text-sm); }
 .lpath > p:not(.lpath-label):not(.chain):not(.lpath-more) { margin: 0; color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; }
 .lpath-more { margin: 14px 0 0; }
-.posts .post-card { display: flex; flex-direction: column; gap: 8px; padding: 26px 28px; }
+.posts .post-card { display: flex; flex-direction: column; gap: 8px; padding: 34px 32px; }
 .posts .post-card h3 { padding-left: 0; min-height: 0; font-size: var(--text-lg); line-height: 1.3; }
 .posts .card-layer { padding-left: 0; min-height: 0; line-height: 1.3; color: var(--indigo-ink); }
 .posts .card-meta { margin-top: auto; padding-top: 8px; }
@@ -2621,3 +2621,19 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
 :lang(zh) .hero-flagship h1 .line, :lang(zh) .split-hero h1 .line, :lang(zh) .page-hero h1 .line { display: block; }
 /* The last characters of a Chinese paragraph stay together (build_cn.py keep_tail). */
 .nw-tail { white-space: nowrap; }
+
+/* Labels are one component (DESIGN.md section 6). A computed-style audit of
+   all 110 pages (2026-11-27) found the numbered section labels and the page
+   eyebrows drawn at 18px in --ink-2 on 184 elements, and card stamps at 14px:
+   `.section-head p`, `.page-hero p` and `.card p` outrank a single class, so
+   the label rules above never applied where the labels actually sit. These
+   restate them at the specificity they need. */
+.section-head > p.sec-no, .example-note > p.sec-no, .page-hero p.page-eyebrow {
+  margin: 0 0 12px; max-width: none;
+  font: 600 var(--text-2xs)/1.3 var(--mono); letter-spacing: var(--track-label);
+  text-transform: uppercase; color: var(--indigo-ink);
+}
+.card p.card-layer {
+  font: 700 var(--text-2xs)/26px var(--mono); letter-spacing: var(--track-label);
+  text-transform: uppercase; color: var(--ink-3);
+}

@@ -190,6 +190,19 @@ def main():
 
 <h2 id="where-to-start">Where to start</h2>"""),
     ])
+    edit("docs/index.html", [
+        ("""        <a class="read-more" href="/docs/router" aria-hidden="true" tabindex="-1">Read the Router docs&nbsp;→</a>
+      </div>""", """        <a class="read-more" href="/docs/router" aria-hidden="true" tabindex="-1">Read the Router docs&nbsp;→</a>
+      </div>
+      <div class="card">
+        <h3><a href="/bench#early-access">Runix Bench</a></h3>
+        <p><strong>Self-test guide</strong>: run the open benchmark against any OpenAI-compatible gateway with your own key, read the report, and see how each figure on the live table is measured.</p>
+        <p class="card-meta"><span>Status: available</span> · <span>Self-test guide</span></p>
+        <a class="read-more" href="/bench#early-access" aria-hidden="true" tabindex="-1">Read the Bench guide&nbsp;→</a>
+      </div>"""),
+        ("Honest about status: Router is available and FS is in early access, and both have quick starts;",
+         "Honest about status: Router and Bench are available and FS is in early access, and all three have quick starts;"),
+    ])
     edit("fs.html", [
         ("<title>Runix FS — AI-Native File System on Object Storage</title>",
          "<title>Runix FS — AI File System and S3 Cache for Training</title>"),

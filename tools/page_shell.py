@@ -141,6 +141,9 @@ def post_meta(doc):
     return (m.group(1), m.group(2)) if m else None
 
 
+HEADER_CTA = ("/about#contact", "Contact sales")
+
+
 def bar(page, doc, name, group, ghref, cta, status=None, layer_is_link=True):
     # The landmark's name: the bar's own name, which never carries a quote
     # (a post title can, and a quote inside aria-label breaks the attribute).
@@ -151,7 +154,11 @@ def bar(page, doc, name, group, ghref, cta, status=None, layer_is_link=True):
     st = f'\n    <span class="pbar-status">{status}</span>' if status else ""
     href, label = cta
     c = f'<a class="pbar-cta" href="{href}">{label}</a>'
-    if href.startswith("mailto:"):
+    # The header already carries "Contact sales" on every page; a bar that
+    # repeats it is the same action twice in one view (DESIGN.md, product bar).
+    if (href, label) == HEADER_CTA:
+        c = ""
+    elif href.startswith("mailto:"):
         c = f"<!--email_off-->{c}<!--/email_off-->"
     return (f'<!--ps:bar-->\n<nav class="pbar pbar-page" aria-label="{_html.escape(title, quote=True)}">\n'
             f'  <div class="container pbar-inner">\n'

@@ -45,10 +45,10 @@
   /* The window (5 hours / a week / a month) now reads under its heading as the
      datum it is, instead of introducing the heading as a tracked-caps kicker.
      It stays uppercase — it is a three-word label, not body copy. */
-  .window .w-k { display: block; font: 700 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-text); margin: 8px 0 10px; }
-  .window h3 { font-size: 20px; margin: 0; }
-  .window p { color: var(--ink-2); font-size: 14.5px; }
-  @media (max-width: 780px) { .windows { grid-template-columns: 1fr; } }
+  .window .w-k { display: block; font: 600 var(--text-2xs)/1.3 var(--mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--indigo-ink); margin: 8px 0 10px; }
+  .window h3 { font-size: var(--text-xl); margin: 0; }
+  .window p { color: var(--ink-2); font-size: var(--text-md); }
+  @media (max-width: 920px) { .windows { grid-template-columns: 1fr; } }
 </style>
 <script type="application/ld+json">
 {

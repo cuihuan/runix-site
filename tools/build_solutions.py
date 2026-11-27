@@ -74,7 +74,10 @@ def post_title(slug):
 def bar(name, layer_html, status_html, links, cta_href, cta_label, name_href="#overview"):
     lis = "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in links)
     cta = f'<a class="pbar-cta" href="{cta_href}">{cta_label}</a>'
-    if cta_href.startswith("mailto:"):
+    # The header's own action is not repeated in the bar (DESIGN.md, product bar).
+    if (cta_href, cta_label) == ("/about#contact", "Contact sales"):
+        cta = ""
+    elif cta_href.startswith("mailto:"):
         cta = f"<!--email_off-->{cta}<!--/email_off-->"
     return (f'<nav class="pbar" aria-label="{E(name)} on this page">\n'
             f'  <div class="container pbar-inner">\n'

@@ -42,11 +42,11 @@ QAS = [
     ("Does my API key leave my machine?",
      "No. The self-test runs locally and calls the gateway you point it at directly. The key is read from an environment variable and is not written to the report."),
     ("Is Runix Router in the table?",
-     "Not today. One gateway in the table is run by a related party; it is marked as such on its row and rated by the same rules as everyone else, never a tier higher for the relationship."),
+     "Not today. The one gateway measured live so far is run by a related party; it is marked as such on its row and rated by the same rules as everyone else, never a tier higher for the relationship."),
     ("How often is the table updated?",
-     "Every six hours, from a scheduled job that commits each run to the repository. Success rates are computed over a rolling 30-day window, with the 7-day figure beside it."),
+     "The job is scheduled every six hours, and GitHub's scheduler currently delivers about two runs a day; each run is committed to the repository. Success rates are computed over a rolling 30-day window, with the 7-day figure beside it."),
     ("Why would a gateway company publish a gateway benchmark?",
-     "Because a buyer should not have to trust any gateway's claims, including ours. The benchmark is built to be checked rather than believed: the prompts are in the script, the raw data is public and anyone can rerun it against the same endpoints."),
+     "Because a buyer should not have to trust any gateway's claims, including ours. The benchmark is built to be checked rather than believed: the prompts are in the script, the raw data is public and anyone can rerun it against the same endpoints with their own key."),
 ]
 
 
@@ -105,7 +105,7 @@ def page():
       <span class="badge">Runix Bench · Available</span>
       <h1><span class="line">The open benchmark</span>
 <span class="line">for LLM gateways</span></h1>
-      <p class="sub">Runix Bench measures any OpenAI-compatible gateway or relay from the outside, the way your application sees it: price against the official list price, time to first token and throughput, success rate over 30 days, and whether the model behind the endpoint is the one on the label. Every raw result is public.</p>
+      <p class="sub">Runix Bench is an open method and a self-test for any OpenAI-compatible gateway or relay, measured from the outside the way your application sees it: price against the official list price, time to first token and throughput, success rate over 30 days, caching, and behavioural checks on whether the model is the one on the label. The probe and every raw result are public.</p>
       <div class="actions">
         <a class="btn btn-primary" href="{LIVE}">See the live leaderboard</a>
         <a class="btn btn-ghost" href="{REPO}" rel="noopener">Run it on your gateway</a>
@@ -132,7 +132,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \\
       </div>
       <div class="example-note">
         <p class="example-title">compare a gateway with the best</p>
-        <p>One command against the gateway you already use, with your own key. The report puts it beside the best measured endpoint on each dimension, and the key never leaves your machine.</p>
+        <p>One command against the gateway you already use, with your own key. The report sets it beside the public baseline and the official list price on each dimension, and the key never leaves your machine.</p>
       </div>
     </div>
   </div>
@@ -140,22 +140,22 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \\
     dims = section("", "capabilities", "Five questions, in the order they matter",
                    "A team picking a gateway asks whether it can trust it, then whether it is cheap, then whether it stays up. The benchmark answers in that order, and reads a low price next to trust: a gateway far under list price is a warning sign, not a bargain.",
                    fgrid([
-                       ("Trust and integrity", "Is it the real model, and will the operator still be there? A fixed request set goes to the gateway and to the official API at once, following the K2 Vendor Verifier method, and the answers are compared. Data retention and the legal entity are annotated with links to the source."),
+                       ("Trust and integrity", "Is it the real model, and will the operator still be there? Behavioural checks test it from outside: whether the model names itself, handles tool calls and Chinese text, streams for real, and reports usage that matches a recount. Data retention and the legal entity are annotated with links to the source. A diff against the official API in the manner of the K2 Vendor Verifier is the method being built toward; no endpoint has passed one yet."),
                        ("Price against list", "The gateway's price divided by the official list price, per model and as one index across models. Cache pricing and hidden multipliers are recorded beside it."),
-                       ("Stability over 30 days", "Success rate from a probe every six hours, with rate limits, outages and timeouts counted apart. Errors the probe causes itself, such as an unauthorised key, are excluded and shown separately."),
-                       ("Speed", "Time to first token at p50, and p95 only when a run has at least five samples. Throughput is counted after the first token, the convention llmperf and Artificial Analysis use. Fake streaming, a reply buffered and then dumped, is flagged."),
-                       ("Cache", "Whether a repeated prompt is billed and served as a cache hit, measured rather than taken from the price page."),
-                       ("Three ratings, no fourth", "Each claim is verified, claimed but unverified, or unverified. Nothing without an evidence link is ever marked verified, and a related party is never rated a tier higher for the relationship."),
+                       ("Stability over 30 days", "Success rate from scheduled probes, with rate limits, outages and timeouts counted apart. Errors the probe causes itself, such as an unauthorised key, are excluded and shown separately."),
+                       ("Speed", "Time to first token at p50, and p95 only when a run has at least five samples. Throughput is decode speed, counted after the first token; llmperf and Artificial Analysis divide by the whole request, first token included, so their figures read lower. Fake streaming, a reply buffered and then dumped, is flagged."),
+                       ("Cache", "Whether the second of two identical long prompts reports cached tokens in its usage block, measured rather than taken from the price page."),
+                       ("Ratings that need evidence", "Channel origin is rated verified, claimed but unverified, or unverified, and nothing without an evidence link is ever marked verified. A related party is never rated a tier higher for the relationship."),
                    ]))
     how = section(" alt", "how", "Where it sits, and how it measures",
                   "The benchmark stands where your application stands: outside the gateway, calling its public endpoint. It needs no access to anyone's infrastructure and no cooperation from the operator.",
                   fgrid([
                       ("A public probe", "The probe script and its prompts are in the repository. Each request carries a random id so a gateway cannot serve it from a cache, output is capped, and concurrency stays at four or under so a run never becomes a load test."),
-                      ("Scheduled, then committed", "A scheduled job probes every tracked endpoint every six hours and commits the raw result. Leaderboard figures come from a rolling 30-day window; older runs stay in the data and do not move the table."),
-                      ("Agent runs on Terminal-Bench", "Beyond single calls, the same Terminal-Bench tasks can run through two routers with Claude Code or Codex as the agent, verifier scores and costs side by side, with A/A and A/B statistics. These runs are hosted by our team on request."),
-                      ("Same models, same prompts", "Every endpoint is probed on the same tracked models, each under the name that gateway gives it, so a price or speed figure compares one model across gateways rather than whatever each one serves by default."),
-                      ("Evidence for what is annotated", "What a probe cannot measure, a data-retention policy or the legal entity behind a service, is annotated by hand with a link to the source and the date it was read. Corrections are taken as pull requests."),
-                      ("Unknown stays unknown", "A measurement that could not be taken is shown as missing, never as zero. Network latency from a scheduled runner is labelled as an estimate, and the probe region is printed on every figure."),
+                      ("Scheduled, then committed", "A job scheduled every six hours, which GitHub's scheduler currently delivers about twice a day, probes the endpoints it has keys for and commits each raw result. Leaderboard figures come from a rolling 30-day window; older runs stay in the data and do not move the table."),
+                      ("Agent runs on Terminal-Bench", "Beyond single calls, our team runs Terminal-Bench tasks through Harbor on a fixed pair of test routers, Claude Code for Claude models and Codex for the rest, with A/A and A/B statistics. The reports keep verifier scores, cost and integrity checks, and copy no prompts."),
+                      ("What a figure compares", "The price matrix and the self-test compare one tracked model across gateways, each under the name that gateway gives it. The scheduled probe runs a short model list per endpoint, so the leaderboard's speed and success figures describe a gateway, not one model on it."),
+                      ("Evidence for what is annotated", "What a probe cannot measure, a data-retention policy or the legal entity behind a service, is annotated by hand, with a link to the source where one exists and the date it was read. Corrections are taken as pull requests."),
+                      ("Unknown stays unknown", "A measurement that could not be taken is shown as missing, never as zero. The probe region is printed on every figure, and results from different regions are never mixed."),
                   ]))
     why = section("", None, "Why a gateway company publishes a gateway benchmark",
                   "We sell a gateway, so a benchmark we run could be read as marketing. It is built so that it does not have to be trusted: the method is written down before the numbers, the raw data is public, and anyone can rerun it against the same endpoints with their own key. That is the same rule we hold our own products to.",
@@ -163,7 +163,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \\
       <a class="card card-clickable" href="{LIVE}" rel="noopener" aria-label="Open the leaderboard">
         <p class="card-layer">Live</p>
         <h3>The leaderboard</h3>
-        <p>Eleven endpoints as of 2026-11-27: eight gateways and three official direct connections as the baseline.</p>
+        <p>Eleven endpoints registered as of 2026-11-27, three of them official direct connections. One, a related party, is measured live so far; the rest wait for keys.</p>
         <span class="read-more">Open the leaderboard&nbsp;&rarr;</span>
       </a>
       <a class="card card-clickable" href="{REPO}/blob/main/docs/methodology.md" rel="noopener" aria-label="Read the methodology">
@@ -191,8 +191,8 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \\
         <p>Clone the repository and run the self-test with your own key. It writes one report you can share.</p>
       </div>
       <div class="pstep">
-        <h3><span class="pstep-n">03</span>Ask for an agent run</h3>
-        <p>For a comparison of two routers on Terminal-Bench, <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Runix%20Bench%20agent%20run">write to us</a><!--/email_off--> with the models and the routers to compare.</p>
+        <h3><span class="pstep-n">03</span>Suggest a gateway or a fix</h3>
+        <p>Open an issue or a pull request on <a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">the repository</a> to propose a gateway or correct an annotation. A gateway joins the live table once there is a key to probe it with.</p>
       </div>
     </div>''')
     faq = section("", "faq", "Common questions", None, qas())
@@ -200,7 +200,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \\
   <div class="container">
     <div class="cta-band">
       <h2>Measure the gateway you already use</h2>
-      <p>One command, your own key, a report that shows where it stands against the best on price, speed, stability and integrity.</p>
+      <p>One command, your own key, and a report that sets it against the public baseline and the official list price on price, speed, stability and behaviour.</p>
       <a class="btn btn-grad" href="{REPO}" rel="noopener">Run the self-test</a>
     </div>
   </div>

@@ -34,8 +34,8 @@ PRODUCTS = {
     "router": ("router.html", "/router", "Runix Router",
                "One compliant endpoint for every model",
                "gateway", "available", ""),
-    # 2026-11-27: the open benchmark, the tool that measures the layer (ours
-    # included). Its live table is benchmark.runixcloud.io.
+    # 2026-11-27: the open benchmark, the tool that measures the layer from
+    # outside. Its live table is benchmark.runixcloud.io.
     "bench": ("bench.html", "/bench", "Runix Bench",
               "The open benchmark for LLM gateways",
               "gateway", "available", "New"),

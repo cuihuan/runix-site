@@ -560,9 +560,9 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
                                  'evaluation or scoping before any payment',
                  'in development': 'the product page describes what is being built; it cannot be bought yet'},
  'ga_lede': 'General availability is a state, not a date. On this site it means these three things exist.',
- 'products': {'bench': ('Available as open source. The leaderboard probes eleven endpoints every six hours and '
-                       'publishes every raw result; the self-test runs against any OpenAI-compatible gateway with '
-                       'your own key, and agent runs on Terminal-Bench are hosted by our team on request.',
+ 'products': {'bench': ('Available as open source. Eleven endpoints are registered and one is measured live so '
+                       'far; every raw result is public, and the self-test runs against any OpenAI-compatible '
+                       'gateway with your own key.',
                        'Next: more endpoints and probe regions, as the methodology adds them; nothing is dated.'),
               'code': ('Waitlist open. Cohorts are invited in order and get access as capabilities land; the '
                        'rollout guide describes seats, policies and the review-gated workflow.',
@@ -621,8 +621,8 @@ ROADMAP = {'title': 'Runix Roadmap: What Is Live and What Comes Next | Runix',
               'the API on one host.',
               '/router', 'Runix Router'),
              ('November 27, 2026',
-              'Runix Bench joins the Gateway layer: the open LLM gateway benchmark, probed every six hours, '
-              'with a self-test for any gateway; the site gets a Chinese edition at runixcloud.com.',
+              'Runix Bench joins the Gateway layer: the open LLM gateway benchmark, a public method with '
+              'scheduled probes and a self-test for any gateway.',
               '/bench', 'Runix Bench')],
  'faq': [('When will a product be generally available?',
           'No date is published for any product. The site states the status a product has reached and what '

@@ -119,7 +119,7 @@
       "name": "Is Mountpoint for Amazon S3 a file system?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It is a FUSE client that maps files to objects one to one and implements the operations object storage does well. It does not support editing existing files in place or most renames, and it caches per machine rather than across a cluster."
+        "text": "It is a FUSE client that maps files to objects one to one and implements the operations object storage does well. It does not support editing existing files in place or most renames. Caching is optional and per machine, with a shared cache only through S3 Express One Zone."
       }
     },
     {
@@ -127,7 +127,7 @@
       "name": "Does Runix FS change the data in my bucket?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "In cache mode, no: paths map one to one to object keys and writes pass through to the bucket. In file-system mode, writes complete in the cluster first and reach the bucket through a background sync."
+        "text": "It does not change the layout or the format: paths stay one to one with object keys. Writes and deletes made through the mount do reach the bucket, straight away in cache mode and through a background sync in file-system mode."
       }
     }
   ]
@@ -228,17 +228,17 @@
 
 <p><a href="https://github.com/awslabs/mountpoint-s3/blob/main/doc/SEMANTICS.md" rel="noopener">Mountpoint for Amazon S3</a> is an open-source FUSE client from AWS that maps files to objects one to one. It is deliberately narrow: it implements the operations object storage does well, reading, listing and writing new files sequentially, and its semantics document lists what it does not do, such as editing an existing file in place or most renames.</p>
 
-<p>That makes it a good fit for read-heavy jobs on large files, and the bucket stays exactly as it was. It caches on the local disk of the machine that mounts it, so ten training nodes reading the same dataset each fetch it from the bucket and each keep their own copy. When the working set is shared across many nodes, the bottleneck stays where it was.</p>
+<p>That makes it a good fit for read-heavy jobs on large files, and the bucket stays exactly as it was. Caching is optional: by default each read goes to S3, the local-disk cache is per machine, and a shared cache is available only through an S3 Express One Zone bucket. So ten training nodes reading the same dataset from a standard bucket each fetch it, and when the working set is shared across many nodes the bottleneck stays where it was.</p>
 
 <h2 id="alluxio-a-distributed-cache-over-the-store-you-have">Alluxio: a distributed cache over the store you have</h2>
 
-<p>Alluxio places a cluster of workers between compute and the under-store and caches data on memory, SSD and HDD tiers, keeping the namespace of the bucket underneath. Applications reach it through a FUSE mount, a Hadoop-compatible client or its own APIs. Because the cache is shared, one node's read warms the data for the others, which is what a multi-node training job wants from a cache, and <a href="/blog/multi-tier-cache-for-ai-training-data">a multi-tier cache for AI training data</a> covers how to size one. The project is written in Java and has open-source and commercial editions.</p>
+<p>Alluxio places a cluster of workers between compute and the under-store and caches data on memory, SSD and HDD tiers, keeping the namespace of the bucket underneath. Applications reach it through a FUSE mount, a Hadoop-compatible client or its own APIs. Because the cache is shared, one node's read warms the data for the others, which is what a multi-node training job wants from a cache, and <a href="/blog/multi-tier-cache-for-ai-training-data">a multi-tier cache for AI training data</a> covers how to size one. The project is written in Java; its open-source edition is aimed at analytics, and the features for AI training at scale are in the commercial edition.</p>
 
 <h2 id="runix-fs-curvine-s-cache-with-two-mount-modes">Runix FS: Curvine's cache, with two mount modes</h2>
 
 <p>Runix FS is built on <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a>, an open-source distributed file system and cache written in Rust, released under Apache 2.0 and accepted as a CNCF Sandbox project. Masters replicated with Raft hold the metadata, and workers cache data on memory, SSD and HDD tiers, so a working set read by one node is served to the others from the cluster. Applications reach it through a FUSE mount, a Hadoop-compatible client, Java, Python and Rust SDKs, or a Kubernetes CSI driver.</p>
 
-<p>The difference is that each mount picks how writes reach the bucket. In cache mode the bucket is the source of truth, paths map one to one to object keys, and writes pass through, so the bucket stays readable by everything else. In file-system mode, operations complete in the cluster first and are synchronised to the bucket in the background, which suits write-heavy work such as checkpoints at the price of eventual consistency. <a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth</a> works through the choice. Runix deploys it in your own cloud account and supports it under contract.</p>
+<p>The difference is that each mount picks how writes reach the bucket. In cache mode the bucket is the source of truth, paths map one to one to object keys, and writes pass through, so the bucket stays readable by everything else. In file-system mode, operations complete in the cluster first and are synchronised to the bucket in the background, which suits write-heavy work such as checkpoints at the price of eventual consistency. Either way, if other tools change the bucket, reads can be stale for a while: cache mode can verify reads against the bucket, and file-system mode picks outside changes up with a resync. <a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth</a> works through the choice. Runix deploys it in your own cloud account and supports it under contract.</p>
 
 <h2 id="how-to-choose">How to choose</h2>
 
@@ -246,7 +246,7 @@
 <li><strong>One node, large files, mostly reads:</strong> a client such as Mountpoint is often enough, and it adds nothing to operate.</li>
 <li><strong>Many nodes reading the same data:</strong> a shared, distributed cache, Alluxio or Runix FS, so the bucket is read once rather than once per node.</li>
 <li><strong>The bucket is shared with other tools:</strong> keep one object per file, which rules out layers that own the layout.</li>
-<li><strong>A general-purpose file system with heavy renames and small edits:</strong> JuiceFS, or Runix FS in file-system mode for the paths that need it.</li>
+<li><strong>A general-purpose file system with heavy renames and small edits:</strong> JuiceFS, or Runix FS in file-system mode for the paths that need it, noting that renaming a large directory becomes a full copy when it syncs to S3.</li>
 </ul>
 
 <h2 id="what-to-test-before-you-decide">What to test before you decide</h2>
@@ -257,9 +257,9 @@
 <h3>What is the main difference between JuiceFS and Alluxio?</h3>
 <p>JuiceFS is a file system that stores file data in its own block format in the bucket and keeps the directory tree in a separate metadata engine. Alluxio is a distributed cache that keeps the namespace of the store underneath, so the bucket stays readable without it.</p>
 <h3>Is Mountpoint for Amazon S3 a file system?</h3>
-<p>It is a FUSE client that maps files to objects one to one and implements the operations object storage does well. It does not support editing existing files in place or most renames, and it caches per machine rather than across a cluster.</p>
+<p>It is a FUSE client that maps files to objects one to one and implements the operations object storage does well. It does not support editing existing files in place or most renames. Caching is optional and per machine, with a shared cache only through S3 Express One Zone.</p>
 <h3>Does Runix FS change the data in my bucket?</h3>
-<p>In cache mode, no: paths map one to one to object keys and writes pass through to the bucket. In file-system mode, writes complete in the cluster first and reach the bucket through a background sync.</p>
+<p>It does not change the layout or the format: paths stay one to one with object keys. Writes and deletes made through the mount do reach the bucket, straight away in cache mode and through a background sync in file-system mode.</p>
 
 <div class="callout" style="margin-top:40px;">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>

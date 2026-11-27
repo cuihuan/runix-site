@@ -40,9 +40,9 @@ Eight products at different stages. The statuses below are literal.
 - **Runix Bench** — *status: available, open source (MIT).* The open benchmark for LLM
   gateways and relay APIs, measured from outside: trust and integrity (is the model the one
   on the label), price against the official list price, 30-day success rate, time to first
-  token and throughput, and caching. Eleven endpoints probed every six hours, raw results
-  public; a self-test runs the same probe against any OpenAI-compatible gateway with your
-  own key. https://runixcloud.io/bench · live table https://benchmark.runixcloud.io/
+  token and throughput, and caching. A public method with scheduled probes and every raw
+  result public; a self-test runs the same probe against any OpenAI-compatible gateway with
+  your own key. https://runixcloud.io/bench · live table https://benchmark.runixcloud.io/
 
 - **Runix Router** — *status: available, with accounts opened by our team.* One OpenAI-compatible
   endpoint across many providers, positioned on security, compliance and performance:

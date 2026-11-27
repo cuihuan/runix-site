@@ -67,9 +67,9 @@ BENCH_CARD = '''          <a class="card pcard" id="bench" href="/bench" aria-la
             <h4>Runix Bench <span class="card-new">New</span></h4>
             <p>The open benchmark for LLM gateways: trust, price against list, 30-day uptime, speed and cache, measured from outside and published in full.</p>
             <ul>
-            <li>Every endpoint probed every six hours</li>
+            <li>A public method and scheduled probes</li>
             <li>Self-test with your own key, kept on your machine</li>
-            <li>Open source under MIT, raw results public</li>
+            <li>Open source under MIT, every raw result public</li>
             </ul>
             <p class="card-meta"><span>Status: available</span> · <span>Open source</span> · <span>Free</span></p>
             <span class="read-more">Explore Runix Bench&nbsp;&rarr;</span>
@@ -89,7 +89,7 @@ OPEN_SECTION = '''<section class="section alt" id="open">
       <a class="card card-clickable" href="/bench" aria-label="Explore Runix Bench">
         <p class="card-layer">04 &middot; Gateway &middot; Open benchmark</p>
         <h3>Runix Bench</h3>
-        <p>Is the gateway you use any good, and where does it lag the best? Eleven endpoints, eight gateways and three official baselines, probed every six hours on price against list, time to first token, 30-day success rate, cache and whether the model is the one on the label. Run the same probe on your own gateway with one command.</p>
+        <p>Is the gateway you use any good, and where does it lag? Price against list, time to first token, 30-day success rate, caching and behavioural checks on whether the model is the one on the label, measured from outside with a public method. Run the same probe on your own gateway with one command.</p>
         <span class="read-more">Explore Runix Bench&nbsp;&rarr;</span>
       </a>
       <a class="card card-clickable" href="/fs" aria-label="Explore Runix FS">
@@ -174,14 +174,14 @@ def main():
           <li><strong>Runix FS</strong>""", """            <a href="/router">What Router does</a>.</li>
           <li><strong>Runix Bench</strong>: <em>available, open source under MIT.</em>
             The open benchmark for LLM gateways: trust, price against list, 30-day success
-            rate, speed and caching, measured from outside on a schedule, with every raw
-            result public and a self-test for any gateway. <a href="/bench">What Bench does</a>.</li>
+            rate, speed and caching, measured from outside with a public method, with every
+            raw result public and a self-test for any gateway. <a href="/bench">What Bench does</a>.</li>
           <li><strong>Runix FS</strong>"""),
     ])
     edit("plans.html", [
         ("""see the catalogue</a>), with itemised statements; prepaid or invoiced</td></tr>
 """, """see the catalogue</a>), with itemised statements; prepaid or invoiced</td></tr>
-          <tr><th scope="row"><a href="/bench">Runix Bench</a></th><td>Gateway</td><td>Available</td><td>Free and open source under MIT; agent runs on Terminal-Bench quoted on request</td></tr>
+          <tr><th scope="row"><a href="/bench">Runix Bench</a></th><td>Gateway</td><td>Available</td><td>Free and open source under MIT</td></tr>
 """),
     ])
     edit("blog/rebuild-ai-unix.html", [
@@ -189,7 +189,7 @@ def main():
 
 <p>Runix Lab is an AI-native company, and that is a statement about how the work is done, not about the product list. Agents write, test and operate most of our engineering: the builders and checks behind this site, the operation of the gateway, the probes behind the benchmark. A person reviews what ships, and a change from an agent faces the same gates as a change from a person: a page whose status disagrees with the product list, a stylesheet value off the design scale or a broken link stops the deploy.</p>
 
-<p>Building with agents changes what is worth building. When code is cheap to write, the scarce things are the interfaces between layers and the evidence that each layer does what it says, which is the Unix bet again. So the evidence is public where it can be: <a href="/bench">Runix Bench</a> probes LLM gateways from the outside every six hours and publishes every raw result, so a buyer does not have to take any gateway's word for it, ours included; and <a href="/fs">Runix FS</a> is built on an open-source project whose published figures we label as the project's own.</p>
+<p>Building with agents changes what is worth building. When code is cheap to write, the scarce things are the interfaces between layers and the evidence that each layer does what it says, which is the Unix bet again. So the evidence is public where it can be: <a href="/bench">Runix Bench</a> measures LLM gateways from the outside with a public method and publishes every raw result, so a buyer does not have to take any gateway's word for it, ours included; and <a href="/fs">Runix FS</a> is built on an open-source project whose published figures we label as the project's own.</p>
 
 <h2 id="where-to-start">Where to start</h2>"""),
     ])

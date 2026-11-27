@@ -94,7 +94,7 @@
       "name": "Is Runix Router in the table?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not today. One gateway in the table is run by a related party; it is marked as such on its row and rated by the same rules as everyone else, never a tier higher for the relationship."
+        "text": "Not today. The one gateway measured live so far is run by a related party; it is marked as such on its row and rated by the same rules as everyone else, never a tier higher for the relationship."
       }
     },
     {
@@ -102,7 +102,7 @@
       "name": "How often is the table updated?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Every six hours, from a scheduled job that commits each run to the repository. Success rates are computed over a rolling 30-day window, with the 7-day figure beside it."
+        "text": "The job is scheduled every six hours, and GitHub's scheduler currently delivers about two runs a day; each run is committed to the repository. Success rates are computed over a rolling 30-day window, with the 7-day figure beside it."
       }
     },
     {
@@ -110,7 +110,7 @@
       "name": "Why would a gateway company publish a gateway benchmark?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because a buyer should not have to trust any gateway's claims, including ours. The benchmark is built to be checked rather than believed: the prompts are in the script, the raw data is public and anyone can rerun it against the same endpoints."
+        "text": "Because a buyer should not have to trust any gateway's claims, including ours. The benchmark is built to be checked rather than believed: the prompts are in the script, the raw data is public and anyone can rerun it against the same endpoints with their own key."
       }
     }
   ]
@@ -201,7 +201,7 @@
       <div class="prod-eyebrow"><span class="sl-row"><a class="stack-loc" href="/#platform"><span class="sl-mini" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i></span>Layer 04 · Gateway<span class="visually-hidden">: see the whole stack</span></a></span><span class="badge">Runix Bench · Available</span></div>
       <h1><span class="line">The open benchmark</span>
 <span class="line">for LLM gateways</span></h1>
-      <p class="sub">Runix Bench measures any OpenAI-compatible gateway or relay from the outside, the way your application sees it: price against the official list price, time to first token and throughput, success rate over 30 days, and whether the model behind the endpoint is the one on the label. Every raw result is public.</p>
+      <p class="sub">Runix Bench is an open method and a self-test for any OpenAI-compatible gateway or relay, measured from the outside the way your application sees it: price against the official list price, time to first token and throughput, success rate over 30 days, caching, and behavioural checks on whether the model is the one on the label. The probe and every raw result are public.</p>
       <div class="actions">
         <a class="btn btn-primary" href="https://benchmark.runixcloud.io/">See the live leaderboard</a>
         <a class="btn btn-ghost" href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Run it on your gateway</a>
@@ -214,11 +214,11 @@
         <p class="glance-title">At a glance</p>
         <dl>
         <div><dt>Measures</dt><dd>Trust and integrity, price against list, 30-day stability, speed, cache</dd></div>
-        <div><dt>Endpoints</dt><dd>Eleven as of 2026-11-27: eight gateways and three official baselines</dd></div>
-        <div><dt>Cadence</dt><dd>A probe every six hours, each run committed to the repository</dd></div>
+        <div><dt>Endpoints</dt><dd>Eleven registered, three of them official baselines; one measured live so far, a related party</dd></div>
+        <div><dt>Cadence</dt><dd>Scheduled every six hours, about two runs a day delivered; each run committed</dd></div>
         <div><dt>Window</dt><dd>Rolling 30 days, with the 7-day figure beside it</dd></div>
         <div><dt>Self-test</dt><dd>One command with your own key; the key stays on your machine</dd></div>
-        <div><dt>Agent runs</dt><dd>Terminal-Bench through two routers, on request</dd></div>
+        <div><dt>Agent runs</dt><dd>Terminal-Bench on a fixed pair of test routers, run by our team</dd></div>
         <div><dt>Licence</dt><dd>MIT, with every raw result public</dd></div>
         <div><dt>Status</dt><dd>Available, open source</dd></div>
         </dl>
@@ -245,7 +245,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       <div class="example-note">
         <p class="sec-no">02 &middot; Example</p>
         <p class="example-title">compare a gateway with the best</p>
-        <p>One command against the gateway you already use, with your own key. The report puts it beside the best measured endpoint on each dimension, and the key never leaves your machine.</p>
+        <p>One command against the gateway you already use, with your own key. The report sets it beside the public baseline and the official list price on each dimension, and the key never leaves your machine.</p>
       </div>
     </div>
   </div>
@@ -262,7 +262,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       <div class="fcell">
         <span class="fno" aria-hidden="true">01</span>
         <h3>Trust and integrity</h3>
-        <p>Is it the real model, and will the operator still be there? A fixed request set goes to the gateway and to the official API at once, following the K2 Vendor Verifier method, and the answers are compared. Data retention and the legal entity are annotated with links to the source.</p>
+        <p>Is it the real model, and will the operator still be there? Behavioural checks test it from outside: whether the model names itself, handles tool calls and Chinese text, streams for real, and reports usage that matches a recount. Data retention and the legal entity are annotated with links to the source. A diff against the official API in the manner of the K2 Vendor Verifier is the method being built toward; no endpoint has passed one yet.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">02</span>
@@ -272,22 +272,22 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       <div class="fcell">
         <span class="fno" aria-hidden="true">03</span>
         <h3>Stability over 30 days</h3>
-        <p>Success rate from a probe every six hours, with rate limits, outages and timeouts counted apart. Errors the probe causes itself, such as an unauthorised key, are excluded and shown separately.</p>
+        <p>Success rate from scheduled probes, with rate limits, outages and timeouts counted apart. Errors the probe causes itself, such as an unauthorised key, are excluded and shown separately.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">04</span>
         <h3>Speed</h3>
-        <p>Time to first token at p50, and p95 only when a run has at least five samples. Throughput is counted after the first token, the convention llmperf and Artificial Analysis use. Fake streaming, a reply buffered and then dumped, is flagged.</p>
+        <p>Time to first token at p50, and p95 only when a run has at least five samples. Throughput is decode speed, counted after the first token; llmperf and Artificial Analysis divide by the whole request, first token included, so their figures read lower. Fake streaming, a reply buffered and then dumped, is flagged.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">05</span>
         <h3>Cache</h3>
-        <p>Whether a repeated prompt is billed and served as a cache hit, measured rather than taken from the price page.</p>
+        <p>Whether the second of two identical long prompts reports cached tokens in its usage block, measured rather than taken from the price page.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">06</span>
-        <h3>Three ratings, no fourth</h3>
-        <p>Each claim is verified, claimed but unverified, or unverified. Nothing without an evidence link is ever marked verified, and a related party is never rated a tier higher for the relationship.</p>
+        <h3>Ratings that need evidence</h3>
+        <p>Channel origin is rated verified, claimed but unverified, or unverified, and nothing without an evidence link is ever marked verified. A related party is never rated a tier higher for the relationship.</p>
       </div>
     </div>
   </div>
@@ -309,27 +309,27 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       <div class="fcell">
         <span class="fno" aria-hidden="true">02</span>
         <h3>Scheduled, then committed</h3>
-        <p>A scheduled job probes every tracked endpoint every six hours and commits the raw result. Leaderboard figures come from a rolling 30-day window; older runs stay in the data and do not move the table.</p>
+        <p>A job scheduled every six hours, which GitHub's scheduler currently delivers about twice a day, probes the endpoints it has keys for and commits each raw result. Leaderboard figures come from a rolling 30-day window; older runs stay in the data and do not move the table.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">03</span>
         <h3>Agent runs on Terminal-Bench</h3>
-        <p>Beyond single calls, the same Terminal-Bench tasks can run through two routers with Claude Code or Codex as the agent, verifier scores and costs side by side, with A/A and A/B statistics. These runs are hosted by our team on request.</p>
+        <p>Beyond single calls, our team runs Terminal-Bench tasks through Harbor on a fixed pair of test routers, Claude Code for Claude models and Codex for the rest, with A/A and A/B statistics. The reports keep verifier scores, cost and integrity checks, and copy no prompts.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">04</span>
-        <h3>Same models, same prompts</h3>
-        <p>Every endpoint is probed on the same tracked models, each under the name that gateway gives it, so a price or speed figure compares one model across gateways rather than whatever each one serves by default.</p>
+        <h3>What a figure compares</h3>
+        <p>The price matrix and the self-test compare one tracked model across gateways, each under the name that gateway gives it. The scheduled probe runs a short model list per endpoint, so the leaderboard's speed and success figures describe a gateway, not one model on it.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">05</span>
         <h3>Evidence for what is annotated</h3>
-        <p>What a probe cannot measure, a data-retention policy or the legal entity behind a service, is annotated by hand with a link to the source and the date it was read. Corrections are taken as pull requests.</p>
+        <p>What a probe cannot measure, a data-retention policy or the legal entity behind a service, is annotated by hand, with a link to the source where one exists and the date it was read. Corrections are taken as pull requests.</p>
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">06</span>
         <h3>Unknown stays unknown</h3>
-        <p>A measurement that could not be taken is shown as missing, never as zero. Network latency from a scheduled runner is labelled as an estimate, and the probe region is printed on every figure.</p>
+        <p>A measurement that could not be taken is shown as missing, never as zero. The probe region is printed on every figure, and results from different regions are never mixed.</p>
       </div>
     </div>
   </div>
@@ -346,7 +346,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       <a class="card card-clickable" href="https://benchmark.runixcloud.io/" rel="noopener" aria-label="Open the leaderboard">
         <p class="card-layer">Live</p>
         <h3>The leaderboard</h3>
-        <p>Eleven endpoints as of 2026-11-27: eight gateways and three official direct connections as the baseline.</p>
+        <p>Eleven endpoints registered as of 2026-11-27, three of them official direct connections. One, a related party, is measured live so far; the rest wait for keys.</p>
         <span class="read-more">Open the leaderboard&nbsp;&rarr;</span>
       </a>
       <a class="card card-clickable" href="https://github.com/cuihuan/llm-gateway-bench/blob/main/docs/methodology.md" rel="noopener" aria-label="Read the methodology">
@@ -378,12 +378,12 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
         <thead><tr><th scope="col">Item</th><th scope="col">Value</th><th scope="col">Where it is documented</th></tr></thead>
         <tbody>
           <tr><th scope="row">Dimensions</th><td>Trust and integrity, price, stability, speed, cache; catalogue coverage alongside</td><td><a href="https://github.com/cuihuan/llm-gateway-bench/blob/main/docs/methodology.md" rel="noopener">Methodology</a></td></tr>
-          <tr><th scope="row">Ratings</th><td>Verified, claimed but unverified, or unverified; nothing without an evidence link is verified</td><td><a href="https://github.com/cuihuan/llm-gateway-bench/blob/main/docs/methodology.md" rel="noopener">Methodology</a></td></tr>
+          <tr><th scope="row">Ratings</th><td>Channel origin: verified, claimed but unverified, or unverified; nothing without an evidence link is verified</td><td><a href="https://github.com/cuihuan/llm-gateway-bench/blob/main/docs/methodology.md" rel="noopener">Methodology</a></td></tr>
           <tr><th scope="row">Probe</th><td>Public script and prompts; a random request id defeats caching; concurrency at most four</td><td><a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Repository</a></td></tr>
-          <tr><th scope="row">Cadence</th><td>Every six hours from a scheduled job; raw results committed</td><td><a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Repository</a></td></tr>
-          <tr><th scope="row">Speed</th><td>Time to first token p50, p95 only with five or more samples; throughput after the first token</td><td>This page</td></tr>
+          <tr><th scope="row">Cadence</th><td>Scheduled every six hours, about two runs a day delivered; raw results committed</td><td><a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Repository</a></td></tr>
+          <tr><th scope="row">Speed</th><td>Time to first token p50, p95 only with five or more samples; throughput as decode speed after the first token</td><td>This page</td></tr>
           <tr><th scope="row">Stability</th><td>Success rate over 30 days; probe-caused 401, 403 and other 4xx excluded, 429 counted</td><td>This page</td></tr>
-          <tr><th scope="row">Agent runs</th><td>Terminal-Bench tasks through Harbor, Claude Code or Codex as the agent, A/A and A/B statistics</td><td>This page</td></tr>
+          <tr><th scope="row">Agent runs</th><td>Terminal-Bench tasks through Harbor on a fixed pair of test routers; Claude Code for Claude models, Codex for others; A/A and A/B statistics</td><td>This page</td></tr>
           <tr><th scope="row">Related parties</th><td>Marked on their row and rated by the same rules</td><td>This page</td></tr>
           <tr><th scope="row">Licence</th><td>MIT</td><td><a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Repository</a></td></tr>
           <tr><th scope="row">Pricing</th><td>Free; managed probing and report hosting on request</td><td><a href="https://benchmark.runixcloud.io/pricing.html" rel="noopener">Bench pricing</a></td></tr>
@@ -406,7 +406,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       <a class="card card-clickable" href="/agents" aria-label="Explore the agents">
         <p class="card-layer">Above &middot; 05 Agents</p>
         <h3>Runix Code and Runix Comic</h3>
-        <p>Agent runs measure the same tasks through two routers, so a team sees what a gateway changes for its agent.</p>
+        <p>Agent runs on Terminal-Bench show what a router changes for an agent working the same tasks.</p>
         <span class="read-more">Explore the agents&nbsp;&rarr;</span>
       </a>
       <a class="card card-clickable" href="/router" aria-label="Explore Runix Router">
@@ -443,8 +443,8 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
         <p>Clone the repository and run the self-test with your own key. It writes one report you can share.</p>
       </div>
       <div class="pstep">
-        <h3><span class="pstep-n">03</span>Ask for an agent run</h3>
-        <p>For a comparison of two routers on Terminal-Bench, <!--email_off--><a href="mailto:sales@runixcloud.io?subject=Runix%20Bench%20agent%20run">write to us</a><!--/email_off--> with the models and the routers to compare.</p>
+        <h3><span class="pstep-n">03</span>Suggest a gateway or a fix</h3>
+        <p>Open an issue or a pull request on <a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">the repository</a> to propose a gateway or correct an annotation. A gateway joins the live table once there is a key to probe it with.</p>
       </div>
     </div>
   </div>
@@ -471,15 +471,15 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       </div>
       <div class="qa">
         <h3>Is Runix Router in the table?</h3>
-        <p>Not today. One gateway in the table is run by a related party; it is marked as such on its row and rated by the same rules as everyone else, never a tier higher for the relationship.</p>
+        <p>Not today. The one gateway measured live so far is run by a related party; it is marked as such on its row and rated by the same rules as everyone else, never a tier higher for the relationship.</p>
       </div>
       <div class="qa">
         <h3>How often is the table updated?</h3>
-        <p>Every six hours, from a scheduled job that commits each run to the repository. Success rates are computed over a rolling 30-day window, with the 7-day figure beside it.</p>
+        <p>The job is scheduled every six hours, and GitHub's scheduler currently delivers about two runs a day; each run is committed to the repository. Success rates are computed over a rolling 30-day window, with the 7-day figure beside it.</p>
       </div>
       <div class="qa">
         <h3>Why would a gateway company publish a gateway benchmark?</h3>
-        <p>Because a buyer should not have to trust any gateway's claims, including ours. The benchmark is built to be checked rather than believed: the prompts are in the script, the raw data is public and anyone can rerun it against the same endpoints.</p>
+        <p>Because a buyer should not have to trust any gateway's claims, including ours. The benchmark is built to be checked rather than believed: the prompts are in the script, the raw data is public and anyone can rerun it against the same endpoints with their own key.</p>
       </div>
     </div>
   </div>
@@ -489,7 +489,7 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
   <div class="container">
     <div class="cta-band">
       <h2>Measure the gateway you already use</h2>
-      <p>One command, your own key, a report that shows where it stands against the best on price, speed, stability and integrity.</p>
+      <p>One command, your own key, and a report that sets it against the public baseline and the official list price on price, speed, stability and behaviour.</p>
       <a class="btn btn-grad" href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">Run the self-test</a>
     </div>
   </div>

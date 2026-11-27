@@ -2645,3 +2645,5 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
   .pmap-st { grid-column: 1; grid-row: auto; }
   .pmap-q { display: inline; margin: 0 0 0 8px; text-align: left; }
 }
+/* The ICP filing number on the mainland edition's footer (build_cn.py icp_footer). */
+.footer-icp a { color: var(--ink-3); }

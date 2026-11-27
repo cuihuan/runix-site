@@ -43,6 +43,25 @@ def path_of(page):
     return "/" + page[: -len(".html")]
 
 
+# Hosting (崔涣 2026-11-27): runixcloud.com is to be served from the Alibaba
+# Cloud server in Hangzhou once its ICP filing is approved. A site filed in
+# mainland China carries the "mainland" profile: the pages that sell access to
+# overseas model providers are left out of it (their links go to the English
+# site), and Router is not offered in mainland China in any case. The
+# runix-cn.pages.dev preview carries the full edition.
+MAINLAND_EXCLUDE = ["router.html", "docs/router.html"]
+# The approved ICP filing number for runixcloud.com. Empty until the filing is
+# approved; once set, deploy.sh also publishes the mainland edition to the
+# Hangzhou server (tools/deploy_cn_aliyun.sh) and every footer carries it.
+ICP_NUMBER = ""
+
+
+def pages_for(profile):
+    if profile == "mainland":
+        return [p for p in CN_PAGES if p not in MAINLAND_EXCLUDE]
+    return list(CN_PAGES)
+
+
 CN_PATHS = {path_of(p) for p in CN_PAGES if p != "404.html"}
 
 

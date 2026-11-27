@@ -46,3 +46,30 @@ Read `DESIGN.md` section 8 for the typography. For the words:
 - Typography: full-width punctuation (，。：；？（）), a half-width space
   between Chinese and Latin letters or digits ("Runix FS 是一个文件系统"),
   no em dashes, no space around full-width punctuation.
+
+## Where runixcloud.com is served
+
+Decided 2026-11-27: from the Alibaba Cloud server in Hangzhou, under an ICP
+filing. Until the filing is approved the domain serves nothing (Alibaba blocks
+it, and a site that answers during review gets the filing rejected), so:
+
+- `tools/deploy_cn.sh` keeps publishing the full edition to the preview,
+  https://runix-cn.pages.dev (noindex), on every deploy.
+- The English site carries no language link or hreflang to the domain
+  (`i18n.ZH_LIVE = False`).
+
+When the filing is approved:
+
+1. Give the server an SSH key and an `~/.ssh/config` alias `runixcn`
+   (or set `CN_HOST`).
+2. Set `ICP_NUMBER` in `tools/i18n.py` to the approved number.
+3. `tools/deploy_cn_aliyun.sh` renders the **mainland** profile (the pages in
+   `i18n.MAINLAND_EXCLUDE`, which sell access to overseas model providers, are
+   left out and their links go to the English site), puts the filing number in
+   every footer linked to beian.miit.gov.cn, uploads it, installs the nginx
+   server block it generates and reloads after `nginx -t`. Then issue the
+   certificate (`certbot --nginx -d runixcloud.com -d www.runixcloud.com`).
+4. Set `ZH_LIVE = True`, run `tools/flagship_nav.py` and
+   `tools/build_cn.py --alternates`, and `./deploy.sh`: the English pages get
+   the language link and hreflang, and from then on every deploy publishes all
+   three (English, preview, mainland) from one commit.

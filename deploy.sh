@@ -300,6 +300,11 @@ echo "==> Deploy the Chinese edition from the same commit"
 # runixcloud.com is these pages in Chinese; shipping both from one run is what
 # keeps them one site. A failure here leaves the English site live and says so.
 ./tools/deploy_cn.sh || echo "    Chinese edition deploy failed -- run tools/deploy_cn.sh"
+# Once runixcloud.com's ICP filing is approved (tools/i18n.py ICP_NUMBER), the
+# same commit also goes to the Hangzhou server that serves the domain.
+if [ -n "$(python3 -c 'import sys; sys.path.insert(0, "tools"); from i18n import ICP_NUMBER; print(ICP_NUMBER)')" ]; then
+  ./tools/deploy_cn_aliyun.sh || echo "    runixcloud.com deploy failed -- run tools/deploy_cn_aliyun.sh"
+fi
 
 # Production is fine at this point; only git is behind. Finish every step
 # above first (a push race should not also leave the sub-domains stale), then

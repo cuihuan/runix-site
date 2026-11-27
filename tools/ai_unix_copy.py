@@ -181,6 +181,15 @@ def main():
           <tr><th scope="row"><a href="/bench">Runix Bench</a></th><td>Gateway</td><td>Available</td><td>Free and open source under MIT; agent runs on Terminal-Bench quoted on request</td></tr>
 """),
     ])
+    edit("blog/rebuild-ai-unix.html", [
+        ("""<h2 id="where-to-start">Where to start</h2>""", """<h2 id="rebuilt-by-ai">Rebuilt by AI, measured in the open</h2>
+
+<p>Runix Lab is an AI-native company, and that is a statement about how the work is done, not about the product list. Agents write, test and operate most of our engineering: the builders and checks behind this site, the operation of the gateway, the probes behind the benchmark. A person reviews what ships, and a change from an agent faces the same gates as a change from a person: a page whose status disagrees with the product list, a stylesheet value off the design scale or a broken link stops the deploy.</p>
+
+<p>Building with agents changes what is worth building. When code is cheap to write, the scarce things are the interfaces between layers and the evidence that each layer does what it says, which is the Unix bet again. So the evidence is public where it can be: <a href="/bench">Runix Bench</a> probes LLM gateways from the outside every six hours and publishes every raw result, so a buyer does not have to take any gateway's word for it, ours included; and <a href="/fs">Runix FS</a> is built on an open-source project whose published figures we label as the project's own.</p>
+
+<h2 id="where-to-start">Where to start</h2>"""),
+    ])
     edit("fs.html", [
         ("<title>Runix FS — AI-Native File System on Object Storage</title>",
          "<title>Runix FS — AI File System and S3 Cache for Training</title>"),

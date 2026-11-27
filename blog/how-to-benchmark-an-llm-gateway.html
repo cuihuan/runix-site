@@ -191,6 +191,17 @@
 </header>
 
 <main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Buyer's guide</span>
+    <span class="pbar-status">November 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#check-1-is-it-the-model-on-the-label">Check 1: is it the model on the label?</a></li><li><a href="#check-2-divide-the-price-by-the-list-price">Check 2: divide the price by the list price</a></li><li><a href="#check-3-stability-over-thirty-days-errors-sorted-by-kind">Check 3: stability over thirty days, errors sorted by kind</a></li><li><a href="#check-4-speed-first-token-then-throughput">Check 4: speed, first token then throughput</a></li><li><a href="#check-5-measure-the-cache-do-not-read-about-it">Check 5: measure the cache, do not read about it</a></li><li><a href="#run-the-checks-on-your-own-gateway">Run the checks on your own gateway</a></li><li><a href="#questions">Questions this raises</a></li></ul>
+    
+  </div>
+</nav>
+<!--/ps:bar-->
 
 <div class="page-hero" id="overview">
   <div class="container">
@@ -203,7 +214,7 @@
 
 <p>An LLM gateway sits on every model call an application makes, so its failures become the application's failures. Every gateway's own page says it is fast, cheap and reliable. A benchmark answers the question from where the application stands: outside the gateway, calling its public endpoint with an ordinary key. This guide sets out five checks in the order they matter, the way <a href="/bench">Runix Bench</a> runs them, and the red flag each one catches.</p>
 
-<h2>Check 1: is it the model on the label?</h2>
+<h2 id="check-1-is-it-the-model-on-the-label">Check 1: is it the model on the label?</h2>
 
 <p>Trust comes first because every other number is meaningless if the model behind the endpoint is not the one being billed. The failure modes are quiet: a cheaper model served under a premium name, weights quantized until long or non-English answers degrade, a hidden system prompt that inflates every request, or a long context silently trimmed to save cost.</p>
 
@@ -211,29 +222,29 @@
 
 <p>Trust also covers the operator. Read the data-retention and training terms in the formal policy, not the home page slogan, and check that a legal entity stands behind the service and will issue an invoice. A relay with no entity and no invoice is a counterparty risk however good its numbers are today.</p>
 
-<h2>Check 2: divide the price by the list price</h2>
+<h2 id="check-2-divide-the-price-by-the-list-price">Check 2: divide the price by the list price</h2>
 
 <p>For each model, divide the gateway's input and output prices by the provider's own list prices, average the two ratios, and take the geometric mean across models for one index: under 1 is cheaper than list, over 1 is a markup. Keep the two raw columns beside the index, because a gateway can discount input and mark up output and the average hides it. <a href="/blog/how-to-read-an-llm-price-list">How to read an LLM price list</a> covers the units, and the <a href="/router-models">Router models catalogue</a> shows list prices with the page each came from.</p>
 
 <p>Read a low price next to the trust result. A price far under half of list usually means a resold or reverse-engineered channel, and that is a warning sign rather than a bargain. Also record what the price page leaves out: top-up fees, cache pricing, and multipliers applied to some models only.</p>
 
-<h2>Check 3: stability over thirty days, errors sorted by kind</h2>
+<h2 id="check-3-stability-over-thirty-days-errors-sorted-by-kind">Check 3: stability over thirty days, errors sorted by kind</h2>
 
 <p>One afternoon of testing says little about a service that has to work at three in the morning. Probe on a schedule, every few hours, and compute the success rate over a rolling 30-day window with the 7-day figure beside it. Count rate limits, server errors and timeouts separately: a 429 is a capacity signal, a 5xx is an outage, a timeout is often a queue, and they call for different responses.</p>
 
 <p>Be fair to the gateway as well. Errors the probe causes itself, an unauthorised key or a model the gateway never offered, are excluded from the denominator and shown on their own. Then look at time of day: divide the time to first token in the slowest hour by the fastest, and treat a ratio of two or more as peak-hour throttling. <a href="/reliability">What happens when a provider fails</a> describes what a gateway should do on its own bad hour.</p>
 
-<h2>Check 4: speed, first token then throughput</h2>
+<h2 id="check-4-speed-first-token-then-throughput">Check 4: speed, first token then throughput</h2>
 
 <p>Measure time to first token on streaming requests and report the median. Report a p95 only when a run has at least five samples, since with three samples the p95 is just the maximum. Measure throughput after the first token, dividing the tokens generated after it by the time spent after it, which is the convention llmperf and Artificial Analysis use; counting the first token makes every gateway look faster than it is.</p>
 
 <p>Keep the probe honest: put a random id in each prompt so nothing is served from a cache, cap the output length, and keep concurrency at four or under so the benchmark never turns into a load test. Watch for fake streaming, where the first token arrives together with most of the answer because the gateway buffered the whole reply and replayed it.</p>
 
-<h2>Check 5: measure the cache, do not read about it</h2>
+<h2 id="check-5-measure-the-cache-do-not-read-about-it">Check 5: measure the cache, do not read about it</h2>
 
 <p>Prompt caching can cut the cost of repeated context sharply, which matters for agents that resend the same history on every turn. Send the same long prompt twice and compare the usage block and the bill: a cache that is advertised but never reported, or reported but billed at full price, fails the check. As <a href="/blog/why-your-llm-bill-doesnt-match-the-price-list">why an LLM bill does not match the price list</a> argues, check the bill, not the page.</p>
 
-<h2>Run the checks on your own gateway</h2>
+<h2 id="run-the-checks-on-your-own-gateway">Run the checks on your own gateway</h2>
 
 <p>All five checks are automated in <a href="https://github.com/cuihuan/llm-gateway-bench" rel="noopener">LLM Gateway Bench</a>, the open-source project behind Runix Bench, released under the MIT licence. A scheduled job probes every tracked endpoint every six hours and commits the raw results, and the self-test runs the same probe against any OpenAI-compatible endpoint with your own key, which never leaves your machine. The report puts your gateway beside the best measured endpoint on each dimension.</p>
 

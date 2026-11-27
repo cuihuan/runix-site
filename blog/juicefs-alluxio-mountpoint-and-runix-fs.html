@@ -191,6 +191,17 @@
 </header>
 
 <main id="main" class="has-pbar">
+<!--ps:bar-->
+<nav class="pbar pbar-page" aria-label="This post">
+  <div class="container pbar-inner">
+    <a class="pbar-name" href="/blog/">Blog</a>
+    <span class="pbar-layer">Engineering</span>
+    <span class="pbar-status">November 27, 2026</span>
+    <ul class="pbar-links"><li><a href="#the-first-question-is-the-bucket-still-a-copy-of-your-files">The first question: is the bucket still a copy of your files?</a></li><li><a href="#juicefs-a-full-file-system-that-owns-its-layout">JuiceFS: a full file system that owns its layout</a></li><li><a href="#mountpoint-for-amazon-s3-a-fast-client-that-keeps-s3-semanti">Mountpoint for Amazon S3: a fast client that keeps S3 semantics</a></li><li><a href="#alluxio-a-distributed-cache-over-the-store-you-have">Alluxio: a distributed cache over the store you have</a></li><li><a href="#runix-fs-curvine-s-cache-with-two-mount-modes">Runix FS: Curvine's cache, with two mount modes</a></li><li><a href="#how-to-choose">How to choose</a></li><li><a href="#what-to-test-before-you-decide">What to test before you decide</a></li></ul>
+    
+  </div>
+</nav>
+<!--/ps:bar-->
 
 <div class="page-hero" id="overview">
   <div class="container">
@@ -203,33 +214,33 @@
 
 <p>Training data, checkpoints and model weights live in object storage because it is cheap and durable. Training code, inference servers and agents expect files. Something has to sit between the two, and the open-source options differ less in speed than in what they do to your bucket and where they keep the cache. This post compares four of them on those two questions: JuiceFS, Alluxio, Mountpoint for Amazon S3 and <a href="/fs">Runix FS</a>, which is built on the Curvine project. It describes each project's documented design, not a benchmark run.</p>
 
-<h2>The first question: is the bucket still a copy of your files?</h2>
+<h2 id="the-first-question-is-the-bucket-still-a-copy-of-your-files">The first question: is the bucket still a copy of your files?</h2>
 
 <p>Some layers keep one object per file, so the path <code>train/0001.parquet</code> in the mount is the key <code>train/0001.parquet</code> in the bucket, and any other tool can still read the bucket directly. Others store file data in their own format and keep the directory tree in a separate metadata service, which buys full file-system semantics at the cost of the bucket no longer being readable on its own. Neither is wrong. The choice decides whether the file layer is a cache you can remove or a storage system you depend on, and <a href="/blog/object-storage-is-not-a-file-system">why object storage is not a file system</a> explains what each side gives up.</p>
 
-<h2>JuiceFS: a full file system that owns its layout</h2>
+<h2 id="juicefs-a-full-file-system-that-owns-its-layout">JuiceFS: a full file system that owns its layout</h2>
 
 <p><a href="https://juicefs.com/docs/community/architecture/" rel="noopener">JuiceFS</a> splits each file into chunks and blocks and writes the blocks to the bucket, while the directory tree, names and attributes live in a metadata engine such as Redis, MySQL, PostgreSQL or TiKV. The result is close to full POSIX: renames are cheap metadata operations, small writes and random edits work, and clients cache blocks on local disk.</p>
 
 <p>The trade-off is the layout. The objects in the bucket are blocks, not your files, so reading the data without JuiceFS is not possible and the metadata engine becomes part of what has to stay up and be backed up. For a team that wants a general-purpose shared file system on cheap storage, that is a fair price. For a team whose bucket is also read by Spark jobs, data vendors or other tools, it is a migration.</p>
 
-<h2>Mountpoint for Amazon S3: a fast client that keeps S3 semantics</h2>
+<h2 id="mountpoint-for-amazon-s3-a-fast-client-that-keeps-s3-semanti">Mountpoint for Amazon S3: a fast client that keeps S3 semantics</h2>
 
 <p><a href="https://github.com/awslabs/mountpoint-s3/blob/main/doc/SEMANTICS.md" rel="noopener">Mountpoint for Amazon S3</a> is an open-source FUSE client from AWS that maps files to objects one to one. It is deliberately narrow: it implements the operations object storage does well, reading, listing and writing new files sequentially, and its semantics document lists what it does not do, such as editing an existing file in place or most renames.</p>
 
 <p>That makes it a good fit for read-heavy jobs on large files, and the bucket stays exactly as it was. It caches on the local disk of the machine that mounts it, so ten training nodes reading the same dataset each fetch it from the bucket and each keep their own copy. When the working set is shared across many nodes, the bottleneck stays where it was.</p>
 
-<h2>Alluxio: a distributed cache over the store you have</h2>
+<h2 id="alluxio-a-distributed-cache-over-the-store-you-have">Alluxio: a distributed cache over the store you have</h2>
 
 <p>Alluxio places a cluster of workers between compute and the under-store and caches data on memory, SSD and HDD tiers, keeping the namespace of the bucket underneath. Applications reach it through a FUSE mount, a Hadoop-compatible client or its own APIs. Because the cache is shared, one node's read warms the data for the others, which is what a multi-node training job wants from a cache, and <a href="/blog/multi-tier-cache-for-ai-training-data">a multi-tier cache for AI training data</a> covers how to size one. The project is written in Java and has open-source and commercial editions.</p>
 
-<h2>Runix FS: Curvine's cache, with two mount modes</h2>
+<h2 id="runix-fs-curvine-s-cache-with-two-mount-modes">Runix FS: Curvine's cache, with two mount modes</h2>
 
 <p>Runix FS is built on <a href="https://github.com/CurvineIO/curvine" rel="noopener">Curvine</a>, an open-source distributed file system and cache written in Rust, released under Apache 2.0 and accepted as a CNCF Sandbox project. Masters replicated with Raft hold the metadata, and workers cache data on memory, SSD and HDD tiers, so a working set read by one node is served to the others from the cluster. Applications reach it through a FUSE mount, a Hadoop-compatible client, Java, Python and Rust SDKs, or a Kubernetes CSI driver.</p>
 
 <p>The difference is that each mount picks how writes reach the bucket. In cache mode the bucket is the source of truth, paths map one to one to object keys, and writes pass through, so the bucket stays readable by everything else. In file-system mode, operations complete in the cluster first and are synchronised to the bucket in the background, which suits write-heavy work such as checkpoints at the price of eventual consistency. <a href="/blog/when-the-bucket-is-the-truth-two-mount-modes">When the bucket is the truth</a> works through the choice. Runix deploys it in your own cloud account and supports it under contract.</p>
 
-<h2>How to choose</h2>
+<h2 id="how-to-choose">How to choose</h2>
 
 <ul>
 <li><strong>One node, large files, mostly reads:</strong> a client such as Mountpoint is often enough, and it adds nothing to operate.</li>
@@ -238,7 +249,7 @@
 <li><strong>A general-purpose file system with heavy renames and small edits:</strong> JuiceFS, or Runix FS in file-system mode for the paths that need it.</li>
 </ul>
 
-<h2>What to test before you decide</h2>
+<h2 id="what-to-test-before-you-decide">What to test before you decide</h2>
 
 <p>Run your own workload, not a synthetic one: list and open a directory of many small files, because the <a href="/blog/small-files-problem-in-ml-training">small-files problem</a> is where most layers differ; read a full epoch twice and compare the second pass; write and rename a checkpoint; and stop one cache node during a read to see what the job does. The <a href="/docs/fs">Runix FS quick start</a> mounts an existing bucket in three commands, which is enough to run all four tests against your own data.</p>
 

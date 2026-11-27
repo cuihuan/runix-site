@@ -28,6 +28,9 @@ CN_PAGES = [
     "docs/index.html", "docs/fs.html",
     "blog/rebuild-ai-unix.html", "blog/how-to-benchmark-an-llm-gateway.html",
     "blog/juicefs-alluxio-mountpoint-and-runix-fs.html", "blog/introducing-runix-fs.html",
+    # third wave (2026-11-27): what a buyer and their legal team read before talking to us
+    "faq.html", "security.html", "access.html", "reliability.html", "roadmap.html",
+    "code-data.html", "docs/router.html",
 ]
 
 

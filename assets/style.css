@@ -198,7 +198,7 @@ h1 + .badge, h3 + .badge { margin: 14px 0 0; }
   font-size: 0; color: transparent; /* hide the fallback letter */
 }
 .nav-links { display: flex; gap: 28px; align-items: center; margin-left: auto; }
-.nav-links a { color: var(--ink-2); font-size: var(--text-sm); font-weight: 500; }
+.nav-links a { color: var(--ink-2); font-size: var(--text-md); font-weight: 500; }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-cta {
   background: var(--ink); color: var(--on-accent) !important; padding: 9px 18px;
@@ -780,7 +780,7 @@ main .doc-next a { color: var(--indigo); font-weight: 500; }
   padding: 14px 24px; margin: 18px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; color: var(--ink-2);
 }
 .article code {
-  font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em;
+  font-family: var(--mono); font-size: max(var(--text-2xs), 0.9em);
   background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-xs); padding: 1px 6px;
 }
 .article pre {
@@ -2308,8 +2308,8 @@ main.has-pbar :where(h1, h2, h3, h4, [id]) { scroll-margin-top: 128px; }
 @media (min-width: 921px) {
   /* With a numbered label above the title, the deck starts level with the
      title, not with the label. */
-  .section-head.center:has(> .sec-no) > p:first-of-type { grid-row: 2; padding-top: 6px; }
-  .section-head.center:not(:has(> .sec-no)) > p:first-of-type { padding-top: 6px; }
+  .section-head.center > h2 + p { padding-top: 6px; }
+  .section-head.center:has(> .sec-no) > h2 + p { grid-row: 2; }
 }
 
 /* Specifications: the dense table. */
@@ -2575,7 +2575,6 @@ main a.solcard:not(.btn):hover { border-color: var(--ink-3); }
   .section { padding: 64px 0; }
   .section-head { margin-bottom: 32px; }
   .section-end { padding: 40px 0 64px; }
-  main.has-pbar .prod-eyebrow .badge { display: none; }
   .post-meta > span { white-space: nowrap; }
   .post-meta .cat { display: inline-block; margin-bottom: 4px; }
   .chain { flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -2611,3 +2610,7 @@ p, li, dd, figcaption, .excerpt, .section-head p { text-wrap: pretty; }
 :lang(zh) .pmap-st, :lang(zh) .lpath-label, :lang(zh) .thesis .k { letter-spacing: var(--track-caps); }
 .cn-notice { margin-top: 14px; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: var(--radius-sm);
   background: var(--bg-alt); color: var(--ink-2); font-size: var(--text-sm); }
+/* Cards in a row end on their link (DESIGN.md, card): a clickable card is a
+   column, and its read-more sits on the bottom edge however long the copy. */
+.grid > .card-clickable { display: flex; flex-direction: column; }
+.grid > .card-clickable > .read-more { margin-top: auto; padding-top: 14px; align-self: flex-start; }

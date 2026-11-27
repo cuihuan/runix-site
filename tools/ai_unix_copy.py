@@ -153,6 +153,19 @@ def main():
             pathlib.Path(f).write_text(n, encoding="utf-8")
             CHANGED.append(f)
 
+    edit("about.html", [
+        ("<h1>AI infrastructure engineers, obsessed with reliability</h1>",
+         "<h1>An AI-native company, rebuilding AI infrastructure</h1>"),
+        ("a model gateway (Router), and the agents on top (Code and Comic),",
+         "a model gateway (Router) and the open benchmark that measures gateways (Bench), and the agents on top (Code and Comic),"),
+        ("""          <li><strong>Written down, not remembered.</strong>""",
+         """          <li><strong>AI-native by construction.</strong> Agents write, test and operate most of our engineering, under human review, and a change from an agent faces the same gates as a change from a person.</li>
+          <li><strong>Written down, not remembered.</strong>"""),
+        ("<title>About Runix — US-Incorporated AI Infrastructure Company</title>",
+         "<title>About Runix Lab — AI-Native AI Infrastructure Company</title>"),
+        ('content="About Runix — US-Incorporated AI Infrastructure Company"',
+         'content="About Runix Lab — AI-Native AI Infrastructure Company"'),
+    ])
     edit("fs.html", [
         ("<title>Runix FS — AI-Native File System on Object Storage</title>",
          "<title>Runix FS — AI File System and S3 Cache for Training</title>"),

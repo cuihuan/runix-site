@@ -26,11 +26,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://runixcloud.io/bench">
 <meta property="og:site_name" content="Runix Lab">
-<meta property="og:image" content="https://runixcloud.io/assets/og-cover.png">
+<meta property="og:image" content="https://runixcloud.io/assets/og/bench.png?v=345562ba">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://runixcloud.io/assets/og-cover.png">
+<meta name="twitter:image" content="https://runixcloud.io/assets/og/bench.png?v=345562ba">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:title" content="Runix Bench — Open Benchmark for LLM Gateways and APIs">
 <meta name="twitter:description" content="Runix Bench measures any OpenAI-compatible LLM gateway from the outside: price against list, latency, 30-day uptime and whether the model is real.">
@@ -318,6 +318,16 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \
       </div>
       <div class="fcell">
         <span class="fno" aria-hidden="true">04</span>
+        <h3>Same models, same prompts</h3>
+        <p>Every endpoint is probed on the same tracked models, each under the name that gateway gives it, so a price or speed figure compares one model across gateways rather than whatever each one serves by default.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">05</span>
+        <h3>Evidence for what is annotated</h3>
+        <p>What a probe cannot measure, a data-retention policy or the legal entity behind a service, is annotated by hand with a link to the source and the date it was read. Corrections are taken as pull requests.</p>
+      </div>
+      <div class="fcell">
+        <span class="fno" aria-hidden="true">06</span>
         <h3>Unknown stays unknown</h3>
         <p>A measurement that could not be taken is shown as missing, never as zero. Network latency from a scheduled runner is labelled as an estimate, and the probe region is printed on every figure.</p>
       </div>

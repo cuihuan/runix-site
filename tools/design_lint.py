@@ -49,7 +49,8 @@ def check_css(css, where, defined):
     errs = []
     for m in re.finditer(r"font-size:\s*([^;}]+)", css):
         v = m.group(1).strip().replace("!important", "").strip()
-        if not re.fullmatch(r"var\(--text-[a-z0-9]+\)|\d*\.?\d+(em|%)|0|inherit|smaller|larger", v):
+        one = r"var\(--text-[a-z0-9]+\)|\d*\.?\d+(em|%)"
+        if not re.fullmatch(rf"{one}|(max|min)\(\s*({one})\s*,\s*({one})\s*\)|0|inherit|smaller|larger", v):
             errs.append(f"{where}: font-size {v!r} is not on the type scale")
     for m in re.finditer(r"\bfont:\s*([^;}]+)", css):
         if re.search(r"\d+(\.\d+)?px", re.sub(r"/\s*[\d.]+(px)?", "", m.group(1))):

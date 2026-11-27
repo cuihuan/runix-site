@@ -12,3 +12,4 @@ __pycache__/
 _*.html
 __*.html
 _lqa*
+i18n/zh-CN.todo.json

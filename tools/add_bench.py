@@ -153,6 +153,8 @@ $ PROBE_KEY=<span class="g">$YOUR_KEY</span> npm run compare -- \\
                       ("A public probe", "The probe script and its prompts are in the repository. Each request carries a random id so a gateway cannot serve it from a cache, output is capped, and concurrency stays at four or under so a run never becomes a load test."),
                       ("Scheduled, then committed", "A scheduled job probes every tracked endpoint every six hours and commits the raw result. Leaderboard figures come from a rolling 30-day window; older runs stay in the data and do not move the table."),
                       ("Agent runs on Terminal-Bench", "Beyond single calls, the same Terminal-Bench tasks can run through two routers with Claude Code or Codex as the agent, verifier scores and costs side by side, with A/A and A/B statistics. These runs are hosted by our team on request."),
+                      ("Same models, same prompts", "Every endpoint is probed on the same tracked models, each under the name that gateway gives it, so a price or speed figure compares one model across gateways rather than whatever each one serves by default."),
+                      ("Evidence for what is annotated", "What a probe cannot measure, a data-retention policy or the legal entity behind a service, is annotated by hand with a link to the source and the date it was read. Corrections are taken as pull requests."),
                       ("Unknown stays unknown", "A measurement that could not be taken is shown as missing, never as zero. Network latency from a scheduled runner is labelled as an estimate, and the probe region is printed on every figure."),
                   ]))
     why = section("", None, "Why a gateway company publishes a gateway benchmark",
